@@ -1,11 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import DrawerNavigator from './DrawerNavigator';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+const queryClient = new QueryClient();
 const Main = () => {
+  const Stack = createStackNavigator();
   return (
-    <View>
-      <Text>Maint</Text>
-    </View>
+    <NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <Stack.Navigator>
+          <Stack.Screen name="Root" component={DrawerNavigator} options={{headerShown:false}}/>
+            {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
+        </Stack.Navigator>
+      </QueryClientProvider>
+    </NavigationContainer>
   )
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 const Shop = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Shop</Text>
     </View>
   )
@@ -11,4 +11,8 @@ const Shop = () => {
 
 export default Shop
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container:{
+        flex:1
+    }
+})
