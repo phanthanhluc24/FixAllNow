@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 const Landing = () => {
-  const navigation = useNavigation();
+  const navigation:any = useNavigation();
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigation.navigate('SignIn');
