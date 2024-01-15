@@ -5,16 +5,13 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
 } from 'react-native';
 import React from 'react';
 import {Formik} from 'formik';
 import { useNavigation } from '@react-navigation/native';
 
 const SignIn = () => {  
-  const navigation= useNavigation();
+  const navigation:any= useNavigation();
   const handleSubmit=()=>{
     console.log("ok")
   }
@@ -56,12 +53,12 @@ const SignIn = () => {
               <View style={styles.confirmInfo}>
                 <Text style={styles.titlefg}>Quên mật khẩu?</Text>
                 <View style={styles.confirmcreate}>
-                  <Text style={styles.titlefg}>Chưa có tài khoản!</Text>
-                  <Text style={styles.createacc} onPress={() => navigation.navigate('SignUp')}>Tạo tài khoản?</Text>
+                  <Text style={styles.titlefgs}>Chưa có tài khoản!</Text>
+                  <Text style={styles.createacc} onPress={() => navigation.navigate('SignUp')}>Đăng ký</Text>
                 </View>
               </View>
 
-              <TouchableOpacity onPress={handleSubmit}
+              <TouchableOpacity
                 style={styles.buttonLogin}>
                 <Text style={styles.textLgoin}>Đăng nhập</Text>
               </TouchableOpacity>
@@ -87,11 +84,13 @@ const styles = StyleSheet.create({
   },
   signinHeader: {
     flex: 2,
+    marginLeft:40,
   },
   signinBody: {
     flex: 2,
     justifyContent: 'center',
-    width: '100%',marginBottom:70
+    width: '100%',
+    marginBottom:70
   },
   signinFooter: {
     flex: 2,
@@ -106,6 +105,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
+    textTransform:"uppercase",
   },
   titleSignin: {
     alignItems: 'center',
@@ -124,6 +124,7 @@ marginTop: 20,
     backgroundColor: 'white',
     borderRadius: 10,
     marginTop: 5,
+    borderWidth:1,
   },
   space: {
     marginTop: 20,
@@ -137,6 +138,7 @@ marginTop: 20,
     backgroundColor: 'white',
     borderRadius: 10,
     marginTop: 5,
+    borderWidth:1
   },
   confirmInfo: {
     marginTop: 20,
@@ -145,6 +147,12 @@ marginTop: 20,
    
   },
   titlefg: {
+    
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#0000ff',
+  },
+  titlefgs:{
     color: '#394C6D',
     fontSize: 15,
   },
@@ -156,7 +164,8 @@ marginTop: 20,
     color: '#0000ff',
     fontSize: 15,
     fontWeight: 'bold',
-  },
+    textTransform:"uppercase",
+  }, 
   buttonLogin: {
     width: '100%',
     backgroundColor: '#394C6D',
