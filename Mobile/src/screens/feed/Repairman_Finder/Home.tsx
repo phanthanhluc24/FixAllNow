@@ -3,12 +3,15 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <View>
+    <View style={styles.conatiner}>
       <Text>Home</Text>
     </View>
   )
 }
 
 export default Home
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    conatiner:{
+        flex:1
+    }
+})
