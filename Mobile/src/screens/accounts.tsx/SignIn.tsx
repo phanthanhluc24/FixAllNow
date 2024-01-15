@@ -2,17 +2,178 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
-const SignIn = () => {
+import {Formik} from 'formik';
+import { useNavigation } from '@react-navigation/native';
 
+const SignIn = () => {  
+  const navigation= useNavigation();
+  const handleSubmit=()=>{
+    console.log("ok")
+  }
   return (
-   <View>
-    <Text>Sign In</Text>
-   </View>
+    <View style={styles.signInContainer}>
+      <View style={styles.signinHeader}>
+        <Image
+          source={require('../../assets/SignIn/header.png')}
+          style={styles.imgHeader}
+        />
+      </View>
+      <Formik
+        initialValues={{email: '', password: ''}}
+        onSubmit={values => console.log(values)}>
+        {({handleChange, handleBlur, handleSubmit, values}) => (
+          <View style={styles.signinBody}>
+            <View style={styles.titleSignin}>
+              <Text style={styles.title}>Đăng nhập</Text>
+            </View>
+            <View style={styles.fromInput}>
+              <View>
+                <Text style={styles.titleEmail}>Email</Text>
+                <TextInput
+                  style={styles.inputEmail}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                />
+              </View>
+              <View style={styles.space}>
+                <Text style={styles.titlePassword}>Mật Khẩu</Text>
+                <TextInput
+                  style={styles.inputPassword}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                />
+              </View>
+              <View style={styles.confirmInfo}>
+                <Text style={styles.titlefg}>Quên mật khẩu?</Text>
+                <View style={styles.confirmcreate}>
+                  <Text style={styles.titlefg}>Chưa có tài khoản!</Text>
+                  <Text style={styles.createacc} onPress={() => navigation.navigate('SignUp')}>Tạo tài khoản?</Text>
+                </View>
+              </View>
+
+              <TouchableOpacity onPress={handleSubmit}
+                style={styles.buttonLogin}>
+                <Text style={styles.textLgoin}>Đăng nhập</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </Formik>
+      <View style={styles.signinFooter}>
+        <Image
+          source={require('../../assets/SignIn/footer.png')}
+          style={styles.Imgfooter}
+        />
+      </View>
+    </View>
   );
 };
 export default SignIn;
 
 const styles = StyleSheet.create({
+  signInContainer: {
+    flex: 1,
+    backgroundColor: '#FCA234',
+  },
+  signinHeader: {
+    flex: 2,
+  },
+  signinBody: {
+    flex: 2,
+    justifyContent: 'center',
+    width: '100%',marginBottom:70
+  },
+  signinFooter: {
+    flex: 2,
+  },
+  imgHeader: {
+    marginLeft: 20,
+  },
+  Imgfooter: {
+    marginRight: 20,
+  },
+  title: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  titleSignin: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fromInput: {
+    marginHorizontal: 40,
+marginTop: 20,
+  },
+  titleEmail: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  inputEmail: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  space: {
+    marginTop: 20,
+  },
+  titlePassword: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  inputPassword: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  confirmInfo: {
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+   
+  },
+  titlefg: {
+    color: '#394C6D',
+    fontSize: 15,
+  },
+  confirmcreate: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  createacc: {
+    color: '#0000ff',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  buttonLogin: {
+    width: '100%',
+    backgroundColor: '#394C6D',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    marginTop: '100%',
+    zIndex: 3,
+    height: 60,
+  },
+  form: {
+    position: 'absolute',
+  },
+  textLgoin: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
 });

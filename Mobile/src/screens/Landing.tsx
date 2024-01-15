@@ -35,9 +35,9 @@ const styles = StyleSheet.create({
   circularImage:{
     width:"80%",
     height:"60%",
-    alignItems:"center",justifyContent:"center"
+    alignItems:"center",
+    justifyContent:"center"
   },
-  
   landingcontent: {
     paddingTop: 20,
   },
