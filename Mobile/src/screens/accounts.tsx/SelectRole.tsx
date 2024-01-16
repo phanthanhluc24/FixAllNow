@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from 'react-native';
 import React, { useState } from 'react';
-
+import {useNavigation} from '@react-navigation/native';
 const SelectRole = () => {
+    const navigation: any = useNavigation();
     const [selectedRole, setSelectedRole] = useState('');
 
     const handleRoleChange = (role:string) => {
@@ -10,13 +11,16 @@ const SelectRole = () => {
 
     const handleRadioPress = (role:string) => {
         handleRoleChange(role);
-        if (role === 'Thợ sửa chữa') {
-            
-        } else if (role === 'Tìm thợ') {
-          
+    };
+    const handleContinuePress = () => {
+        if (selectedRole === 'Thợ sửa chữa') {
+            navigation.navigate('ThoSuaChuaScreen');
+        } else if (selectedRole === 'Tìm thợ') {
+            navigation.navigate('SignUp');
+        } else {
+            Alert.alert('Please select a role before continuing.');
         }
     };
-
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
@@ -43,7 +47,7 @@ const SelectRole = () => {
 
             {/* Thêm nút bấm */}
             <View style={styles.buttonDiv}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}  onPress={handleContinuePress}>
                     <Text style={styles.buttonText}>TIẾP TỤC</Text>
                 </TouchableOpacity>
             </View>

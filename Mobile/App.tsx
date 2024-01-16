@@ -8,7 +8,6 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
      <Main/>
-    
     </QueryClientProvider>
   )
 }

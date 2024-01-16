@@ -1,6 +1,3 @@
-
-import SelectRole from '../../screens/accounts/SelectRole';
-
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import DrawerNavigator from './DrawerNavigator';
@@ -11,6 +8,8 @@ import Landing from '../../screens/Landing';
 import Welcome from '../../screens/Welcome';
 import SignIn from '../../screens/accounts.tsx/SignIn';
 import SignUp from '../../screens/accounts.tsx/SignUp';
+import SelectRole from '../../screens/accounts.tsx/SelectRole';
+import ConfirmCode from '../../screens/accounts.tsx/ConfirmCode';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -25,7 +24,9 @@ const Main = () => {
           <Stack.Screen name="Root" component={DrawerNavigator} options={{headerShown:false}}/>
           <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/>
           <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
+
           <Stack.Screen name="SelectRole" component={SelectRole} options={{ headerShown: false }} />
+          <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown:false}}/>
             {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>

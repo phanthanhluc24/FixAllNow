@@ -5,82 +5,97 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
 const SignUp = () => {
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
   return (
     <Formik
-      initialValues={{email: '', password: '', phoneNumber:'',userName:''}}
+      initialValues={{email: '', password: '', phoneNumber: '', userName: ''}}
       onSubmit={values => console.log(values)}>
-      {({handleChange, handleBlur, handleSubmit, values}:any) => (
-        <View style={styles.signUpContainer}>
-          <View style={styles.headerImg}>
-            <Image
-              source={require('../../assets/SignUp/headers.png')}
-              style={styles.imgHeader}
-            />
-          </View>
-          <View style={styles.signupBody}>
-            <View style={styles.titleSignup}>
-              <Text style={styles.title}>ĐĂNG KÝ</Text>
-            </View>
-            <View style={styles.fromInput}>
-              <View>
-                <Text style={styles.titleEmail}>Họ và tên</Text>
-                <TextInput
-                  style={styles.inputEmail}
-                  onChangeText={handleChange('userName')}
-                  onBlur={handleBlur('userName')}
-                  value={values.userName}
-                />
-              </View>
-              <View style={styles.space}>
-                <Text style={styles.titleEmail}>Email</Text>
-                <TextInput
-                  style={styles.inputEmail}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
-              </View>
-              <View style={styles.space}>
-                <Text style={styles.titleEmail}>Số điện thoại</Text>
-                <TextInput
-                  style={styles.inputEmail}
-                  onChangeText={handleChange('phoneNumber')}
-                  onBlur={handleBlur('phoneNumber')}
-                  value={values.phoneNumber}
-                />
-              </View>
-              <View style={styles.space}>
-                <Text style={styles.titlePassword}>Mật Khẩu</Text>
-                <TextInput
-                  style={styles.inputPassword}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                />
-              </View>
-              <View style={styles.confirmInfo}>
-                <View style={styles.confirmcreate}>
-                  <Text style={styles.titlefg}>Bạn đã có tài khoản chưa?</Text>
-                  <Text
-                    style={styles.createAcc}
-                    onPress={() => navigation.navigate('SignIn')}>
-                    Đăng nhập
-                  </Text>
-                </View>
-              </View>
 
-              <TouchableOpacity style={styles.buttonLogin}>
-                <Text style={styles.textLgoin}>Đăng ký</Text>
-              </TouchableOpacity>
+      {({handleChange, handleBlur, handleSubmit, values}) => (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.signUpContainer}>
+          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <View style={styles.headerImg}>
+              <Image
+                source={require('../../assets/SignUp/headers.png')}
+                style={styles.imgHeader}
+              />
+
             </View>
-          </View>
-        </View>
+            <View style={styles.signupBody}>
+              <View style={styles.titleSignup}>
+                <Text style={styles.title}>ĐĂNG KÝ</Text>
+              </View>
+              <View style={styles.fromInput}>
+                <View>
+                  <Text style={styles.titleEmail}>Họ và tên</Text>
+                  <TextInput
+                    style={styles.inputEmail}
+                    onChangeText={handleChange('userName')}
+                    onBlur={handleBlur('userName')}
+                    value={values.userName}
+                  />
+                </View>
+                <View style={styles.space}>
+                  <Text style={styles.titleEmail}>Email</Text>
+                  <TextInput
+                    style={styles.inputEmail}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                  />
+                </View>
+                <View style={styles.space}>
+                  <Text style={styles.titleEmail}>Số điện thoại</Text>
+                  <TextInput
+                    style={styles.inputEmail}
+                    onChangeText={handleChange('phoneNumber')}
+                    onBlur={handleBlur('phoneNumber')}
+                    value={values.phoneNumber}
+                  />
+                </View>
+                <View style={styles.space}>
+                  <Text style={styles.titlePassword}>Mật Khẩu</Text>
+                  <TextInput
+                    style={styles.inputPassword}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                  />
+                </View>
+                <View style={styles.confirmInfo}>
+                  <View style={styles.confirmcreate}>
+                    <Text style={styles.titlefg}>
+                      Bạn đã có tài khoản chưa?
+                    </Text>
+                    <Text
+                      style={styles.createAcc}
+                      onPress={() => navigation.navigate('SignIn')}>
+                      Đăng nhập
+                    </Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity style={styles.buttonLogin}>
+                  <Text
+                    style={styles.textLgoin}
+                    onPress={() => navigation.navigate('ConfirmCode')}>
+                    Đăng ký
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
     </Formik>
   );
@@ -97,7 +112,9 @@ const styles = StyleSheet.create({
     flex: 14,
     justifyContent: 'center',
     width: '100%',
-    marginBottom:50
+    marginTop: "30%",
+    position:"absolute",
+    zIndex:2
   },
   headerImg: {
     flex: 1,
@@ -107,7 +124,7 @@ const styles = StyleSheet.create({
   },
   imgFooter: {
     marginLeft: '40%',
-    height:250
+    height: 250,
   },
   title: {
     color: '#394C6D',
@@ -131,7 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     marginTop: 5,
-    borderWidth:1,
+    borderWidth: 1,
   },
   space: {
     marginTop: 20,
@@ -145,8 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     marginTop: 5,
-    borderWidth:1
-
+    borderWidth: 1,
   },
   confirmInfo: {
     marginTop: 20,
@@ -182,6 +198,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
-    textTransform:'uppercase',
+    textTransform: 'uppercase',
   },
 });
