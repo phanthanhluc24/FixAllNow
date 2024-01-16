@@ -1,3 +1,6 @@
+
+import SelectRole from '../../screens/accounts/SelectRole';
+
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import DrawerNavigator from './DrawerNavigator';
@@ -13,13 +16,16 @@ const Main = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
+
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator>
+          
           <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
           <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
           <Stack.Screen name="Root" component={DrawerNavigator} options={{headerShown:false}}/>
           <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/>
           <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
+          <Stack.Screen name="SelectRole" component={SelectRole} options={{ headerShown: false }} />
             {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>

@@ -26,7 +26,7 @@ const SignIn = () => {
       <Formik
         initialValues={{email: '', password: ''}}
         onSubmit={values => console.log(values)}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
+        {({handleChange, handleBlur, handleSubmit, values}:any) => (
           <View style={styles.signinBody}>
             <View style={styles.titleSignin}>
               <Text style={styles.title}>Đăng nhập</Text>

@@ -15,7 +15,7 @@ const SignUp = () => {
     <Formik
       initialValues={{email: '', password: '', phoneNumber:'',userName:''}}
       onSubmit={values => console.log(values)}>
-      {({handleChange, handleBlur, handleSubmit, values}) => (
+      {({handleChange, handleBlur, handleSubmit, values}:any) => (
         <View style={styles.signUpContainer}>
           <View style={styles.headerImg}>
             <Image
