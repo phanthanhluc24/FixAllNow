@@ -14,7 +14,7 @@ const SelectRole = () => {
     };
     const handleContinuePress = () => {
         if (selectedRole === 'Thợ sửa chữa') {
-            navigation.navigate('ThoSuaChuaScreen');
+            navigation.navigate('ConfirmTypeRepairman');
         } else if (selectedRole === 'Tìm thợ') {
             navigation.navigate('SignUp');
         } else {
@@ -25,7 +25,7 @@ const SelectRole = () => {
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <View style={styles.logoContainer}>
-                    <Image source={require('../../assets/role/logo.png')} style={styles.logo} />
+                    <Image source={require('../../assets/role/logo.png')} style={styles.logo}/>
                 </View>
             </View>
             <Text style={styles.title_1}>ĐĂNG KÝ</Text>

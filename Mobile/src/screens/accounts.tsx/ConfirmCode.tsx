@@ -25,8 +25,8 @@ const ConfirmCode = () => {
                 <Text style={styles.timeInput}>Mã sẽ hết hạn trong vòng 3:00 phút</Text>
                 <Text style={styles.sentBack}>Gửi lại mã</Text>
                 <TouchableOpacity
-                style={styles.buttonLogin}>
-                <Text style={styles.textLgoin}>XÁC THỰC</Text>
+                style={styles.buttonConfirm}>
+                <Text style={styles.textConfirm}>XÁC THỰC</Text>
               </TouchableOpacity>
               </View>
               
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   container:{
     marginTop:40
   },
-  buttonLogin: {
+  buttonConfirm: {
     width: '80%',
     backgroundColor: '#394C6D',
     borderRadius: 10,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     marginTop:40
   },
-  textLgoin: {
+  textConfirm: {
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
