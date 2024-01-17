@@ -12,6 +12,7 @@ import SelectRole from '../../screens/accounts.tsx/SelectRole';
 import ConfirmCode from '../../screens/accounts.tsx/ConfirmCode';
 import ConfirmTypeRepairman from '../../screens/accounts.tsx/ConfirmTypeRepairman';
 import ForgotPassword from '../../screens/accounts.tsx/ForgotPassword';
+import NewPassword from '../../screens/accounts.tsx/NewPassword';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -20,7 +21,6 @@ const Main = () => {
 
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator>
-          
           <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
           <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
           <Stack.Screen name="Root" component={DrawerNavigator} options={{headerShown:false}}/>
@@ -30,6 +30,7 @@ const Main = () => {
           <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown:false}}/>
           <Stack.Screen name="ConfirmTypeRepairman" component={ConfirmTypeRepairman} options={{headerShown:false}}/>
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false}}/>
+          <Stack.Screen name="NewPassword" component={NewPassword} options={{headerShown:false}}/>
           {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>
