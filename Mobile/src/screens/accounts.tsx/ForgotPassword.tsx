@@ -12,11 +12,13 @@ import {
   ScrollView,
   Keyboard,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {Formik} from 'formik';
 const ForgotPassword = () => {
+    const navigation:any= useNavigation();
   return (
-    <Formik initialValues={{code: ''}} onSubmit={values => console.log(values)}>
+    <Formik initialValues={{email: ''}} onSubmit={values => console.log(values)}>
       {({handleChange, handleBlur, handleSubmit, values}) => (
         <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.confirmContainer}>
@@ -30,11 +32,11 @@ const ForgotPassword = () => {
                 <Text style={styles.titles}>Vui lòng nhập Email!</Text>
                 <TextInput
                   style={styles.inputCode}
-                  onChangeText={handleChange('code')}
-                  onBlur={handleBlur('code')}
-                  value={values.code}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
                 />
-                <TouchableOpacity
+                <TouchableOpacity onPress={() => navigation.navigate('NewPassword')}
                 style={styles.buttonConfirm}>
                 <Text style={styles.textConfirm}>XÁC THỰC</Text>
               </TouchableOpacity>
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
         marginTop:60
       },
       buttonConfirm: {
-        width: '80%',
+        width: '50%',
         backgroundColor: '#394C6D',
         borderRadius: 10,
         height: 60,
