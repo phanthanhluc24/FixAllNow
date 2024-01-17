@@ -11,6 +11,7 @@ import SignUp from '../../screens/accounts.tsx/SignUp';
 import SelectRole from '../../screens/accounts.tsx/SelectRole';
 import ConfirmCode from '../../screens/accounts.tsx/ConfirmCode';
 import ConfirmTypeRepairman from '../../screens/accounts.tsx/ConfirmTypeRepairman';
+import ForgotPassword from '../../screens/accounts.tsx/ForgotPassword';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -28,6 +29,7 @@ const Main = () => {
           <Stack.Screen name="SelectRole" component={SelectRole} options={{ headerShown: false }} />
           <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown:false}}/>
           <Stack.Screen name="ConfirmTypeRepairman" component={ConfirmTypeRepairman} options={{headerShown:false}}/>
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false}}/>
           {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>

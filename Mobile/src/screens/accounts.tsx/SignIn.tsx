@@ -60,7 +60,10 @@ const SignIn = () => {
                   />
                 </View>
                 <View style={styles.confirmInfo}>
+                  <TouchableOpacity  onPress={() => navigation.navigate('ForgotPassword')}>
                   <Text style={styles.titlefg}>Quên mật khẩu?</Text>
+                  </TouchableOpacity>
+                  
                   <View style={styles.confirmcreate}>
                     <Text style={styles.titlefgs}>Chưa có tài khoản!</Text>
                     <Text
