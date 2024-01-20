@@ -6,88 +6,114 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
   ScrollView,
   Platform,
+  GestureResponderEvent
 } from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import {Formik} from 'formik';
-import {useNavigation} from '@react-navigation/native';
-
-const SignIn = () => {
-  const navigation: any = useNavigation();
-  const handleSubmit = () => {
-    console.log('ok');
-  };
+import {SignupSchema} from './Validation';
+import useSignin from '../../hooks/useSignin';
+const SignIn = ({navigation}: any) => {
+  const passwordRef:any = useRef();
+  const {handleSignin} = useSignin({navigation});
   return (
-
     <Formik
       initialValues={{email: '', password: ''}}
-      onSubmit={values => console.log(values)}>
-      {({handleChange, handleBlur, handleSubmit, values}) => (
+      validationSchema={SignupSchema}
+      onSubmit={values => {
+        setTimeout(() => {
+          let account = {
+            email: values.email,
+            password: values.password,
+          };
+          handleSignin(account);
+          // console.log(account);
+        }, 100);
+      }}>
+      {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
+         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.signInContainer}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
-            <View style={styles.signinHeader}>
-              <Image
-                source={require('../../assets/SignIn/header.png')}
-                style={styles.imgHeader}
-              />
-
-            </View>
-
-            <View style={styles.signinBody}>
-              <View style={styles.titleSignin}>
-                <Text style={styles.title}>Đăng nhập</Text>
+         
+            <ScrollView contentContainerStyle={{flexGrow: 1}}>
+              <View style={styles.signinHeader}>
+                <Image
+                  source={require('../../assets/SignIn/header.png')}
+                  style={styles.imgHeader}
+                />
               </View>
-              <View style={styles.fromInput}>
-                <View>
-                  <Text style={styles.titleEmail}>Email</Text>
-                  <TextInput
-                    style={styles.inputEmail}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                  />
+              <View style={styles.signinBody}>
+                <View style={styles.titleSignin}>
+                  <Text style={styles.title}>Đăng nhập</Text>
                 </View>
-                <View style={styles.space}>
-                  <Text style={styles.titlePassword}>Mật Khẩu</Text>
-                  <TextInput
-                    style={styles.inputPassword}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                  />
-                </View>
-                <View style={styles.confirmInfo}>
-                  <TouchableOpacity  onPress={() => navigation.navigate('ForgotPassword')}>
-                  <Text style={styles.titlefg}>Quên mật khẩu?</Text>
-                  </TouchableOpacity>
-                  
-                  <View style={styles.confirmcreate}>
-                    <Text style={styles.titlefgs}>Chưa có tài khoản!</Text>
-                    <Text
-                      style={styles.createacc}
-                      onPress={() => navigation.navigate('SelectRole')}>
-                      Đăng ký
-                    </Text>
+                <View style={styles.fromInput}>
+                  <View>
+                    <Text style={styles.titleEmail}>Email</Text>
+                    <TextInput
+                      style={styles.inputEmail}
+                      enterKeyHint={'next'}
+                      onSubmitEditing={() => passwordRef.current?.focus()}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                    />
+                    {errors.email && touched.email ? (
+                      <Text style={styles.errorText}>* {errors.email}</Text>
+                    ) : null}
                   </View>
+                  <View style={styles.space}>
+                    <Text style={styles.titlePassword}>Mật Khẩu</Text>
+                    <TextInput
+                      ref={passwordRef}
+                      style={styles.inputPassword}
+                      enterKeyHint={'done'}
+                      onSubmitEditing={() => passwordRef.current?.clear()}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+                    {errors.password && touched.password ? (
+                      <Text style={styles.errorText}>* {errors.password}</Text>
+                    ) : null}
+                  </View>
+                  <View style={styles.confirmInfo}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('ForgotPassword')}>
+                      <Text style={styles.titlefg}>Quên mật khẩu?</Text>
+                    </TouchableOpacity>
+
+                    <View style={styles.confirmcreate}>
+                      <Text style={styles.titlefgs}>Chưa có tài khoản!</Text>
+                      <Text
+                        style={styles.createacc}
+                        onPress={() => navigation.navigate('SelectRole')}>
+                        Đăng ký
+                      </Text>
+                    </View>
+                  </View>
+
+                  <TouchableOpacity
+                    style={styles.buttonLogin}
+                    onPress={ handleSubmit}>
+                    <Text style={styles.textLgoin}>Đăng nhập</Text>
+                  </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity style={styles.buttonLogin}>
-                  <Text style={styles.textLgoin}>Đăng nhập</Text>
-                </TouchableOpacity>
               </View>
-            </View>
 
-            <View style={styles.signinFooter}>
-              <Image
-                source={require('../../assets/SignIn/footer.png')}
-                style={styles.Imgfooter}
-              />
-            </View>
-          </ScrollView>
+              <View style={styles.signinFooter}>
+                <Image
+                  source={require('../../assets/SignIn/footer.png')}
+                  style={styles.Imgfooter}
+                />
+              </View>
+            </ScrollView>
+         
         </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       )}
     </Formik>
   );
@@ -100,26 +126,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCA234',
   },
   signinHeader: {
-   
     marginLeft: 40,
   },
   signinBody: {
-    position:"absolute",
-    zIndex:100,
+    position: 'absolute',
+    zIndex: 100,
     justifyContent: 'center',
     width: '100%',
     marginBottom: 70,
-    marginTop:"40%"
+    marginTop: '40%',
   },
-  signinFooter: {
-    
-  },
+  signinFooter: {},
   imgHeader: {
     marginLeft: 20,
   },
   Imgfooter: {
     marginRight: 20,
-    marginTop:90
+    marginTop: 90,
   },
   title: {
     color: 'white',
@@ -202,5 +225,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  errorText: {
+    fontWeight: 'bold',
+    color: 'red',
+    margin: 0,
+    padding: 0,
   },
 });
