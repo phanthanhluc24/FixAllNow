@@ -15,6 +15,7 @@ var ConfirmCode_1 = require("../../screens/accounts.tsx/ConfirmCode");
 var ConfirmTypeRepairman_1 = require("../../screens/accounts.tsx/ConfirmTypeRepairman");
 var ForgotPassword_1 = require("../../screens/accounts.tsx/ForgotPassword");
 var NewPassword_1 = require("../../screens/accounts.tsx/NewPassword");
+var Home_1 = require("../../screens/feed/Repairman_Finder/Home");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -30,7 +31,8 @@ var Main = function () {
                 react_1["default"].createElement(Stack.Screen, { name: "ConfirmCode", component: ConfirmCode_1["default"], options: { headerShown: false } }),
                 react_1["default"].createElement(Stack.Screen, { name: "ConfirmTypeRepairman", component: ConfirmTypeRepairman_1["default"], options: { headerShown: false } }),
                 react_1["default"].createElement(Stack.Screen, { name: "ForgotPassword", component: ForgotPassword_1["default"], options: { headerShown: false } }),
-                react_1["default"].createElement(Stack.Screen, { name: "NewPassword", component: NewPassword_1["default"], options: { headerShown: false } })))));
+                react_1["default"].createElement(Stack.Screen, { name: "NewPassword", component: NewPassword_1["default"], options: { headerShown: false } }),
+                react_1["default"].createElement(Stack.Screen, { name: "Home", component: Home_1["default"], options: { headerShown: true } })))));
 };
 exports["default"] = Main;
 var styles = react_native_1.StyleSheet.create({});

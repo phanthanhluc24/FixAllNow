@@ -8,28 +8,51 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import React from 'react';
 import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
+import { Signup_Schema } from './Validation_Signup';
+interface Infocus {
+  role: string;
+  job: string | null;
+  full_name: string;
+  email: string;
+  number_phone: number;
+  address: string | null;
+  password: string;
+}
 const SignUp = () => {
   const navigation: any = useNavigation();
   return (
     <Formik
-      initialValues={{email: '', password: '', phoneNumber: '', userName: ''}}
-      onSubmit={values => console.log(values)}>
-
-      {({handleChange, handleBlur, handleSubmit, values}) => (
+      initialValues={{number_phone: '', full_name: '', email: '', password: ''}}
+      validationSchema={Signup_Schema}
+      onSubmit={values => {
+        setTimeout(() => {
+          let data = {
+            full_name: values.full_name,
+            number_phone: values.number_phone,
+            email: values.email,
+            password: values.password,
+          };
+          // handleSinup(data);
+        }, 200);
+      }}>
+      {({errors, touched, handleChange, handleBlur, handleSubmit, values}) => (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.signUpContainer}>
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}></TouchableWithoutFeedback>
           <ScrollView contentContainerStyle={{flexGrow: 1}}>
             <View style={styles.headerImg}>
               <Image
                 source={require('../../assets/SignUp/headers.png')}
                 style={styles.imgHeader}
               />
-
             </View>
             <View style={styles.signupBody}>
               <View style={styles.titleSignup}>
@@ -40,10 +63,13 @@ const SignUp = () => {
                   <Text style={styles.titleEmail}>Họ và tên</Text>
                   <TextInput
                     style={styles.inputEmail}
-                    onChangeText={handleChange('userName')}
-                    onBlur={handleBlur('userName')}
-                    value={values.userName}
+                    onChangeText={handleChange('full_name')}
+                    onBlur={handleBlur('full_name')}
+                    value={values.full_name}
                   />
+                  {errors.full_name && touched.full_name ? (
+                    <Text style={styles.errorText}>* {errors.full_name}</Text>
+                  ) : null}
                 </View>
                 <View style={styles.space}>
                   <Text style={styles.titleEmail}>Email</Text>
@@ -53,15 +79,23 @@ const SignUp = () => {
                     onBlur={handleBlur('email')}
                     value={values.email}
                   />
+                  {errors.email && touched.email ? (
+                    <Text style={styles.errorText}>* {errors.email}</Text>
+                  ) : null}
                 </View>
                 <View style={styles.space}>
                   <Text style={styles.titleEmail}>Số điện thoại</Text>
                   <TextInput
                     style={styles.inputEmail}
-                    onChangeText={handleChange('phoneNumber')}
-                    onBlur={handleBlur('phoneNumber')}
-                    value={values.phoneNumber}
+                    onChangeText={handleChange('number_phone')}
+                    onBlur={handleBlur('number_phone')}
+                    value={values.number_phone}
                   />
+                  {errors.number_phone && touched.number_phone ? (
+                    <Text style={styles.errorText}>
+                      * {errors.number_phone}
+                    </Text>
+                  ) : null}
                 </View>
                 <View style={styles.space}>
                   <Text style={styles.titlePassword}>Mật Khẩu</Text>
@@ -71,6 +105,9 @@ const SignUp = () => {
                     onBlur={handleBlur('password')}
                     value={values.password}
                   />
+                  {errors.password && touched.password ? (
+                    <Text style={styles.errorText}>* {errors.password}</Text>
+                  ) : null}
                 </View>
                 <View style={styles.confirmInfo}>
                   <View style={styles.confirmcreate}>
@@ -95,6 +132,7 @@ const SignUp = () => {
               </View>
             </View>
           </ScrollView>
+          <TouchableWithoutFeedback />
         </KeyboardAvoidingView>
       )}
     </Formik>
@@ -112,9 +150,9 @@ const styles = StyleSheet.create({
     flex: 14,
     justifyContent: 'center',
     width: '100%',
-    marginTop: "30%",
-    position:"absolute",
-    zIndex:2
+    marginTop: '30%',
+    position: 'absolute',
+    zIndex: 2,
   },
   headerImg: {
     flex: 1,
@@ -199,5 +237,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     textTransform: 'uppercase',
+  },
+  errorText: {
+    fontWeight: 'bold',
+    color: 'red',
+    margin: 0,
+    padding: 0,
   },
 });

@@ -13,6 +13,7 @@ import ConfirmCode from '../../screens/accounts.tsx/ConfirmCode';
 import ConfirmTypeRepairman from '../../screens/accounts.tsx/ConfirmTypeRepairman';
 import ForgotPassword from '../../screens/accounts.tsx/ForgotPassword';
 import NewPassword from '../../screens/accounts.tsx/NewPassword';
+import Home from '../../screens/feed/Repairman_Finder/Home';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -31,6 +32,7 @@ const Main = () => {
           <Stack.Screen name="ConfirmTypeRepairman" component={ConfirmTypeRepairman} options={{headerShown:false}}/>
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false}}/>
           <Stack.Screen name="NewPassword" component={NewPassword} options={{headerShown:false}}/>
+          <Stack.Screen name="Home" component={Home} options={{headerShown:true}}/>
           {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>

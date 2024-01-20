@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from 'react-native';
 import React, { useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {Signup_Schema} from './dist/Validation_Signup';
 const SelectRole = () => {
     const navigation: any = useNavigation();
     const [selectedRole, setSelectedRole] = useState('');

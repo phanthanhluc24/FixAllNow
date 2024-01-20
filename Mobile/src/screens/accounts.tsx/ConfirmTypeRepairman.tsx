@@ -15,6 +15,7 @@ import React, {useState} from 'react';
 import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
+import {Signup_Schema} from './dist/Validation_Signup';
 interface ItemType {
     id: number;
     label: string;
