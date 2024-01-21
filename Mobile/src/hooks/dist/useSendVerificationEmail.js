@@ -36,19 +36,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var react_native_1 = require("react-native");
 var axios_1 = require("axios");
-var url_1 = require("./apiRequest/url");
-var useSignup = function (userData) { return __awaiter(void 0, void 0, void 0, function () {
+var url_1 = require("./apiRequest/dist/url");
+var useSendVerificationEmail = function (data) { return __awaiter(void 0, void 0, void 0, function () {
     var response;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios_1["default"].post(url_1.url + "/auth/register", userData)];
+            case 0: return [4 /*yield*/, axios_1["default"].post(url_1.url + "/auth/verificationCode", data)];
             case 1:
                 response = _a.sent();
                 return [2 /*return*/, response.data];
         }
     });
 }); };
-exports["default"] = useSignup;
-var styles = react_native_1.StyleSheet.create({});
+exports["default"] = useSendVerificationEmail;
+// const styles = StyleSheet.create({})
+// import { url } from './apiRequest/url';
+// import axios from 'axios';
+// const sendVerificationEmail = ()=>{
+//     const sendVerificationCode= async(code:string, codeToken:string)=>{
+//         try{
+//             const  response = await axios.post(
+//               `${url}/auth/verificationCode`,{code, codeToken} 
+//             );
+//             console.log(response.data);
+//             return response.data;
+//           }catch(error:any){
+//             console.error(error);
+//             throw error;
+//           }
+//     };
+//     return {
+//         sendVerificationCode
+//     }
+//   }
+// export default sendVerificationEmail;

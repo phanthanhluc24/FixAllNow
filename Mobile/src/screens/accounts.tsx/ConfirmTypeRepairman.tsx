@@ -11,31 +11,30 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Signup_Schema} from './dist/Validation_Signup';
+import {url} from '../../hooks/apiRequest/url';
+import useCategoryData from '../../hooks/useCategoryData';
 interface ItemType {
-    id: number;
-    label: string;
-    value: string;
-  }
-const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
-];
+  label: string;
+  value: any;
+}
+interface RouteParams{
+  selectedRole?: string
+}
 const ConfirmTypeRepairman = () => {
+  const route = useRoute();
+  const selectedRole = route.params?.selectedRole || 'Default Role';
   const navigation: any = useNavigation();
-  const [value, setValue] = useState(null);
-
-  const renderItem = (item:ItemType) => {
+  const [value, setValue] = useState<ItemType | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<ItemType | null>(
+    null,
+  );
+  const data = useCategoryData();
+  const renderItem = (item: ItemType) => {
     return (
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
@@ -44,9 +43,17 @@ const ConfirmTypeRepairman = () => {
   };
   return (
     <Formik
-      initialValues={{job: '', address: ''}}
-      onSubmit={values => console.log(values)}>
-      {({handleChange, handleBlur, handleSubmit, values}) => (
+      initialValues={{_id: '', address: ''}}
+      onSubmit={(values, {setFieldValue}) => {
+        const selectedCategoryId = selectedCategory?.value;
+        setFieldValue('_id', selectedCategoryId);
+        navigation.navigate('SignUp', {
+          selectedRole,
+          _id: selectedCategoryId,
+          address: values.address,
+        });
+      }}>
+      {({handleChange, handleBlur, handleSubmit, values, setFieldValue}) => (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.confirmTypeContainer}>
@@ -61,23 +68,24 @@ const ConfirmTypeRepairman = () => {
                 </View>
                 <View style={styles.form}>
                   <Text style={styles.titleJob}>Bạn là thợ gì?</Text>
-
                   <Dropdown
                     style={styles.dropdown}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={data}
+                    data={data || []}
                     search
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
-                    placeholder="Select item"
+                    placeholder="Lựa chọn nghề nghiệp"
                     searchPlaceholder="Search..."
-                    value={value}
+                    value={selectedCategory}
                     onChange={item => {
-                      setValue(item.value);
+                      setValue(item.label);
+                      setSelectedCategory(item);
+                      setFieldValue('_id', item.value);
                     }}
                     renderItem={renderItem}
                   />
@@ -95,7 +103,13 @@ const ConfirmTypeRepairman = () => {
                     <View style={styles.buttonConfirms}></View>
                     <TouchableOpacity
                       style={styles.buttonConfirm}
-                      onPress={() => navigation.navigate('SignUp')}>
+                      onPress={() => {
+                        navigation.navigate('SignUp', {
+                          selectedRole,
+                          _id: selectedCategory?.value,
+                          address: values.address,
+                        });
+                      }}>
                       <Text style={styles.textConfirm}>TIẾP TỤC</Text>
                     </TouchableOpacity>
                   </View>
@@ -169,6 +183,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     width: '80%',
+    paddingLeft:15
   },
   spaceContainer: {
     alignItems: 'center',
@@ -229,7 +244,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
+    paddingLeft:15,
     elevation: 2,
   },
   icon: {

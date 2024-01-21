@@ -71,6 +71,7 @@ const SignIn = ({navigation}: any) => {
                       ref={passwordRef}
                       style={styles.inputPassword}
                       enterKeyHint={'done'}
+                      secureTextEntry={true}
                       onSubmitEditing={() => passwordRef.current?.clear()}
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
@@ -98,7 +99,7 @@ const SignIn = ({navigation}: any) => {
 
                   <TouchableOpacity
                     style={styles.buttonLogin}
-                    onPress={ handleSubmit}>
+                    onPress={handleSubmit}>
                     <Text style={styles.textLgoin}>Đăng nhập</Text>
                   </TouchableOpacity>
                 </View>
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderWidth: 1,
+    paddingLeft:15
   },
   space: {
     marginTop: 20,
@@ -182,6 +184,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderWidth: 1,
+    paddingLeft:15
   },
   confirmInfo: {
     marginTop: 20,

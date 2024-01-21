@@ -37,7 +37,7 @@ var SignIn = function (_a) {
                                     errors.email)) : null),
                             react_1["default"].createElement(react_native_1.View, { style: styles.space },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titlePassword }, "M\u00E2\u0323t Kh\u00E2\u0309u"),
-                                react_1["default"].createElement(react_native_1.TextInput, { ref: passwordRef, style: styles.inputPassword, enterKeyHint: 'done', onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.clear(); }, onChangeText: handleChange('password'), onBlur: handleBlur('password'), value: values.password }),
+                                react_1["default"].createElement(react_native_1.TextInput, { ref: passwordRef, style: styles.inputPassword, enterKeyHint: 'done', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.clear(); }, onChangeText: handleChange('password'), onBlur: handleBlur('password'), value: values.password }),
                                 errors.password && touched.password ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
                                     "* ",
                                     errors.password)) : null),
@@ -101,7 +101,8 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         marginTop: 5,
-        borderWidth: 1
+        borderWidth: 1,
+        paddingLeft: 15
     },
     space: {
         marginTop: 20
@@ -115,7 +116,8 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         marginTop: 5,
-        borderWidth: 1
+        borderWidth: 1,
+        paddingLeft: 15
     },
     confirmInfo: {
         marginTop: 20,

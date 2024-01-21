@@ -5,25 +5,30 @@ var react_1 = require("react");
 var formik_1 = require("formik");
 var native_1 = require("@react-navigation/native");
 var react_native_element_dropdown_1 = require("react-native-element-dropdown");
-var data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-];
+var useCategoryData_1 = require("../../hooks/useCategoryData");
 var ConfirmTypeRepairman = function () {
+    var _a;
+    var route = native_1.useRoute();
+    var selectedRole = ((_a = route.params) === null || _a === void 0 ? void 0 : _a.selectedRole) || 'Default Role';
     var navigation = native_1.useNavigation();
-    var _a = react_1.useState(null), value = _a[0], setValue = _a[1];
+    var _b = react_1.useState(null), value = _b[0], setValue = _b[1];
+    var _c = react_1.useState(null), selectedCategory = _c[0], setSelectedCategory = _c[1];
+    var data = useCategoryData_1["default"]();
     var renderItem = function (item) {
         return (react_1["default"].createElement(react_native_1.View, { style: styles.item },
             react_1["default"].createElement(react_native_1.Text, { style: styles.textItem }, item.label)));
     };
-    return (react_1["default"].createElement(formik_1.Formik, { initialValues: { job: '', address: '' }, onSubmit: function (values) { return console.log(values); } }, function (_a) {
-        var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
+    return (react_1["default"].createElement(formik_1.Formik, { initialValues: { _id: '', address: '' }, onSubmit: function (values, _a) {
+            var setFieldValue = _a.setFieldValue;
+            var selectedCategoryId = selectedCategory === null || selectedCategory === void 0 ? void 0 : selectedCategory.value;
+            setFieldValue('_id', selectedCategoryId);
+            navigation.navigate('SignUp', {
+                selectedRole: selectedRole,
+                _id: selectedCategoryId,
+                address: values.address
+            });
+        } }, function (_a) {
+        var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values, setFieldValue = _a.setFieldValue;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmTypeContainer },
             react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
                 react_1["default"].createElement(react_native_1.View, { style: styles.header },
@@ -34,15 +39,23 @@ var ConfirmTypeRepairman = function () {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "\u0110\u0102NG KY\u0301")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.form },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "Ba\u0323n la\u0300 th\u01A1\u0323 gi\u0300?"),
-                            react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles.dropdown, placeholderStyle: styles.placeholderStyle, selectedTextStyle: styles.selectedTextStyle, inputSearchStyle: styles.inputSearchStyle, iconStyle: styles.iconStyle, data: data, search: true, maxHeight: 300, labelField: "label", valueField: "value", placeholder: "Select item", searchPlaceholder: "Search...", value: value, onChange: function (item) {
-                                    setValue(item.value);
+                            react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles.dropdown, placeholderStyle: styles.placeholderStyle, selectedTextStyle: styles.selectedTextStyle, inputSearchStyle: styles.inputSearchStyle, iconStyle: styles.iconStyle, data: data || [], search: true, maxHeight: 300, labelField: "label", valueField: "value", placeholder: "L\u01B0\u0323a cho\u0323n ngh\u00EA\u0300 nghi\u00EA\u0323p", searchPlaceholder: "Search...", value: selectedCategory, onChange: function (item) {
+                                    setValue(item.label);
+                                    setSelectedCategory(item);
+                                    setFieldValue('_id', item.value);
                                 }, renderItem: renderItem }),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "\u0110i\u0323a chi\u0309"),
                             react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
                                 react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('address'), onBlur: handleBlur('address'), value: values.address })),
                             react_1["default"].createElement(react_native_1.View, { style: styles.buttonOnpress },
                                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonConfirms }),
-                                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function () { return navigation.navigate('SignUp'); } },
+                                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function () {
+                                        navigation.navigate('SignUp', {
+                                            selectedRole: selectedRole,
+                                            _id: selectedCategory === null || selectedCategory === void 0 ? void 0 : selectedCategory.value,
+                                            address: values.address
+                                        });
+                                    } },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "TI\u00CA\u0301P TU\u0323C")))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                     react_1["default"].createElement(react_native_1.View, { style: styles.bgImg },
@@ -97,7 +110,8 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 10,
         marginTop: 5,
         borderWidth: 1,
-        width: '80%'
+        width: '80%',
+        paddingLeft: 15
     },
     spaceContainer: {
         alignItems: 'center'
@@ -157,6 +171,7 @@ var styles = react_native_1.StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 1.41,
+        paddingLeft: 15,
         elevation: 2
     },
     icon: {
