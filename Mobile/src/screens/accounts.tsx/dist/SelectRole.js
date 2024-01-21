@@ -13,11 +13,20 @@ var SelectRole = function () {
         handleRoleChange(role);
     };
     var handleContinuePress = function () {
+        var roleForSignUp = selectedRole;
         if (selectedRole === 'Thợ sửa chữa') {
-            navigation.navigate('ConfirmTypeRepairman');
+            roleForSignUp = 'RPM';
+            navigation.navigate('ConfirmTypeRepairman', {
+                selectedRole: roleForSignUp
+            });
         }
         else if (selectedRole === 'Tìm thợ') {
-            navigation.navigate('SignUp');
+            roleForSignUp = 'USR';
+            navigation.navigate('SignUp', {
+                selectedRole: roleForSignUp,
+                _id: null,
+                address: null
+            });
         }
         else {
             react_native_1.Alert.alert('Please select a role before continuing.');
@@ -40,10 +49,12 @@ var SelectRole = function () {
 var RadioButton = function (_a) {
     var label = _a.label, onPress = _a.onPress, isSelected = _a.isSelected;
     return (react_1["default"].createElement(react_native_1.View, { style: styles.radioButton },
-        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [styles.radioButtonCircle, isSelected && styles.radioButtonCircleSelected], onPress: onPress }),
+        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [
+                styles.radioButtonCircle,
+                isSelected && styles.radioButtonCircleSelected,
+            ], onPress: onPress }),
         react_1["default"].createElement(react_native_1.Text, { style: styles.radioButtonLabel }, label)));
 };
-// Styles cho thành phần SelectRole
 var styles = react_native_1.StyleSheet.create({
     container: {
         flex: 1,
