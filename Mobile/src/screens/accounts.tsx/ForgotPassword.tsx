@@ -11,14 +11,29 @@ import {
   Platform,
   ScrollView,
   Keyboard,
+  Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {Formik} from 'formik';
+import useVerificationEmail from '../../hooks/useVerificationEmail';
 const ForgotPassword = () => {
     const navigation:any= useNavigation();
+    const handleSubmitVerification =async(values:{email:any})=>{
+      console.log(values.email)
+      await useVerificationEmail(values.email)
+      .then((res:any)=>{
+        if(res.status != 201){
+          Alert.alert(res.message);
+        } 
+        else{
+          navigation.navigate("ConfirmCode",{code:res.code, refreshCode:res.refreshCode, resetPasswordToken:res.resetPasswordToken})
+          console.log(res.code);
+        }
+      })
+    }
   return (
-    <Formik initialValues={{email: ''}} onSubmit={values => console.log(values)}>
+    <Formik initialValues={{email: ''}} onSubmit={handleSubmitVerification}>
       {({handleChange, handleBlur, handleSubmit, values}) => (
         <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.confirmContainer}>
@@ -35,8 +50,9 @@ const ForgotPassword = () => {
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
+                  enterKeyHint={'done'}
                 />
-                <TouchableOpacity onPress={() => navigation.navigate('NewPassword')}
+                <TouchableOpacity onPress={handleSubmit}
                 style={styles.buttonConfirm}>
                 <Text style={styles.textConfirm}>XÁC THỰC</Text>
               </TouchableOpacity>
