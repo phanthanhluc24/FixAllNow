@@ -57,7 +57,7 @@ var ConfirmCode = function () {
     var _e = react_1.useState(['', '', '', '']), codeDigits = _e[0], setCodeDigits = _e[1];
     var navigation = native_1.useNavigation();
     var router = native_1.useRoute();
-    var _f = router.params, code = _f.code, refreshCode = _f.refreshCode;
+    var _f = router.params, code = _f.code, refreshCode = _f.refreshCode, resetPasswordToken = _f.resetPasswordToken;
     react_1.useEffect(function () {
         var interval;
         if (countdown > 0) {
@@ -97,7 +97,12 @@ var ConfirmCode = function () {
                         react_native_1.Alert.alert(res.message);
                     }
                     else {
-                        navigation.navigate('Home');
+                        if (resetPasswordToken) {
+                            navigation.navigate('NewPassword', { resetPasswordToken: resetPasswordToken });
+                        }
+                        else {
+                            navigation.navigate('Home');
+                        }
                     }
                     return [3 /*break*/, 4];
                 case 3:

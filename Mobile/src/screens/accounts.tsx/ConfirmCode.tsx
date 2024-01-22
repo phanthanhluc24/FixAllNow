@@ -29,7 +29,7 @@ const ConfirmCode = () => {
   const [codeDigits, setCodeDigits] = useState(['', '', '', '']);
   const navigation: any = useNavigation();
   const router = useRoute();
-  const {code, refreshCode}: any = router.params;
+  const {code, refreshCode, resetPasswordToken}: any = router.params;
   useEffect(() => {
     let interval: any;
     if (countdown > 0) {
@@ -59,7 +59,12 @@ const ConfirmCode = () => {
       if (res.status != 201) {
         Alert.alert(res.message);
       } else {
-        navigation.navigate('Home');
+        if(resetPasswordToken){
+          navigation.navigate('NewPassword',{resetPasswordToken})
+        }
+        else{
+          navigation.navigate('Home')
+        }
       }
     } catch (error) {
       console.error('Đã có lỗi xảy ra', error);

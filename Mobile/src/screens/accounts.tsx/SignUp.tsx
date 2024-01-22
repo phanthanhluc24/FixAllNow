@@ -44,7 +44,6 @@ const SignUp = () => {
     role: selectedRole,
     category_id: _id,
   };
-
   const handleSubmit = async () => {
     try {
       await useSignup(repairmanRegister)
