@@ -17,12 +17,19 @@ import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import sendVerificationCode from '../../hooks/useSendVerificationCode';
+import sendResendVerificationCode from '../../hooks/useSendResendVerificationCode';
+interface typeCode {
+  code: number;
+}
 const ConfirmCode = () => {
   const [countdown, setCountdown] = useState(180);
   const [countdownMessage, setCountdownMessage] = useState('');
+  const [newCode, setNewCode] = useState('');
+  const [isResending, setIsResending] = useState(false);
+  const [codeDigits, setCodeDigits] = useState(['', '', '', '']);
   const navigation: any = useNavigation();
   const router = useRoute();
-  const {code}: any = router.params;
+  const {code, refreshCode}: any = router.params;
   useEffect(() => {
     let interval: any;
     if (countdown > 0) {
@@ -41,17 +48,52 @@ const ConfirmCode = () => {
       }
     };
   }, [countdown]);
-  const handleSubmit = async (values: {code: string}) => {
-    console.log(code);
-    await sendVerificationCode({codeToken: code, code: values.code}).then(
-      res => {
-        if (res.status != 201) {
-          Alert.alert(res.message);
-        } else {
-          navigation.navigate('Home');
-        }
-      },
-    );
+  const handleSubmit = async () => {
+    const enteredCode = codeDigits.join('');
+    let codeToVerify = newCode || code;
+    try {
+      const res = await sendVerificationCode({
+        codeToken: codeToVerify,
+        code: enteredCode,
+      });
+      if (res.status != 201) {
+        Alert.alert(res.message);
+      } else {
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.error('Đã có lỗi xảy ra', error);
+      Alert.alert('Đã có lỗi xảy ra trong quá trình xác thực');
+    }
+  };
+  const handleResendCode = async () => {
+    if (isResending) {
+      return;
+    }
+    setIsResending(true);
+    try {
+      const res = await sendResendVerificationCode({refreshCode: refreshCode});
+      if (res.status != 201) {
+        Alert.alert(res.message);
+      } else {
+        setNewCode(res.code);
+        Alert.alert('Vui lòng kiểm tra email để lấy mã!');
+      }
+    } catch (error) {
+      console.error('Đã có lỗi xảy ra', error);
+      Alert.alert('Đã có lỗi xảy ra trong quá trình gửi lại mã');
+    } finally {
+      setIsResending(false);
+    }
+  };
+  const handleChangeDigit = (index: number, digit: string) => {
+    if (!isNaN(Number(digit))) {
+      setCodeDigits(prevDigits => {
+        const newDigits = [...prevDigits];
+        newDigits[index] = digit;
+        return newDigits;
+      });
+    }
   };
   return (
     <Formik initialValues={{code: ''}} onSubmit={handleSubmit}>
@@ -66,23 +108,37 @@ const ConfirmCode = () => {
                   <Text style={styles.title}>NHẬP MÃ XÁC THỰC</Text>
                 </View>
                 <View style={styles.spaceContainer}>
-                  <TextInput
-                    style={styles.inputCode}
-                    onChangeText={handleChange('code')}
-                    onBlur={handleBlur('code')}
-                    value={values.code}
-                  />
+                  <View style={styles.code}>
+                  {codeDigits.map((digit, index) => (
+                    <TextInput
+                      key={index}
+                      style={styles.inputCode}
+                      onChangeText={text => handleChangeDigit(index, text)}
+                      value={digit}
+                      keyboardType="numeric"
+                      maxLength={1}
+                    />
+                    
+                  ))}
+                  </View>
+                </View>
+                <View style={styles.timeout}>
                   <Text style={styles.timeInput}>
                     {countdownMessage ||
-                      `Mã sẽ hết hạn trong vòng ${Math.floor(countdown / 60)}:${countdown % 60 < 10 ? '0' : ''}${countdown % 60}  phút`}
+                      `Mã sẽ hết hạn trong vòng ${Math.floor(countdown / 60)}:${
+                        countdown % 60 < 10 ? '0' : ''
+                      }${countdown % 60}  phút`}
                   </Text>
-                  <Text style={styles.sentBack}>Gửi lại mã</Text>
                   <TouchableOpacity
-                    style={styles.buttonConfirm}
-                    onPress={handleSubmit}>
-                    <Text style={styles.textConfirm}>XÁC THỰC</Text>
+                    onPress={() => handleResendCode(refreshCode)}>
+                    <Text style={styles.sentBack}>Gửi lại mã</Text>
                   </TouchableOpacity>
                 </View>
+                <TouchableOpacity
+                  style={styles.buttonConfirm}
+                  onPress={handleSubmit}>
+                  <Text style={styles.textConfirm}>XÁC THỰC</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={styles.footer}>
@@ -138,11 +194,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderWidth: 1,
-    width: '80%',
+    width:40,
+    marginHorizontal:15,
+    padding:15
   },
   spaceContainer: {
     alignItems: 'center',
     marginTop: 80,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent:"center"
+  },
+  code:{
+    alignItems:"center",
+    flexDirection:"row",
+    
+  },
+  timeout:{
+    alignItems:"center",
+    justifyContent:"center"
   },
   timeInput: {
     fontSize: 15,

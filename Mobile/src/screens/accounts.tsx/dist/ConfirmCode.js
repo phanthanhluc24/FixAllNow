@@ -35,18 +35,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var formik_1 = require("formik");
 var native_1 = require("@react-navigation/native");
 var useSendVerificationCode_1 = require("../../hooks/useSendVerificationCode");
+var useSendResendVerificationCode_1 = require("../../hooks/useSendResendVerificationCode");
 var ConfirmCode = function () {
     var _a = react_1.useState(180), countdown = _a[0], setCountdown = _a[1];
     var _b = react_1.useState(''), countdownMessage = _b[0], setCountdownMessage = _b[1];
+    var _c = react_1.useState(''), newCode = _c[0], setNewCode = _c[1];
+    var _d = react_1.useState(false), isResending = _d[0], setIsResending = _d[1];
+    var _e = react_1.useState(['', '', '', '']), codeDigits = _e[0], setCodeDigits = _e[1];
     var navigation = native_1.useNavigation();
     var router = native_1.useRoute();
-    var code = router.params.code;
+    var _f = router.params, code = _f.code, refreshCode = _f.refreshCode;
     react_1.useEffect(function () {
         var interval;
         if (countdown > 0) {
@@ -66,25 +77,82 @@ var ConfirmCode = function () {
             }
         };
     }, [countdown]);
-    var handleSubmit = function (values) { return __awaiter(void 0, void 0, void 0, function () {
+    var handleSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var enteredCode, codeToVerify, res, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(code);
-                    return [4 /*yield*/, useSendVerificationCode_1["default"]({ codeToken: code, code: values.code }).then(function (res) {
-                            if (res.status != 201) {
-                                react_native_1.Alert.alert(res.message);
-                            }
-                            else {
-                                navigation.navigate('Home');
-                            }
-                        })];
+                    enteredCode = codeDigits.join('');
+                    codeToVerify = newCode || code;
+                    _a.label = 1;
                 case 1:
-                    _a.sent();
-                    return [2 /*return*/];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, useSendVerificationCode_1["default"]({
+                            codeToken: codeToVerify,
+                            code: enteredCode
+                        })];
+                case 2:
+                    res = _a.sent();
+                    if (res.status != 201) {
+                        react_native_1.Alert.alert(res.message);
+                    }
+                    else {
+                        navigation.navigate('Home');
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error('Đã có lỗi xảy ra', error_1);
+                    react_native_1.Alert.alert('Đã có lỗi xảy ra trong quá trình xác thực');
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); };
+    var handleResendCode = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (isResending) {
+                        return [2 /*return*/];
+                    }
+                    setIsResending(true);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, 4, 5]);
+                    return [4 /*yield*/, useSendResendVerificationCode_1["default"]({ refreshCode: refreshCode })];
+                case 2:
+                    res = _a.sent();
+                    if (res.status != 201) {
+                        react_native_1.Alert.alert(res.message);
+                    }
+                    else {
+                        setNewCode(res.code);
+                        react_native_1.Alert.alert('Vui lòng kiểm tra email để lấy mã!');
+                    }
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_2 = _a.sent();
+                    console.error('Đã có lỗi xảy ra', error_2);
+                    react_native_1.Alert.alert('Đã có lỗi xảy ra trong quá trình gửi lại mã');
+                    return [3 /*break*/, 5];
+                case 4:
+                    setIsResending(false);
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleChangeDigit = function (index, digit) {
+        if (!isNaN(Number(digit))) {
+            setCodeDigits(function (prevDigits) {
+                var newDigits = __spreadArrays(prevDigits);
+                newDigits[index] = digit;
+                return newDigits;
+            });
+        }
+    };
     return (react_1["default"].createElement(formik_1.Formik, { initialValues: { code: '' }, onSubmit: handleSubmit }, function (_a) {
         var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmContainer },
@@ -94,12 +162,14 @@ var ConfirmCode = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "NH\u00C2\u0323P MA\u0303 XA\u0301C TH\u01AF\u0323C")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('code'), onBlur: handleBlur('code'), value: values.code }),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.code }, codeDigits.map(function (digit, index) { return (react_1["default"].createElement(react_native_1.TextInput, { key: index, style: styles.inputCode, onChangeText: function (text) { return handleChangeDigit(index, text); }, value: digit, keyboardType: "numeric", maxLength: 1 })); }))),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.timeout },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.timeInput }, countdownMessage ||
                                 "M\u00E3 s\u1EBD h\u1EBFt h\u1EA1n trong v\u00F2ng " + Math.floor(countdown / 60) + ":" + (countdown % 60 < 10 ? '0' : '') + countdown % 60 + "  ph\u00FAt"),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.sentBack }, "G\u01B0\u0309i la\u0323i ma\u0303"),
-                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: handleSubmit },
-                                react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C"))))),
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return handleResendCode(refreshCode); } },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.sentBack }, "G\u01B0\u0309i la\u0323i ma\u0303"))),
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: handleSubmit },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C")))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                     react_1["default"].createElement(react_native_1.ImageBackground, { source: require('../../assets/Confirm/imgFooter.png'), resizeMode: "cover", style: styles.bgImg },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/Confirm/imgDemo.png') }))))));
@@ -141,11 +211,24 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 10,
         marginTop: 5,
         borderWidth: 1,
-        width: '80%'
+        width: 40,
+        marginHorizontal: 15,
+        padding: 15
     },
     spaceContainer: {
         alignItems: 'center',
-        marginTop: 80
+        marginTop: 80,
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: "center"
+    },
+    code: {
+        alignItems: "center",
+        flexDirection: "row"
+    },
+    timeout: {
+        alignItems: "center",
+        justifyContent: "center"
     },
     timeInput: {
         fontSize: 15,
