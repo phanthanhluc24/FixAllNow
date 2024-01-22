@@ -44,11 +44,7 @@ const SignUp = () => {
     role: selectedRole,
     category_id: _id,
   };
-  interface ApiResponse {
-    status: number,
-    message: string,
-    codeToken: string
-  }
+
   const handleSubmit = async () => {
     try {
       await useSignup(repairmanRegister)
@@ -56,7 +52,7 @@ const SignUp = () => {
         if(res.status!=200){
           Alert.alert(res.message)
         }else{
-          navigation.navigate('ConfirmCode', {code:res.code});
+          navigation.navigate('ConfirmCode', {code:res.code, refreshCode:res.refreshCode});
         }
       })
     } catch (error) {

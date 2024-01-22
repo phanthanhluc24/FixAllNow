@@ -88,7 +88,7 @@ var SignUp = function () {
                                 react_native_1.Alert.alert(res.message);
                             }
                             else {
-                                navigation.navigate('ConfirmCode', { code: res.code });
+                                navigation.navigate('ConfirmCode', { code: res.code, refreshCode: res.refreshCode });
                             }
                         })];
                 case 1:

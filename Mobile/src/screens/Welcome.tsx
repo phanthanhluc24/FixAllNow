@@ -2,11 +2,11 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 const Welcome = () => {
-  const navigation = useNavigation();
+  const navigation:any = useNavigation();
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigation.navigate('Landing');
-    }, 3000);
+    }, 1500);
     return () => clearTimeout(timeout);
   }, [navigation]);
   return (
