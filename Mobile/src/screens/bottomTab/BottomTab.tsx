@@ -21,7 +21,7 @@ const BottomTab = () => {
           } else if (rn === 'Shop') {
             imageSource = require(`${URL_IMAGE}/iconshop.png`);
           } else if (rn === 'Scan') {
-            imageSource = require(`${URL_IMAGE}/iconscan.png`);
+            imageSource = require(`${URL_IMAGE}/scan.png`);
           } else if (rn === 'Notification') {
             imageSource = require(`${URL_IMAGE}/iconnotification.png`);
           } else if (rn === 'Profile') {
@@ -31,11 +31,13 @@ const BottomTab = () => {
             <View style={focused ? styles.focusedStyle : null}>
               <Image
                 source={imageSource}
-                style={{
-                  width: 35,
-                  height: 35,
-                  tintColor: focused ? '#FCA234' : '#394C6D',
-                }}
+                style={[
+                  {
+                    width: 35,
+                    height: 35,
+                    tintColor: focused ? '#FCA234' : '#394C6D',
+                  },
+                ]}
               />
             </View>
           );
