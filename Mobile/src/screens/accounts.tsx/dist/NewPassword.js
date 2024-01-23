@@ -41,7 +41,9 @@ var native_1 = require("@react-navigation/native");
 var react_1 = require("react");
 var formik_1 = require("formik");
 var useResetNewPassword_1 = require("../../hooks/useResetNewPassword");
+var ValidationNewPassword_1 = require("./ValidationNewPassword");
 var NewPassword = function () {
+    var passwordRef = react_1.useRef();
     var navigation = native_1.useNavigation();
     var route = native_1.useRoute();
     var resetPasswordToken = route.params.resetPasswordToken;
@@ -56,13 +58,14 @@ var NewPassword = function () {
                         newPassword: values.newpassword,
                         confirmPassword: values.confirmpassword
                     };
+                    console.log(newPassword);
                     return [4 /*yield*/, useResetNewPassword_1["default"](newPassword)
                             .then(function (res) {
                             if (res.status !== 201) {
                                 react_native_1.Alert.alert(res.message);
                             }
                             else {
-                                navigation.navigate("SignIn");
+                                navigation.navigate('SignIn');
                             }
                         })["catch"](function (error) {
                             console.log(error);
@@ -73,8 +76,8 @@ var NewPassword = function () {
             }
         });
     }); };
-    return (react_1["default"].createElement(formik_1.Formik, { initialValues: { newpassword: '', confirmpassword: '' }, onSubmit: handleResetSubmit }, function (_a) {
-        var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
+    return (react_1["default"].createElement(formik_1.Formik, { initialValues: { newpassword: '', confirmpassword: '' }, validationSchema: ValidationNewPassword_1.NewPasswordSchema, onSubmit: handleResetSubmit }, function (_a) {
+        var errors = _a.errors, touched = _a.touched, handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmContainer },
             react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
                 react_1["default"].createElement(react_native_1.View, { style: styles.body },
@@ -84,11 +87,17 @@ var NewPassword = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceForm },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "M\u00E2\u0323t kh\u00E2\u0309u m\u01A1\u0301i"),
                             react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('newpassword'), onBlur: handleBlur('newpassword'), value: values.newpassword })),
+                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('newpassword'), enterKeyHint: 'next', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onBlur: handleBlur('newpassword'), value: values.newpassword }),
+                                errors.newpassword && touched.newpassword ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
+                                    "* ",
+                                    errors.newpassword)) : null),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Xa\u0301c th\u01B0\u0323c m\u00E2\u0323t kh\u00E2\u0309u m\u01A1\u0301i"),
                             react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('confirmpassword'), onBlur: handleBlur('confirmpassword'), value: values.confirmpassword })),
-                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: handleSubmit },
+                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, secureTextEntry: true, onChangeText: handleChange('confirmpassword'), onBlur: handleBlur('confirmpassword'), value: values.confirmpassword }),
+                                errors.confirmpassword && touched.confirmpassword ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
+                                    "* ",
+                                    errors.confirmpassword)) : null),
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function (e) { return handleSubmit(); } },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C"))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                     react_1["default"].createElement(react_native_1.ImageBackground, { source: require('../../assets/ForgotPassword/background.png'), resizeMode: "cover", style: styles.bgImg },
@@ -97,6 +106,12 @@ var NewPassword = function () {
 };
 exports["default"] = NewPassword;
 var styles = react_native_1.StyleSheet.create({
+    errorText: {
+        fontWeight: 'bold',
+        color: 'red',
+        margin: 0,
+        padding: 0
+    },
     confirmContainer: {
         flex: 1,
         backgroundColor: '#FCA234'
@@ -140,7 +155,8 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 10,
         marginTop: 5,
         borderWidth: 1,
-        width: '80%'
+        width: '80%',
+        paddingLeft: 15
     },
     spaceContainer: {
         alignItems: 'center'

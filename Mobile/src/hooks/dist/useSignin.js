@@ -37,30 +37,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var axios_1 = require("axios");
+var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
 var react_native_1 = require("react-native");
 var useSignin = function (_a) {
     var navigation = _a.navigation;
     var handleSignin = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-        var res, error_1, errorMessage;
+        var res, accessToken, Token, error_1, errorMessage;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
+                    _a.trys.push([0, 5, , 6]);
                     console.log(data);
                     return [4 /*yield*/, axios_1["default"].post(url_1.url + "/auth/login", data)];
                 case 1:
                     res = _a.sent();
-                    if (res.status === 201) {
-                        console.log(res.status);
-                        react_native_1.ToastAndroid.showWithGravity(res.data.message, react_native_1.ToastAndroid.LONG, react_native_1.ToastAndroid.CENTER);
-                        navigation.navigate('Home');
-                    }
-                    else {
-                        react_native_1.Alert.alert(res.data.message);
-                    }
-                    return [3 /*break*/, 3];
+                    if (!(res.status === 201)) return [3 /*break*/, 3];
+                    accessToken = res.data.accessToken;
+                    Token = JSON.stringify(accessToken);
+                    return [4 /*yield*/, async_storage_1["default"].setItem('accessToken', Token)];
                 case 2:
+                    _a.sent();
+                    react_native_1.ToastAndroid.showWithGravity(res.data.message, react_native_1.ToastAndroid.LONG, react_native_1.ToastAndroid.CENTER);
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Root' }]
+                    });
+                    return [3 /*break*/, 4];
+                case 3:
+                    react_native_1.Alert.alert(res.data.message);
+                    _a.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
                     error_1 = _a.sent();
                     if (error_1.response) {
                         errorMessage = error_1.response.data.message;
@@ -72,8 +80,8 @@ var useSignin = function (_a) {
                     else {
                         react_native_1.ToastAndroid.showWithGravity('Lỗi khi thiết lập yêu cầu', react_native_1.ToastAndroid.LONG, react_native_1.ToastAndroid.CENTER);
                     }
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
             }
         });
     }); };

@@ -40,21 +40,26 @@ var react_native_1 = require("react-native");
 var native_1 = require("@react-navigation/native");
 var react_1 = require("react");
 var formik_1 = require("formik");
+var ValidationForgetPassword_1 = require("./ValidationForgetPassword");
 var useVerificationEmail_1 = require("../../hooks/useVerificationEmail");
 var ForgotPassword = function () {
+    var passwordRef = react_1.useRef();
     var navigation = native_1.useNavigation();
     var handleSubmitVerification = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log(values.email);
-                    return [4 /*yield*/, useVerificationEmail_1["default"](values.email)
-                            .then(function (res) {
+                    return [4 /*yield*/, useVerificationEmail_1["default"](values.email).then(function (res) {
                             if (res.status != 201) {
                                 react_native_1.Alert.alert(res.message);
                             }
                             else {
-                                navigation.navigate("ConfirmCode", { code: res.code, refreshCode: res.refreshCode, resetPasswordToken: res.resetPasswordToken });
+                                navigation.navigate('ConfirmCode', {
+                                    code: res.code,
+                                    refreshCode: res.refreshCode,
+                                    resetPasswordToken: res.resetPasswordToken
+                                });
                                 console.log(res.code);
                             }
                         })];
@@ -64,8 +69,8 @@ var ForgotPassword = function () {
             }
         });
     }); };
-    return (react_1["default"].createElement(formik_1.Formik, { initialValues: { email: '' }, onSubmit: handleSubmitVerification }, function (_a) {
-        var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
+    return (react_1["default"].createElement(formik_1.Formik, { initialValues: { email: '' }, onSubmit: handleSubmitVerification, validationSchema: ValidationForgetPassword_1.ForgotPasswordSchema }, function (_a) {
+        var errors = _a.errors, touched = _a.touched, handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmContainer },
             react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
                 react_1["default"].createElement(react_native_1.View, { style: styles.body },
@@ -75,7 +80,10 @@ var ForgotPassword = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Vui lo\u0300ng nh\u00E2\u0323p Email!"),
                             react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email, enterKeyHint: 'done' }),
-                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleSubmit, style: styles.buttonConfirm },
+                            errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
+                                "* ",
+                                errors.email)) : null,
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function (e) { return handleSubmit(); }, style: styles.buttonConfirm },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C"))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                     react_1["default"].createElement(react_native_1.ImageBackground, { source: require('../../assets/ForgotPassword/background.png'), resizeMode: "cover", style: styles.bgImg },
@@ -85,13 +93,19 @@ var ForgotPassword = function () {
 };
 exports["default"] = ForgotPassword;
 var styles = react_native_1.StyleSheet.create({
+    errorText: {
+        fontWeight: 'bold',
+        color: 'red',
+        margin: 0,
+        padding: 0
+    },
     confirmContainer: {
         flex: 1,
         backgroundColor: '#FCA234'
     },
     body: {
         flex: 1,
-        position: "absolute",
+        position: 'absolute',
         zIndex: 100,
         justifyContent: 'center',
         width: '100%'
@@ -103,12 +117,13 @@ var styles = react_native_1.StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: 'center'
-    }, bgImgs: {
+    },
+    bgImgs: {
         width: '70%',
         height: '70%',
         alignItems: 'center',
-        marginTop: "90%",
-        marginRight: "35%"
+        marginTop: '90%',
+        marginRight: '35%'
     },
     titleContainer: {
         alignItems: 'center',
@@ -121,7 +136,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     titles: {
         fontSize: 15,
-        color: "white"
+        color: 'white'
     },
     titleCode: {
         color: 'white',
@@ -133,10 +148,11 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 10,
         marginTop: 5,
         borderWidth: 1,
-        width: "80%"
+        width: '80%',
+        paddingLeft: 15
     },
     spaceContainer: {
-        alignItems: "center",
+        alignItems: 'center',
         marginTop: 40
     },
     timeInput: {
@@ -145,8 +161,8 @@ var styles = react_native_1.StyleSheet.create({
     },
     sentBack: {
         fontSize: 15,
-        fontWeight: "bold",
-        color: "#0000ff"
+        fontWeight: 'bold',
+        color: '#0000ff'
     },
     container: {
         marginTop: 60
@@ -157,8 +173,8 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 10,
         height: 60,
         marginHorizontal: 40,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         marginTop: 40
     },
     textConfirm: {
@@ -167,7 +183,7 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     demo: {
-        marginTop: "60%",
-        marginRight: "-60%"
+        marginTop: '60%',
+        marginRight: '-60%'
     }
 });

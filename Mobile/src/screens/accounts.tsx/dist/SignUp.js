@@ -54,7 +54,7 @@ var useSignup_1 = require("../../hooks/useSignup");
 var SignUp = function () {
     var route = native_1.useRoute();
     var _a = route.params || {}, selectedRole = _a.selectedRole, _id = _a._id, address = _a.address;
-    console.log(selectedRole, _id, address);
+    // console.log(selectedRole, _id, address);
     var navigation = native_1.useNavigation();
     var _b = react_1.useState(''), error = _b[0], setError = _b[1];
     var _c = react_1.useState({

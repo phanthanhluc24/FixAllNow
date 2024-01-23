@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DrawerNavigator from './DrawerNavigator';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import Landing from '../../screens/Landing';
 import Welcome from '../../screens/Welcome';
 import SignIn from '../../screens/accounts.tsx/SignIn';
@@ -18,8 +19,6 @@ const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
@@ -33,10 +32,10 @@ const Main = () => {
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false}}/>
           <Stack.Screen name="NewPassword" component={NewPassword} options={{headerShown:false}}/>
           <Stack.Screen name="Home" component={Home} options={{headerShown:true}}/>
-          {/* <Stack.Screen name="BottomTab" component={BottomTab}options={{headerShown: false}}/> */}
+          {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>
-    </NavigationContainer>
+   
   )
 }
 

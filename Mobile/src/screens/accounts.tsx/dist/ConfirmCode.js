@@ -72,9 +72,9 @@ var ConfirmCode = function () {
         }
         return function () {
             clearInterval(interval);
-            if (countdown === 0) {
-                react_native_1.Alert.alert('Mã xác thực hết hiệu lực');
-            }
+            // if (countdown === 0) {
+            //   Alert.alert('Mã xác thực hết hiệu lực');
+            // }
         };
     }, [countdown]);
     var handleSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -134,6 +134,7 @@ var ConfirmCode = function () {
                     }
                     else {
                         setNewCode(res.code);
+                        setCountdown(180);
                         react_native_1.Alert.alert('Vui lòng kiểm tra email để lấy mã!');
                     }
                     return [3 /*break*/, 5];
@@ -167,13 +168,13 @@ var ConfirmCode = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "NH\u00C2\u0323P MA\u0303 XA\u0301C TH\u01AF\u0323C")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                            react_1["default"].createElement(react_native_1.View, { style: styles.code }, codeDigits.map(function (digit, index) { return (react_1["default"].createElement(react_native_1.TextInput, { key: index, style: styles.inputCode, onChangeText: function (text) { return handleChangeDigit(index, text); }, value: digit, keyboardType: "numeric", maxLength: 1 })); }))),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.code }, codeDigits.map(function (digit, index) { return (react_1["default"].createElement(react_native_1.TextInput, { key: index, style: styles.inputCode, enterKeyHint: 'next', onChangeText: function (text) { return handleChangeDigit(index, text); }, value: digit, keyboardType: "numeric", maxLength: 1 })); }))),
                         react_1["default"].createElement(react_native_1.View, { style: styles.timeout },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.timeInput }, countdownMessage ||
                                 "M\u00E3 s\u1EBD h\u1EBFt h\u1EA1n trong v\u00F2ng " + Math.floor(countdown / 60) + ":" + (countdown % 60 < 10 ? '0' : '') + countdown % 60 + "  ph\u00FAt"),
                             react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return handleResendCode(refreshCode); } },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.sentBack }, "G\u01B0\u0309i la\u0323i ma\u0303"))),
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: handleSubmit },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function (e) { return handleSubmit(); } },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C")))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                     react_1["default"].createElement(react_native_1.ImageBackground, { source: require('../../assets/Confirm/imgFooter.png'), resizeMode: "cover", style: styles.bgImg },

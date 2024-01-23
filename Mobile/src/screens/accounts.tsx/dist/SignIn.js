@@ -47,7 +47,7 @@ var SignIn = function (_a) {
                                 react_1["default"].createElement(react_native_1.View, { style: styles.confirmcreate },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.titlefgs }, "Ch\u01B0a co\u0301 ta\u0300i khoa\u0309n!"),
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.createacc, onPress: function () { return navigation.navigate('SelectRole'); } }, "\u0110\u0103ng ky\u0301"))),
-                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonLogin, onPress: handleSubmit },
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonLogin, onPress: function (e) { return handleSubmit(); } },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textLgoin }, "\u0110\u0103ng nh\u00E2\u0323p")))),
                     react_1["default"].createElement(react_native_1.View, { style: styles.signinFooter },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/SignIn/footer.png'), style: styles.Imgfooter }))))));

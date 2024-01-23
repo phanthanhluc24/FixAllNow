@@ -10,20 +10,26 @@ interface Account {
 interface ApiResponse {
   status: number;
   message: string;
+  accessToken:string;
 }
 const useSignin = ({navigation}: any) => {
   const handleSignin = async (data: Account) => {
     try {
       console.log(data);
       const res = await axios.post<ApiResponse>(`${url}/auth/login`, data);
-      if (res.status === 201) {
-        console.log(res.status);
+      if (res.status === 201){
+        const accessToken= res.data.accessToken;
+        const Token = JSON.stringify(accessToken);
+        await AsyncStorage.setItem('accessToken',Token);
         ToastAndroid.showWithGravity(res.data.message, ToastAndroid.LONG, ToastAndroid.CENTER);
-        navigation.navigate('Home');
-      } else {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Root' }],
+        });
+      } else{
         Alert.alert(res.data.message);
       }
-    } catch (error:any) {
+    } catch (error:any){
       if (error.response) {
         const errorMessage = error.response.data.message;
         ToastAndroid.showWithGravity(errorMessage, ToastAndroid.LONG, ToastAndroid.CENTER);

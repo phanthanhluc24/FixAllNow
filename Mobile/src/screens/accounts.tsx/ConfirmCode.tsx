@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  GestureResponderEvent,
   Keyboard,
   Alert,
 } from 'react-native';
@@ -18,9 +19,6 @@ import {Formik} from 'formik';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import sendVerificationCode from '../../hooks/useSendVerificationCode';
 import sendResendVerificationCode from '../../hooks/useSendResendVerificationCode';
-interface typeCode {
-  code: number;
-}
 const ConfirmCode = () => {
   const [countdown, setCountdown] = useState(180);
   const [countdownMessage, setCountdownMessage] = useState('');
@@ -43,9 +41,9 @@ const ConfirmCode = () => {
     }
     return () => {
       clearInterval(interval);
-      if (countdown === 0) {
-        Alert.alert('Mã xác thực hết hiệu lực');
-      }
+      // if (countdown === 0) {
+      //   Alert.alert('Mã xác thực hết hiệu lực');
+      // }
     };
   }, [countdown]);
   const handleSubmit = async () => {
@@ -82,6 +80,7 @@ const ConfirmCode = () => {
         Alert.alert(res.message);
       } else {
         setNewCode(res.code);
+        setCountdown(180);
         Alert.alert('Vui lòng kiểm tra email để lấy mã!');
       }
     } catch (error) {
@@ -118,12 +117,12 @@ const ConfirmCode = () => {
                     <TextInput
                       key={index}
                       style={styles.inputCode}
+                      enterKeyHint={'next'}
                       onChangeText={text => handleChangeDigit(index, text)}
                       value={digit}
                       keyboardType="numeric"
                       maxLength={1}
                     />
-                    
                   ))}
                   </View>
                 </View>
@@ -141,7 +140,7 @@ const ConfirmCode = () => {
                 </View>
                 <TouchableOpacity
                   style={styles.buttonConfirm}
-                  onPress={handleSubmit}>
+                  onPress={(e:GestureResponderEvent)=>handleSubmit()}>
                   <Text style={styles.textConfirm}>XÁC THỰC</Text>
                 </TouchableOpacity>
               </View>

@@ -22,12 +22,13 @@ interface ItemType {
   label: string;
   value: any;
 }
-interface RouteParams{
-  selectedRole?: string
+interface RouteParams {
+  selectedRole?: string;
 }
 const ConfirmTypeRepairman = () => {
   const route = useRoute();
-  const selectedRole = route.params?.selectedRole || 'Default Role';
+  const selectedRole =
+    (route.params as RouteParams)?.selectedRole || 'Default Role';
   const navigation: any = useNavigation();
   const [value, setValue] = useState<ItemType | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<ItemType | null>(
@@ -83,7 +84,12 @@ const ConfirmTypeRepairman = () => {
                     searchPlaceholder="Search..."
                     value={selectedCategory}
                     onChange={item => {
-                      setValue(item.label);
+                      setValue(prevValue => ({
+                        ...prevValue,
+                        label: item.label,
+                        value: item.value,
+                      }));
+
                       setSelectedCategory(item);
                       setFieldValue('_id', item.value);
                     }}
@@ -183,7 +189,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     width: '80%',
-    paddingLeft:15
+    paddingLeft: 15,
   },
   spaceContainer: {
     alignItems: 'center',
@@ -244,7 +250,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-    paddingLeft:15,
+    paddingLeft: 15,
     elevation: 2,
   },
   icon: {

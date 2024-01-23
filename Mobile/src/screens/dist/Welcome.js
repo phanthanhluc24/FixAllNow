@@ -8,7 +8,7 @@ var Welcome = function () {
     react_1.useEffect(function () {
         var timeout = setTimeout(function () {
             navigation.navigate('Landing');
-        }, 1500);
+        }, 500);
         return function () { return clearTimeout(timeout); };
     }, [navigation]);
     return (react_1["default"].createElement(react_native_1.View, { style: styles.welcomeContainer },

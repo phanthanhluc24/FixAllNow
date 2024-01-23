@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
@@ -40,7 +51,7 @@ var ConfirmTypeRepairman = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.form },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "Ba\u0323n la\u0300 th\u01A1\u0323 gi\u0300?"),
                             react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles.dropdown, placeholderStyle: styles.placeholderStyle, selectedTextStyle: styles.selectedTextStyle, inputSearchStyle: styles.inputSearchStyle, iconStyle: styles.iconStyle, data: data || [], search: true, maxHeight: 300, labelField: "label", valueField: "value", placeholder: "L\u01B0\u0323a cho\u0323n ngh\u00EA\u0300 nghi\u00EA\u0323p", searchPlaceholder: "Search...", value: selectedCategory, onChange: function (item) {
-                                    setValue(item.label);
+                                    setValue(function (prevValue) { return (__assign(__assign({}, prevValue), { label: item.label, value: item.value })); });
                                     setSelectedCategory(item);
                                     setFieldValue('_id', item.value);
                                 }, renderItem: renderItem }),

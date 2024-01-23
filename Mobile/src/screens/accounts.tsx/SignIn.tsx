@@ -99,7 +99,7 @@ const SignIn = ({navigation}: any) => {
 
                   <TouchableOpacity
                     style={styles.buttonLogin}
-                    onPress={handleSubmit}>
+                    onPress={(e: GestureResponderEvent) => handleSubmit()}>
                     <Text style={styles.textLgoin}>Đăng nhập</Text>
                   </TouchableOpacity>
                 </View>

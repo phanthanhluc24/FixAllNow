@@ -10,18 +10,21 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  GestureResponderEvent,
   Keyboard,
   Alert,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React from 'react';
+import React, {useRef} from 'react';
 import {Formik} from 'formik';
 import useResetNewPassword from '../../hooks/useResetNewPassword';
+import {NewPasswordSchema} from './ValidationNewPassword';
 const NewPassword = () => {
-  const navigation:any= useNavigation();
+  const passwordRef: any = useRef();
+  const navigation: any = useNavigation();
   const route = useRoute();
   const {resetPasswordToken}: any = route.params;
-  console.log(resetPasswordToken)
+  console.log(resetPasswordToken);
   const handleResetSubmit = async (values: {
     newpassword: string;
     confirmpassword: string;
@@ -31,26 +34,25 @@ const NewPassword = () => {
       newPassword: values.newpassword,
       confirmPassword: values.confirmpassword,
     };
-    
-    
+    console.log(newPassword);
     await useResetNewPassword(newPassword)
-    .then((res:any)=>{
-      if (res.status !== 201) {
-        Alert.alert(res.message);
-      } else {
-        navigation.navigate("SignIn")
-      }
-    })
-    .catch((error)=>{
-      console.log(error);
-      
-    })
+      .then((res: any) => {
+        if (res.status !== 201) {
+          Alert.alert(res.message);
+        } else {
+          navigation.navigate('SignIn');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   return (
     <Formik
       initialValues={{newpassword: '', confirmpassword: ''}}
+      validationSchema={NewPasswordSchema}
       onSubmit={handleResetSubmit}>
-      {({handleChange, handleBlur, handleSubmit, values}) => (
+      {({errors, touched, handleChange, handleBlur, handleSubmit, values}) => (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.confirmContainer}>
@@ -66,22 +68,36 @@ const NewPassword = () => {
                     <TextInput
                       style={styles.inputCode}
                       onChangeText={handleChange('newpassword')}
+                      enterKeyHint={'next'}
+                      secureTextEntry={true}
+                      onSubmitEditing={() => passwordRef.current?.focus()}
                       onBlur={handleBlur('newpassword')}
                       value={values.newpassword}
                     />
+                    {errors.newpassword && touched.newpassword ? (
+                      <Text style={styles.errorText}>
+                        * {errors.newpassword}
+                      </Text>
+                    ) : null}
                   </View>
                   <Text style={styles.titles}>Xác thực mật khẩu mới</Text>
                   <View style={styles.spaceContainer}>
                     <TextInput
                       style={styles.inputCode}
+                      secureTextEntry={true}
                       onChangeText={handleChange('confirmpassword')}
                       onBlur={handleBlur('confirmpassword')}
                       value={values.confirmpassword}
                     />
+                    {errors.confirmpassword && touched.confirmpassword ? (
+                      <Text style={styles.errorText}>
+                        * {errors.confirmpassword}
+                      </Text>
+                    ) : null}
                   </View>
                   <TouchableOpacity
                     style={styles.buttonConfirm}
-                    onPress={handleSubmit}>
+                    onPress={(e:GestureResponderEvent)=>handleSubmit()}>
                     <Text style={styles.textConfirm}>XÁC THỰC</Text>
                   </TouchableOpacity>
                 </View>
@@ -108,6 +124,12 @@ const NewPassword = () => {
 export default NewPassword;
 
 const styles = StyleSheet.create({
+  errorText: {
+    fontWeight: 'bold',
+    color: 'red',
+    margin: 0,
+    padding: 0,
+  },
   confirmContainer: {
     flex: 1,
     backgroundColor: '#FCA234',
@@ -152,6 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     width: '80%',
+    paddingLeft:15,
   },
   spaceContainer: {
     alignItems: 'center',
