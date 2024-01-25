@@ -15,16 +15,21 @@ import ConfirmTypeRepairman from '../../screens/accounts.tsx/ConfirmTypeRepairma
 import ForgotPassword from '../../screens/accounts.tsx/ForgotPassword';
 import NewPassword from '../../screens/accounts.tsx/NewPassword';
 import Home from '../../screens/feed/Repairman_Finder/Home';
+// import HeaderSearch from '../../screens/HeaderSearch';
+// import HomeCategories from '../../screens/HomeCategories';
+// import HomeRepairmanPopular from '../../screens/HomeRepairmanPopular';
+// import HomeServicePopular from '../../assets/HomeServicePopular';
+import ListOfElectrician from '../../screens/ListOfElectrician';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
   return (
       <QueryClientProvider client={queryClient}>
         <Stack.Navigator>
-          <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
-          <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
+          {/* <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
+          <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/> */}
           <Stack.Screen name="Root" component={DrawerNavigator} options={{headerShown:false}}/>
-          <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/>
+          {/* <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/> */}
           <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
           <Stack.Screen name="SelectRole" component={SelectRole} options={{ headerShown: false }} />
           <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown:false}}/>
@@ -32,6 +37,7 @@ const Main = () => {
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false}}/>
           <Stack.Screen name="NewPassword" component={NewPassword} options={{headerShown:false}}/>
           <Stack.Screen name="Home" component={Home} options={{headerShown:true}}/>
+          <Stack.Screen name="ListOfElectrician" component={ListOfElectrician} options={{headerShown:true}}/>
           {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
         </Stack.Navigator>
       </QueryClientProvider>
