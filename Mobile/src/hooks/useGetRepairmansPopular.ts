@@ -22,11 +22,11 @@ const useGetRepairmansPopular = () => {
   const fetchRepairman = async (pageNumber: number) => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
-      console.log(accessToken);
+      // console.log(accessToken);
       const response = await axios.get(`${url}/user/repairmans/${page}`, {
         headers: {Authorization: `Bearer ${accessToken}`},
       });
-      console.log(response);
+      // console.log(response);
       setData((prevData)=>(pageNumber===1? response.data.data: [...prevData, ...response.data.data]));
       setPage(pageNumber + 1);
     } catch (error: any) {

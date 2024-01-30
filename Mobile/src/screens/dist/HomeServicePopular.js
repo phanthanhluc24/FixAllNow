@@ -2,22 +2,29 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var useGetServicePopular_1 = require("../hooks/useGetServicePopular");
 var HomeServicePopular = function () {
-    //   const {data, isLoading, isError}= useGetService();
-    // if (isLoading) {
-    //     return <Text>Loading...</Text>;
-    //   }
-    //   if (isError) {
-    //     return <Text>Error loading categories</Text>;
-    //   }
+    var _a = useGetServicePopular_1["default"](), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    if (isLoading) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
+    }
+    if (data.length = 0) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Services not available!");
+    }
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
-        react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
-            react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avartarss.png'), style: styles.img }),
-                react_1["default"].createElement(react_native_1.View, { style: styles.info },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, "Phan Thanh L\u01B0\u0323c"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "120.000\u0111"),
-                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, "(\u1ED4 c\u1EAFm \u0111i\u1EC7n b\u1ECB n\u00F3ng v\u00E0 n\u1EDF ra khi c\u1EAFm v\u00E0o l\u1ECFng...)"))))));
+        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item._id; }, renderItem: function (_a) {
+                var item = _a.item;
+                return (react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                        react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img }),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.info },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, item.service_name),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.price }, item.price),
+                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
+            } })));
 };
 exports["default"] = HomeServicePopular;
 var styles = react_native_1.StyleSheet.create({
