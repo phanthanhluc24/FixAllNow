@@ -1,37 +1,54 @@
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
-import React from 'react'
-import useGetRepairmans from '../hooks/useGetRepairmans'
+import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
+import React from 'react';
+import useGetRepairmansPopular from '../hooks/useGetRepairmansPopular';
+interface typeRepairman {
+  _id: string;
+  full_name: string;
+  email: string;
+  number_phone: number;
+  address: string;
+  role: string;
+  image: string;
+  password: string;
+  averageStar: number;
+}
 const HomeRepairmanPopular = () => {
-    //   const {data, isLoading, isError}= useGetRepairmans();
-  // if (isLoading) {
-  //     return <Text>Loading...</Text>;
-  //   }
-
-  //   if (isError) {
-  //     return <Text>Error loading categories</Text>;
-  //   }
+  const {data, isLoading, isError, fetchMore} = useGetRepairmansPopular();
+  const handleLoadMore = () => {
+    if (!isLoading) {
+      fetchMore();
+    }
+  };
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+  if (isError) {
+    return <Text>Error loading categories</Text>;
+  }
+  if (data.length === 0) {
+    return <Text>No repairmen available</Text>;
+  }
   return (
-    <View style={styles.repairmanPopular}>
-        <View style={styles.container}>
-        <Text style={styles.title}>Thợ nổi bật</Text>
-        <View style={styles.containerRepairman}>
-            {/* <FlatList
-            data={data}
-            keyExtractor={repairmans => repairmans.id}
-            renderItem={({repairmans:typeCategory}) => (
-              <View style={styles.repairman}>
-                <View style={styles.content}>
-                    <Image source={{uri:repairmans.image}} style={styles.img}/>
-                    <View>
-                        <Text style={styles.nameRepairman}>{repairmans.name}</Text>
-                        <Text style={styles.distance}>{repairmans.disSpace}</Text>
-                        <Text>{repairmans.star}</Text>
-                    </View>
-                </View>
+    <View style={styles.containerRepairman}>
+      <FlatList
+        data={data as typeRepairman[]}
+        keyExtractor={item => item._id}
+        renderItem={({item}) => (
+          <View style={styles.repairman}>
+            <View style={styles.content}>
+              <Image source={{uri: item.image}} style={styles.img} />
+              <View>
+                <Text style={styles.nameRepairman}>{item.full_name}</Text>
+                <Text style={styles.distance}>{item.number_phone}</Text>
+                <Text>{item.averageStar}</Text>
+              </View>
             </View>
-            )}
-          /> */}
-            <View style={styles.repairman}>
+          </View>
+        )}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+      />
+      {/* <View style={styles.repairman}>
                 <View style={styles.content}>
                     <Image source={require('../assets/Homes/avartarss.png')} style={styles.img}/>
                     <View>
@@ -40,57 +57,42 @@ const HomeRepairmanPopular = () => {
                         <Image source={require("../assets/Homes/rate.png")}/>
                     </View>
                 </View>
-            </View>
-        </View>
-        </View>
-      
+            </View> */}
     </View>
-  )
-}
+  );
+};
 
-export default HomeRepairmanPopular
+export default HomeRepairmanPopular;
 
 const styles = StyleSheet.create({
-    repairmanPopular:{
-        flex:1,
-        marginTop:20
-    },
-    container:{
-        marginHorizontal:20
-    },
-    title:{
-        color:"#394C6D",
-        fontSize:20,
-        fontWeight:"bold"
-    },
-    repairman:{
-        marginTop:10,
-        backgroundColor:"#FCA234",
-        width:"100%",
-        height:132,
-        borderRadius:10
-    },
-    containerRepairman:{
-        flex:1
-    },
-    content:{
-        flexDirection:"row",
-        alignItems:"center",
-        justifyContent:"space-between",
-        padding:15
-    },
-    img:{
-        width:100,
-        height:100,
-    },
-    nameRepairman:{
-        fontSize:18,
-        color:"#FFFFFF",
-        fontWeight:"bold"
-    },
-    distance:{
-        fontSize:18,
-        color:"#FFFFFF",
-        fontWeight:"bold",
-    }
-})
+  repairman: {
+    marginTop: 10,
+    backgroundColor: '#FCA234',
+    width: '100%',
+    height: 132,
+    borderRadius: 10,
+  },
+  containerRepairman: {
+    flex: 1,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+  },
+  img: {
+    width: 100,
+    height: 100,
+  },
+  nameRepairman: {
+    fontSize: 18,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  distance: {
+    fontSize: 18,
+    color: '#000000',
+    fontWeight: 'bold',
+  },
+});

@@ -43,7 +43,7 @@ var react_native_1 = require("react-native");
 var useSignin = function (_a) {
     var navigation = _a.navigation;
     var handleSignin = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-        var res, accessToken, Token, error_1, errorMessage;
+        var res, accessToken, error_1, errorMessage;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -54,10 +54,12 @@ var useSignin = function (_a) {
                     res = _a.sent();
                     if (!(res.status === 201)) return [3 /*break*/, 3];
                     accessToken = res.data.accessToken;
-                    Token = JSON.stringify(accessToken);
-                    return [4 /*yield*/, async_storage_1["default"].setItem('accessToken', Token)];
+                    // const Token = JSON.stringify(accessToken);
+                    return [4 /*yield*/, async_storage_1["default"].setItem('accessToken', accessToken)];
                 case 2:
+                    // const Token = JSON.stringify(accessToken);
                     _a.sent();
+                    console.log(accessToken);
                     react_native_1.ToastAndroid.showWithGravity(res.data.message, react_native_1.ToastAndroid.LONG, react_native_1.ToastAndroid.CENTER);
                     navigation.reset({
                         index: 0,

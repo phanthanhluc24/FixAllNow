@@ -1,22 +1,28 @@
-import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import useGetCategoryService from '../hooks/useGetCategoryService';
-import { useNavigation } from '@react-navigation/native';
-interface typeCategory{
-    id: string,
-    name: string,
-    image: string,
-  }
+import {useNavigation} from '@react-navigation/native';
+interface typeCategory {
+  _id: string;
+  name: string;
+  image: string;
+}
 const HomeCategories = () => {
-    const navigation:any= useNavigation();
-//   const {data, isLoading, isError}= useGetCategoryService();
-  // if (isLoading) {
-  //     return <Text>Loading...</Text>;
-  //   }
-
-  //   if (isError) {
-  //     return <Text>Error loading categories</Text>;
-  //   }
+  const navigation:any= useNavigation();
+  const {data, isLoading, isError} = useGetCategoryService();
+  if (isLoading) {
+    return <Text style={{marginHorizontal:20}}>Loading...</Text>;
+  }
+  if (isError) {
+    return <Text style={styles.error}>Error loading categories</Text>;
+  }
   return (
     <View style={styles.containerCategory}>
       <View style={styles.container}>
@@ -34,44 +40,21 @@ const HomeCategories = () => {
         </View>
       </View>
       <View style={styles.detailCategory}>
-        <View style={styles.categories}>
-          {/* <FlatList
-            data={data}
-            keyExtractor={category => category.id}
-            renderItem={({category:typeCategory}) => (
-              <View style={styles.category}>
-                <Image source={{uri:category.image}} />
-                <Text style={styles.titleCategory}>{category.name}</Text>
+        <FlatList
+          data={data as typeCategory[]}
+          keyExtractor={item => item._id}
+          numColumns={3}
+          renderItem={({item})=>(
+            <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician')}>
+              <View style={styles.imgCategory}>
+              <Image source={{uri:item.image}} style={styles.img}/>
               </View>
-            )}
-          /> */}
-          <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician')}>
-            <Image source={require('../assets/Homes/thodien.png')} />
-            <Text style={styles.titleCategory}>Sửa điện</Text>
-          </TouchableOpacity>
-          <View style={styles.category}>
-            <Image source={require('../assets/Homes/thonuoc.png')} />
-            <Text style={styles.titleCategory}>Sửa nước</Text>
-          </View>
-          <View style={styles.category}>
-            <Image source={require('../assets/Homes/cokhi.png')} />
-            <Text style={styles.titleCategory}>Cơ khí</Text>
-          </View>
-        </View>
-        <View style={styles.categories}>
-          <View style={styles.category}>
-            <Image source={require('../assets/Homes/xemay.png')} />
-            <Text style={styles.titleCategory}>Xe máy</Text>
-          </View>
-          <View style={styles.category}>
-            <Image source={require('../assets/Homes/oto.png')} />
-            <Text style={styles.titleCategory}>Ô tô</Text>
-          </View>
-          <View style={styles.category}>
-            <Image source={require('../assets/Homes/dienthoai.png')} />
-            <Text style={styles.titleCategory}>Điện thoại</Text>
-          </View>
-        </View>
+              <View style={styles.nameCategory}>
+              <Text numberOfLines={1} style={styles.titleCategory}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
       </View>
     </View>
   );
@@ -108,6 +91,11 @@ const styles = StyleSheet.create({
   },
   detailCategory: {
     marginHorizontal: 20,
+    paddingTop:10,
+    flexWrap: 'wrap', 
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
   },
   categories: {
     flexDirection: 'row',
@@ -118,10 +106,36 @@ const styles = StyleSheet.create({
   },
   category: {
     alignItems: 'center',
+    width:110,
+    justifyContent:"center",
+    height:"auto",
+    padding:5
   },
   titleCategory: {
     color: '#394C6D',
     fontSize: 15,
     padding: 5,
   },
+  img:{
+    width:80,
+    height:80,
+    // resizeMode: 'cover',
+    borderRadius:50,
+    borderWidth:2,
+    borderColor:"black"
+  },
+  nameCategory:{
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  imgCategory:{
+    width:80,
+    height:80,
+    borderRadius:100,
+    
+
+  },
+  error:{
+    marginHorizontal:20
+  }
 });

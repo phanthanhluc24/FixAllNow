@@ -19,8 +19,9 @@ const useSignin = ({navigation}: any) => {
       const res = await axios.post<ApiResponse>(`${url}/auth/login`, data);
       if (res.status === 201){
         const accessToken= res.data.accessToken;
-        const Token = JSON.stringify(accessToken);
-        await AsyncStorage.setItem('accessToken',Token);
+        // const Token = JSON.stringify(accessToken);
+        await AsyncStorage.setItem('accessToken',accessToken);
+        console.log(accessToken)
         ToastAndroid.showWithGravity(res.data.message, ToastAndroid.LONG, ToastAndroid.CENTER);
         navigation.reset({
           index: 0,

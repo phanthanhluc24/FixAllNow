@@ -11,7 +11,7 @@ interface typeService {
   price: number;
   dics: string;
 }
-const useGetService = () => {
+const useGetServicePopular = () => {
   // const [data, setData]= useState([]);
   // const [isLoading, setIsLoading]= useState(true);
   // const [isError, setIsError]= useState(false);
@@ -19,6 +19,7 @@ const useGetService = () => {
   //   const fetchService =async()=>{
   //     try{
   //       const response= await axios.get(`${url}/service`);
+  //       console.log(response);
   //       setData(response.data);
   //     }
   //     catch(error:any){
@@ -31,17 +32,17 @@ const useGetService = () => {
   //   fetchService();
   // },[])
   // return{data, isLoading, isError};
-  const {data, isLoading, isError} = useQuery({
-    queryKey: ['getService'],
-    queryFn: async () => {
-      try {
-        const response = await axios.get(`${url}/service`);
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
-    },
-  });
+  // const {data, isLoading, isError} = useQuery({
+  //   queryKey: ['getService'],
+  //   queryFn: async () => {
+  //     try {
+  //       const response = await axios.get(`${url}/service`);
+  //       return response.data;
+  //     } catch (error) {
+  //       throw error;
+  //     }
+  //   },
+  // });
 };
-export default useGetService;
+export default useGetServicePopular;
 const styles = StyleSheet.create({});

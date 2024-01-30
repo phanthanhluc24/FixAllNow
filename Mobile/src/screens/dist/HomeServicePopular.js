@@ -10,36 +10,21 @@ var HomeServicePopular = function () {
     //   if (isError) {
     //     return <Text>Error loading categories</Text>;
     //   }
-    return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
-        react_1["default"].createElement(react_native_1.View, { style: styles.container },
-            react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Di\u0323ch vu\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
-            react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
-                react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                        react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avartarss.png'), style: styles.img }),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.info },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, "Phan Thanh L\u01B0\u0323c"),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "120.000\u0111"),
-                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, "(\u1ED4 c\u1EAFm \u0111i\u1EC7n b\u1ECB n\u00F3ng v\u00E0 n\u1EDF ra khi c\u1EAFm v\u00E0o l\u1ECFng...)"))))))));
+    return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
+        react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
+            react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avartarss.png'), style: styles.img }),
+                react_1["default"].createElement(react_native_1.View, { style: styles.info },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, "Phan Thanh L\u01B0\u0323c"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "120.000\u0111"),
+                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, "(\u1ED4 c\u1EAFm \u0111i\u1EC7n b\u1ECB n\u00F3ng v\u00E0 n\u1EDF ra khi c\u1EAFm v\u00E0o l\u1ECFng...)"))))));
 };
 exports["default"] = HomeServicePopular;
 var styles = react_native_1.StyleSheet.create({
-    repairmanPopular: {
-        flex: 1,
-        marginTop: 20
-    },
-    container: {
-        marginHorizontal: 20
-    },
-    title: {
-        color: "#394C6D",
-        fontSize: 20,
-        fontWeight: "bold"
-    },
     repairman: {
         marginTop: 10,
-        backgroundColor: "#394C6D",
-        width: "100%",
+        backgroundColor: '#394C6D',
+        width: '100%',
         height: 132,
         borderRadius: 10
     },
@@ -47,9 +32,9 @@ var styles = react_native_1.StyleSheet.create({
         flex: 1
     },
     content: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         padding: 15
     },
     img: {
@@ -58,19 +43,19 @@ var styles = react_native_1.StyleSheet.create({
     },
     nameRepairman: {
         fontSize: 18,
-        color: "#FFFFFF",
-        fontWeight: "bold"
+        color: '#FFFFFF',
+        fontWeight: 'bold'
     },
     price: {
         fontSize: 18,
-        color: "#FFFFFF",
-        fontWeight: "bold",
-        width: "50%",
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        width: '50%',
         paddingVertical: 5
     },
     description: {
-        width: "60%",
-        color: "#FFFFFF"
+        width: '60%',
+        color: '#FFFFFF'
     },
     info: {
         marginHorizontal: 20
