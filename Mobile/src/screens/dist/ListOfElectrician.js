@@ -2,18 +2,20 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var native_1 = require("@react-navigation/native");
 var ListOfElectrician = function () {
+    var navigation = native_1.useNavigation();
     return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
             react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
-                react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
+                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () { return navigation.navigate('DetailRepairman'); } },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avartarss.png'), style: styles.img }),
                         react_1["default"].createElement(react_native_1.View, null,
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, "Phan Thanh L\u01B0\u0323c"),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.distance }, "2.5 km"),
-                            react_1["default"].createElement(react_native_1.Image, { source: require("../assets/Homes/rate.png") }))))))));
+                            react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/rate.png') }))))))));
 };
 exports["default"] = ListOfElectrician;
 var styles = react_native_1.StyleSheet.create({
@@ -25,14 +27,14 @@ var styles = react_native_1.StyleSheet.create({
         marginHorizontal: 20
     },
     title: {
-        color: "#394C6D",
+        color: '#394C6D',
         fontSize: 20,
-        fontWeight: "bold"
+        fontWeight: 'bold'
     },
     repairman: {
         marginTop: 10,
-        backgroundColor: "#FCA234",
-        width: "100%",
+        backgroundColor: '#FCA234',
+        width: '100%',
         height: 132,
         borderRadius: 10
     },
@@ -40,9 +42,9 @@ var styles = react_native_1.StyleSheet.create({
         flex: 1
     },
     content: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         padding: 15
     },
     img: {
@@ -51,12 +53,12 @@ var styles = react_native_1.StyleSheet.create({
     },
     nameRepairman: {
         fontSize: 18,
-        color: "#FFFFFF",
-        fontWeight: "bold"
+        color: '#FFFFFF',
+        fontWeight: 'bold'
     },
     distance: {
         fontSize: 18,
-        color: "#FFFFFF",
-        fontWeight: "bold"
+        color: '#FFFFFF',
+        fontWeight: 'bold'
     }
 });

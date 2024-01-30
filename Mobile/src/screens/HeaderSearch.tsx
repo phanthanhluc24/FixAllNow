@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import React from 'react';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const HeaderSearch = () => {
     const handleSearchChange = ()=>{
         
@@ -10,7 +11,10 @@ const HeaderSearch = () => {
       <TextInput
         placeholder="Tìm kiếm dịch vụ" style={styles.searchInput}
       />
-    <Image source={require("../assets/Homes/message.png")} style={styles.messageIcon}/>
+      <View style={styles.messageIcon}>
+      <AntDesign name="message1" color="black" size={28} />
+      </View>
+    
     <Image source={require("../assets/Homes/avatar.png")} />
     </View>
     </View>
@@ -42,6 +46,8 @@ const styles = StyleSheet.create({
       },
       messageIcon:{
         width:60,
-        height:60
+        height:60,
+        alignItems:"center",
+        justifyContent:"center"
       }
 })

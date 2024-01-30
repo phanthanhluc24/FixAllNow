@@ -2,16 +2,17 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var useGetCategoryService_1 = require("../hooks/useGetCategoryService");
 var native_1 = require("@react-navigation/native");
 var HomeCategories = function () {
     var navigation = native_1.useNavigation();
-    //   const {data, isLoading, isError}= useGetCategoryService();
-    // if (isLoading) {
-    //     return <Text>Loading...</Text>;
-    //   }
-    //   if (isError) {
-    //     return <Text>Error loading categories</Text>;
-    //   }
+    var _a = useGetCategoryService_1["default"](), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    if (isLoading) {
+        return react_1["default"].createElement(react_native_1.Text, { style: { marginHorizontal: 20 } }, "Loading...");
+    }
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, { style: styles.error }, "Error loading categories");
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerCategory },
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.View, { style: styles.content },
@@ -21,26 +22,14 @@ var HomeCategories = function () {
                 react_1["default"].createElement(react_native_1.View, null,
                     react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/demo.png') })))),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailCategory },
-            react_1["default"].createElement(react_native_1.View, { style: styles.categories },
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician'); } },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/thodien.png') }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titleCategory }, "S\u01B0\u0309a \u0111i\u00EA\u0323n")),
-                react_1["default"].createElement(react_native_1.View, { style: styles.category },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/thonuoc.png') }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titleCategory }, "S\u01B0\u0309a n\u01B0\u01A1\u0301c")),
-                react_1["default"].createElement(react_native_1.View, { style: styles.category },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/cokhi.png') }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titleCategory }, "C\u01A1 khi\u0301"))),
-            react_1["default"].createElement(react_native_1.View, { style: styles.categories },
-                react_1["default"].createElement(react_native_1.View, { style: styles.category },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/xemay.png') }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titleCategory }, "Xe ma\u0301y")),
-                react_1["default"].createElement(react_native_1.View, { style: styles.category },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/oto.png') }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titleCategory }, "\u00D4 t\u00F4")),
-                react_1["default"].createElement(react_native_1.View, { style: styles.category },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/dienthoai.png') }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titleCategory }, "\u0110i\u00EA\u0323n thoa\u0323i"))))));
+            react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item._id; }, numColumns: 3, renderItem: function (_a) {
+                    var item = _a.item;
+                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician'); } },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.imgCategory },
+                            react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.nameCategory },
+                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.titleCategory }, item.name))));
+                } }))));
 };
 exports["default"] = HomeCategories;
 var styles = react_native_1.StyleSheet.create({
@@ -71,7 +60,12 @@ var styles = react_native_1.StyleSheet.create({
         width: 150
     },
     detailCategory: {
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        paddingTop: 10,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginVertical: 10
     },
     categories: {
         flexDirection: 'row',
@@ -81,11 +75,35 @@ var styles = react_native_1.StyleSheet.create({
         paddingTop: 20
     },
     category: {
-        alignItems: 'center'
+        alignItems: 'center',
+        width: 110,
+        justifyContent: "center",
+        height: "auto",
+        padding: 5
     },
     titleCategory: {
         color: '#394C6D',
         fontSize: 15,
         padding: 5
+    },
+    img: {
+        width: 80,
+        height: 80,
+        // resizeMode: 'cover',
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: "black"
+    },
+    nameCategory: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    imgCategory: {
+        width: 80,
+        height: 80,
+        borderRadius: 100
+    },
+    error: {
+        marginHorizontal: 20
     }
 });

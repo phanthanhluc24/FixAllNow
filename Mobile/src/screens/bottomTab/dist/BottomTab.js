@@ -9,7 +9,7 @@ var Scan_1 = require("../feed/Repairman_Finder/Scan");
 var Profile_1 = require("../feed/Repairman_Finder/Profile");
 var bottom_tabs_1 = require("@react-navigation/bottom-tabs");
 var Tab = bottom_tabs_1.createBottomTabNavigator();
-var URL_IMAGE = "../../assets/BottomTab";
+var URL_IMAGE = '../../assets/BottomTab';
 var BottomTab = function () {
     return (react_1["default"].createElement(Tab.Navigator, { initialRouteName: "Home", screenOptions: function (_a) {
             var route = _a.route;
@@ -25,7 +25,7 @@ var BottomTab = function () {
                         imageSource = require(URL_IMAGE + "/iconshop.png");
                     }
                     else if (rn === 'Scan') {
-                        imageSource = require(URL_IMAGE + "/scan.png");
+                        imageSource = require(URL_IMAGE + "/scans.png");
                     }
                     else if (rn === 'Notification') {
                         imageSource = require(URL_IMAGE + "/iconnotification.png");
@@ -61,17 +61,17 @@ var styles = react_native_1.StyleSheet.create({
     tabIcon: {
         borderRadius: 10,
         borderWidth: 2,
-        width: "100%",
-        height: "100%"
+        width: '100%',
+        height: '100%'
     },
     focusedStyle: {
-        backgroundColor: "rgba(252, 162, 52, 0.46)",
+        backgroundColor: 'rgba(252, 162, 52, 0.46)',
         borderRadius: 12,
         flexDirection: 'row',
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         paddingHorizontal: 10,
         height: 62,
-        width: "100%"
+        width: '100%'
     }
 });

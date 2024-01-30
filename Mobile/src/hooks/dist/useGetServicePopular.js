@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var react_native_1 = require("react-native");
-var useGetService = function () {
+var useGetServicePopular = function () {
     // const [data, setData]= useState([]);
     // const [isLoading, setIsLoading]= useState(true);
     // const [isError, setIsError]= useState(false);
@@ -34,5 +34,5 @@ var useGetService = function () {
     //   },
     // });
 };
-exports["default"] = useGetService;
+exports["default"] = useGetServicePopular;
 var styles = react_native_1.StyleSheet.create({});
