@@ -48,16 +48,7 @@ const HomeRepairmanPopular = () => {
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
       />
-      {/* <View style={styles.repairman}>
-                <View style={styles.content}>
-                    <Image source={require('../assets/Homes/avartarss.png')} style={styles.img}/>
-                    <View>
-                        <Text style={styles.nameRepairman}>Phan Thanh Lực</Text>
-                        <Text style={styles.distance}>2.5 km</Text>
-                        <Image source={require("../assets/Homes/rate.png")}/>
-                    </View>
-                </View>
-            </View> */}
+      
     </View>
   );
 };

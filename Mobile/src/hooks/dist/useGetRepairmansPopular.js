@@ -62,13 +62,12 @@ var useGetRepairmansPopular = function () {
                     return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
                 case 1:
                     accessToken = _a.sent();
-                    console.log(accessToken);
                     return [4 /*yield*/, axios_1["default"].get(url_1.url + "/user/repairmans/" + page, {
                             headers: { Authorization: "Bearer " + accessToken }
                         })];
                 case 2:
                     response_1 = _a.sent();
-                    console.log(response_1);
+                    // console.log(response);
                     setData(function (prevData) { return (pageNumber === 1 ? response_1.data.data : __spreadArrays(prevData, response_1.data.data)); });
                     setPage(pageNumber + 1);
                     return [3 /*break*/, 5];

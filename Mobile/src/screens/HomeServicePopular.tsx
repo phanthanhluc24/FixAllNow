@@ -1,52 +1,44 @@
 import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
 import React from 'react';
 import useGetServicePopular from '../hooks/useGetServicePopular';
+interface typeService{
+  _id:string,
+  user_id:string,
+  service_name:string,
+  price: number,
+  image:string,
+  desc: string,
+}
 const HomeServicePopular = () => {
-  //   const {data, isLoading, isError}= useGetService();
-  // if (isLoading) {
-  //     return <Text>Loading...</Text>;
-  //   }
-
-  //   if (isError) {
-  //     return <Text>Error loading categories</Text>;
-  //   }
+    const {data, isLoading, isError}= useGetServicePopular();
+  if (isLoading) {
+      return <Text>Loading...</Text>;
+    }
+if(data.length=0){
+  return <Text>Services not available!</Text>
+}
+    if (isError) {
+      return <Text>Error loading categories</Text>;
+    }
   return (
     <View style={styles.containerRepairman}>
-      {/* <FlatList
-            data={data as typeRepairman[]}
+      <FlatList
+            data={data as typeService[]}
             keyExtractor={item => item._id}
             renderItem={({item}) => (
                 <View style={styles.repairman}>
                 <View style={styles.content}>
                     <Image source={{uri:item.image}} style={styles.img}/>
                     <View style={styles.info}>
-                        <Text style={styles.nameRepairman}>{{item.name}}</Text>
-                        
-                        <Text style={styles.price}>{{item.price}}</Text>
-                    
-                        <Text numberOfLines={2} style={styles.description}>{{item.desc}}</Text>
+                        <Text style={styles.nameRepairman}>{item.service_name}</Text>
+                        <Text style={styles.price}>{item.price}</Text>
+                        <Text numberOfLines={2} style={styles.description}>{item.desc}</Text>
                     </View>
                 </View>
             </View>
             )}
-          /> */}
-      <View style={styles.repairman}>
-        <View style={styles.content}>
-          <Image
-            source={require('../assets/Homes/avartarss.png')}
-            style={styles.img}
           />
-          <View style={styles.info}>
-            <Text style={styles.nameRepairman}>Phan Thanh Lực</Text>
-
-            <Text style={styles.price}>120.000đ</Text>
-
-            <Text numberOfLines={2} style={styles.description}>
-              (Ổ cắm điện bị nóng và nở ra khi cắm vào lỏng...)
-            </Text>
-          </View>
-        </View>
-      </View>
+      
     </View>
   );
 };
