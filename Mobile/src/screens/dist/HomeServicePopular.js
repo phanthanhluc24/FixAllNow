@@ -4,18 +4,18 @@ var react_native_1 = require("react-native");
 var react_1 = require("react");
 var useGetServicePopular_1 = require("../hooks/useGetServicePopular");
 var HomeServicePopular = function () {
-    var _a = useGetServicePopular_1["default"](), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    var _a = useGetServicePopular_1["default"](), services = _a.services, isLoading = _a.isLoading, isError = _a.isError;
     if (isLoading) {
         return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
     }
-    if (data.length = 0) {
+    if (services.length === 0) {
         return react_1["default"].createElement(react_native_1.Text, null, "Services not available!");
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
     }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
-        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item._id; }, renderItem: function (_a) {
+        react_1["default"].createElement(react_native_1.FlatList, { data: services, keyExtractor: function (services) { return services._id; }, renderItem: function (_a) {
                 var item = _a.item;
                 return (react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },

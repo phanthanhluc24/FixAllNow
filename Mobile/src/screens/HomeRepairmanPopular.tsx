@@ -13,7 +13,8 @@ interface typeRepairman {
   averageStar: number;
 }
 const HomeRepairmanPopular = () => {
-  const {data, isLoading, isError, fetchMore} = useGetRepairmansPopular();
+  const {repairmans, isLoading, isError, fetchMore} = useGetRepairmansPopular();
+  // console.log(data);
   const handleLoadMore = () => {
     if (!isLoading) {
       fetchMore();
@@ -25,14 +26,14 @@ const HomeRepairmanPopular = () => {
   if (isError) {
     return <Text>Error loading categories</Text>;
   }
-  if (data.length === 0) {
+  if (repairmans.length === 0) {
     return <Text>No repairmen available</Text>;
   }
   return (
     <View style={styles.containerRepairman}>
       <FlatList
-        data={data as typeRepairman[]}
-        keyExtractor={item => item._id}
+        data={repairmans as typeRepairman[]}
+        keyExtractor={repairmans => repairmans._id}
         renderItem={({item}) => (
           <View style={styles.repairman}>
             <View style={styles.content}>

@@ -49,7 +49,7 @@ var url_1 = require("./apiRequest/url");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var axios_1 = require("axios");
 var useGetRepairmansPopular = function () {
-    var _a = react_1.useState([]), data = _a[0], setData = _a[1];
+    var _a = react_1.useState([]), repairmans = _a[0], setRepairmans = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
     var _d = react_1.useState(1), page = _d[0], setPage = _d[1];
@@ -67,8 +67,8 @@ var useGetRepairmansPopular = function () {
                         })];
                 case 2:
                     response_1 = _a.sent();
-                    // console.log(response);
-                    setData(function (prevData) { return (pageNumber === 1 ? response_1.data.data : __spreadArrays(prevData, response_1.data.data)); });
+                    // console.log(response.data.data);
+                    setRepairmans(function (prevData) { return (pageNumber === 1 ? response_1.data.data : __spreadArrays(prevData, response_1.data.data)); });
                     setPage(pageNumber + 1);
                     return [3 /*break*/, 5];
                 case 3:
@@ -85,7 +85,7 @@ var useGetRepairmansPopular = function () {
     react_1.useEffect(function () {
         fetchRepairman(1);
     }, []);
-    return { data: data, isLoading: isLoading, isError: isError, fetchMore: function () { return fetchRepairman(page); } };
+    return { repairmans: repairmans, isLoading: isLoading, isError: isError, fetchMore: function () { return fetchRepairman(page); } };
     // const {data, isLoading, isError}= useQuery({
     //   queryKey:['getRepairman'],
     //   queryFn: async()=>{

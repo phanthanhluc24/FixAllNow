@@ -6,7 +6,7 @@ var useGetCategoryService_1 = require("../hooks/useGetCategoryService");
 var native_1 = require("@react-navigation/native");
 var HomeCategories = function () {
     var navigation = native_1.useNavigation();
-    var _a = useGetCategoryService_1["default"](), data = _a.data, isLoading = _a.isLoading, isError = _a.isError;
+    var _a = useGetCategoryService_1["default"](), categories = _a.categories, isLoading = _a.isLoading, isError = _a.isError;
     if (isLoading) {
         return react_1["default"].createElement(react_native_1.Text, { style: { marginHorizontal: 20 } }, "Loading...");
     }
@@ -22,7 +22,7 @@ var HomeCategories = function () {
                 react_1["default"].createElement(react_native_1.View, null,
                     react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/demo.png') })))),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailCategory },
-            react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item._id; }, numColumns: 3, renderItem: function (_a) {
+            react_1["default"].createElement(react_native_1.FlatList, { data: categories, keyExtractor: function (category) { return category._id; }, numColumns: 3, renderItem: function (_a) {
                     var item = _a.item;
                     return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician'); } },
                         react_1["default"].createElement(react_native_1.View, { style: styles.imgCategory },

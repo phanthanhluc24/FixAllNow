@@ -42,41 +42,40 @@ var url_1 = require("./apiRequest/url");
 var axios_1 = require("axios");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var useGetServicePopular = function () {
-    var _a = react_1.useState([]), data = _a[0], setData = _a[1];
+    var _a = react_1.useState([]), services = _a[0], setServices = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
+    var fetchService = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var accessToken, response, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, 4, 5]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
+                case 1:
+                    accessToken = _a.sent();
+                    return [4 /*yield*/, axios_1["default"].get(url_1.url + "/service", {
+                            headers: { Authorization: "Bearer " + accessToken }
+                        })];
+                case 2:
+                    response = _a.sent();
+                    setServices(response.data.data);
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_1 = _a.sent();
+                    setIsError(true);
+                    return [3 /*break*/, 5];
+                case 4:
+                    setIsLoading(false);
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); };
     react_1.useEffect(function () {
-        var fetchService = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var accessToken, response, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
-                    case 1:
-                        accessToken = _a.sent();
-                        return [4 /*yield*/, axios_1["default"].get(url_1.url + "/service", {
-                                headers: { Authorization: "Bearer " + accessToken }
-                            })];
-                    case 2:
-                        response = _a.sent();
-                        console.log(response.data.data);
-                        setData(response.data.data);
-                        return [3 /*break*/, 5];
-                    case 3:
-                        error_1 = _a.sent();
-                        setIsError(true);
-                        return [3 /*break*/, 5];
-                    case 4:
-                        setIsLoading(false);
-                        return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        }); };
         fetchService();
     }, []);
-    return { data: data, isLoading: isLoading, isError: isError };
+    return { services: services, isLoading: isLoading, isError: isError };
     // const {data, isLoading, isError} = useQuery({
     //   queryKey: ['getService'],
     //   queryFn: async () => {

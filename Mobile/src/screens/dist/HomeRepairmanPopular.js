@@ -4,7 +4,8 @@ var react_native_1 = require("react-native");
 var react_1 = require("react");
 var useGetRepairmansPopular_1 = require("../hooks/useGetRepairmansPopular");
 var HomeRepairmanPopular = function () {
-    var _a = useGetRepairmansPopular_1["default"](), data = _a.data, isLoading = _a.isLoading, isError = _a.isError, fetchMore = _a.fetchMore;
+    var _a = useGetRepairmansPopular_1["default"](), repairmans = _a.repairmans, isLoading = _a.isLoading, isError = _a.isError, fetchMore = _a.fetchMore;
+    // console.log(data);
     var handleLoadMore = function () {
         if (!isLoading) {
             fetchMore();
@@ -16,11 +17,11 @@ var HomeRepairmanPopular = function () {
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
     }
-    if (data.length === 0) {
+    if (repairmans.length === 0) {
         return react_1["default"].createElement(react_native_1.Text, null, "No repairmen available");
     }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
-        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item._id; }, renderItem: function (_a) {
+        react_1["default"].createElement(react_native_1.FlatList, { data: repairmans, keyExtractor: function (repairmans) { return repairmans._id; }, renderItem: function (_a) {
                 var item = _a.item;
                 return (react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },

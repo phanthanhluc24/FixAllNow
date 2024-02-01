@@ -16,7 +16,7 @@ interface typeCategory {
 }
 const HomeCategories = () => {
   const navigation:any= useNavigation();
-  const {data, isLoading, isError} = useGetCategoryService();
+  const {categories, isLoading, isError} = useGetCategoryService();
   if (isLoading) {
     return <Text style={{marginHorizontal:20}}>Loading...</Text>;
   }
@@ -41,8 +41,8 @@ const HomeCategories = () => {
       </View>
       <View style={styles.detailCategory}>
         <FlatList
-          data={data as typeCategory[]}
-          keyExtractor={item => item._id}
+          data={categories as typeCategory[]}
+          keyExtractor={category => category._id}
           numColumns={3}
           renderItem={({item})=>(
             <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician')}>

@@ -9,14 +9,14 @@ interface typeCategory {
   image: string;
 }
 const useGetCategoryService = () => {
-  const [data, setData]= useState([]);
+  const [categories, setCategories]= useState([]);
   const [isLoading, setIsLoading]= useState(true);
   const [isError, setIsError]= useState(false);
   useEffect(()=>{
     const fetchCategories =async()=>{
       try{
         const response= await axios.get(`${url}/category`);
-        setData(response.data.data);
+        setCategories(response.data.data);
       }
       catch(error:any){
         setIsError(true);
@@ -27,7 +27,7 @@ const useGetCategoryService = () => {
     };
     fetchCategories();
   },[])
-  return{data, isLoading, isError};
+  return{categories, isLoading, isError};
   // const {data, isLoading, isError} = useQuery({
   //   queryKey: ['getCategory'],
   //   queryFn: async () => {
