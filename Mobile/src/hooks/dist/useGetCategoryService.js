@@ -41,7 +41,7 @@ var react_1 = require("react");
 var url_1 = require("./apiRequest/url");
 var axios_1 = require("axios");
 var useGetCategoryService = function () {
-    var _a = react_1.useState([]), data = _a[0], setData = _a[1];
+    var _a = react_1.useState([]), categories = _a[0], setCategories = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
     react_1.useEffect(function () {
@@ -54,7 +54,7 @@ var useGetCategoryService = function () {
                         return [4 /*yield*/, axios_1["default"].get(url_1.url + "/category")];
                     case 1:
                         response = _a.sent();
-                        setData(response.data.data);
+                        setCategories(response.data.data);
                         return [3 /*break*/, 4];
                     case 2:
                         error_1 = _a.sent();
@@ -69,7 +69,7 @@ var useGetCategoryService = function () {
         }); };
         fetchCategories();
     }, []);
-    return { data: data, isLoading: isLoading, isError: isError };
+    return { categories: categories, isLoading: isLoading, isError: isError };
     // const {data, isLoading, isError} = useQuery({
     //   queryKey: ['getCategory'],
     //   queryFn: async () => {

@@ -15,7 +15,7 @@ interface typeRepairman {
   averageStar: number;
 }
 const useGetRepairmansPopular = () => {
-  const [data, setData] = useState<typeRepairman[]>([]);
+  const [repairmans, setRepairmans] = useState<typeRepairman[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [page, setPage] = useState(1);
@@ -26,8 +26,8 @@ const useGetRepairmansPopular = () => {
       const response = await axios.get(`${url}/user/repairmans/${page}`, {
         headers: {Authorization: `Bearer ${accessToken}`},
       });
-      // console.log(response);
-      setData((prevData)=>(pageNumber===1? response.data.data: [...prevData, ...response.data.data]));
+      // console.log(response.data.data);
+      setRepairmans((prevData)=>(pageNumber===1? response.data.data: [...prevData, ...response.data.data]));
       setPage(pageNumber + 1);
     } catch (error: any) {
       setIsError(true);
@@ -38,7 +38,7 @@ const useGetRepairmansPopular = () => {
   useEffect(() => {
     fetchRepairman(1);
   }, []);
-  return {data, isLoading, isError, fetchMore: ()=> fetchRepairman(page)};
+  return {repairmans, isLoading, isError, fetchMore: ()=> fetchRepairman(page)};
   // const {data, isLoading, isError}= useQuery({
   //   queryKey:['getRepairman'],
   //   queryFn: async()=>{
