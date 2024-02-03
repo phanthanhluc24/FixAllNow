@@ -42,9 +42,7 @@ const DetailRepairman = () => {
                     <Text style={styles.nameRepairman}>
                       Cháy bóng đèn (đèn trần)
                     </Text>
-
                     <Text style={styles.price}>120.000đ</Text>
-
                     <Text numberOfLines={2} style={styles.description}>
                       (Ổ cắm điện bị nóng và nở ra khi cắm vào lỏng...)
                     </Text>
@@ -64,7 +62,6 @@ const DetailRepairman = () => {
               <TouchableOpacity onPress={()=>navigation.navigate("RatedComment")}>
               <Text style={styles.suggest}>Xem đánh giá ngay nào!</Text>
               </TouchableOpacity>
-              
             </View>
           </View>
           <View style={styles.buttonChoose}>
