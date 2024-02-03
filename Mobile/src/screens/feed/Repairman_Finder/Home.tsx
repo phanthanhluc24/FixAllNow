@@ -40,7 +40,6 @@ const Home = () => {
       )}
     </View>
   );
-
   const renderService = () => (
     <View>
       <View style={styles.repairmanPopulars}>
