@@ -21,6 +21,7 @@ import Home from '../../screens/feed/Repairman_Finder/Home';
 // import HomeServicePopular from '../../assets/HomeServicePopular';
 import ListOfElectrician from '../../screens/ListOfElectrician';
 import DetailRepairman from '../../screens/DetailRepairman';
+import DetailService from '../../screens/DetailService';
 import RatedComment from '../../screens/RatedComment';
 const queryClient = new QueryClient();
 const Main = () => {
@@ -41,6 +42,7 @@ const Main = () => {
           <Stack.Screen name="Home" component={Home} options={{headerShown:true}}/>
           <Stack.Screen name="ListOfElectrician" component={ListOfElectrician} options={{headerShown:true}}/>
           <Stack.Screen name="DetailRepairman" component={DetailRepairman} options={{headerShown:true}}/>
+          <Stack.Screen name="DetailService" component={DetailService} options={{headerShown:true}}/>
           <Stack.Screen name="RatedComment" component={RatedComment} options={{headerShown:true}}/>
           {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
         </Stack.Navigator>

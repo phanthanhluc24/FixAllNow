@@ -3,7 +3,9 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var useGetServicePopular_1 = require("../hooks/useGetServicePopular");
+var native_1 = require("@react-navigation/native");
 var HomeServicePopular = function () {
+    var navigation = native_1.useNavigation();
     var _a = useGetServicePopular_1["default"](), services = _a.services, isLoading = _a.isLoading, isError = _a.isError;
     if (isLoading) {
         return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
@@ -17,7 +19,7 @@ var HomeServicePopular = function () {
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
         react_1["default"].createElement(react_native_1.FlatList, { data: services, keyExtractor: function (services) { return services._id; }, renderItem: function (_a) {
                 var item = _a.item;
-                return (react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
+                return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () { return navigation.navigate('DetailService', { id: item._id }); } },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img }),
                         react_1["default"].createElement(react_native_1.View, { style: styles.info },

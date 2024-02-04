@@ -11,7 +11,15 @@ import Feather from 'react-native-vector-icons/Feather';
 import axios from 'axios';
 import {url} from '../hooks/apiRequest/url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useGetCurrentUser from '../hooks/useGetCurrentUser';
 const HeaderSearch = ({onSearch}:any) => {
+  const{currentUser, isLoading, isError}= useGetCurrentUser();
+  if(isLoading){
+    <Text>loading...</Text>
+  }
+  if(isError){
+    <Text>....</Text>
+  }
   const [searchValue, setSearchValue] = useState('');
   const handleSearchChange = (text: any) => {
     setSearchValue(text);
@@ -31,7 +39,7 @@ const HeaderSearch = ({onSearch}:any) => {
       console.error('Error searching:',error);
     }
   };
-  return (
+  return(
     <View style={styles.SearchBarContainer}>
       <View style={styles.SearchInputs}>
         <View style={styles.searchInput}>
@@ -44,13 +52,11 @@ const HeaderSearch = ({onSearch}:any) => {
             <Feather name="search" color="black" size={28} />
           </TouchableOpacity>
         </View>
-
-        <Image source={require('../assets/Homes/avatar.png')} />
+        <Image source={{uri:currentUser?.image}} style={styles.images}/>
       </View>
     </View>
   );
 };
-
 export default HeaderSearch;
 const styles = StyleSheet.create({
   SearchBarContainer: {
@@ -81,4 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  images:{
+    width:50, height:50,borderRadius:100
+  }
 });

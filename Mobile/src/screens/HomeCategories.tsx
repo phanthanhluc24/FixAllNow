@@ -6,7 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import useGetCategoryService from '../hooks/useGetCategoryService';
 import {useNavigation} from '@react-navigation/native';
 interface typeCategory {
@@ -42,7 +42,7 @@ const HomeCategories = () => {
       <View style={styles.detailCategory}>
         <FlatList
           data={categories as typeCategory[]}
-          keyExtractor={category => category._id}
+          keyExtractor={categories => categories._id}
           numColumns={3}
           renderItem={({item})=>(
             <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician')}>

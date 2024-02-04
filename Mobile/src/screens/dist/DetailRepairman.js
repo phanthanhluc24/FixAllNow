@@ -2,27 +2,39 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var useGetDetailRepairman_1 = require("../hooks/useGetDetailRepairman");
 var native_1 = require("@react-navigation/native");
-var DetailRepairman = function () {
+var DetailRepairman = function (_a) {
+    var route = _a.route;
+    var id = route.params.id;
+    var _b = useGetDetailRepairman_1["default"](id), repairman = _b.repairman, isLoading = _b.isLoading, isError = _b.isError;
     var navigation = native_1.useNavigation();
+    if (isLoading) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
+    }
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.View, { style: styles.inforRepairman },
             react_1["default"].createElement(react_native_1.View, null,
                 react_1["default"].createElement(react_native_1.View, { style: styles.info },
-                    react_1["default"].createElement(react_native_1.Image, { style: styles.imgRp, source: require('../assets/DetailRepairman/AvatarRepair.png') })),
+                    react_1["default"].createElement(react_native_1.Image, { style: styles.imgRp, source: { uri: repairman === null || repairman === void 0 ? void 0 : repairman.image } })),
                 react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u00F4ng tin ca\u0301 nh\u00E2n"),
                 react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Ho\u0323 va\u0300 t\u00EAn:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, "Phan Thanh L\u01B0\u0323c")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.full_name)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Ngh\u1EC1 nghi\u1EC7p: "),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, "Chuy\u00EAn s\u01B0\u0309a \u00F4 t\u00F4")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Ngh\u1EC1 nghi\u1EC7p:"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.category_id.name)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, "08976***098")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.number_phone)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "\u0110\u1ECBa ch\u1EC9:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.content }, " L\u00EA H\u1EEFu Tr\u00E1c")),
+                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.content },
+                        ' ', repairman === null || repairman === void 0 ? void 0 :
+                        repairman.address)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.containerService },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.service }, "Di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_native_1.View, { style: { marginHorizontal: 20 } },
@@ -38,9 +50,9 @@ var DetailRepairman = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.containerTitle },
                         react_1["default"].createElement(react_native_1.View, { style: styles.rating },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titless }, "\u0110a\u0301nh gia\u0301:(30)"),
-                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate("RatedComment"); } },
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('RatedComment'); } },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titlesss }, "\u0110a\u0301nh gia\u0301 ngay!"))),
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate("RatedComment"); } },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('RatedComment'); } },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.suggest }, "Xem \u0111a\u0301nh gia\u0301 ngay na\u0300o!")))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
@@ -102,7 +114,7 @@ var styles = react_native_1.StyleSheet.create({
         color: '#FCA234',
         borderWidth: 2,
         borderRadius: 5,
-        borderColor: "#FCA234",
+        borderColor: '#FCA234',
         padding: 3
     },
     content: {
@@ -198,11 +210,11 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 20
     },
     rating: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     suggest: {
-        color: "#FCA234"
+        color: '#FCA234'
     }
 });

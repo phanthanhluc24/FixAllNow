@@ -21,6 +21,7 @@ var Home_1 = require("../../screens/feed/Repairman_Finder/Home");
 // import HomeServicePopular from '../../assets/HomeServicePopular';
 var ListOfElectrician_1 = require("../../screens/ListOfElectrician");
 var DetailRepairman_1 = require("../../screens/DetailRepairman");
+var DetailService_1 = require("../../screens/DetailService");
 var RatedComment_1 = require("../../screens/RatedComment");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
@@ -40,6 +41,7 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "Home", component: Home_1["default"], options: { headerShown: true } }),
             react_1["default"].createElement(Stack.Screen, { name: "ListOfElectrician", component: ListOfElectrician_1["default"], options: { headerShown: true } }),
             react_1["default"].createElement(Stack.Screen, { name: "DetailRepairman", component: DetailRepairman_1["default"], options: { headerShown: true } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailService", component: DetailService_1["default"], options: { headerShown: true } }),
             react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: { headerShown: true } }))));
 };
 exports["default"] = Main;
