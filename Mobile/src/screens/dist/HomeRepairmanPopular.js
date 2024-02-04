@@ -3,7 +3,9 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var useGetRepairmansPopular_1 = require("../hooks/useGetRepairmansPopular");
+var native_1 = require("@react-navigation/native");
 var HomeRepairmanPopular = function () {
+    var navigation = native_1.useNavigation();
     var _a = useGetRepairmansPopular_1["default"](), repairmans = _a.repairmans, isLoading = _a.isLoading, isError = _a.isError, fetchMore = _a.fetchMore;
     // console.log(data);
     var handleLoadMore = function () {
@@ -23,9 +25,11 @@ var HomeRepairmanPopular = function () {
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
         react_1["default"].createElement(react_native_1.FlatList, { data: repairmans, keyExtractor: function (repairmans) { return repairmans._id; }, renderItem: function (_a) {
                 var item = _a.item;
-                return (react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
+                return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
+                        return navigation.navigate('DetailRepairman', { id: item._id });
+                    } },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                        react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img }),
+                        react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img }),
                         react_1["default"].createElement(react_native_1.View, null,
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, item.full_name),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.distance }, item.number_phone),
@@ -52,7 +56,10 @@ var styles = react_native_1.StyleSheet.create({
     },
     img: {
         width: 100,
-        height: 100
+        height: 100,
+        borderWidth: 4,
+        borderColor: '#394C6D',
+        borderRadius: 100
     },
     nameRepairman: {
         fontSize: 18,

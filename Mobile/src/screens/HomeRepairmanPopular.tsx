@@ -1,6 +1,14 @@
-import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import useGetRepairmansPopular from '../hooks/useGetRepairmansPopular';
+import {useNavigation} from '@react-navigation/native';
 interface typeRepairman {
   _id: string;
   full_name: string;
@@ -8,11 +16,12 @@ interface typeRepairman {
   number_phone: number;
   address: string;
   role: string;
-  image: string;
+  avatar: string;
   password: string;
   averageStar: number;
 }
 const HomeRepairmanPopular = () => {
+  const navigation: any = useNavigation();
   const {repairmans, isLoading, isError, fetchMore} = useGetRepairmansPopular();
   // console.log(data);
   const handleLoadMore = () => {
@@ -35,21 +44,26 @@ const HomeRepairmanPopular = () => {
         data={repairmans as typeRepairman[]}
         keyExtractor={repairmans => repairmans._id}
         renderItem={({item}) => (
-          <View style={styles.repairman}>
+          <TouchableOpacity
+            style={styles.repairman}
+            onPress={() =>
+              navigation.navigate('DetailRepairman', {id: item._id})
+            }>
             <View style={styles.content}>
-              <Image source={{uri: item.image}} style={styles.img} />
+            
+              <Image source={{uri: item.avatar}} style={styles.img} />
+              
               <View>
                 <Text style={styles.nameRepairman}>{item.full_name}</Text>
                 <Text style={styles.distance}>{item.number_phone}</Text>
                 <Text>{item.averageStar}</Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
       />
-      
     </View>
   );
 };
@@ -76,6 +90,9 @@ const styles = StyleSheet.create({
   img: {
     width: 100,
     height: 100,
+    borderWidth: 4,
+    borderColor: '#394C6D',
+    borderRadius: 100,
   },
   nameRepairman: {
     fontSize: 18,

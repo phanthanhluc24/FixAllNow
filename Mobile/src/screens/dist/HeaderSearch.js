@@ -42,9 +42,17 @@ var Feather_1 = require("react-native-vector-icons/Feather");
 var axios_1 = require("axios");
 var url_1 = require("../hooks/apiRequest/url");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
+var useGetCurrentUser_1 = require("../hooks/useGetCurrentUser");
 var HeaderSearch = function (_a) {
     var onSearch = _a.onSearch;
-    var _b = react_1.useState(''), searchValue = _b[0], setSearchValue = _b[1];
+    var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
+    if (isLoading) {
+        react_1["default"].createElement(react_native_1.Text, null, "loading...");
+    }
+    if (isError) {
+        react_1["default"].createElement(react_native_1.Text, null, "....");
+    }
+    var _c = react_1.useState(''), searchValue = _c[0], setSearchValue = _c[1];
     var handleSearchChange = function (text) {
         setSearchValue(text);
     };
@@ -81,7 +89,7 @@ var HeaderSearch = function (_a) {
                 react_1["default"].createElement(react_native_1.TextInput, { value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.messageIcon, onPress: handleSearch },
                     react_1["default"].createElement(Feather_1["default"], { name: "search", color: "black", size: 28 }))),
-            react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avatar.png') }))));
+            react_1["default"].createElement(react_native_1.Image, { source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image }, style: styles.images }))));
 };
 exports["default"] = HeaderSearch;
 var styles = react_native_1.StyleSheet.create({
@@ -112,5 +120,8 @@ var styles = react_native_1.StyleSheet.create({
         height: 60,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    images: {
+        width: 50, height: 50, borderRadius: 100
     }
 });

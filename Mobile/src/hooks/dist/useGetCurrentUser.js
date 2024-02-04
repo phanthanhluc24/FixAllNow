@@ -37,45 +37,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var react_1 = require("react");
-var url_1 = require("./apiRequest/url");
 var axios_1 = require("axios");
-var useGetCategoryService = function () {
-    var _a = react_1.useState([]), categories = _a[0], setCategories = _a[1];
+var async_storage_1 = require("@react-native-async-storage/async-storage");
+var url_1 = require("./apiRequest/url");
+var useGetCurrentUser = function () {
+    var _a = react_1.useState(null), currentUser = _a[0], setCurrentUser = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
     react_1.useEffect(function () {
-        var fetchCategories = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+        var fetchCurrentUser = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var accessToken, response, _a, status, data, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, 3, 4]);
-                        return [4 /*yield*/, axios_1["default"].get(url_1.url + "/category")];
+                        _b.trys.push([0, 3, 4, 5]);
+                        return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
                     case 1:
-                        response = _a.sent();
-                        setCategories(response.data.data);
-                        return [3 /*break*/, 4];
+                        accessToken = _b.sent();
+                        return [4 /*yield*/, axios_1["default"].get(url_1.url + "/auth/currentUser", {
+                                headers: { Authorization: "Bearer " + accessToken }
+                            })];
                     case 2:
-                        error_1 = _a.sent();
-                        setIsError(true);
-                        return [3 /*break*/, 4];
+                        response = _b.sent();
+                        _a = response.data, status = _a.status, data = _a.data;
+                        if (status === 201) {
+                            setCurrentUser(data);
+                        }
+                        else {
+                            console.error('Error fetching user:', data.message);
+                            setIsError(true);
+                        }
+                        return [3 /*break*/, 5];
                     case 3:
+                        error_1 = _b.sent();
+                        console.error('Error fetching user:', error_1);
+                        setIsError(true);
+                        return [3 /*break*/, 5];
+                    case 4:
                         setIsLoading(false);
                         return [7 /*endfinally*/];
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };
-        fetchCategories();
+        fetchCurrentUser();
     }, []);
-    return { categories: categories, isLoading: isLoading, isError: isError };
-    // const {data, isLoading, isError} = useQuery({
-    //   queryKey: ['getCategory'],
-    //   queryFn: async () => {
-    //     const response = await axios.get(`${url}/category`);
-    //     return response.data.data;
-    //   },
-    // });
-    // return {data, isLoading, isError};
+    return { currentUser: currentUser, isLoading: isLoading, isError: isError };
 };
-exports["default"] = useGetCategoryService;
+exports["default"] = useGetCurrentUser;

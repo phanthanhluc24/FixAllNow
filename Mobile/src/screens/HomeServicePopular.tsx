@@ -1,6 +1,7 @@
-import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
+import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from 'react-native';
 import React from 'react';
 import useGetServicePopular from '../hooks/useGetServicePopular';
+import { useNavigation } from '@react-navigation/native';
 interface typeService {
   _id: string;
   status: string;
@@ -11,6 +12,7 @@ interface typeService {
   desc: string;
 }
 const HomeServicePopular = () => {
+  const navigation:any= useNavigation();
   const {services, isLoading, isError} = useGetServicePopular();
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -27,7 +29,7 @@ const HomeServicePopular = () => {
         data={services as typeService[]}
         keyExtractor={services => services._id}
         renderItem={({item}) => (
-          <View style={styles.repairman}>
+          <TouchableOpacity style={styles.repairman} onPress={()=>navigation.navigate('DetailService',{id:item._id})}>
             <View style={styles.content}>
               <Image source={{uri: item.image}} style={styles.img} />
               <View style={styles.info}>
@@ -38,7 +40,7 @@ const HomeServicePopular = () => {
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

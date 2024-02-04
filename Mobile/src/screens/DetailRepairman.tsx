@@ -1,34 +1,43 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-const DetailRepairman = () => {
-  const navigation:any= useNavigation();
+import React, {useState, useEffect} from 'react';
+import useGetDetailRepairman from '../hooks/useGetDetailRepairman';
+import {useNavigation} from '@react-navigation/native';
+const DetailRepairman = ({route}: any) => {
+  const {id} = route.params;
+  const {repairman, isLoading, isError} = useGetDetailRepairman(id);
+  const navigation: any = useNavigation();
+  if (isLoading ) {
+    return <Text>Loading...</Text>;
+  }
+  if (isError ) {
+    return <Text>Error loading repairman</Text>;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.inforRepairman}>
         <View>
           <View style={styles.info}>
-            <Image
-              style={styles.imgRp}
-              source={require('../assets/DetailRepairman/AvatarRepair.png')}
-            />
+            <Image style={styles.imgRp} source={{uri: repairman?.image}} />
           </View>
           <Text style={styles.title}>Thông tin cá nhân</Text>
           <View style={styles.detailInfo}>
             <Text style={styles.titles}>Họ và tên:</Text>
-            <Text style={styles.content}>Phan Thanh Lực</Text>
+            <Text style={styles.content}>{repairman?.full_name}</Text>
           </View>
           <View style={styles.detailInfo}>
-            <Text style={styles.titles}>Nghề nghiệp: </Text>
-            <Text style={styles.content}>Chuyên sửa ô tô</Text>
+            <Text style={styles.titles}>Nghề nghiệp:</Text>
+            <Text style={styles.content}>{repairman?.category_id.name}</Text>
           </View>
           <View style={styles.detailInfo}>
             <Text style={styles.titles}>Số điện thoại:</Text>
-            <Text style={styles.content}>08976***098</Text>
+            <Text style={styles.content}>{repairman?.number_phone}</Text>
           </View>
           <View style={styles.detailInfo}>
             <Text style={styles.titles}>Địa chỉ:</Text>
-            <Text style={styles.content}> Lê Hữu Trác</Text>
+            <Text numberOfLines={1} style={styles.content}>
+              {' '}
+              {repairman?.address}
+            </Text>
           </View>
           <View style={styles.containerService}>
             <Text style={styles.service}>Dịch vụ</Text>
@@ -55,12 +64,14 @@ const DetailRepairman = () => {
             <View style={styles.containerTitle}>
               <View style={styles.rating}>
                 <Text style={styles.titless}>Đánh giá:(30)</Text>
-                <TouchableOpacity onPress={()=>navigation.navigate("RatedComment")}>
-                <Text style={styles.titlesss}>Đánh giá ngay!</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('RatedComment')}>
+                  <Text style={styles.titlesss}>Đánh giá ngay!</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={()=>navigation.navigate("RatedComment")}>
-              <Text style={styles.suggest}>Xem đánh giá ngay nào!</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('RatedComment')}>
+                <Text style={styles.suggest}>Xem đánh giá ngay nào!</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -103,8 +114,8 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: '#394C6D',
     borderRadius: 100,
-    width:150,
-    height:150
+    width: 150,
+    height: 150,
   },
   title: {
     fontSize: 20,
@@ -129,13 +140,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#394C6D',
   },
-  titlesss:{
+  titlesss: {
     fontSize: 18,
     color: '#FCA234',
-    borderWidth:2,
-    borderRadius:5,
-    borderColor:"#FCA234",
-    padding:3
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#FCA234',
+    padding: 3,
   },
   content: {
     fontSize: 18,
@@ -229,12 +240,12 @@ const styles = StyleSheet.create({
   rateComment: {
     marginTop: 20,
   },
-  rating:{
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"space-between"
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  suggest:{
-    color:"#FCA234",
-  }
+  suggest: {
+    color: '#FCA234',
+  },
 });
