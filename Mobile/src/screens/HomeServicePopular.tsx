@@ -1,7 +1,14 @@
-import {StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import useGetServicePopular from '../hooks/useGetServicePopular';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 interface typeService {
   _id: string;
   status: string;
@@ -12,7 +19,7 @@ interface typeService {
   desc: string;
 }
 const HomeServicePopular = () => {
-  const navigation:any= useNavigation();
+  const navigation: any = useNavigation();
   const {services, isLoading, isError} = useGetServicePopular();
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -29,15 +36,28 @@ const HomeServicePopular = () => {
         data={services as typeService[]}
         keyExtractor={services => services._id}
         renderItem={({item}) => (
-          <TouchableOpacity style={styles.repairman} onPress={()=>navigation.navigate('DetailService',{id:item._id})}>
+          <TouchableOpacity
+            style={styles.repairman}
+            onPress={() =>
+              navigation.navigate('DetailService', {id: item._id})
+            }>
             <View style={styles.content}>
-              <Image source={{uri: item.image}} style={styles.img} />
+              <View style={styles.image}>
+                <Image source={{uri: item.image}} style={styles.img} />
+              </View>
               <View style={styles.info}>
-                <Text style={styles.nameRepairman}>{item.service_name}</Text>
-                <Text style={styles.price}>{item.price}</Text>
-                <Text numberOfLines={2} style={styles.description}>
-                  {item.desc}
-                </Text>
+                <View style={styles.infos}>
+                  <Text numberOfLines={1} style={styles.nameRepairman}>
+                    {item.service_name}
+                  </Text>
+                  <View style={styles.prices}>
+                    <Text style={styles.price}>{item.price}</Text>
+                    <Text style={styles.vnd}>vnđ</Text>
+                  </View>
+                  <Text numberOfLines={2} style={styles.description}>
+                    {item.desc}
+                  </Text>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -75,18 +95,33 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  vnd: {
+    fontSize: 18,
+    color: '#FCA234',
+  },
+  prices: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   price: {
     fontSize: 18,
-    color: '#FFFFFF',
+    color: '#FCA234',
     fontWeight: 'bold',
-    width: '50%',
+    width: 'auto',
     paddingVertical: 5,
   },
   description: {
-    width: '60%',
+    width: '100%',
     color: '#FFFFFF',
+  },
+  image: {
+    width: '30%',
   },
   info: {
     marginHorizontal: 20,
+    width: '70%',
+  },
+  infos: {
+    marginHorizontal: 10,
   },
 });

@@ -12,8 +12,12 @@ import axios from 'axios';
 import {url} from '../hooks/apiRequest/url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
+interface typeProfile{
+  _id: string;
+  image:string
+}
 const HeaderSearch = ({onSearch}:any) => {
-  const{currentUser, isLoading, isError}= useGetCurrentUser();
+  const{currentUser, isLoading, isError} = useGetCurrentUser();
   if(isLoading){
     <Text>loading...</Text>
   }

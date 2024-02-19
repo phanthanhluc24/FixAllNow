@@ -2,8 +2,12 @@ import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { url } from './apiRequest/url';
+interface typeProfile{
+    _id: string;
+    image:string
+  }
 const useGetCurrentUser = () => {
-    const[currentUser, setCurrentUser]= useState(null);
+    const[currentUser, setCurrentUser]= useState<typeProfile|null >(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     useEffect(() => {

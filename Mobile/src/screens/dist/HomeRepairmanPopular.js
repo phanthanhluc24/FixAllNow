@@ -30,10 +30,9 @@ var HomeRepairmanPopular = function () {
                     } },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img }),
-                        react_1["default"].createElement(react_native_1.View, null,
+                        react_1["default"].createElement(react_native_1.View, { style: styles.infoRepairman },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, item.full_name),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.distance }, item.number_phone),
-                            react_1["default"].createElement(react_native_1.Text, null, item.averageStar)))));
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar }, item.averageStar)))));
             }, onEndReached: handleLoadMore, onEndReachedThreshold: 0.1 })));
 };
 exports["default"] = HomeRepairmanPopular;
@@ -50,9 +49,11 @@ var styles = react_native_1.StyleSheet.create({
     },
     content: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        alignItems: "center",
         padding: 15
+    },
+    infoRepairman: {
+        marginHorizontal: 20
     },
     img: {
         width: 100,
@@ -63,8 +64,16 @@ var styles = react_native_1.StyleSheet.create({
     },
     nameRepairman: {
         fontSize: 18,
-        color: '#FFFFFF',
-        fontWeight: 'bold'
+        color: '#394C6D',
+        fontWeight: 'bold',
+        height: "50%",
+        justifyContent: "center"
+    },
+    averageStar: {
+        color: '#394C6D',
+        fontSize: 15,
+        height: "50%",
+        justifyContent: "center"
     },
     distance: {
         fontSize: 18,

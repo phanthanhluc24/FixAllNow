@@ -50,13 +50,10 @@ const HomeRepairmanPopular = () => {
               navigation.navigate('DetailRepairman', {id: item._id})
             }>
             <View style={styles.content}>
-            
               <Image source={{uri: item.avatar}} style={styles.img} />
-              
-              <View>
+              <View style={styles.infoRepairman}>
                 <Text style={styles.nameRepairman}>{item.full_name}</Text>
-                <Text style={styles.distance}>{item.number_phone}</Text>
-                <Text>{item.averageStar}</Text>
+                <Text style={styles.averageStar}>{item.averageStar}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -83,10 +80,13 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems:"center",
     padding: 15,
   },
+  infoRepairman:{
+    marginHorizontal:20,
+  },
+
   img: {
     width: 100,
     height: 100,
@@ -96,8 +96,18 @@ const styles = StyleSheet.create({
   },
   nameRepairman: {
     fontSize: 18,
-    color: '#FFFFFF',
+    color: '#394C6D',
     fontWeight: 'bold',
+    height:"50%",
+    justifyContent:"center"
+    
+  },
+  averageStar:{
+    color: '#394C6D',
+    fontSize:15,
+    height:"50%",
+    justifyContent:"center",
+   
   },
   distance: {
     fontSize: 18,
