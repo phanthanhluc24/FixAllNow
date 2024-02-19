@@ -31,8 +31,18 @@ var HomeRepairmanPopular = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img }),
                         react_1["default"].createElement(react_native_1.View, { style: styles.infoRepairman },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, item.full_name),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar }, item.averageStar)))));
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman },
+                                item.full_name,
+                                " "),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, item.averageStar < 1 ? (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
+                                    item.averageStar,
+                                    "/5"),
+                                react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require("../assets/Homes/emptyStar.png") }))) : (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
+                                    item.averageStar,
+                                    "/5"),
+                                react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require("../assets/Homes/starIcon.png") }))))))));
             }, onEndReached: handleLoadMore, onEndReachedThreshold: 0.1 })));
 };
 exports["default"] = HomeRepairmanPopular;
@@ -79,5 +89,16 @@ var styles = react_native_1.StyleSheet.create({
         fontSize: 18,
         color: '#000000',
         fontWeight: 'bold'
+    },
+    iconStar: {
+        width: 30,
+        height: 30
+    },
+    divInfo: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: 5,
+        height: 36
     }
 });

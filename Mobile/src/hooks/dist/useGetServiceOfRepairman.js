@@ -35,68 +35,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 exports.__esModule = true;
-var react_native_1 = require("react-native");
 var react_1 = require("react");
-var url_1 = require("./apiRequest/url");
-var async_storage_1 = require("@react-native-async-storage/async-storage");
 var axios_1 = require("axios");
-var useGetRepairmansPopular = function () {
-    var _a = react_1.useState([]), repairmans = _a[0], setRepairmans = _a[1];
+var async_storage_1 = require("@react-native-async-storage/async-storage");
+var url_1 = require("./apiRequest/url");
+var useGetServiceOfRepairman = function (id) {
+    // console.log(id)
+    var _a = react_1.useState([]), serviceOfRepairman = _a[0], setServiceOfRepairman = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
-    var _d = react_1.useState(1), page = _d[0], setPage = _d[1];
-    var fetchRepairman = function (pageNumber) { return __awaiter(void 0, void 0, void 0, function () {
-        var accessToken, response_1, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, 4, 5]);
-                    return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
-                case 1:
-                    accessToken = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get(url_1.url + "/user/repairmans/" + pageNumber, {
-                            headers: { Authorization: "Bearer " + accessToken }
-                        })];
-                case 2:
-                    response_1 = _a.sent();
-                    setRepairmans(function (prevData) { return (pageNumber === 1 ? response_1.data.data : __spreadArrays(prevData, response_1.data.data)); });
-                    setPage(pageNumber + 1);
-                    return [3 /*break*/, 5];
-                case 3:
-                    error_1 = _a.sent();
-                    setIsError(true);
-                    return [3 /*break*/, 5];
-                case 4:
-                    setIsLoading(false);
-                    return [7 /*endfinally*/];
-                case 5: return [2 /*return*/];
-            }
-        });
-    }); };
     react_1.useEffect(function () {
-        fetchRepairman(page);
-    }, [page]);
-    return { repairmans: repairmans, isLoading: isLoading, isError: isError, fetchMore: function () { return fetchRepairman(page); } };
-    // const {data, isLoading, isError}= useQuery({
-    //   queryKey:['getRepairman'],
-    //   queryFn: async()=>{
-    //     try{
-    //       const response= await axios.get(`${url}/user/repairmans`);
-    //       return response.data.data;
-    //     }catch(error){
-    //       throw error;
-    //     }
-    //   }
-    // })
-    // return{data, isLoading, isError};
+        var fetchServiceOfRepairman = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var accessToken, response, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, 4, 5]);
+                        return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
+                    case 1:
+                        accessToken = _a.sent();
+                        return [4 /*yield*/, axios_1["default"].get(url_1.url + "/service/repairman/detail/" + id, {
+                                headers: { Authorization: "Bearer " + accessToken }
+                            })];
+                    case 2:
+                        response = _a.sent();
+                        setServiceOfRepairman(response.data.data);
+                        return [3 /*break*/, 5];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.error('Error fetching service of repairman:', error_1);
+                        setIsError(true);
+                        return [3 /*break*/, 5];
+                    case 4:
+                        setIsLoading(false);
+                        return [7 /*endfinally*/];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); };
+        fetchServiceOfRepairman();
+    }, []);
+    return { serviceOfRepairman: serviceOfRepairman, isLoading: isLoading, isError: isError };
 };
-exports["default"] = useGetRepairmansPopular;
-var styles = react_native_1.StyleSheet.create({});
+exports["default"] = useGetServiceOfRepairman;

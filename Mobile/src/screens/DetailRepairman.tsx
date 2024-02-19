@@ -1,19 +1,40 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ScrollView
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import useGetDetailRepairman from '../hooks/useGetDetailRepairman';
+import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import {useNavigation} from '@react-navigation/native';
+interface typeService {
+  _id: string;
+  status: string;
+  user_id: string;
+  service_name: string;
+  price: number;
+  image: string;
+  desc: string;
+}
 const DetailRepairman = ({route}: any) => {
   const {id} = route.params;
+  // console.log(id);
   const {repairman, isLoading, isError} = useGetDetailRepairman(id);
+  const {serviceOfRepairman} = useGetServiceOfRepairman(id);
+  console.log(serviceOfRepairman);
   const navigation: any = useNavigation();
-  if (isLoading ) {
+  if (isLoading) {
     return <Text>Loading...</Text>;
   }
-  if (isError ) {
+  if (isError) {
     return <Text>Error loading repairman</Text>;
   }
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.inforRepairman}>
         <View>
           <View style={styles.info}>
@@ -42,22 +63,31 @@ const DetailRepairman = ({route}: any) => {
           <View style={styles.containerService}>
             <Text style={styles.service}>Dịch vụ</Text>
             <View style={{marginHorizontal: 20}}>
-              <View style={styles.repairman}>
-                <View style={styles.contents}>
-                  <View style={styles.imgSer}>
-                    <Image source={require('../assets/Homes/avartarss.png')} />
+              <FlatList
+                data={serviceOfRepairman as typeService[]}
+                keyExtractor={services => services._id}
+                renderItem={({item}) => (
+                  <View style={styles.repairman}>
+                    <View style={styles.contents}>
+                      <View style={styles.imgSer}>
+                        <Image source={{uri: item.image}} style={styles.img} />
+                      </View>
+                      <View style={styles.infos}>
+                        <Text numberOfLines={1} style={styles.nameRepairman}>
+                          {item.service_name}
+                        </Text>
+                        <View style={styles.prices}>
+                          <Text style={styles.price}>{item.price}</Text>
+                          <Text style={styles.vnd}>vnđ</Text>
+                        </View>
+                        <Text numberOfLines={2} style={styles.description}>
+                          {item.desc}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                  <View style={styles.infos}>
-                    <Text style={styles.nameRepairman}>
-                      Cháy bóng đèn (đèn trần)
-                    </Text>
-                    <Text style={styles.price}>120.000đ</Text>
-                    <Text numberOfLines={2} style={styles.description}>
-                      (Ổ cắm điện bị nóng và nở ra khi cắm vào lỏng...)
-                    </Text>
-                  </View>
-                </View>
-              </View>
+                )}
+              />
             </View>
           </View>
           <View style={styles.rateComment}>
@@ -92,7 +122,7 @@ const DetailRepairman = ({route}: any) => {
         </View>
       </View>
       <View style={styles.listService}></View>
-    </View>
+    </ScrollView>
   );
 };
 export default DetailRepairman;
@@ -179,23 +209,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  img: {
+    width: 100,
+    height: 100,
+  },
   infos: {
     width: '60%',
     justifyContent: 'center',
   },
   nameRepairman: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#394C6D',
   },
   price: {
     color: '#FCA234',
-    fontSize: 14,
+    fontSize: 18,
     paddingVertical: 10,
     fontWeight: 'bold',
   },
+  vnd: {
+    fontSize: 18,
+    color: '#FCA234',
+  },
+  prices: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   description: {
-    fontSize: 10,
     color: '#394C6D',
   },
   buttonChoose: {

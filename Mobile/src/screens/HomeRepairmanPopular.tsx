@@ -52,8 +52,20 @@ const HomeRepairmanPopular = () => {
             <View style={styles.content}>
               <Image source={{uri: item.avatar}} style={styles.img} />
               <View style={styles.infoRepairman}>
-                <Text style={styles.nameRepairman}>{item.full_name}</Text>
-                <Text style={styles.averageStar}>{item.averageStar}</Text>
+                <Text style={styles.nameRepairman}>{item.full_name} </Text>    
+                <View style={styles.divInfo}>
+                  {item.averageStar<1?(
+                    <>
+                    <Text style={styles.averageStar}>{item.averageStar}/5</Text>
+                    <Image style={styles.iconStar} source={require("../assets/Homes/emptyStar.png")}/>
+                    </>
+                  ):(
+                    <>
+                    <Text style={styles.averageStar}>{item.averageStar}/5</Text>
+                    <Image style={styles.iconStar} source={require("../assets/Homes/starIcon.png")}/>
+                    </>
+                  )}
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -114,4 +126,15 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontWeight: 'bold',
   },
+  iconStar:{
+    width:30,
+    height:30
+  },
+  divInfo:{
+    flexDirection:"row",
+    justifyContent:"flex-start",
+    alignItems:"center",
+    gap:5,
+    height:36
+  }
 });

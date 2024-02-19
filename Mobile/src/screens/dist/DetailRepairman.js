@@ -3,11 +3,15 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var useGetDetailRepairman_1 = require("../hooks/useGetDetailRepairman");
+var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var native_1 = require("@react-navigation/native");
 var DetailRepairman = function (_a) {
     var route = _a.route;
     var id = route.params.id;
+    // console.log(id);
     var _b = useGetDetailRepairman_1["default"](id), repairman = _b.repairman, isLoading = _b.isLoading, isError = _b.isError;
+    var serviceOfRepairman = useGetServiceOfRepairman_1["default"](id).serviceOfRepairman;
+    console.log(serviceOfRepairman);
     var navigation = native_1.useNavigation();
     if (isLoading) {
         return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
@@ -15,7 +19,7 @@ var DetailRepairman = function (_a) {
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
     }
-    return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
+    return (react_1["default"].createElement(react_native_1.ScrollView, { style: styles.container },
         react_1["default"].createElement(react_native_1.View, { style: styles.inforRepairman },
             react_1["default"].createElement(react_native_1.View, null,
                 react_1["default"].createElement(react_native_1.View, { style: styles.info },
@@ -38,14 +42,19 @@ var DetailRepairman = function (_a) {
                 react_1["default"].createElement(react_native_1.View, { style: styles.containerService },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.service }, "Di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_native_1.View, { style: { marginHorizontal: 20 } },
-                        react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
-                            react_1["default"].createElement(react_native_1.View, { style: styles.contents },
-                                react_1["default"].createElement(react_native_1.View, { style: styles.imgSer },
-                                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avartarss.png') })),
-                                react_1["default"].createElement(react_native_1.View, { style: styles.infos },
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, "Ch\u00E1y b\u00F3ng \u0111\u00E8n (\u0111\u00E8n tr\u1EA7n)"),
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "120.000\u0111"),
-                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, "(\u1ED4 c\u1EAFm \u0111i\u1EC7n b\u1ECB n\u00F3ng v\u00E0 n\u1EDF ra khi c\u1EAFm v\u00E0o l\u1ECFng...)")))))),
+                        react_1["default"].createElement(react_native_1.FlatList, { data: serviceOfRepairman, keyExtractor: function (services) { return services._id; }, renderItem: function (_a) {
+                                var item = _a.item;
+                                return (react_1["default"].createElement(react_native_1.View, { style: styles.repairman },
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.contents },
+                                        react_1["default"].createElement(react_native_1.View, { style: styles.imgSer },
+                                            react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
+                                        react_1["default"].createElement(react_native_1.View, { style: styles.infos },
+                                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, item.service_name),
+                                            react_1["default"].createElement(react_native_1.View, { style: styles.prices },
+                                                react_1["default"].createElement(react_native_1.Text, { style: styles.price }, item.price),
+                                                react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, "vn\u0111")),
+                                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
+                            } }))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.rateComment },
                     react_1["default"].createElement(react_native_1.View, { style: styles.containerTitle },
                         react_1["default"].createElement(react_native_1.View, { style: styles.rating },
@@ -148,23 +157,34 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    img: {
+        width: 100,
+        height: 100
+    },
     infos: {
         width: '60%',
         justifyContent: 'center'
     },
     nameRepairman: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#394C6D'
     },
     price: {
         color: '#FCA234',
-        fontSize: 14,
+        fontSize: 18,
         paddingVertical: 10,
         fontWeight: 'bold'
     },
+    vnd: {
+        fontSize: 18,
+        color: '#FCA234'
+    },
+    prices: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     description: {
-        fontSize: 10,
         color: '#394C6D'
     },
     buttonChoose: {

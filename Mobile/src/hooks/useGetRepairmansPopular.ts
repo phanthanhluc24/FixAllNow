@@ -23,10 +23,9 @@ const useGetRepairmansPopular = () => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
       // console.log(accessToken);
-      const response = await axios.get(`${url}/user/repairmans/${page}`, {
+      const response = await axios.get(`${url}/user/repairmans/${pageNumber}`, {
         headers: {Authorization: `Bearer ${accessToken}`},
       });
-      // console.log(response.data.data);
       setRepairmans((prevData)=>(pageNumber===1? response.data.data: [...prevData, ...response.data.data]));
       setPage(pageNumber + 1);
     } catch (error: any) {
@@ -36,8 +35,8 @@ const useGetRepairmansPopular = () => {
     }
   };
   useEffect(() => {
-    fetchRepairman(1);
-  }, []);
+    fetchRepairman(page);
+  }, [page]);
   return {repairmans, isLoading, isError, fetchMore: ()=> fetchRepairman(page)};
   // const {data, isLoading, isError}= useQuery({
   //   queryKey:['getRepairman'],

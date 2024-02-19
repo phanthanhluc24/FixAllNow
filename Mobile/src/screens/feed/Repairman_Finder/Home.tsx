@@ -52,6 +52,7 @@ const Home = () => {
   );
   return (
     <View style={styles.container}>
+      
       {isSearching ? (
         <ListServiceSearch data={searchData} />
       ) : (

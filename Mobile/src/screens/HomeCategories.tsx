@@ -45,9 +45,9 @@ const HomeCategories = () => {
           keyExtractor={categories => categories._id}
           numColumns={3}
           renderItem={({item})=>(
-            <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician')}>
+            <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician',{id:item._id})}>
               <View style={styles.imgCategory}>
-              <Image source={{uri:item.image}} style={styles.img}/>
+              <Image source={{uri:item.image}} style={styles.img} blurRadius={0}/>
               </View>
               <View style={styles.nameCategory}>
               <Text numberOfLines={1} style={styles.titleCategory}>{item.name}</Text>
@@ -65,6 +65,7 @@ export default HomeCategories;
 const styles = StyleSheet.create({
   containerCategory: {
     flex: 1,
+    backgroundColor:"#fff"
   },
   container: {
     marginHorizontal: 20,
@@ -117,22 +118,26 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   img:{
-    width:80,
-    height:80,
+    width:35,
+    height:35,
     // resizeMode: 'cover',
-    borderRadius:50,
-    borderWidth:2,
-    borderColor:"black"
+    borderRadius:40,
+    // borderWidth:2,
+    // borderColor:"black"
   },
   nameCategory:{
     alignItems:"center",
     justifyContent:"center"
   },
   imgCategory:{
-    width:80,
-    height:80,
-    borderRadius:100,
-    
+    width:63,
+    height:63,
+    borderRadius:50,
+    borderColor:"#000",
+    borderWidth:1,
+    flexDirection:"row",
+    justifyContent:"center",
+    alignItems:"center"
 
   },
   error:{
