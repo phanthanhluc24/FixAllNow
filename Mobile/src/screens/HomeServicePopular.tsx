@@ -22,7 +22,7 @@ const HomeServicePopular = () => {
   const navigation: any = useNavigation();
   const {services, isLoading, isError} = useGetServicePopular();
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text style={styles.loadingText}>Loading...</Text>;
   }
   if (services.length === 0) {
     return <Text>Services not available!</Text>;
@@ -39,7 +39,7 @@ const HomeServicePopular = () => {
           <TouchableOpacity
             style={styles.repairman}
             onPress={() =>
-              navigation.navigate('DetailService', {id: item._id})
+              navigation.navigate('DetailService', {id: item._id,title:item.service_name})
             }>
             <View style={styles.content}>
               <View style={styles.image}>
@@ -51,8 +51,8 @@ const HomeServicePopular = () => {
                     {item.service_name}
                   </Text>
                   <View style={styles.prices}>
-                    <Text style={styles.price}>{item.price}</Text>
-                    <Text style={styles.vnd}>vnđ</Text>
+                    <Text style={styles.price}>{item.price.toLocaleString("vi-VN")}</Text>
+                    <Text style={styles.vnd}> VND</Text>
                   </View>
                   <Text numberOfLines={2} style={styles.description}>
                     {item.desc}
@@ -123,5 +123,12 @@ const styles = StyleSheet.create({
   },
   infos: {
     marginHorizontal: 10,
-  },
+  },loadingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 10,
+  }
+
 });

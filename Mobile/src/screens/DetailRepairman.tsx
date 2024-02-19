@@ -28,7 +28,7 @@ const DetailRepairman = ({route}: any) => {
   console.log(serviceOfRepairman);
   const navigation: any = useNavigation();
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text style={styles.loadingText}>Loading...</Text>;
   }
   if (isError) {
     return <Text>Error loading repairman</Text>;
@@ -42,15 +42,15 @@ const DetailRepairman = ({route}: any) => {
           </View>
           <Text style={styles.title}>Thông tin cá nhân</Text>
           <View style={styles.detailInfo}>
-            <Text style={styles.titles}>Họ và tên:</Text>
+            <Text style={styles.titles}>Họ và tên: </Text>
             <Text style={styles.content}>{repairman?.full_name}</Text>
           </View>
           <View style={styles.detailInfo}>
-            <Text style={styles.titles}>Nghề nghiệp:</Text>
+            <Text style={styles.titles}>Nghề nghiệp: </Text>
             <Text style={styles.content}>{repairman?.category_id.name}</Text>
           </View>
           <View style={styles.detailInfo}>
-            <Text style={styles.titles}>Số điện thoại:</Text>
+            <Text style={styles.titles}>Số điện thoại: </Text>
             <Text style={styles.content}>{repairman?.number_phone}</Text>
           </View>
           <View style={styles.detailInfo}>
@@ -67,7 +67,9 @@ const DetailRepairman = ({route}: any) => {
                 data={serviceOfRepairman as typeService[]}
                 keyExtractor={services => services._id}
                 renderItem={({item}) => (
-                  <View style={styles.repairman}>
+                  <TouchableOpacity style={styles.repairman} onPress={() =>
+                    navigation.navigate('DetailService', {id: item._id,title:item.service_name})
+                  }>
                     <View style={styles.contents}>
                       <View style={styles.imgSer}>
                         <Image source={{uri: item.image}} style={styles.img} />
@@ -77,15 +79,15 @@ const DetailRepairman = ({route}: any) => {
                           {item.service_name}
                         </Text>
                         <View style={styles.prices}>
-                          <Text style={styles.price}>{item.price}</Text>
-                          <Text style={styles.vnd}>vnđ</Text>
+                          <Text style={styles.price}>{item.price.toLocaleString("vi-VN")}</Text>
+                          <Text style={styles.vnd}> VND</Text>
                         </View>
                         <Text numberOfLines={2} style={styles.description}>
                           {item.desc}
                         </Text>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 )}
               />
             </View>
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#394C6D',
     paddingHorizontal: 20,
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
   },
   service: {
     marginHorizontal: 20,
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: 'bold',
     color: '#394C6D',
   },
@@ -289,4 +291,11 @@ const styles = StyleSheet.create({
   suggest: {
     color: '#FCA234',
   },
+  loadingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 10,
+  }
 });

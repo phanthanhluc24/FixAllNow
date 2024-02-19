@@ -11,7 +11,7 @@ var ListOfElectrician = function (_a) {
     var _b = useGetListRepairmanOfCategorySpecific_1["default"](id), listRepairmanOfCategory = _b.listRepairmanOfCategory, isLoading = _b.isLoading, isError = _b.isError;
     // console.log(listRepairmanOfCategory);
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
+        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
@@ -108,5 +108,12 @@ var styles = react_native_1.StyleSheet.create({
         fontSize: 18,
         color: '#FFFFFF',
         fontWeight: 'bold'
+    },
+    loadingText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'gray',
+        textAlign: 'center',
+        marginTop: 10
     }
 });

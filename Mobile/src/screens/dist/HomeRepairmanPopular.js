@@ -14,7 +14,7 @@ var HomeRepairmanPopular = function () {
         }
     };
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
+        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
@@ -32,7 +32,7 @@ var HomeRepairmanPopular = function () {
         react_1["default"].createElement(react_native_1.FlatList, { data: repairmans, keyExtractor: function (repairmans) { return repairmans._id; }, renderItem: function (_a) {
                 var item = _a.item;
                 return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
-                        return navigation.navigate('DetailRepairman', { id: item._id });
+                        return navigation.navigate('DetailRepairman', { id: item._id, title: item.full_name });
                     } },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img }),
@@ -128,5 +128,12 @@ var styles = react_native_1.StyleSheet.create({
     },
     currentPageButtonText: {
         color: 'white'
+    },
+    loadingText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'gray',
+        textAlign: 'center',
+        marginTop: 10
     }
 });

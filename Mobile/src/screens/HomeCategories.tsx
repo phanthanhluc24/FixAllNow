@@ -18,7 +18,7 @@ const HomeCategories = () => {
   const navigation:any= useNavigation();
   const {categories, isLoading, isError} = useGetCategoryService();
   if (isLoading) {
-    return <Text style={{marginHorizontal:20}}>Loading...</Text>;
+    return <Text style={styles.loadingText}>Loading...</Text>;
   }
   if (isError) {
     return <Text style={styles.error}>Error loading categories</Text>;
@@ -45,7 +45,7 @@ const HomeCategories = () => {
           keyExtractor={categories => categories._id}
           numColumns={3}
           renderItem={({item})=>(
-            <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician',{id:item._id})}>
+            <TouchableOpacity style={styles.category} onPress={()=>navigation.navigate('ListOfElectrician',{id:item._id, title:item.name})}>
               <View style={styles.imgCategory}>
               <Image source={{uri:item.image}} style={styles.img} blurRadius={0}/>
               </View>
@@ -141,6 +141,14 @@ const styles = StyleSheet.create({
 
   },
   error:{
+    marginHorizontal:20
+  },
+  loadingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 10,
     marginHorizontal:20
   }
 });

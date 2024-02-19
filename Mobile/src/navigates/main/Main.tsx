@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DrawerNavigator from './DrawerNavigator';
 import {NavigationContainer} from '@react-navigation/native';
@@ -27,27 +27,83 @@ const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
   return (
-      <QueryClientProvider client={queryClient}>
-        <Stack.Navigator>
-          {/* <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
+    <QueryClientProvider client={queryClient}>
+      <Stack.Navigator>
+        {/* <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
           <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
           <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/> */}
-          <Stack.Screen name="Root" component={DrawerNavigator} options={{headerShown:false}}/>
-          <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
-          <Stack.Screen name="SelectRole" component={SelectRole} options={{ headerShown: false }} />
-          <Stack.Screen name="ConfirmCode" component={ConfirmCode} options={{headerShown:false}}/>
-          <Stack.Screen name="ConfirmTypeRepairman" component={ConfirmTypeRepairman} options={{headerShown:false}}/>
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false}}/>
-          <Stack.Screen name="NewPassword" component={NewPassword} options={{headerShown:false}}/>
-          <Stack.Screen name="Home" component={Home} options={{headerShown:true}}/>
-          <Stack.Screen name="ListOfElectrician" component={ListOfElectrician} options={{headerShown:true}}/>
-          <Stack.Screen name="DetailRepairman" component={DetailRepairman} options={{headerShown:true}}/>
-          <Stack.Screen name="DetailService" component={DetailService} options={{headerShown:true}}/>
-          <Stack.Screen name="RatedComment" component={RatedComment} options={{headerShown:true}}/>
-          {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
-        </Stack.Navigator>
-      </QueryClientProvider>
-   
-  )
-}
+        <Stack.Screen
+          name="Root"
+          component={DrawerNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SelectRole"
+          component={SelectRole}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ConfirmCode"
+          component={ConfirmCode}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ConfirmTypeRepairman"
+          component={ConfirmTypeRepairman}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="NewPassword"
+          component={NewPassword}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: true}}
+        />
+        <Stack.Screen
+          name="ListOfElectrician"
+          component={ListOfElectrician}
+          options={({ route }:any) => ({ 
+            headerShown: true,
+            headerTitle: `Danh Sách Thợ ${route.params?.title}`, // Nối "Danh Sách Các Thợ" với prop title
+          })}
+        />
+        <Stack.Screen
+          name="DetailRepairman"
+          component={DetailRepairman}
+          options={({ route }:any) => ({ 
+            headerShown: true,
+            headerTitle: `${route.params?.title}`, // Nối "Danh Sách Các Thợ" với prop title
+          })}
+        />
+        <Stack.Screen
+          name="DetailService"
+          component={DetailService}
+          options={({ route }:any) => ({ 
+            headerShown: true,
+            headerTitle: `${route.params?.title}`, // Nối "Danh Sách Các Thợ" với prop title
+          })}
+        />
+        <Stack.Screen
+          name="RatedComment"
+          component={RatedComment}
+          options={{headerShown: true}}
+        />
+        {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
+      </Stack.Navigator>
+    </QueryClientProvider>
+  );
+};
 export default Main;

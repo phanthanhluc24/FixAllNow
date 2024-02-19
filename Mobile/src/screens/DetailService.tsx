@@ -5,7 +5,7 @@ const DetailService = ({route}:any) => {
     const{id}= route.params;
     const {service, isLoading, isError}= useGetDetailService(id)
     if (isLoading ) {
-        return <Text>Loading...</Text>;
+        return <Text style={styles.loadingText}>Loading...</Text>;
       }
       if (isError ) {
         return <Text>Error loading repairman</Text>;
@@ -14,7 +14,7 @@ const DetailService = ({route}:any) => {
     <View>
         <Image source={{uri:service?.image}} style={styles.imageSer}/>
       <Text>{service?.service_name}</Text>
-      <Text>{service?.price}</Text>
+      <Text>{service?.price.toLocaleString("vi-VN")}{" VND"}</Text>
       <Text>{service?.desc}</Text>
     </View>
   )
@@ -29,5 +29,12 @@ const styles = StyleSheet.create({
         borderRadius:100,
         borderWidth:2,
         borderColor:"#394C6D",
+    },
+    loadingText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: 'gray',
+      textAlign: 'center',
+      marginTop: 10,
     }
 })

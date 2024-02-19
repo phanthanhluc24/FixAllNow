@@ -27,7 +27,11 @@ const ListOfElectrician = ({route}: any) => {
     useGetListRepairmanOfCategorySpecific(id);
   // console.log(listRepairmanOfCategory);
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text
+      style={styles.loadingText}
+    >
+      Loading...
+    </Text>
   }
   if (isError) {
     return <Text>Error loading repairman</Text>;
@@ -153,4 +157,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  loadingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 10,
+  }
 });

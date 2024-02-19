@@ -32,9 +32,30 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "ForgotPassword", component: ForgotPassword_1["default"], options: { headerShown: false } }),
             react_1["default"].createElement(Stack.Screen, { name: "NewPassword", component: NewPassword_1["default"], options: { headerShown: false } }),
             react_1["default"].createElement(Stack.Screen, { name: "Home", component: Home_1["default"], options: { headerShown: true } }),
-            react_1["default"].createElement(Stack.Screen, { name: "ListOfElectrician", component: ListOfElectrician_1["default"], options: { headerShown: true } }),
-            react_1["default"].createElement(Stack.Screen, { name: "DetailRepairman", component: DetailRepairman_1["default"], options: { headerShown: true } }),
-            react_1["default"].createElement(Stack.Screen, { name: "DetailService", component: DetailService_1["default"], options: { headerShown: true } }),
+            react_1["default"].createElement(Stack.Screen, { name: "ListOfElectrician", component: ListOfElectrician_1["default"], options: function (_a) {
+                    var _b;
+                    var route = _a.route;
+                    return ({
+                        headerShown: true,
+                        headerTitle: "Danh S\u00E1ch Th\u1EE3 " + ((_b = route.params) === null || _b === void 0 ? void 0 : _b.title)
+                    });
+                } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailRepairman", component: DetailRepairman_1["default"], options: function (_a) {
+                    var _b;
+                    var route = _a.route;
+                    return ({
+                        headerShown: true,
+                        headerTitle: "" + ((_b = route.params) === null || _b === void 0 ? void 0 : _b.title)
+                    });
+                } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailService", component: DetailService_1["default"], options: function (_a) {
+                    var _b;
+                    var route = _a.route;
+                    return ({
+                        headerShown: true,
+                        headerTitle: "" + ((_b = route.params) === null || _b === void 0 ? void 0 : _b.title)
+                    });
+                } }),
             react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: { headerShown: true } }))));
 };
 exports["default"] = Main;

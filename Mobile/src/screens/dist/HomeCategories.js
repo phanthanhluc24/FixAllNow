@@ -8,7 +8,7 @@ var HomeCategories = function () {
     var navigation = native_1.useNavigation();
     var _a = useGetCategoryService_1["default"](), categories = _a.categories, isLoading = _a.isLoading, isError = _a.isError;
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, { style: { marginHorizontal: 20 } }, "Loading...");
+        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, { style: styles.error }, "Error loading categories");
@@ -24,7 +24,7 @@ var HomeCategories = function () {
         react_1["default"].createElement(react_native_1.View, { style: styles.detailCategory },
             react_1["default"].createElement(react_native_1.FlatList, { data: categories, keyExtractor: function (categories) { return categories._id; }, numColumns: 3, renderItem: function (_a) {
                     var item = _a.item;
-                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician', { id: item._id }); } },
+                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician', { id: item._id, title: item.name }); } },
                         react_1["default"].createElement(react_native_1.View, { style: styles.imgCategory },
                             react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img, blurRadius: 0 })),
                         react_1["default"].createElement(react_native_1.View, { style: styles.nameCategory },
@@ -108,6 +108,14 @@ var styles = react_native_1.StyleSheet.create({
         alignItems: "center"
     },
     error: {
+        marginHorizontal: 20
+    },
+    loadingText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'gray',
+        textAlign: 'center',
+        marginTop: 10,
         marginHorizontal: 20
     }
 });

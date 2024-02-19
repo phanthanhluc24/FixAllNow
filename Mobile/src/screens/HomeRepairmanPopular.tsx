@@ -31,7 +31,7 @@ const HomeRepairmanPopular = () => {
     }
   };
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text style={styles.loadingText}>Loading...</Text>;
   }
   if (isError) {
     return <Text>Error loading categories</Text>;
@@ -56,7 +56,7 @@ const HomeRepairmanPopular = () => {
           <TouchableOpacity
             style={styles.repairman}
             onPress={() =>
-              navigation.navigate('DetailRepairman', {id: item._id})
+              navigation.navigate('DetailRepairman', {id: item._id,title:item.full_name})
             }>
             <View style={styles.content}>
               <Image source={{uri: item.avatar}} style={styles.img} />
@@ -182,4 +182,11 @@ const styles = StyleSheet.create({
   currentPageButtonText: {
     color: 'white', // Màu chữ trắng
   },
+  loadingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'gray',
+    textAlign: 'center',
+    marginTop: 10,
+  }
 });
