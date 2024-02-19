@@ -14,20 +14,20 @@ interface typeRepairman {
   password: string;
   averageStar: number;
 }
-const useGetRepairmansPopular = () => {
+const useGetRepairmansPopular = (currentPage:number) => {
   const [repairmans, setRepairmans] = useState<typeRepairman[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [page, setPage] = useState(1);
-  const fetchRepairman = async (pageNumber: number) => {
+  const [totalRepairman,setTotalRepairman]=useState(0)
+  const fetchRepairman = async () => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
-      // console.log(accessToken);
-      const response = await axios.get(`${url}/user/repairmans/${pageNumber}`, {
+      const response = await axios.get(`${url}/user/repairmans/${currentPage}`, {
         headers: {Authorization: `Bearer ${accessToken}`},
       });
-      setRepairmans((prevData)=>(pageNumber===1? response.data.data: [...prevData, ...response.data.data]));
-      setPage(pageNumber + 1);
+      setRepairmans(response.data.data);
+      setTotalRepairman(response.data.total)
     } catch (error: any) {
       setIsError(true);
     } finally {
@@ -35,21 +35,8 @@ const useGetRepairmansPopular = () => {
     }
   };
   useEffect(() => {
-    fetchRepairman(page);
-  }, [page]);
-  return {repairmans, isLoading, isError, fetchMore: ()=> fetchRepairman(page)};
-  // const {data, isLoading, isError}= useQuery({
-  //   queryKey:['getRepairman'],
-  //   queryFn: async()=>{
-  //     try{
-  //       const response= await axios.get(`${url}/user/repairmans`);
-  //       return response.data.data;
-  //     }catch(error){
-  //       throw error;
-  //     }
-  //   }
-  // })
-  // return{data, isLoading, isError};
+    fetchRepairman();
+  }, [currentPage]);
+  return {repairmans,totalRepairman, isLoading, isError, fetchMore: ()=> fetchRepairman()};
 };
 export default useGetRepairmansPopular;
-const styles = StyleSheet.create({});
