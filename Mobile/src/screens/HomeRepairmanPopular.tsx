@@ -6,7 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import useGetRepairmansPopular from '../hooks/useGetRepairmansPopular';
 import {useNavigation} from '@react-navigation/native';
 interface typeRepairman {
@@ -22,8 +22,9 @@ interface typeRepairman {
 }
 const HomeRepairmanPopular = () => {
   const navigation: any = useNavigation();
-  const {repairmans, isLoading, isError, fetchMore} = useGetRepairmansPopular();
-  // console.log(data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const {repairmans, totalRepairman, isLoading, isError, fetchMore} =
+    useGetRepairmansPopular(currentPage);
   const handleLoadMore = () => {
     if (!isLoading) {
       fetchMore();
@@ -38,6 +39,14 @@ const HomeRepairmanPopular = () => {
   if (repairmans.length === 0) {
     return <Text>No repairmen available</Text>;
   }
+
+  //pagination repairman
+  const pageSize = 10;
+  const totalPages = Math.ceil(totalRepairman / pageSize);
+
+  const handelChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <View style={styles.containerRepairman}>
       <FlatList
@@ -52,17 +61,27 @@ const HomeRepairmanPopular = () => {
             <View style={styles.content}>
               <Image source={{uri: item.avatar}} style={styles.img} />
               <View style={styles.infoRepairman}>
-                <Text style={styles.nameRepairman}>{item.full_name} </Text>    
+                <Text style={styles.nameRepairman}>{item.full_name} </Text>
                 <View style={styles.divInfo}>
-                  {item.averageStar<1?(
+                  {item.averageStar < 1 ? (
                     <>
-                    <Text style={styles.averageStar}>{item.averageStar}/5</Text>
-                    <Image style={styles.iconStar} source={require("../assets/Homes/emptyStar.png")}/>
+                      <Text style={styles.averageStar}>
+                        {item.averageStar}/5
+                      </Text>
+                      <Image
+                        style={styles.iconStar}
+                        source={require('../assets/Homes/emptyStar.png')}
+                      />
                     </>
-                  ):(
+                  ) : (
                     <>
-                    <Text style={styles.averageStar}>{item.averageStar}/5</Text>
-                    <Image style={styles.iconStar} source={require("../assets/Homes/starIcon.png")}/>
+                      <Text style={styles.averageStar}>
+                        {item.averageStar}/5
+                      </Text>
+                      <Image
+                        style={styles.iconStar}
+                        source={require('../assets/Homes/starIcon.png')}
+                      />
                     </>
                   )}
                 </View>
@@ -73,6 +92,14 @@ const HomeRepairmanPopular = () => {
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
       />
+
+      <View style={styles.paginationContainer}>
+        {Array.from({length: totalPages}, (_, i) => i + 1).map(page => (
+          <TouchableOpacity key={page} onPress={() => handelChangePage(page)} style={[styles.paginationButton, currentPage === page && styles.currentPageButton]}>
+           <Text style={[styles.paginationButtonText, currentPage === page && styles.currentPageButtonText]}>{page}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 };
@@ -92,11 +119,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    alignItems:"center",
+    alignItems: 'center',
     padding: 15,
   },
-  infoRepairman:{
-    marginHorizontal:20,
+  infoRepairman: {
+    marginHorizontal: 20,
   },
 
   img: {
@@ -110,31 +137,49 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#394C6D',
     fontWeight: 'bold',
-    height:"50%",
-    justifyContent:"center"
-    
+    height: '50%',
+    justifyContent: 'center',
   },
-  averageStar:{
+  averageStar: {
     color: '#394C6D',
-    fontSize:15,
-    height:"50%",
-    justifyContent:"center",
-   
+    fontSize: 15,
+    height: '50%',
+    justifyContent: 'center',
   },
   distance: {
     fontSize: 18,
     color: '#000000',
     fontWeight: 'bold',
   },
-  iconStar:{
-    width:30,
-    height:30
+  iconStar: {
+    width: 30,
+    height: 30,
   },
-  divInfo:{
-    flexDirection:"row",
-    justifyContent:"flex-start",
-    alignItems:"center",
-    gap:5,
-    height:36
-  }
+  divInfo: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 5,
+    height: 36,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop:10
+  },
+  paginationButton: {
+    marginHorizontal: 5,
+    padding: 10,
+    backgroundColor: '#DDDDDD',
+    borderRadius: 5,
+  },
+  paginationButtonText: {
+    fontSize: 16,
+  },
+  currentPageButton: {
+    backgroundColor: 'orange', // Màu cam
+  },
+  currentPageButtonText: {
+    color: 'white', // Màu chữ trắng
+  },
 });
