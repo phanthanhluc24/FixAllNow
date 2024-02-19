@@ -3,25 +3,75 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
-var ListOfElectrician = function () {
+var useGetListRepairmanOfCategorySpecific_1 = require("../hooks/useGetListRepairmanOfCategorySpecific");
+var ListOfElectrician = function (_a) {
+    var route = _a.route;
+    var id = route.params.id;
     var navigation = native_1.useNavigation();
+    var _b = useGetListRepairmanOfCategorySpecific_1["default"](id), listRepairmanOfCategory = _b.listRepairmanOfCategory, isLoading = _b.isLoading, isError = _b.isError;
+    // console.log(listRepairmanOfCategory);
+    if (isLoading) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Loading...");
+    }
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
-            react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () { return navigation.navigate('DetailRepairman'); } },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                        react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avartarss.png'), style: styles.img }),
-                        react_1["default"].createElement(react_native_1.View, null,
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman }, "Phan Thanh L\u01B0\u0323c"),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.distance }, "2.5 km"),
-                            react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/rate.png') }))))))));
+            react_1["default"].createElement(react_native_1.View, null,
+                react_1["default"].createElement(react_native_1.FlatList, { data: listRepairmanOfCategory, keyExtractor: function (repairman) { return repairman._id; }, renderItem: function (_a) {
+                        var item = _a.item;
+                        return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
+                                return navigation.navigate('DetailRepairman', { id: item._id });
+                            } },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.imgRepairman },
+                                    react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
+                                react_1["default"].createElement(react_native_1.View, { style: styles.infoRepairman },
+                                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman },
+                                        item.full_name,
+                                        " "),
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, item.averageStar < 1 ? (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                        react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
+                                            item.averageStar,
+                                            "/5"),
+                                        react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/emptyStar.png') }))) : (react_1["default"].createElement(react_1["default"].Fragment, null,
+                                        react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
+                                            item.averageStar,
+                                            "/5"),
+                                        react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/starIcon.png') }))))))));
+                    } })))));
 };
 exports["default"] = ListOfElectrician;
 var styles = react_native_1.StyleSheet.create({
+    imgRepairman: {
+        width: "30%"
+    },
+    iconStar: {
+        width: 30,
+        height: 30
+    },
+    averageStar: {
+        color: '#394C6D',
+        fontSize: 15,
+        height: '50%',
+        justifyContent: 'center'
+    },
+    divInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: 5,
+        height: 36
+    },
+    infoRepairman: {
+        marginHorizontal: 20,
+        width: "70%"
+    },
     repairmanPopular: {
         flex: 1,
-        marginTop: 20
+        marginTop: 10
     },
     container: {
         marginHorizontal: 20
@@ -38,9 +88,6 @@ var styles = react_native_1.StyleSheet.create({
         height: 132,
         borderRadius: 10
     },
-    containerRepairman: {
-        flex: 1
-    },
     content: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -49,7 +96,8 @@ var styles = react_native_1.StyleSheet.create({
     },
     img: {
         width: 100,
-        height: 100
+        height: 100,
+        borderRadius: 50
     },
     nameRepairman: {
         fontSize: 18,

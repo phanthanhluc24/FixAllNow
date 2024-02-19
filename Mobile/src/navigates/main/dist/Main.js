@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var react_native_1 = require("react-native");
 var react_1 = require("react");
 var react_query_1 = require("@tanstack/react-query");
 var DrawerNavigator_1 = require("./DrawerNavigator");
@@ -39,4 +38,3 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: { headerShown: true } }))));
 };
 exports["default"] = Main;
-var styles = react_native_1.StyleSheet.create({});

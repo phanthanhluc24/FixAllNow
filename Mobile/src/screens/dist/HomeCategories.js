@@ -24,9 +24,9 @@ var HomeCategories = function () {
         react_1["default"].createElement(react_native_1.View, { style: styles.detailCategory },
             react_1["default"].createElement(react_native_1.FlatList, { data: categories, keyExtractor: function (categories) { return categories._id; }, numColumns: 3, renderItem: function (_a) {
                     var item = _a.item;
-                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician'); } },
+                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician', { id: item._id }); } },
                         react_1["default"].createElement(react_native_1.View, { style: styles.imgCategory },
-                            react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
+                            react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img, blurRadius: 0 })),
                         react_1["default"].createElement(react_native_1.View, { style: styles.nameCategory },
                             react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.titleCategory }, item.name))));
                 } }))));
@@ -34,7 +34,8 @@ var HomeCategories = function () {
 exports["default"] = HomeCategories;
 var styles = react_native_1.StyleSheet.create({
     containerCategory: {
-        flex: 1
+        flex: 1,
+        backgroundColor: "#fff"
     },
     container: {
         marginHorizontal: 20,
@@ -87,21 +88,24 @@ var styles = react_native_1.StyleSheet.create({
         padding: 5
     },
     img: {
-        width: 80,
-        height: 80,
+        width: 35,
+        height: 35,
         // resizeMode: 'cover',
-        borderRadius: 50,
-        borderWidth: 2,
-        borderColor: "black"
+        borderRadius: 40
     },
     nameCategory: {
         alignItems: "center",
         justifyContent: "center"
     },
     imgCategory: {
-        width: 80,
-        height: 80,
-        borderRadius: 100
+        width: 63,
+        height: 63,
+        borderRadius: 50,
+        borderColor: "#000",
+        borderWidth: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
     },
     error: {
         marginHorizontal: 20
