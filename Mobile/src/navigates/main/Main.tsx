@@ -29,9 +29,21 @@ const Main = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
-          <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
-          <Stack.Screen name="SignIn" component={SignIn} options={{headerShown:false}}/> */}
+        <Stack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Landing"
+          component={Landing}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Root"
           component={DrawerNavigator}
@@ -75,25 +87,25 @@ const Main = () => {
         <Stack.Screen
           name="ListOfElectrician"
           component={ListOfElectrician}
-          options={({ route }:any) => ({ 
+          options={({route}: any) => ({
             headerShown: true,
-            headerTitle: `Danh Sách Thợ ${route.params?.title}`, // Nối "Danh Sách Các Thợ" với prop title
+            headerTitle: `Danh Sách Thợ ${route.params?.title}`,
           })}
         />
         <Stack.Screen
           name="DetailRepairman"
           component={DetailRepairman}
-          options={({ route }:any) => ({ 
+          options={({route}: any) => ({
             headerShown: true,
-            headerTitle: `${route.params?.title}`, // Nối "Danh Sách Các Thợ" với prop title
+            headerTitle: `${route.params?.title}`,
           })}
         />
         <Stack.Screen
           name="DetailService"
           component={DetailService}
-          options={({ route }:any) => ({ 
+          options={({route}: any) => ({
             headerShown: true,
-            headerTitle: `${route.params?.title}`, // Nối "Danh Sách Các Thợ" với prop title
+            headerTitle: `${route.params?.title}`,
           })}
         />
         <Stack.Screen

@@ -4,11 +4,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from './apiRequest/url';
 interface typeService {
   _id: string;
-  user_id: string;
+ 
   service_name: string;
   price: number;
   image: string;
   desc: string;
+  user_id:{
+    _id: string;
+    full_name: string;
+    email: string;
+    number_phone: number;
+    address: string;
+    role: string;
+    image: string;
+    password: string;
+    averageStar: number;
+  }
 }
 const useGetDetailService = (id: string) => {
   const [service, setService] = useState<typeService | null>(null);
