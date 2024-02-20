@@ -29,7 +29,7 @@ var SelectRole = function () {
             });
         }
         else {
-            react_native_1.Alert.alert('Please select a role before continuing.');
+            react_native_1.Alert.alert('Làm ơn lựa chọn vai trò trước khi tiếp tục.');
         }
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },

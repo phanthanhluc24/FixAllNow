@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
@@ -110,11 +111,21 @@ const ConfirmTypeRepairman = () => {
                     <TouchableOpacity
                       style={styles.buttonConfirm}
                       onPress={() => {
-                        navigation.navigate('SignUp', {
-                          selectedRole,
-                          _id: selectedCategory?.value,
-                          address: values.address,
-                        });
+                        let isValid = true;
+                        if (!selectedCategory) {
+                          isValid = false;
+                          Alert.alert('Lỗi', 'Vui lòng chọn nghề nghiệp');
+                        } else if (!values.address) {
+                          isValid = false;
+                          Alert.alert('Lỗi', 'Vui lòng điền địa chỉ');
+                        }
+                        if (isValid) {
+                          navigation.navigate('SignUp', {
+                            selectedRole,
+                            _id: selectedCategory?.value,
+                            address: values.address,
+                          });
+                        }
                       }}>
                       <Text style={styles.textConfirm}>TIẾP TỤC</Text>
                     </TouchableOpacity>

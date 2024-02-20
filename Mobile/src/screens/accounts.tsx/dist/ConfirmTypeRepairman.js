@@ -61,11 +61,22 @@ var ConfirmTypeRepairman = function () {
                             react_1["default"].createElement(react_native_1.View, { style: styles.buttonOnpress },
                                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonConfirms }),
                                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function () {
-                                        navigation.navigate('SignUp', {
-                                            selectedRole: selectedRole,
-                                            _id: selectedCategory === null || selectedCategory === void 0 ? void 0 : selectedCategory.value,
-                                            address: values.address
-                                        });
+                                        var isValid = true;
+                                        if (!selectedCategory) {
+                                            isValid = false;
+                                            react_native_1.Alert.alert('Lỗi', 'Vui lòng chọn nghề nghiệp');
+                                        }
+                                        else if (!values.address) {
+                                            isValid = false;
+                                            react_native_1.Alert.alert('Lỗi', 'Vui lòng điền địa chỉ');
+                                        }
+                                        if (isValid) {
+                                            navigation.navigate('SignUp', {
+                                                selectedRole: selectedRole,
+                                                _id: selectedCategory === null || selectedCategory === void 0 ? void 0 : selectedCategory.value,
+                                                address: values.address
+                                            });
+                                        }
                                     } },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "TI\u00CA\u0301P TU\u0323C")))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },

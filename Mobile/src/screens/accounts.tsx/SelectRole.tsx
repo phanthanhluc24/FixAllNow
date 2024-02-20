@@ -33,7 +33,7 @@ const SelectRole = () => {
         address: null,
       });
     } else {
-      Alert.alert('Please select a role before continuing.');
+      Alert.alert('Làm ơn lựa chọn vai trò trước khi tiếp tục.');
     }
   };
   return (
