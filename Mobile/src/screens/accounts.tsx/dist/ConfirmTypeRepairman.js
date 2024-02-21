@@ -19,11 +19,15 @@ var react_native_element_dropdown_1 = require("react-native-element-dropdown");
 var useCategoryData_1 = require("../../hooks/useCategoryData");
 var ConfirmTypeRepairman = function () {
     var _a;
+    var _b = react_1.useState({
+        role: null,
+        address: null
+    }), error = _b[0], setError = _b[1];
     var route = native_1.useRoute();
     var selectedRole = ((_a = route.params) === null || _a === void 0 ? void 0 : _a.selectedRole) || 'Default Role';
     var navigation = native_1.useNavigation();
-    var _b = react_1.useState(null), value = _b[0], setValue = _b[1];
-    var _c = react_1.useState(null), selectedCategory = _c[0], setSelectedCategory = _c[1];
+    var _c = react_1.useState(null), value = _c[0], setValue = _c[1];
+    var _d = react_1.useState(null), selectedCategory = _d[0], setSelectedCategory = _d[1];
     var data = useCategoryData_1["default"]();
     var renderItem = function (item) {
         return (react_1["default"].createElement(react_native_1.View, { style: styles.item },
@@ -50,22 +54,37 @@ var ConfirmTypeRepairman = function () {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "\u0110\u0102NG KY\u0301")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.form },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "Ba\u0323n la\u0300 th\u01A1\u0323 gi\u0300?"),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error.role),
                             react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles.dropdown, placeholderStyle: styles.placeholderStyle, selectedTextStyle: styles.selectedTextStyle, inputSearchStyle: styles.inputSearchStyle, iconStyle: styles.iconStyle, data: data || [], search: true, maxHeight: 300, labelField: "label", valueField: "value", placeholder: "L\u01B0\u0323a cho\u0323n ngh\u00EA\u0300 nghi\u00EA\u0323p", searchPlaceholder: "Search...", value: selectedCategory, onChange: function (item) {
                                     setValue(function (prevValue) { return (__assign(__assign({}, prevValue), { label: item.label, value: item.value })); });
                                     setSelectedCategory(item);
                                     setFieldValue('_id', item.value);
                                 }, renderItem: renderItem }),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "\u0110i\u0323a chi\u0309"),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error.address),
                             react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
                                 react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('address'), onBlur: handleBlur('address'), value: values.address })),
                             react_1["default"].createElement(react_native_1.View, { style: styles.buttonOnpress },
                                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonConfirms }),
                                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function () {
-                                        navigation.navigate('SignUp', {
-                                            selectedRole: selectedRole,
-                                            _id: selectedCategory === null || selectedCategory === void 0 ? void 0 : selectedCategory.value,
-                                            address: values.address
-                                        });
+                                        var isValid = true;
+                                        if (!selectedCategory) {
+                                            isValid = false;
+                                            setError(function (prevState) { return (__assign(__assign({}, prevState), { role: 'Vui lòng chọn nghề nghiệp' })); });
+                                            // Alert.alert('Lỗi', 'Vui lòng chọn nghề nghiệp');
+                                        }
+                                        if (!values.address) {
+                                            isValid = false;
+                                            setError(function (prevState) { return (__assign(__assign({}, prevState), { address: 'Vui lòng điền địa chỉ' })); });
+                                            // Alert.alert('Lỗi', 'Vui lòng điền địa chỉ');
+                                        }
+                                        if (isValid) {
+                                            navigation.navigate('SignUp', {
+                                                selectedRole: selectedRole,
+                                                _id: selectedCategory === null || selectedCategory === void 0 ? void 0 : selectedCategory.value,
+                                                address: values.address
+                                            });
+                                        }
                                     } },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "TI\u00CA\u0301P TU\u0323C")))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
@@ -160,6 +179,11 @@ var styles = react_native_1.StyleSheet.create({
         color: 'white',
         marginLeft: 40
     },
+    error: {
+        fontWeight: 'bold',
+        color: 'red',
+        marginLeft: 40
+    },
     form: {
         marginTop: 30
     },
@@ -169,7 +193,7 @@ var styles = react_native_1.StyleSheet.create({
         marginHorizontal: 40
     },
     dropdown: {
-        margin: 16,
+        margin: 5,
         height: 50,
         backgroundColor: 'white',
         borderRadius: 10,

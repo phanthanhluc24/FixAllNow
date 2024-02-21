@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
@@ -26,6 +27,10 @@ interface RouteParams {
   selectedRole?: string;
 }
 const ConfirmTypeRepairman = () => {
+  const [error, setError] = useState<{ role: string | null, address: string | null }>({
+    role: null,
+    address: null,
+  });
   const route = useRoute();
   const selectedRole =
     (route.params as RouteParams)?.selectedRole || 'Default Role';
@@ -69,6 +74,7 @@ const ConfirmTypeRepairman = () => {
                 </View>
                 <View style={styles.form}>
                   <Text style={styles.titleJob}>Bạn là thợ gì?</Text>
+                  <Text style={styles.error}>{error.role}</Text>
                   <Dropdown
                     style={styles.dropdown}
                     placeholderStyle={styles.placeholderStyle}
@@ -97,6 +103,7 @@ const ConfirmTypeRepairman = () => {
                   />
 
                   <Text style={styles.titleJob}>Địa chỉ</Text>
+                  <Text style={styles.error}>{error.address}</Text>
                   <View style={styles.spaceContainer}>
                     <TextInput
                       style={styles.inputCode}
@@ -110,11 +117,30 @@ const ConfirmTypeRepairman = () => {
                     <TouchableOpacity
                       style={styles.buttonConfirm}
                       onPress={() => {
-                        navigation.navigate('SignUp', {
-                          selectedRole,
-                          _id: selectedCategory?.value,
-                          address: values.address,
-                        });
+                        let isValid = true;
+                        if (!selectedCategory) {
+                          isValid = false;
+                          setError(prevState => ({
+                            ...prevState,
+                            role: 'Vui lòng chọn nghề nghiệp' as string,
+                          }));
+                          // Alert.alert('Lỗi', 'Vui lòng chọn nghề nghiệp');
+                        }
+                        if (!values.address) {
+                          isValid = false;
+                          setError(prevState => ({
+                            ...prevState,
+                            address: 'Vui lòng điền địa chỉ',
+                          }));
+                          // Alert.alert('Lỗi', 'Vui lòng điền địa chỉ');
+                        }
+                        if (isValid) {
+                          navigation.navigate('SignUp', {
+                            selectedRole,
+                            _id: selectedCategory?.value,
+                            address: values.address,
+                          });
+                        }
                       }}>
                       <Text style={styles.textConfirm}>TIẾP TỤC</Text>
                     </TouchableOpacity>
@@ -228,6 +254,11 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 40,
   },
+  error: {
+    fontWeight: 'bold',
+    color: 'red',
+    marginLeft: 40,
+  },
   form: {
     marginTop: 30,
   },
@@ -237,7 +268,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
   },
   dropdown: {
-    margin: 16,
+    margin: 5,
     height: 50,
     backgroundColor: 'white',
     borderRadius: 10,

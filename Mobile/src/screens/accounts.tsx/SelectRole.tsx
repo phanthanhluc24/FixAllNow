@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Signup_Schema} from './dist/Validation_Signup';
 const SelectRole = () => {
+  const [error,setError]=useState<string | null>(null)
   const navigation: any = useNavigation();
   const [selectedRole, setSelectedRole] = useState('');
   const handleRoleChange = (role: string) => {
@@ -33,7 +34,7 @@ const SelectRole = () => {
         address: null,
       });
     } else {
-      Alert.alert('Please select a role before continuing.');
+      setError("Vui lòng chọn vai trò của bạn")
     }
   };
   return (
@@ -48,17 +49,19 @@ const SelectRole = () => {
       </View>
       <Text style={styles.title_1}>ĐĂNG KÝ</Text>
       <Text style={styles.title_2}>Bạn muốn trở thành</Text>
-
+      {error!=null &&(
+        <Text style={styles.error}>{error}</Text>
+      )}
       {/* Thêm hai radio buttons */}
       <View style={styles.radioContainer}>
         <RadioButton
           label="Thợ sửa chữa"
-          onPress={() => handleRadioPress('Thợ sửa chữa')}
+          onPress={() => {handleRadioPress('Thợ sửa chữa');setError(null)}}
           isSelected={selectedRole === 'Thợ sửa chữa'}
         />
         <RadioButton
           label="Tìm thợ"
-          onPress={() => handleRadioPress('Tìm thợ')}
+          onPress={() => {handleRadioPress('Tìm thợ');setError(null)}}
           isSelected={selectedRole === 'Tìm thợ'}
         />
       </View>
@@ -168,6 +171,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  error:{
+    color:"red",
+    fontWeight: 'bold',
+    paddingLeft:10
+  }
 });
 
 export default SelectRole;

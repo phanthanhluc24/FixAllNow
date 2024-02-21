@@ -4,8 +4,9 @@ var react_native_1 = require("react-native");
 var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
 var SelectRole = function () {
+    var _a = react_1.useState(null), error = _a[0], setError = _a[1];
     var navigation = native_1.useNavigation();
-    var _a = react_1.useState(''), selectedRole = _a[0], setSelectedRole = _a[1];
+    var _b = react_1.useState(''), selectedRole = _b[0], setSelectedRole = _b[1];
     var handleRoleChange = function (role) {
         setSelectedRole(role);
     };
@@ -29,7 +30,7 @@ var SelectRole = function () {
             });
         }
         else {
-            react_native_1.Alert.alert('Please select a role before continuing.');
+            setError("Vui lòng chọn vai trò của bạn");
         }
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
@@ -38,9 +39,10 @@ var SelectRole = function () {
                 react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/role/logo.png'), style: styles.logo }))),
         react_1["default"].createElement(react_native_1.Text, { style: styles.title_1 }, "\u0110\u0102NG K\u00DD"),
         react_1["default"].createElement(react_native_1.Text, { style: styles.title_2 }, "B\u1EA1n mu\u1ED1n tr\u1EDF th\u00E0nh"),
+        error != null && (react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error)),
         react_1["default"].createElement(react_native_1.View, { style: styles.radioContainer },
-            react_1["default"].createElement(RadioButton, { label: "Th\u1EE3 s\u1EEDa ch\u1EEFa", onPress: function () { return handleRadioPress('Thợ sửa chữa'); }, isSelected: selectedRole === 'Thợ sửa chữa' }),
-            react_1["default"].createElement(RadioButton, { label: "T\u00ECm th\u1EE3", onPress: function () { return handleRadioPress('Tìm thợ'); }, isSelected: selectedRole === 'Tìm thợ' })),
+            react_1["default"].createElement(RadioButton, { label: "Th\u1EE3 s\u1EEDa ch\u1EEFa", onPress: function () { handleRadioPress('Thợ sửa chữa'); setError(null); }, isSelected: selectedRole === 'Thợ sửa chữa' }),
+            react_1["default"].createElement(RadioButton, { label: "T\u00ECm th\u1EE3", onPress: function () { handleRadioPress('Tìm thợ'); setError(null); }, isSelected: selectedRole === 'Tìm thợ' })),
         react_1["default"].createElement(react_native_1.View, { style: styles.buttonDiv },
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button, onPress: handleContinuePress },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.buttonText }, "TI\u1EBEP T\u1EE4C")))));
@@ -135,6 +137,11 @@ var styles = react_native_1.StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    error: {
+        color: "red",
+        fontWeight: 'bold',
+        paddingLeft: 10
     }
 });
 exports["default"] = SelectRole;

@@ -14,7 +14,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useRef,RefObject} from 'react';
 import {Formik} from 'formik';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import sendVerificationCode from '../../hooks/useSendVerificationCode';
@@ -25,9 +25,10 @@ const ConfirmCode = () => {
   const [newCode, setNewCode] = useState('');
   const [isResending, setIsResending] = useState(false);
   const [codeDigits, setCodeDigits] = useState(['', '', '', '']);
+  const textInputs = useRef([]);
   const navigation: any = useNavigation();
   const router = useRoute();
-  const {code, refreshCode, resetPasswordToken}: any = router.params;
+  const {code, refreshCode, resetPasswordToken}:any = router.params;
   useEffect(() => {
     let interval: any;
     if (countdown > 0) {
@@ -91,13 +92,25 @@ const ConfirmCode = () => {
     }
   };
   const handleChangeDigit = (index: number, digit: string) => {
-    if (!isNaN(Number(digit))) {
-      setCodeDigits(prevDigits => {
-        const newDigits = [...prevDigits];
-        newDigits[index] = digit;
-        return newDigits;
-      });
+    const newCode=[...codeDigits]
+    newCode[index]=digit
+    setCodeDigits(newCode)
+
+    if (digit && index < codeDigits.length - 1) {
+      textInputs.current[index + 1].focus();
     }
+    else if (!digit && index > 0) {
+      textInputs.current[index-1].focus();
+      newCode[index] = '';
+      setCodeDigits(newCode);
+    }
+    // if (!isNaN(Number(digit))) {
+    //   setCodeDigits(prevDigits => {
+    //     const newDigits = [...prevDigits];
+    //     newDigits[index] = digit;
+    //     return newDigits;
+    //   });
+    // }
   };
   return (
     <Formik initialValues={{code: ''}} onSubmit={handleSubmit}>
@@ -119,6 +132,7 @@ const ConfirmCode = () => {
                       style={styles.inputCode}
                       enterKeyHint={'next'}
                       onChangeText={text => handleChangeDigit(index, text)}
+                      ref={(input) => (textInputs.current[index] = input)}
                       value={digit}
                       keyboardType="numeric"
                       maxLength={1}

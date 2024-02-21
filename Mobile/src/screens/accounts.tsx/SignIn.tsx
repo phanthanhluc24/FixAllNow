@@ -10,15 +10,15 @@ import {
   Keyboard,
   ScrollView,
   Platform,
-  GestureResponderEvent
+  GestureResponderEvent,
 } from 'react-native';
 import React, {useRef} from 'react';
 import {Formik} from 'formik';
 import {SignupSchema} from './Validation';
 import useSignin from '../../hooks/useSignin';
 const SignIn = ({navigation}: any) => {
-  const passwordRef:any = useRef();
-  const {handleSignin} = useSignin({navigation});
+  const passwordRef: any = useRef();
+  const {handleSignin, errorServer} = useSignin({navigation});
   return (
     <Formik
       initialValues={{email: '', password: ''}}
@@ -34,11 +34,10 @@ const SignIn = ({navigation}: any) => {
         }, 100);
       }}>
       {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
-         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.signInContainer}>
-         
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.signInContainer}>
             <ScrollView contentContainerStyle={{flexGrow: 1}}>
               <View style={styles.signinHeader}>
                 <Image
@@ -49,6 +48,11 @@ const SignIn = ({navigation}: any) => {
               <View style={styles.signinBody}>
                 <View style={styles.titleSignin}>
                   <Text style={styles.title}>Đăng nhập</Text>
+                </View>
+                <View style={styles.errorMessage}>
+                  {errorServer != null && (
+                    <Text style={styles.errorText}>* {errorServer}</Text>
+                  )}
                 </View>
                 <View style={styles.fromInput}>
                   <View>
@@ -65,6 +69,8 @@ const SignIn = ({navigation}: any) => {
                       <Text style={styles.errorText}>* {errors.email}</Text>
                     ) : null}
                   </View>
+                </View>
+                <View style={styles.fromInput}>
                   <View style={styles.space}>
                     <Text style={styles.titlePassword}>Mật Khẩu</Text>
                     <TextInput
@@ -112,8 +118,7 @@ const SignIn = ({navigation}: any) => {
                 />
               </View>
             </ScrollView>
-         
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       )}
     </Formik>
@@ -157,6 +162,11 @@ const styles = StyleSheet.create({
   },
   fromInput: {
     marginHorizontal: 40,
+    marginTop: 15,
+    height:110
+  },
+  errorMessage:{
+    marginHorizontal: 40,
     marginTop: 20,
   },
   titleEmail: {
@@ -169,10 +179,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderWidth: 1,
-    paddingLeft:15
+    paddingLeft: 15,
   },
   space: {
-    marginTop: 20,
+    marginTop: 1,
   },
   titlePassword: {
     color: 'white',
@@ -184,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderWidth: 1,
-    paddingLeft:15
+    paddingLeft: 15,
   },
   confirmInfo: {
     marginTop: 20,
@@ -217,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    marginTop: '100%',
+    marginTop: '80%',
     zIndex: 3,
     height: 60,
   },

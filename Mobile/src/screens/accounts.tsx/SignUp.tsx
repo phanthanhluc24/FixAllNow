@@ -21,6 +21,7 @@ interface Register {
   password: string;
 }
 const SignUp = () => {
+  const [errorServer,setErrorServer]=useState(null)
   const route = useRoute();
   const {selectedRole, _id, address}: any = route.params || {};
   // console.log(selectedRole, _id, address);
@@ -32,8 +33,15 @@ const SignUp = () => {
     email: '',
     password: '',
   });
+  const [inputErrors, setInputErrors] = useState({
+    full_name: false,
+    email: false,
+    number_phone: false,
+    password: false,
+  });
   const handleInputChange = (field: string, text: string) => () => {
     setRegister({...register, [field]: text});
+    setInputErrors({...inputErrors, [field]: false});
   };
   const repairmanRegister = {
     full_name: register.full_name,
@@ -45,11 +53,32 @@ const SignUp = () => {
     category_id: _id,
   };
   const handleSubmit = async () => {
+    let isValid = true;
+  const newInputErrors = {...inputErrors};
+  if (!register.full_name) {
+    newInputErrors.full_name = true;
+    isValid = false;
+  }
+  if (!register.email) {
+    newInputErrors.email = true;
+    isValid = false;
+  }
+  if (!register.number_phone) {
+    newInputErrors.number_phone = true;
+    isValid = false;
+  }
+  if (!register.password) {
+    newInputErrors.password = true;
+    isValid = false;
+  }
+
+  setInputErrors(newInputErrors);
+  if (isValid) {
     try {
       await useSignup(repairmanRegister)
       .then((res:any)=>{
-        if(res.status!=200){
-          Alert.alert(res.message)
+        if(res.status!=201){
+          setErrorServer(res.message)
         }else{
           navigation.navigate('ConfirmCode', {code:res.code, refreshCode:res.refreshCode});
         }
@@ -57,6 +86,7 @@ const SignUp = () => {
     } catch (error) {
       console.error('Error during signup', error);
     }
+  }
   };
   return (
     <KeyboardAvoidingView
@@ -73,6 +103,7 @@ const SignUp = () => {
           <View style={styles.titleSignup}>
             <Text style={styles.title}>ĐĂNG KÝ</Text>
           </View>
+          <Text style={styles.error}>{errorServer}</Text>
           <View style={styles.fromInput}>
             <View>
               <Text style={styles.titleEmail}>Họ và tên</Text>
@@ -80,6 +111,7 @@ const SignUp = () => {
                 style={styles.inputEmail}
                 onChangeText={text => handleInputChange('full_name', text)()}
               />
+              {inputErrors.full_name && <Text style={styles.errorMessage}>Họ tên không bỏ trống</Text>}
             </View>
             <View style={styles.space}>
               <Text style={styles.titleEmail}>Email</Text>
@@ -87,6 +119,7 @@ const SignUp = () => {
                 style={styles.inputEmail}
                 onChangeText={text => handleInputChange('email', text)()}
               />
+              {inputErrors.email && <Text style={styles.errorMessage}>Email không bỏ trống</Text>}
             </View>
             <View style={styles.space}>
               <Text style={styles.titleEmail}>Số điện thoại</Text>
@@ -94,6 +127,7 @@ const SignUp = () => {
                 style={styles.inputEmail}
                 onChangeText={text => handleInputChange('number_phone', text)()}
               />
+              {inputErrors.number_phone && <Text style={styles.errorMessage}>Số điện thoại không bỏ trống</Text>}
             </View>
             <View style={styles.space}>
               <Text style={styles.titlePassword}>Mật Khẩu</Text>
@@ -102,6 +136,7 @@ const SignUp = () => {
                 secureTextEntry={true}
                 onChangeText={text => handleInputChange('password', text)()}
               />
+              {inputErrors.password && <Text style={styles.errorMessage}>Mật khẩu không bỏ trống</Text>}
             </View>
             <View style={styles.confirmInfo}>
               <View style={styles.confirmcreate}>
@@ -127,6 +162,10 @@ const SignUp = () => {
 export default SignUp;
 
 const styles = StyleSheet.create({
+  errorMessage:{
+    color:"red",
+    fontWeight:"bold"
+  },
   signUpContainer: {
     flex: 1,
     backgroundColor: '#FCA234',
@@ -175,7 +214,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   space: {
-    marginTop: 20,
+    marginTop: 4,
   },
   titlePassword: {
     color: '#394C6D',
@@ -231,4 +270,9 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
+  error:{
+    fontWeight: 'bold',
+    color:"red",
+    paddingLeft: 40,
+  }
 });
