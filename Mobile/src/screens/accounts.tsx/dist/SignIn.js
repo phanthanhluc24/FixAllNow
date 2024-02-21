@@ -8,7 +8,7 @@ var useSignin_1 = require("../../hooks/useSignin");
 var SignIn = function (_a) {
     var navigation = _a.navigation;
     var passwordRef = react_1.useRef();
-    var handleSignin = useSignin_1["default"]({ navigation: navigation }).handleSignin;
+    var _b = useSignin_1["default"]({ navigation: navigation }), handleSignin = _b.handleSignin, errorServer = _b.errorServer;
     return (react_1["default"].createElement(formik_1.Formik, { initialValues: { email: '', password: '' }, validationSchema: Validation_1.SignupSchema, onSubmit: function (values) {
             setTimeout(function () {
                 var account = {
@@ -28,13 +28,17 @@ var SignIn = function (_a) {
                     react_1["default"].createElement(react_native_1.View, { style: styles.signinBody },
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleSignin },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "\u0110\u0103ng nh\u00E2\u0323p")),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.errorMessage }, errorServer != null && (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
+                            "* ",
+                            errorServer))),
                         react_1["default"].createElement(react_native_1.View, { style: styles.fromInput },
                             react_1["default"].createElement(react_native_1.View, null,
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titleEmail }, "Email"),
                                 react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, enterKeyHint: 'next', onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email }),
                                 errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
                                     "* ",
-                                    errors.email)) : null),
+                                    errors.email)) : null)),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.fromInput },
                             react_1["default"].createElement(react_native_1.View, { style: styles.space },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titlePassword }, "M\u00E2\u0323t Kh\u00E2\u0309u"),
                                 react_1["default"].createElement(react_native_1.TextInput, { ref: passwordRef, style: styles.inputPassword, enterKeyHint: 'done', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.clear(); }, onChangeText: handleChange('password'), onBlur: handleBlur('password'), value: values.password }),
@@ -90,6 +94,11 @@ var styles = react_native_1.StyleSheet.create({
     },
     fromInput: {
         marginHorizontal: 40,
+        marginTop: 15,
+        height: 110
+    },
+    errorMessage: {
+        marginHorizontal: 40,
         marginTop: 20
     },
     titleEmail: {
@@ -105,7 +114,7 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     space: {
-        marginTop: 20
+        marginTop: 1
     },
     titlePassword: {
         color: 'white',
@@ -150,7 +159,7 @@ var styles = react_native_1.StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        marginTop: '100%',
+        marginTop: '80%',
         zIndex: 3,
         height: 60
     },

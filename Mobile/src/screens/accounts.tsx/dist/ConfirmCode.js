@@ -55,6 +55,7 @@ var ConfirmCode = function () {
     var _c = react_1.useState(''), newCode = _c[0], setNewCode = _c[1];
     var _d = react_1.useState(false), isResending = _d[0], setIsResending = _d[1];
     var _e = react_1.useState(['', '', '', '']), codeDigits = _e[0], setCodeDigits = _e[1];
+    var textInputs = react_1.useRef([]);
     var navigation = native_1.useNavigation();
     var router = native_1.useRoute();
     var _f = router.params, code = _f.code, refreshCode = _f.refreshCode, resetPasswordToken = _f.resetPasswordToken;
@@ -151,13 +152,24 @@ var ConfirmCode = function () {
         });
     }); };
     var handleChangeDigit = function (index, digit) {
-        if (!isNaN(Number(digit))) {
-            setCodeDigits(function (prevDigits) {
-                var newDigits = __spreadArrays(prevDigits);
-                newDigits[index] = digit;
-                return newDigits;
-            });
+        var newCode = __spreadArrays(codeDigits);
+        newCode[index] = digit;
+        setCodeDigits(newCode);
+        if (digit && index < codeDigits.length - 1) {
+            textInputs.current[index + 1].focus();
         }
+        else if (!digit && index > 0) {
+            textInputs.current[index - 1].focus();
+            newCode[index] = '';
+            setCodeDigits(newCode);
+        }
+        // if (!isNaN(Number(digit))) {
+        //   setCodeDigits(prevDigits => {
+        //     const newDigits = [...prevDigits];
+        //     newDigits[index] = digit;
+        //     return newDigits;
+        //   });
+        // }
     };
     return (react_1["default"].createElement(formik_1.Formik, { initialValues: { code: '' }, onSubmit: handleSubmit }, function (_a) {
         var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
@@ -168,7 +180,7 @@ var ConfirmCode = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "NH\u00C2\u0323P MA\u0303 XA\u0301C TH\u01AF\u0323C")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                            react_1["default"].createElement(react_native_1.View, { style: styles.code }, codeDigits.map(function (digit, index) { return (react_1["default"].createElement(react_native_1.TextInput, { key: index, style: styles.inputCode, enterKeyHint: 'next', onChangeText: function (text) { return handleChangeDigit(index, text); }, value: digit, keyboardType: "numeric", maxLength: 1 })); }))),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.code }, codeDigits.map(function (digit, index) { return (react_1["default"].createElement(react_native_1.TextInput, { key: index, style: styles.inputCode, enterKeyHint: 'next', onChangeText: function (text) { return handleChangeDigit(index, text); }, ref: function (input) { return (textInputs.current[index] = input); }, value: digit, keyboardType: "numeric", maxLength: 1 })); }))),
                         react_1["default"].createElement(react_native_1.View, { style: styles.timeout },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.timeInput }, countdownMessage ||
                                 "M\u00E3 s\u1EBD h\u1EBFt h\u1EA1n trong v\u00F2ng " + Math.floor(countdown / 60) + ":" + (countdown % 60 < 10 ? '0' : '') + countdown % 60 + "  ph\u00FAt"),

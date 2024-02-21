@@ -43,6 +43,7 @@ var formik_1 = require("formik");
 var ValidationForgetPassword_1 = require("./ValidationForgetPassword");
 var useVerificationEmail_1 = require("../../hooks/useVerificationEmail");
 var ForgotPassword = function () {
+    var _a = react_1.useState(null), errorServer = _a[0], setErrorServer = _a[1];
     var passwordRef = react_1.useRef();
     var navigation = native_1.useNavigation();
     var handleSubmitVerification = function (values) { return __awaiter(void 0, void 0, void 0, function () {
@@ -52,7 +53,7 @@ var ForgotPassword = function () {
                     console.log(values.email);
                     return [4 /*yield*/, useVerificationEmail_1["default"](values.email).then(function (res) {
                             if (res.status != 201) {
-                                react_native_1.Alert.alert(res.message);
+                                setErrorServer(res.message);
                             }
                             else {
                                 navigation.navigate('ConfirmCode', {
@@ -79,6 +80,7 @@ var ForgotPassword = function () {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "XA\u0301C TH\u01AF\u0323C TA\u0300I KHOA\u0309N")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Vui lo\u0300ng nh\u00E2\u0323p Email!"),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errorServer),
                             react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email, enterKeyHint: 'done' }),
                             errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
                                 "* ",
@@ -135,8 +137,8 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     titles: {
-        fontSize: 15,
-        color: 'white'
+        fontSize: 20,
+        color: '#394C6D'
     },
     titleCode: {
         color: 'white',
@@ -152,7 +154,7 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     spaceContainer: {
-        alignItems: 'center',
+        marginLeft: 55,
         marginTop: 40
     },
     timeInput: {

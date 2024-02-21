@@ -15,18 +15,19 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import React, {useRef} from 'react';
+import React, {useRef,useState} from 'react';
 import {Formik} from 'formik';
 import {ForgotPasswordSchema} from './ValidationForgetPassword';
 import useVerificationEmail from '../../hooks/useVerificationEmail';
 const ForgotPassword = () => {
+  const [errorServer,setErrorServer]=useState(null)
   const passwordRef: any = useRef();
   const navigation: any = useNavigation();
   const handleSubmitVerification = async (values: {email: any}) => {
     console.log(values.email);
     await useVerificationEmail(values.email).then((res: any) => {
       if (res.status != 201) {
-        Alert.alert(res.message);
+        setErrorServer(res.message)
       } else {
         navigation.navigate('ConfirmCode', {
           code: res.code,
@@ -51,6 +52,7 @@ const ForgotPassword = () => {
                 </View>
                 <View style={styles.spaceContainer}>
                   <Text style={styles.titles}>Vui lòng nhập Email!</Text>
+                  <Text style={styles.errorText}>{errorServer}</Text>
                   <TextInput
                     style={styles.inputCode}
                     onChangeText={handleChange('email')}
@@ -134,8 +136,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   titles: {
-    fontSize: 15,
-    color: 'white',
+    fontSize: 20,
+    color: '#394C6D',
   },
   titleCode: {
     color: 'white',
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     paddingLeft:15,
   },
   spaceContainer: {
-    alignItems: 'center',
+    marginLeft:55,
     marginTop: 40,
   },
   timeInput: {

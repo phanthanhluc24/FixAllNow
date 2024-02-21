@@ -52,20 +52,28 @@ var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
 var useSignup_1 = require("../../hooks/useSignup");
 var SignUp = function () {
+    var _a = react_1.useState(null), errorServer = _a[0], setErrorServer = _a[1];
     var route = native_1.useRoute();
-    var _a = route.params || {}, selectedRole = _a.selectedRole, _id = _a._id, address = _a.address;
+    var _b = route.params || {}, selectedRole = _b.selectedRole, _id = _b._id, address = _b.address;
     // console.log(selectedRole, _id, address);
     var navigation = native_1.useNavigation();
-    var _b = react_1.useState(''), error = _b[0], setError = _b[1];
-    var _c = react_1.useState({
+    var _c = react_1.useState(''), error = _c[0], setError = _c[1];
+    var _d = react_1.useState({
         number_phone: null,
         full_name: '',
         email: '',
         password: ''
-    }), register = _c[0], setRegister = _c[1];
+    }), register = _d[0], setRegister = _d[1];
+    var _e = react_1.useState({
+        full_name: false,
+        email: false,
+        number_phone: false,
+        password: false
+    }), inputErrors = _e[0], setInputErrors = _e[1];
     var handleInputChange = function (field, text) { return function () {
-        var _a;
+        var _a, _b;
         setRegister(__assign(__assign({}, register), (_a = {}, _a[field] = text, _a)));
+        setInputErrors(__assign(__assign({}, inputErrors), (_b = {}, _b[field] = false, _b)));
     }; };
     var repairmanRegister = {
         full_name: register.full_name,
@@ -77,28 +85,50 @@ var SignUp = function () {
         category_id: _id
     };
     var handleSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var error_1;
+        var isValid, newInputErrors, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
+                    isValid = true;
+                    newInputErrors = __assign({}, inputErrors);
+                    if (!register.full_name) {
+                        newInputErrors.full_name = true;
+                        isValid = false;
+                    }
+                    if (!register.email) {
+                        newInputErrors.email = true;
+                        isValid = false;
+                    }
+                    if (!register.number_phone) {
+                        newInputErrors.number_phone = true;
+                        isValid = false;
+                    }
+                    if (!register.password) {
+                        newInputErrors.password = true;
+                        isValid = false;
+                    }
+                    setInputErrors(newInputErrors);
+                    if (!isValid) return [3 /*break*/, 4];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, useSignup_1["default"](repairmanRegister)
                             .then(function (res) {
-                            if (res.status != 200) {
-                                react_native_1.Alert.alert(res.message);
+                            if (res.status != 201) {
+                                setErrorServer(res.message);
                             }
                             else {
                                 navigation.navigate('ConfirmCode', { code: res.code, refreshCode: res.refreshCode });
                             }
                         })];
-                case 1:
-                    _a.sent();
-                    return [3 /*break*/, 3];
                 case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
                     error_1 = _a.sent();
                     console.error('Error during signup', error_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); };
@@ -109,19 +139,24 @@ var SignUp = function () {
             react_1["default"].createElement(react_native_1.View, { style: styles.signupBody },
                 react_1["default"].createElement(react_native_1.View, { style: styles.titleSignup },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "\u0110\u0102NG KY\u0301")),
+                react_1["default"].createElement(react_native_1.Text, { style: styles.error }, errorServer),
                 react_1["default"].createElement(react_native_1.View, { style: styles.fromInput },
                     react_1["default"].createElement(react_native_1.View, null,
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleEmail }, "Ho\u0323 va\u0300 t\u00EAn"),
-                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, onChangeText: function (text) { return handleInputChange('full_name', text)(); } })),
+                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, onChangeText: function (text) { return handleInputChange('full_name', text)(); } }),
+                        inputErrors.full_name && react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, "Ho\u0323 t\u00EAn kh\u00F4ng bo\u0309 tr\u00F4\u0301ng")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.space },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleEmail }, "Email"),
-                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, onChangeText: function (text) { return handleInputChange('email', text)(); } })),
+                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, onChangeText: function (text) { return handleInputChange('email', text)(); } }),
+                        inputErrors.email && react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, "Email kh\u00F4ng bo\u0309 tr\u00F4\u0301ng")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.space },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleEmail }, "S\u00F4\u0301 \u0111i\u00EA\u0323n thoa\u0323i"),
-                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, onChangeText: function (text) { return handleInputChange('number_phone', text)(); } })),
+                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, onChangeText: function (text) { return handleInputChange('number_phone', text)(); } }),
+                        inputErrors.number_phone && react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, "S\u00F4\u0301 \u0111i\u00EA\u0323n thoa\u0323i kh\u00F4ng bo\u0309 tr\u00F4\u0301ng")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.space },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titlePassword }, "M\u00E2\u0323t Kh\u00E2\u0309u"),
-                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputPassword, secureTextEntry: true, onChangeText: function (text) { return handleInputChange('password', text)(); } })),
+                        react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputPassword, secureTextEntry: true, onChangeText: function (text) { return handleInputChange('password', text)(); } }),
+                        inputErrors.password && react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, "M\u00E2\u0323t kh\u00E2\u0309u kh\u00F4ng bo\u0309 tr\u00F4\u0301ng")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.confirmInfo },
                         react_1["default"].createElement(react_native_1.View, { style: styles.confirmcreate },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titlefg }, "Ba\u0323n \u0111a\u0303 co\u0301 ta\u0300i khoa\u0309n ch\u01B0a?"),
@@ -131,6 +166,10 @@ var SignUp = function () {
 };
 exports["default"] = SignUp;
 var styles = react_native_1.StyleSheet.create({
+    errorMessage: {
+        color: "red",
+        fontWeight: "bold"
+    },
     signUpContainer: {
         flex: 1,
         backgroundColor: '#FCA234'
@@ -179,7 +218,7 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     space: {
-        marginTop: 20
+        marginTop: 4
     },
     titlePassword: {
         color: '#394C6D',
@@ -233,5 +272,10 @@ var styles = react_native_1.StyleSheet.create({
         color: 'red',
         margin: 0,
         padding: 0
+    },
+    error: {
+        fontWeight: 'bold',
+        color: "red",
+        paddingLeft: 40
     }
 });
