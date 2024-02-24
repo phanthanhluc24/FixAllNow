@@ -154,71 +154,54 @@ const EditInfoCurrentUser = () => {
         <View style={styles.part}>
           <Text style={styles.infoEdit}>Ảnh của bạn</Text>
           <View>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <View style={{flex: 1, alignItems: 'center'}}>
-                <TouchableOpacity onPress={selectFile}  activeOpacity={0.5}>
-                  <View style={styles.imageView}>
-                    <Entypo name="camera" size={50} color="#FCA234" />
-                  </View>
-                </TouchableOpacity>
-                
-              </View>
-            )}
-            name="email"
-            rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
-            defaultValue=""
-          />
-          
-          {errors.email && (
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <View style={{flex: 1, alignItems: 'center'}}>
+                  <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
+                    <View style={styles.imageView}>
+                      <Entypo name="camera" size={50} color="#FCA234" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              name="email"
+              rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
+              defaultValue=""
+            />
+
+            {/* {errors.email && (
             <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )}
+          )} */}
           </View>
-          
-          <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={selectFile}>
-              <Text style={styles.buttonTextStyle}>Select File</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={uploadImage}>
-              <Text style={styles.buttonTextStyle}>Upload File</Text>
-            </TouchableOpacity>
         </View>
-        
       </View>
-      {/* <View style={styles.container}>
-            {singleFile != null ? (
-              <Text style={styles.textStyle}>
-                File Name: {singleFile.name ? singleFile.name : ''}
-                {'\n'}
-                Type: {singleFile.type ? singleFile.type : ''}
-                {'\n'}
-                File Size: {singleFile.size ? singleFile.size : ''}
-                {'\n'}
-                URI: {singleFile.uri ? singleFile.uri : ''}
-                {'\n'}
-              </Text>
-            ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={selectFile}>
-              <Text style={styles.buttonTextStyle}>Select File</Text>
-            </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        activeOpacity={0.5}
+        onPress={selectFile}>
+        <Text style={styles.buttonTextStyle}>Select File</Text>
+      </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={uploadImage}>
-              <Text style={styles.buttonTextStyle}>Upload File</Text>
-            </TouchableOpacity>
-          </View> */}
+      <TouchableOpacity
+        style={styles.buttonStyle}
+        activeOpacity={0.5}
+        onPress={uploadImage}>
+        <Text style={styles.buttonTextStyle}>Upload File</Text>
+      </TouchableOpacity>
+      {singleFile != null ? (
+        <Text style={styles.textStyle}>
+          File Name: {singleFile.name ? singleFile.name : ''}
+          {'\n'}
+          Type: {singleFile.type ? singleFile.type : ''}
+          {'\n'}
+          File Size: {singleFile.size ? singleFile.size : ''}
+          {'\n'}
+          URI: {singleFile.uri ? singleFile.uri : ''}
+          {'\n'}
+        </Text>
+      ) : null}
+
       <View style={styles.eventSubmit}>
         <Button
           color={'#FCA234'}
@@ -244,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-    marginVertical: 30,
+    marginVertical: 10,
   },
   part: {
     marginVertical: 5,
