@@ -56,7 +56,10 @@ const HomeRepairmanPopular = () => {
           <TouchableOpacity
             style={styles.repairman}
             onPress={() =>
-              navigation.navigate('DetailRepairman', {id: item._id,title:item.full_name})
+              navigation.navigate('DetailRepairman', {
+                id: item._id,
+                title: item.full_name,
+              })
             }>
             <View style={styles.content}>
               <Image source={{uri: item.avatar}} style={styles.img} />
@@ -95,8 +98,20 @@ const HomeRepairmanPopular = () => {
 
       <View style={styles.paginationContainer}>
         {Array.from({length: totalPages}, (_, i) => i + 1).map(page => (
-          <TouchableOpacity key={page} onPress={() => handelChangePage(page)} style={[styles.paginationButton, currentPage === page && styles.currentPageButton]}>
-           <Text style={[styles.paginationButtonText, currentPage === page && styles.currentPageButtonText]}>{page}</Text>
+          <TouchableOpacity
+            key={page}
+            onPress={() => handelChangePage(page)}
+            style={[
+              styles.paginationButton,
+              currentPage === page && styles.currentPageButton,
+            ]}>
+            <Text
+              style={[
+                styles.paginationButtonText,
+                currentPage === page && styles.currentPageButtonText,
+              ]}>
+              {page}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -165,7 +180,7 @@ const styles = StyleSheet.create({
   paginationContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop:10
+    marginTop: 10,
   },
   paginationButton: {
     marginHorizontal: 5,
@@ -188,5 +203,5 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     marginTop: 10,
-  }
+  },
 });

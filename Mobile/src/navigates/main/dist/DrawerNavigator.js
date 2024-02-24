@@ -39,7 +39,10 @@ var DrawerNavigator = function () {
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.GestureHandlerRootView, { style: styles.DrawerContainer },
         react_1["default"].createElement(Drawer.Navigator, { initialRouteName: 'Main' },
-            react_1["default"].createElement(Drawer.Screen, { name: "Main", component: BottomTab_1["default"], options: headerOptions }),
+            react_1["default"].createElement(Drawer.Screen, { name: "Main", component: BottomTab_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Xin chào đến với FIXALLNOW"
+                }); } }),
             react_1["default"].createElement(Drawer.Screen, { name: "Home", component: Home_1["default"], options: optionsScreen({
                     drawerIcon: require(URL_IMAGE + "/iconhome.png"),
                     backgroundColor: "white"

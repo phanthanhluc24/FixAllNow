@@ -36,6 +36,9 @@ const ListOfElectrician = ({route}: any) => {
   if (isError) {
     return <Text>Error loading repairman</Text>;
   }
+  if(listRepairmanOfCategory.length <=0){
+    return <Text>Chưa có danh mục nào!</Text>
+  }
   return (
     <View style={styles.repairmanPopular}>
       <View style={styles.container}>

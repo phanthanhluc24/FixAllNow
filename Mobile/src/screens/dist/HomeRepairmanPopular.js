@@ -32,7 +32,10 @@ var HomeRepairmanPopular = function () {
         react_1["default"].createElement(react_native_1.FlatList, { data: repairmans, keyExtractor: function (repairmans) { return repairmans._id; }, renderItem: function (_a) {
                 var item = _a.item;
                 return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
-                        return navigation.navigate('DetailRepairman', { id: item._id, title: item.full_name });
+                        return navigation.navigate('DetailRepairman', {
+                            id: item._id,
+                            title: item.full_name
+                        });
                     } },
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img }),
@@ -50,8 +53,14 @@ var HomeRepairmanPopular = function () {
                                     "/5"),
                                 react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/starIcon.png') }))))))));
             }, onEndReached: handleLoadMore, onEndReachedThreshold: 0.1 }),
-        react_1["default"].createElement(react_native_1.View, { style: styles.paginationContainer }, Array.from({ length: totalPages }, function (_, i) { return i + 1; }).map(function (page) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { key: page, onPress: function () { return handelChangePage(page); }, style: [styles.paginationButton, currentPage === page && styles.currentPageButton] },
-            react_1["default"].createElement(react_native_1.Text, { style: [styles.paginationButtonText, currentPage === page && styles.currentPageButtonText] }, page))); }))));
+        react_1["default"].createElement(react_native_1.View, { style: styles.paginationContainer }, Array.from({ length: totalPages }, function (_, i) { return i + 1; }).map(function (page) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { key: page, onPress: function () { return handelChangePage(page); }, style: [
+                styles.paginationButton,
+                currentPage === page && styles.currentPageButton,
+            ] },
+            react_1["default"].createElement(react_native_1.Text, { style: [
+                    styles.paginationButtonText,
+                    currentPage === page && styles.currentPageButtonText,
+                ] }, page))); }))));
 };
 exports["default"] = HomeRepairmanPopular;
 var styles = react_native_1.StyleSheet.create({

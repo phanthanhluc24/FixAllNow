@@ -2,95 +2,72 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var useGetDetailService_1 = require("../hooks/useGetDetailService");
-var native_1 = require("@react-navigation/native");
-var DetailService = function (_a) {
-    var route = _a.route;
-    var navigation = native_1.useNavigation();
-    var id = route.params.id;
-    var _b = useGetDetailService_1["default"](id), service = _b.service, isLoading = _b.isLoading, isError = _b.isError;
-    if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
-    }
-    if (isError) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
-    }
+var DetailInfoService_1 = require("./DetailInfoService");
+var DetailServiceButton_1 = require("./DetailServiceButton");
+var DetailService = function () {
+    var data = [{ key: 'DetailServiceRevolve' }];
+    var renderDetailService = function () {
+        return (react_1["default"].createElement(react_native_1.View, null,
+            react_1["default"].createElement(DetailInfoService_1["default"], null)));
+    };
+    var renderDetailServiceButton = function () {
+        return (react_1["default"].createElement(react_native_1.View, null,
+            react_1["default"].createElement(DetailServiceButton_1["default"], null)));
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerServiceSpecific },
-        react_1["default"].createElement(react_native_1.View, { style: styles.infoServices },
-            react_1["default"].createElement(react_native_1.Image, { source: { uri: service === null || service === void 0 ? void 0 : service.image }, style: styles.imageSer }),
-            react_1["default"].createElement(react_native_1.View, { style: styles.infoStyle },
-                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameStyle }, service === null || service === void 0 ? void 0 : service.service_name),
-                react_1["default"].createElement(react_native_1.Text, { style: styles.priceStyle }, service === null || service === void 0 ? void 0 :
-                    service.price.toLocaleString('vi-VN'),
-                    ' VND'),
-                react_1["default"].createElement(react_native_1.Text, { style: styles.description }, service === null || service === void 0 ? void 0 : service.desc)),
-            react_1["default"].createElement(react_native_1.View, { style: styles.oneLine }),
-            react_1["default"].createElement(react_native_1.View, { style: styles.infoUser },
-                react_1["default"].createElement(react_native_1.View, { style: styles.containerInfoUser },
-                    react_1["default"].createElement(react_native_1.Image, { source: { uri: service === null || service === void 0 ? void 0 : service.user_id.image }, style: styles.imageStyle }),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.fullName }, service === null || service === void 0 ? void 0 : service.user_id.full_name)),
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonView, onPress: function () {
-                        return navigation.navigate('DetailRepairman', { id: service === null || service === void 0 ? void 0 : service.user_id._id, title: service === null || service === void 0 ? void 0 : service.user_id.full_name });
-                    } },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.detailRepairman }, "Xem th\u01A1\u0323!")))),
-        react_1["default"].createElement(react_native_1.View, { style: styles.belowInfoService },
-            react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
-                react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
-                        react_1["default"].createElement(react_native_1.View, { style: styles.bookNow },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u0103\u0323t ngay"))),
-                    react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
-                        react_1["default"].createElement(react_native_1.View, { style: styles.book },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u0103\u0323t li\u0323ch"))))))));
+        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderDetailServiceButton, ListHeaderComponent: renderDetailService })));
 };
 exports["default"] = DetailService;
 var styles = react_native_1.StyleSheet.create({
+    buttonEvent: {
+    // padding:20,
+    // alignItems:"center",
+    // justifyContent:"center",
+    },
     detailRepairman: {
         fontSize: 15,
-        fontWeight: "bold",
-        color: "#394C6D"
+        fontWeight: 'bold',
+        color: '#394C6D'
     },
     buttonView: {
-        backgroundColor: "#ffffff",
+        backgroundColor: '#ffffff',
         borderRadius: 5,
-        borderColor: "#FCA234",
+        borderColor: '#FCA234',
         borderWidth: 2,
         height: 30,
         width: 90,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         marginHorizontal: 40
     },
     fullName: {
         fontSize: 20,
         marginHorizontal: 10,
-        fontWeight: "bold",
-        color: "#394C6D"
+        fontWeight: 'bold',
+        color: '#394C6D'
     },
     imageStyle: {
         width: 60,
         height: 60,
         borderRadius: 50,
-        borderColor: "#FCA234",
+        borderColor: '#FCA234',
         borderWidth: 2
     },
     infoUser: {
-        width: "100%",
-        flexDirection: "row",
-        alignItems: "center",
+        width: '100%',
         marginHorizontal: 20,
-        marginVertical: 15,
-        justifyContent: "space-between"
+        marginVertical: 15
     },
     containerInfoUser: {
-        flexDirection: "row",
-        alignItems: "center"
+        width: '60%',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     containerServiceSpecific: {
         flex: 1
     },
     infoServices: {
-        flex: 3
+        flex: 9
     },
     belowInfoService: {
         flex: 1
@@ -163,8 +140,8 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     oneLine: {
-        width: "100%",
-        backgroundColor: "#FCA234",
+        width: '100%',
+        backgroundColor: '#FCA234',
         height: 1,
         marginTop: 15
     }

@@ -62,7 +62,7 @@ const ConfirmCode = () => {
           navigation.navigate('NewPassword',{resetPasswordToken})
         }
         else{
-          navigation.navigate('Home')
+          navigation.navigate('SignIn')
         }
       }
     } catch (error) {

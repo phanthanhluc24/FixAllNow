@@ -10,7 +10,7 @@ interface Account {
 }
 interface ApiResponse {
   status: number;
-  message: string;
+  message: any;
   accessToken:string;
 }
 const useSignin = ({navigation}: any) => {

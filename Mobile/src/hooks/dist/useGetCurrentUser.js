@@ -44,13 +44,14 @@ var useGetCurrentUser = function () {
     var _a = react_1.useState(null), currentUser = _a[0], setCurrentUser = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
+    // console.log(currentUser);
     react_1.useEffect(function () {
         var fetchCurrentUser = function () { return __awaiter(void 0, void 0, void 0, function () {
             var accessToken, response, _a, status, data, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 3, 4, 5]);
+                        _b.trys.push([0, 6, 7, 8]);
                         return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
                     case 1:
                         accessToken = _b.sent();
@@ -60,23 +61,28 @@ var useGetCurrentUser = function () {
                     case 2:
                         response = _b.sent();
                         _a = response.data, status = _a.status, data = _a.data;
-                        if (status === 201) {
-                            setCurrentUser(data);
-                        }
-                        else {
-                            console.error('Error fetching user:', data.message);
-                            setIsError(true);
-                        }
-                        return [3 /*break*/, 5];
+                        if (!(status === 201)) return [3 /*break*/, 4];
+                        setCurrentUser(data);
+                        // console.log(data);
+                        return [4 /*yield*/, async_storage_1["default"].setItem('roleCurrentUser', data.role)];
                     case 3:
+                        // console.log(data);
+                        _b.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        console.error('Error fetching user:', data.message);
+                        setIsError(true);
+                        _b.label = 5;
+                    case 5: return [3 /*break*/, 8];
+                    case 6:
                         error_1 = _b.sent();
                         console.error('Error fetching user:', error_1);
                         setIsError(true);
-                        return [3 /*break*/, 5];
-                    case 4:
+                        return [3 /*break*/, 8];
+                    case 7:
                         setIsLoading(false);
                         return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 8: return [2 /*return*/];
                 }
             });
         }); };

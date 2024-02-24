@@ -39,7 +39,11 @@ const DrawerNavigator = () => {
   return (
     <GestureHandlerRootView style={styles.DrawerContainer}>
         <Drawer.Navigator initialRouteName='Main'>
-            <Drawer.Screen name="Main" component={BottomTab} options={headerOptions}/>
+            <Drawer.Screen name="Main" component={BottomTab} 
+            options={() => ({
+            headerShown: true,
+            headerTitle: "Xin chào đến với FIXALLNOW",
+          })}/>
             <Drawer.Screen name="Home" component={Home} options={optionsScreen({
                 drawerIcon: require(`${URL_IMAGE}/iconhome.png`),
                 backgroundColor:"white"

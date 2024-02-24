@@ -23,6 +23,8 @@ import ListOfElectrician from '../../screens/ListOfElectrician';
 import DetailRepairman from '../../screens/DetailRepairman';
 import DetailService from '../../screens/DetailService';
 import RatedComment from '../../screens/RatedComment';
+import EditInfoCurrentUser from '../../screens/forms/EditInfoCurrentUser';
+import FormBookSchedule from '../../screens/forms/FormBookSchedule';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -112,6 +114,22 @@ const Main = () => {
           name="RatedComment"
           component={RatedComment}
           options={{headerShown: true}}
+        />
+         <Stack.Screen
+          name="EditInfoCurrentUser"
+          component={EditInfoCurrentUser}
+          options={() => ({
+            headerShown: true,
+            headerTitle:`Sửa thông tin` ,
+          })}
+        />
+        <Stack.Screen
+          name="FormBookSchedule"
+          component={FormBookSchedule}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Đặt lịch",
+          })}
         />
         {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
       </Stack.Navigator>
