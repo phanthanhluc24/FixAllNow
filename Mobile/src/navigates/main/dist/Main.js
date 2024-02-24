@@ -21,6 +21,7 @@ var DetailService_1 = require("../../screens/DetailService");
 var RatedComment_1 = require("../../screens/RatedComment");
 var EditInfoCurrentUser_1 = require("../../screens/forms/EditInfoCurrentUser");
 var FormBookSchedule_1 = require("../../screens/forms/FormBookSchedule");
+var ConfirmInforBooking_1 = require("../../screens/ConfirmInforBooking");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -66,6 +67,10 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "FormBookSchedule", component: FormBookSchedule_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Đặt lịch"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "ConfirmInforBooking", component: ConfirmInforBooking_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Xác nhận đặt lịch"
                 }); } }))));
 };
 exports["default"] = Main;

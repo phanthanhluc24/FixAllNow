@@ -16,7 +16,9 @@ import {
 import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 const FormBookSchedule = () => {
+  const navigation= useNavigation();
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -159,7 +161,7 @@ const FormBookSchedule = () => {
                   style={styles.imgFooter}
                   source={require('../../assets/Form/book.png')}
                 />
-                <TouchableOpacity style={styles.bgButton}>
+                <TouchableOpacity style={styles.bgButton} onPress={()=>navigation.navigate('ConfirmInforBooking')}>
                   <Text style={styles.nameBook}>Đặt lịch</Text>
                 </TouchableOpacity>
               </View>

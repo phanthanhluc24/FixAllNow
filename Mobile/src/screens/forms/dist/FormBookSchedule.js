@@ -4,7 +4,9 @@ var react_native_1 = require("react-native");
 var react_1 = require("react");
 var formik_1 = require("formik");
 var datetimepicker_1 = require("@react-native-community/datetimepicker");
+var native_1 = require("@react-navigation/native");
 var FormBookSchedule = function () {
+    var navigation = native_1.useNavigation();
     var _a = react_1.useState(new Date()), date = _a[0], setDate = _a[1];
     var _b = react_1.useState(new Date()), time = _b[0], setTime = _b[1];
     var _c = react_1.useState(false), showPicker = _c[0], setShowPicker = _c[1];
@@ -70,7 +72,7 @@ var FormBookSchedule = function () {
                             react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('demobug'), onBlur: handleBlur('demobug'), value: values.demobug, placeholder: "M\u00F4 ta\u0309 v\u00E2\u0301n \u0111\u00EA\u0300 h\u01B0 ho\u0309ng thi\u00EA\u0301t bi\u0323" }))),
                     react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                         react_1["default"].createElement(react_native_1.Image, { style: styles.imgFooter, source: require('../../assets/Form/book.png') }),
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton, onPress: function () { return navigation.navigate('ConfirmInforBooking'); } },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameBook }, "\u0110\u0103\u0323t li\u0323ch")))))));
     }));
 };
