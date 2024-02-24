@@ -42,13 +42,15 @@ const BottomTab = () => {
             </View>
           );
         },
+        tabBarHideOnKeyboard: true,
         tabBarLabel: () => {
           return null;
         },
         tabBarStyle: {
           height: 62,
         },
-      })}>
+      })
+      }>
       <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
       <Tab.Screen name="Shop" component={Shop} options={{headerShown: false}} />
       <Tab.Screen name="Scan" component={Scan} options={{headerShown: false}} />
