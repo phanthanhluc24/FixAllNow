@@ -16,6 +16,9 @@ var ListOfElectrician = function (_a) {
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
     }
+    if (listRepairmanOfCategory.length <= 0) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Ch\u01B0a co\u0301 danh mu\u0323c na\u0300o!");
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),

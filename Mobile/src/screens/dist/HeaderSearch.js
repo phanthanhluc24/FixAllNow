@@ -43,8 +43,10 @@ var axios_1 = require("axios");
 var url_1 = require("../hooks/apiRequest/url");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var useGetCurrentUser_1 = require("../hooks/useGetCurrentUser");
+var native_1 = require("@react-navigation/native");
 var HeaderSearch = function (_a) {
     var onSearch = _a.onSearch;
+    var navigation = native_1.useNavigation();
     var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading) {
         react_1["default"].createElement(react_native_1.Text, null, "loading...");
@@ -89,7 +91,8 @@ var HeaderSearch = function (_a) {
                 react_1["default"].createElement(react_native_1.TextInput, { value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.messageIcon, onPress: handleSearch },
                     react_1["default"].createElement(Feather_1["default"], { name: "search", color: "black", size: 28 }))),
-            react_1["default"].createElement(react_native_1.Image, { source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image }, style: styles.images }))));
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('Profile'); } },
+                react_1["default"].createElement(react_native_1.Image, { source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image }, style: styles.images })))));
 };
 exports["default"] = HeaderSearch;
 var styles = react_native_1.StyleSheet.create({

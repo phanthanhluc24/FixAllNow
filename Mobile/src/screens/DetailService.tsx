@@ -1,112 +1,99 @@
-import {StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import React from 'react';
-import useGetDetailService from '../hooks/useGetDetailService';
-import {useNavigation} from '@react-navigation/native';
-const DetailService = ({route}: any) => {
-  const navigation: any = useNavigation();
-  const {id} = route.params;
-  const {service, isLoading, isError} = useGetDetailService(id);
-  if (isLoading) {
-    return <Text style={styles.loadingText}>Loading...</Text>;
-  }
-  if (isError) {
-    return <Text>Error loading repairman</Text>;
-  }
+
+import DetailInfoService from './DetailInfoService';
+import DetailServiceButton from './DetailServiceButton';
+
+const DetailService = () => {
+  const data = [{ key: 'DetailServiceRevolve' }];
+
+  const renderDetailService = () => {
+    return (
+      <View>
+        <DetailInfoService />
+      </View>
+    );
+  };
+
+  const renderDetailServiceButton = () => {
+    return (
+      <View>
+        <DetailServiceButton />
+      </View>
+    );
+  };
+
   return (
     <View style={styles.containerServiceSpecific}>
-      <View style={styles.infoServices}>
-        <Image source={{uri: service?.image}} style={styles.imageSer}></Image>
-        <View style={styles.infoStyle}>
-          <Text numberOfLines={1} style={styles.nameStyle}>
-            {service?.service_name}
-          </Text>
-          <Text style={styles.priceStyle}>
-            {service?.price.toLocaleString('vi-VN')}
-            {' VND'}
-          </Text>
-          <Text style={styles.description}>{service?.desc}</Text>
-        </View>
-        <View style={styles.oneLine}></View>
-        <View style={styles.infoUser}>
-          <View style={styles.containerInfoUser}>
-          <Image source={{uri:service?.user_id.image}} style={styles.imageStyle}></Image>
-          <Text style={styles.fullName}>{service?.user_id.full_name}</Text>
-          </View>
-          
-          <TouchableOpacity style={styles.buttonView}onPress={() =>
-              navigation.navigate('DetailRepairman', {id: service?.user_id._id,title:service?.user_id.full_name})
-            }><Text style={styles.detailRepairman}>Xem thợ!</Text></TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.belowInfoService}>
-        <View style={styles.buttonChoose}>
-          <View style={styles.buttonNow}>
-            <View style={styles.button1}>
-              <View style={styles.bookNow}>
-                <Text style={styles.books}>Đặt ngay</Text>
-              </View>
-            </View>
-            <View style={styles.button1}>
-              <View style={styles.book}>
-                <Text style={styles.books}>Đặt lịch</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
+      <FlatList
+        data={data}
+        keyExtractor={item => item.key}
+        renderItem={renderDetailServiceButton}
+        ListHeaderComponent={renderDetailService}
+      />
     </View>
   );
 };
 
 export default DetailService;
 const styles = StyleSheet.create({
-  detailRepairman:{
-    fontSize:15,
-    fontWeight:"bold",
-    color:"#394C6D",
+  buttonEvent: {
+    // padding:20,
+    // alignItems:"center",
+    // justifyContent:"center",
   },
-  buttonView:{
-    backgroundColor:"#ffffff",
-    borderRadius:5,
-    borderColor:"#FCA234",
-    borderWidth:2,
-    height:30,
-    width:90,
-    alignItems:"center",
-    justifyContent:"center",
-    marginHorizontal:40,
-   
+  detailRepairman: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#394C6D',
   },
-  fullName:{
-    fontSize:20,
-    marginHorizontal:10,
-    fontWeight:"bold",
-    color:"#394C6D",
+  buttonView: {
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    borderColor: '#FCA234',
+    borderWidth: 2,
+    height: 30,
+    width: 90,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 40,
   },
-  imageStyle:{
-    width:60,
-    height:60,
-    borderRadius:50,
-    borderColor:"#FCA234",
-    borderWidth:2
+  fullName: {
+    fontSize: 20,
+    marginHorizontal: 10,
+    fontWeight: 'bold',
+    color: '#394C6D',
   },
-  infoUser:{
-    width:"100%",
-    flexDirection:"row",
-    alignItems:"center",
-    marginHorizontal:20,
-    marginVertical:15,
-    justifyContent:"space-between"
+  imageStyle: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    borderColor: '#FCA234',
+    borderWidth: 2,
   },
-  containerInfoUser:{
-    flexDirection:"row",
-    alignItems:"center",
+  infoUser: {
+    width: '100%',
+    marginHorizontal: 20,
+    marginVertical: 15,
+  },
+  containerInfoUser: {
+    width: '60%',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   containerServiceSpecific: {
     flex: 1,
   },
   infoServices: {
-    flex: 3,
+    flex: 9,
   },
   belowInfoService: {
     flex: 1,
@@ -178,10 +165,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  oneLine:{
-    width:"100%",
-    backgroundColor:"#FCA234",
-    height:1,
-    marginTop:15
-  }
+  oneLine: {
+    width: '100%',
+    backgroundColor: '#FCA234',
+    height: 1,
+    marginTop: 15,
+  },
 });

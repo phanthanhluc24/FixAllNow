@@ -12,11 +12,13 @@ import axios from 'axios';
 import {url} from '../hooks/apiRequest/url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
+import { useNavigation } from '@react-navigation/native';
 interface typeProfile{
   _id: string;
   image:string
 }
 const HeaderSearch = ({onSearch}:any) => {
+  const navigation:any= useNavigation();
   const{currentUser, isLoading, isError} = useGetCurrentUser();
   if(isLoading){
     <Text>loading...</Text>
@@ -56,7 +58,9 @@ const HeaderSearch = ({onSearch}:any) => {
             <Feather name="search" color="black" size={28} />
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
         <Image source={{uri:currentUser?.image}} style={styles.images}/>
+        </TouchableOpacity>
       </View>
     </View>
   );

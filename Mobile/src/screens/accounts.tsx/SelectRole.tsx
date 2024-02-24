@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 140,
     height: 140,
-
     resizeMode: 'contain',
   },
   title_1: {

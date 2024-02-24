@@ -75,7 +75,7 @@ var useGetServiceOfRepairman = function (id) {
             });
         }); };
         fetchServiceOfRepairman();
-    }, []);
+    }, [id]);
     return { serviceOfRepairman: serviceOfRepairman, isLoading: isLoading, isError: isError };
 };
 exports["default"] = useGetServiceOfRepairman;

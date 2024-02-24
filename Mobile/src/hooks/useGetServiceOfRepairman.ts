@@ -26,7 +26,7 @@ const useGetServiceOfRepairman = (id:string) => {
       }
     };
     fetchServiceOfRepairman();
-  }, []);
+  }, [id]);
   return {serviceOfRepairman, isLoading, isError};
 };
 export default useGetServiceOfRepairman;

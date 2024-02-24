@@ -102,7 +102,7 @@ var ConfirmCode = function () {
                             navigation.navigate('NewPassword', { resetPasswordToken: resetPasswordToken });
                         }
                         else {
-                            navigation.navigate('Home');
+                            navigation.navigate('SignIn');
                         }
                     }
                     return [3 /*break*/, 4];
