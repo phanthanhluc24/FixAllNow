@@ -25,6 +25,7 @@ import DetailService from '../../screens/DetailService';
 import RatedComment from '../../screens/RatedComment';
 import EditInfoCurrentUser from '../../screens/forms/EditInfoCurrentUser';
 import FormBookSchedule from '../../screens/forms/FormBookSchedule';
+import ConfirmInforBooking from '../../screens/ConfirmInforBooking';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -129,6 +130,14 @@ const Main = () => {
           options={() => ({
             headerShown: true,
             headerTitle: "Đặt lịch",
+          })}
+        />
+        <Stack.Screen
+          name="ConfirmInforBooking"
+          component={ConfirmInforBooking}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Xác nhận đặt lịch",
           })}
         />
         {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
