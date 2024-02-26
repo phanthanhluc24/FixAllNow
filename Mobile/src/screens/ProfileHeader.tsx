@@ -50,20 +50,20 @@ const ProfileHeader = () => {
       <Text style={styles.deleteService}>
         <AntDesign name="delete" color="#FFFFFF" size={25} />
       </Text>
-      <Text style={styles.editService}>
+      <TouchableOpacity style={styles.editService} onPress={()=>navigation.navigate('EditInfoService')}>
         <Entypo name="edit" size={25} color="#FFFFFF" />
-      </Text>
+      </TouchableOpacity>
     </View>
   );
   return (
     <View style={styles.profileHeader}>
       <View style={styles.infoProfile}>
-        <View style={styles.avatarPro}>
+        <TouchableOpacity style={styles.avatarPro}  onPress={()=>navigation.navigate('EditAvatarCurrentUser')}>
           <Image
             style={styles.avatarProfile}
             source={{uri: currentUser?.image}}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.contentProfile}>
           <View style={styles.styleProfile}>
             <View style={styles.info}>

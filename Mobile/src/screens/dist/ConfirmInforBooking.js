@@ -48,10 +48,10 @@ var ConfirmInforBooking = function () {
                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
                     react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
                         react_1["default"].createElement(react_native_1.View, { style: styles.bookNow },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u0103\u0323t ngay"))),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "Hu\u0309y"))),
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: function () { return navigation.navigate('FormBookSchedule'); } },
                         react_1["default"].createElement(react_native_1.View, { style: styles.book },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u0103\u0323t li\u0323ch"))))))));
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u00F4\u0300ng y\u0301"))))))));
 };
 exports["default"] = ConfirmInforBooking;
 var styles = react_native_1.StyleSheet.create({
@@ -100,17 +100,17 @@ var styles = react_native_1.StyleSheet.create({
     },
     quesConfirm: {
         fontSize: 15,
-        fontWeight: "bold",
-        color: "#394C6D"
+        fontWeight: 'bold',
+        color: '#394C6D'
     },
     reConfirm: {
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     titleMethod: {
         fontSize: 15,
-        fontWeight: "bold",
-        color: "#FCA234"
+        fontWeight: 'bold',
+        color: '#FCA234'
     },
     method: {
         flexDirection: 'row',
@@ -123,9 +123,9 @@ var styles = react_native_1.StyleSheet.create({
         height: 70,
         borderWidth: 3,
         borderColor: '#394C6D',
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 10
     },
     infor: {

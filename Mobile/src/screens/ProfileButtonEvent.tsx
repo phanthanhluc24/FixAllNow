@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View , TouchableOpacity} from 'react-native'
-import React from 'react'
-
+import { StyleSheet, Text, View , TouchableOpacity} from 'react-native';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 const ProfileButtonEvent = () => {
+  const navigation:any= useNavigation();
   return (
     <View style={styles.containerEvent}>
      <View style={styles.styleEvent}>
-      <TouchableOpacity style={styles.addService}><Text style={styles.nameAddService}>Thêm mới dịch vụ</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.addService} onPress={()=>navigation.navigate('FormAddNewService')}><Text style={styles.nameAddService}>Thêm mới dịch vụ</Text></TouchableOpacity>
       <TouchableOpacity style={styles.viewHistory}><Text style={styles.nameViewHistory}>Lịch sử giao dịch</Text></TouchableOpacity>
 
      </View>

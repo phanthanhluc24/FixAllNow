@@ -1,86 +1,118 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
+import React,{useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
+import {useNavigation} from '@react-navigation/native';
+import StarRating from './StarRating';
 const RatedComment = () => {
+  const navigation:any = useNavigation();
+  const handleRatingPress = (rating:any) => {
+    console.log('Rated:', rating);
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.containerRatedComment}>
-        <View style={styles.comment}>
-          <View style={styles.avatar}>
-            <Image style={styles.avatarComment} source={require('../assets/Homes/avatars.png')}/>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        keyboardShouldPersistTaps="handled">
+        <View style={styles.containerRatedComment}>
+          <View style={styles.comment}>
+            <TextInput multiline={true}
+              style={styles.input}
+              placeholderTextColor={'#394C69'}
+              placeholder="Hãy đánh giá theo cảm nhận của bạn!"></TextInput>
           </View>
-          <View style={styles.content}>
-           
-            <Text style={styles.comments}>Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận tâm</Text>
-            <Image source={require('../assets/Homes/star.png')}/>
+          <Text style={styles.level}>Mức độ hài lòng:</Text>
+          <StarRating rating={0} onRatingPress={handleRatingPress} />
+        </View>
+        <View style={styles.bottom}>
+          <View style={styles.footer}>
+            <Image
+              style={styles.imgFooter}
+              source={require('../assets/Form/double.png')}
+            />
+            <TouchableOpacity
+              style={styles.bgButton}
+              onPress={() => navigation.navigate('ConfirmInforBooking')}>
+              <Text style={styles.nameBook}>Đánh giá</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
-      <View style={styles.bottom}>
-        <View style={styles.writeComment}>
-        <TextInput style={styles.input} placeholder='Hãy đánh giá gì đó'></TextInput>
-        <TouchableOpacity>
-        <Feather paddingHorizontal={15} name="send" color="black" size={28} />
-        </TouchableOpacity>
-        </View>
-       
-      </View>
-    </View>
-  )
-}
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+};
 
-export default RatedComment
+export default RatedComment;
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1
+  nameBook: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FCA234',
   },
-  containerRatedComment:{
-    marginHorizontal:20,
-    flex:9
+  imgFooter: {
+    width: '100%',
   },
-  bottom:{
-    flex:1,
-    marginHorizontal:20,
+  bgButton: {
+    backgroundColor: '#394C6D',
+    height: 54,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '50%',
+    borderRadius: 10,
+    borderWidth: 2,
+    marginBottom: 10,
   },
-  comment:{
-    flexDirection:"row",
-    alignItems:"center",
-    justifyContent:"space-between"
+  footer: {
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginTop: -20,
   },
-  writeComment:{
-    width:"100%",
-    height:50,
-    borderWidth:1,
-    borderRadius:10,
-    borderColor:"#394C6D",
-    flexDirection:"row",
-    justifyContent:"space-between",
-    alignItems:"center"
+  boxInput: {
+    marginVertical: 30,
+  },
+  level: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#394C6D',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FCA234',
+  },
+  containerRatedComment: {
+    marginHorizontal: 20,
+    flex: 5,
+  },
+  bottom: {
+    flex: 5,
+    marginHorizontal: 20,
+  },
+  comment: {
+    marginVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 
+  input: {
+    paddingLeft: 15,
+    height: 150,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#394C6D',
+    width: '100%',
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
   },
-  avatar:{
-    width:54,
-    height:54,
-    borderRadius:100,
-    borderWidth:3,
-    borderColor:"black",
-    alignItems:"center",
-    justifyContent:"center",
-  },
-  avatarComment:{
-    width:50,
-    height:50,
-  },
-  content:{
-    width:"80%"
-  },
-  comments:{
-    fontSize:16,
-    color:"#394C6D",
-    marginVertical:10
-  },
-  input:{
-      paddingLeft:15
-  }
-})
+});

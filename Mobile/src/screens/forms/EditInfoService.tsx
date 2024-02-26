@@ -10,16 +10,13 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, {useState, Fragment, useEffect} from 'react';
+import React, {useState, Fragment} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import useGetCurrentUser from '../../hooks/useGetCurrentUser';
-
-const EditInfoCurrentUser = () => {
-  const {currentUser, isLoading, isError}: any = useGetCurrentUser();
+const EditInfoService = () => {
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
@@ -86,7 +83,6 @@ const EditInfoCurrentUser = () => {
     formState: {errors},
   } = useForm();
   const onSubmit = () => {};
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -96,7 +92,7 @@ const EditInfoCurrentUser = () => {
         keyboardShouldPersistTaps="handled">
         <View style={styles.formEdit}>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Tên của bạn </Text>
+            <Text style={styles.infoEdit}>Tên dịch vụ </Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -104,19 +100,19 @@ const EditInfoCurrentUser = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={currentUser?.full_name}
+                  value={value}
                 />
               )}
-              name="full_name"
+              name="service_name"
               rules={{required: 'Tên không được bỏ trống'}}
               defaultValue=""
             />
             {/* {errors.name && (
-            <Text style={{color: 'red'}}>{errors.name.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.name.message}</Text>
+        )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Số điện thoại</Text>
+            <Text style={styles.infoEdit}>Gía dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -124,19 +120,19 @@ const EditInfoCurrentUser = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={currentUser?.number_phone}
+                  value={value}
                 />
               )}
-              name="number_phone"
-              rules={{required: 'SĐT không được bỏ trống '}}
+              name="price"
+              rules={{required: 'Gía không được bỏ trống '}}
               defaultValue=""
             />
             {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Email của bạn</Text>
+            <Text style={styles.infoEdit}>Mô tả dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -144,19 +140,19 @@ const EditInfoCurrentUser = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={currentUser?.email}
+                  value={value}
                 />
               )}
-              name="email"
-              rules={{required: 'Email không được bỏ trống'}}
+              name="desc"
+              rules={{required: 'Mô tả không được bỏ trống'}}
               defaultValue=""
             />
             {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Ảnh của bạn</Text>
+            <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
             <View>
               <Controller
                 control={control}
@@ -175,12 +171,11 @@ const EditInfoCurrentUser = () => {
               />
 
               {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
             </View>
           </View>
         </View>
-     
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
@@ -216,14 +211,16 @@ const EditInfoCurrentUser = () => {
           <Button
             color={'#FCA234'}
             onPress={handleSubmit(onSubmit)}
-            title="Cập nhật"
+            title="Thêm mới"
           />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
-export default EditInfoCurrentUser;
+
+export default EditInfoService;
+
 const styles = StyleSheet.create({
   imageView: {
     width: 100,

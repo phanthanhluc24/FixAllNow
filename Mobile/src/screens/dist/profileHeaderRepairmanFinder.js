@@ -80,7 +80,7 @@ var ProfileHeaderRepairmanFinder = function () {
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.profileHeader },
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
-            react_1["default"].createElement(react_native_1.View, { style: styles.avatarPro },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro, onPress: function () { return navigation.navigate("EditAvatarCurrentUser"); } },
                 react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } })),
             react_1["default"].createElement(react_native_1.View, { style: styles.contentProfile },
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleProfile },

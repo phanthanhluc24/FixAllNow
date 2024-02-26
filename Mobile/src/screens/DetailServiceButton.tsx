@@ -3,14 +3,17 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 const DetailServiceButton = () => {
     const navigation:any= useNavigation();
+    const handleBookNow =()=>{
+      navigation.navigate('MapScreen')
+    }
   return (
     <View style={styles.belowInfoService}>
     <View style={styles.buttonChoose}>
       <View style={styles.buttonNow}>
         <View style={styles.button1}>
-          <View style={styles.bookNow}>
+          <TouchableOpacity style={styles.bookNow} onPress={handleBookNow}>
             <Text style={styles.books}>Đặt ngay</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.button1} onPress={()=>navigation.navigate('FormBookSchedule')}>
           <View style={styles.book}>

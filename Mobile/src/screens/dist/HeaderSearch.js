@@ -88,7 +88,7 @@ var HeaderSearch = function (_a) {
     return (react_1["default"].createElement(react_native_1.View, { style: styles.SearchBarContainer },
         react_1["default"].createElement(react_native_1.View, { style: styles.SearchInputs },
             react_1["default"].createElement(react_native_1.View, { style: styles.searchInput },
-                react_1["default"].createElement(react_native_1.TextInput, { value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
+                react_1["default"].createElement(react_native_1.TextInput, { multiline: true, value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.messageIcon, onPress: handleSearch },
                     react_1["default"].createElement(Feather_1["default"], { name: "search", color: "black", size: 28 }))),
             react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('Profile'); } },

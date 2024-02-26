@@ -39,14 +39,33 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var react_hook_form_1 = require("react-hook-form");
-var Entypo_1 = require("react-native-vector-icons/Entypo");
 var react_native_document_picker_1 = require("react-native-document-picker");
-var useGetCurrentUser_1 = require("../../hooks/useGetCurrentUser");
-var EditInfoCurrentUser = function () {
-    var _a = useGetCurrentUser_1["default"](), currentUser = _a.currentUser, isLoading = _a.isLoading, isError = _a.isError;
-    var _b = react_1.useState(null), singleFile = _b[0], setSingleFile = _b[1];
+var useAddNewService_1 = require("../../hooks/useAddNewService");
+var FormAddNewService = function () {
+    var _a = react_hook_form_1.useForm(), control = _a.control, errors = _a.formState.errors;
+    var _b = useAddNewService_1["default"](), isLoading = _b.isLoading, error = _b.error, sendData = _b.sendData;
+    var onSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
+        var responseData, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    console.log("Submitted Data:", data);
+                    return [4 /*yield*/, sendData(data)];
+                case 1:
+                    responseData = _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _a.sent();
+                    console.error('Error while sending data:', error_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    var _c = react_1.useState(null), singleFile = _c[0], setSingleFile = _c[1];
     var uploadImage = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var formData, res, error_1;
+        var formData, res, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -64,7 +83,7 @@ var EditInfoCurrentUser = function () {
                     });
                     return [4 /*yield*/, fetch('https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile', {
                             method: 'POST',
-                            body: formData,
+                            body: data,
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             },
@@ -80,8 +99,8 @@ var EditInfoCurrentUser = function () {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    error_1 = _a.sent();
-                    console.error('Error uploading file:', error_1);
+                    error_2 = _a.sent();
+                    console.error('Error uploading file:', error_2);
                     react_native_1.Alert.alert('Error uploading file');
                     return [3 /*break*/, 4];
                 case 4: return [3 /*break*/, 6];
@@ -121,39 +140,30 @@ var EditInfoCurrentUser = function () {
             }
         });
     }); };
-    var _c = react_hook_form_1.useForm(), control = _c.control, handleSubmit = _c.handleSubmit, errors = _c.formState.errors;
-    var onSubmit = function () { };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
             react_1["default"].createElement(react_native_1.View, { style: styles.formEdit },
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "T\u00EAn cu\u0309a ba\u0323n "),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "T\u00EAn di\u0323ch vu\u0323 "),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: currentUser === null || currentUser === void 0 ? void 0 : currentUser.full_name }));
-                        }, name: "full_name", rules: { required: 'Tên không được bỏ trống' }, defaultValue: "" })),
+                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
+                        }, name: "service_name", rules: { required: 'Tên không được bỏ trống' }, defaultValue: "" })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "S\u00F4\u0301 \u0111i\u00EA\u0323n thoa\u0323i"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gi\u0301a di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: currentUser === null || currentUser === void 0 ? void 0 : currentUser.number_phone }));
-                        }, name: "number_phone", rules: { required: 'SĐT không được bỏ trống ' }, defaultValue: "" })),
+                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
+                        }, name: "price", rules: { required: 'Gía không được bỏ trống ' }, defaultValue: "" })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Email cu\u0309a ba\u0323n"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "M\u00F4 ta\u0309 di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: currentUser === null || currentUser === void 0 ? void 0 : currentUser.email }));
-                        }, name: "email", rules: { required: 'Email không được bỏ trống' }, defaultValue: "" })),
+                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
+                        }, name: "desc", rules: { required: 'Mô tả không được bỏ trống' }, defaultValue: "" })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh cu\u0309a ba\u0323n"),
-                    react_1["default"].createElement(react_native_1.View, null,
-                        react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
-                                var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                                return (react_1["default"].createElement(react_native_1.View, { style: { flex: 1, alignItems: 'center' } },
-                                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
-                                        react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
-                                            react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 50, color: "#FCA234" })))));
-                            }, name: "email", rules: { required: 'Vui lòng ảnh không được bỏ trống' }, defaultValue: "" })))),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
+                    react_1["default"].createElement(react_native_1.View, null))),
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonStyle, activeOpacity: 0.5, onPress: selectFile },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.buttonTextStyle }, "Select File")),
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonStyle, activeOpacity: 0.5, onPress: uploadImage },
@@ -172,10 +182,10 @@ var EditInfoCurrentUser = function () {
                 singleFile.uri ? singleFile.uri : '',
                 '\n')) : null,
             react_1["default"].createElement(react_native_1.View, { style: styles.eventSubmit },
-                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: handleSubmit(onSubmit), title: "Hu\u0309y" }),
-                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: handleSubmit(onSubmit), title: "C\u00E2\u0323p nh\u00E2\u0323t" })))));
+                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: onSubmit, title: "Hu\u0309y" }),
+                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: onSubmit, title: "Th\u00EAm m\u01A1\u0301i" })))));
 };
-exports["default"] = EditInfoCurrentUser;
+exports["default"] = FormAddNewService;
 var styles = react_native_1.StyleSheet.create({
     imageView: {
         width: 100,

@@ -22,6 +22,10 @@ var RatedComment_1 = require("../../screens/RatedComment");
 var EditInfoCurrentUser_1 = require("../../screens/forms/EditInfoCurrentUser");
 var FormBookSchedule_1 = require("../../screens/forms/FormBookSchedule");
 var ConfirmInforBooking_1 = require("../../screens/ConfirmInforBooking");
+var FormAddNewService_1 = require("../../screens/forms/FormAddNewService");
+var EditInfoService_1 = require("../../screens/forms/EditInfoService");
+var EditAvatarCurrentUser_1 = require("../../screens/forms/EditAvatarCurrentUser");
+var MapScreen_1 = require("../../screens/MapScreen");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -59,7 +63,10 @@ var Main = function () {
                         headerTitle: "" + ((_b = route.params) === null || _b === void 0 ? void 0 : _b.title)
                     });
                 } }),
-            react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: { headerShown: true } }),
+            react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "\u0110a\u0301nh gia\u0301 cu\u0309a ba\u0323n v\u00EA\u0300 th\u01A1\u0323"
+                }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "EditInfoCurrentUser", component: EditInfoCurrentUser_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "S\u01B0\u0309a th\u00F4ng tin"
@@ -71,6 +78,22 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "ConfirmInforBooking", component: ConfirmInforBooking_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Xác nhận đặt lịch"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "FormAddNewService", component: FormAddNewService_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Thêm mới dịch vụ"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "EditInfoService", component: EditInfoService_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Chỉnh sửa dịch vụ"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "EditAvatarCurrentUser", component: EditAvatarCurrentUser_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Chỉnh sửa ảnh đại diện"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "MapScreen", component: MapScreen_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Tìm vị trí thợ"
                 }); } }))));
 };
 exports["default"] = Main;

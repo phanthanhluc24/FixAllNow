@@ -10,16 +10,30 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, {useState, Fragment, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import useGetCurrentUser from '../../hooks/useGetCurrentUser';
+import useAddNewService from '../../hooks/useAddNewService';
+const FormAddNewService = () => {
+  const {
+    control,
+    formState: {errors},
+  } = useForm();
 
-const EditInfoCurrentUser = () => {
-  const {currentUser, isLoading, isError}: any = useGetCurrentUser();
+  const {isLoading, error, sendData} = useAddNewService();
+
+  const onSubmit = async (data: any) => {
+    try {
+        console.log("Submitted Data:", data);
+        const responseData = await sendData(data);
+      } catch (error) {
+        console.error('Error while sending data:', error);
+     
+      }
+  };
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
@@ -39,7 +53,7 @@ const EditInfoCurrentUser = () => {
           'https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile',
           {
             method: 'POST',
-            body: formData,
+            body: data,
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -80,13 +94,6 @@ const EditInfoCurrentUser = () => {
     }
   };
 
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
-  const onSubmit = () => {};
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -96,7 +103,7 @@ const EditInfoCurrentUser = () => {
         keyboardShouldPersistTaps="handled">
         <View style={styles.formEdit}>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Tên của bạn </Text>
+            <Text style={styles.infoEdit}>Tên dịch vụ </Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -104,19 +111,19 @@ const EditInfoCurrentUser = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={currentUser?.full_name}
+                  value={value}
                 />
               )}
-              name="full_name"
+              name="service_name"
               rules={{required: 'Tên không được bỏ trống'}}
               defaultValue=""
             />
             {/* {errors.name && (
-            <Text style={{color: 'red'}}>{errors.name.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.name.message}</Text>
+        )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Số điện thoại</Text>
+            <Text style={styles.infoEdit}>Gía dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -124,19 +131,19 @@ const EditInfoCurrentUser = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={currentUser?.number_phone}
+                  value={value}
                 />
               )}
-              name="number_phone"
-              rules={{required: 'SĐT không được bỏ trống '}}
+              name="price"
+              rules={{required: 'Gía không được bỏ trống '}}
               defaultValue=""
             />
             {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Email của bạn</Text>
+            <Text style={styles.infoEdit}>Mô tả dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -144,21 +151,21 @@ const EditInfoCurrentUser = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={currentUser?.email}
+                  value={value}
                 />
               )}
-              name="email"
-              rules={{required: 'Email không được bỏ trống'}}
+              name="desc"
+              rules={{required: 'Mô tả không được bỏ trống'}}
               defaultValue=""
             />
             {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Ảnh của bạn</Text>
+            <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
             <View>
-              <Controller
+              {/* <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <View style={{flex: 1, alignItems: 'center'}}>
@@ -172,15 +179,13 @@ const EditInfoCurrentUser = () => {
                 name="email"
                 rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
                 defaultValue=""
-              />
-
+              /> */}
               {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
             </View>
           </View>
         </View>
-     
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
@@ -208,22 +213,16 @@ const EditInfoCurrentUser = () => {
         ) : null}
 
         <View style={styles.eventSubmit}>
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Hủy"
-          />
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Cập nhật"
-          />
+          <Button color={'#FCA234'} onPress={onSubmit} title="Hủy" />
+          <Button color={'#FCA234'} onPress={onSubmit} title="Thêm mới" />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
-export default EditInfoCurrentUser;
+
+export default FormAddNewService;
+
 const styles = StyleSheet.create({
   imageView: {
     width: 100,

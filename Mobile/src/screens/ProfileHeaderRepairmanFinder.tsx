@@ -37,12 +37,12 @@ const ProfileHeaderRepairmanFinder =() => {
   return (
     <View style={styles.profileHeader}>
       <View style={styles.infoProfile}>
-        <View style={styles.avatarPro}>
+        <TouchableOpacity style={styles.avatarPro} onPress={()=>navigation.navigate("EditAvatarCurrentUser")}>
           <Image
             style={styles.avatarProfile}
             source={{uri: currentUser?.image}}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.contentProfile}>
           <View style={styles.styleProfile}>
             <View style={styles.info}>

@@ -50,6 +50,7 @@ const HeaderSearch = ({onSearch}:any) => {
       <View style={styles.SearchInputs}>
         <View style={styles.searchInput}>
           <TextInput
+            multiline={true}
             value={searchValue}
             onChangeText={handleSearchChange}
             placeholder="Tìm kiếm dịch vụ"
