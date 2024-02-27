@@ -136,6 +136,7 @@ var ConfirmCode = function () {
                     else {
                         setNewCode(res.code);
                         setCountdown(180);
+                        setCountdownMessage('');
                         react_native_1.Alert.alert('Vui lòng kiểm tra email để lấy mã!');
                     }
                     return [3 /*break*/, 5];
@@ -174,7 +175,7 @@ var ConfirmCode = function () {
     return (react_1["default"].createElement(formik_1.Formik, { initialValues: { code: '' }, onSubmit: handleSubmit }, function (_a) {
         var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmContainer },
-            react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
+            react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
                 react_1["default"].createElement(react_native_1.View, { style: styles.body },
                     react_1["default"].createElement(react_native_1.View, { style: styles.container },
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },

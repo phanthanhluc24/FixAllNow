@@ -18,21 +18,18 @@ import DocumentPicker, {
 } from 'react-native-document-picker';
 import useAddNewService from '../../hooks/useAddNewService';
 const FormAddNewService = () => {
-  const {
-    control,
-    formState: {errors},
-  } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm();
 
   const {isLoading, error, sendData} = useAddNewService();
 
   const onSubmit = async (data: any) => {
     try {
-        console.log("Submitted Data:", data);
-        const responseData = await sendData(data);
-      } catch (error) {
-        console.error('Error while sending data:', error);
-     
-      }
+      console.log('Submitted Data:', data);
+      const responseData = await sendData(data);
+      console.log('Submitted Data:', responseData);
+    } catch (error) {
+      console.error('Error while sending data:', error);
+    }
   };
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
@@ -75,11 +72,11 @@ const FormAddNewService = () => {
   };
   const selectFile = async () => {
     try {
-      const res = await DocumentPicker.pick({
+      const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
 
-      console.log('res :', res);
+      console.log('res :', res.name);
 
       setSingleFile(res);
     } catch (err) {
@@ -165,7 +162,7 @@ const FormAddNewService = () => {
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
             <View>
-              {/* <Controller
+              <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <View style={{flex: 1, alignItems: 'center'}}>
@@ -179,7 +176,7 @@ const FormAddNewService = () => {
                 name="email"
                 rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
                 defaultValue=""
-              /> */}
+              />
               {/* {errors.email && (
           <Text style={{color: 'red'}}>{errors.email.message}</Text>
         )} */}
@@ -199,22 +196,22 @@ const FormAddNewService = () => {
           onPress={uploadImage}>
           <Text style={styles.buttonTextStyle}>Upload File</Text>
         </TouchableOpacity>
-        {singleFile != null ? (
+        {singleFile && (
           <Text style={styles.textStyle}>
-            File Name: {singleFile.name ? singleFile.name : ''}
+            File Name: {singleFile.name}
             {'\n'}
-            Type: {singleFile.type ? singleFile.type : ''}
+            Type: {singleFile.type}
             {'\n'}
-            File Size: {singleFile.size ? singleFile.size : ''}
+            File Size: {singleFile.size}
             {'\n'}
-            URI: {singleFile.uri ? singleFile.uri : ''}
+            URI: {singleFile.uri}
             {'\n'}
           </Text>
-        ) : null}
+        )}
 
         <View style={styles.eventSubmit}>
           <Button color={'#FCA234'} onPress={onSubmit} title="Hủy" />
-          <Button color={'#FCA234'} onPress={onSubmit} title="Thêm mới" />
+          <Button color={'#FCA234'} onPress={handleSubmit(onSubmit)} title="Thêm mới" />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -251,11 +248,11 @@ const styles = StyleSheet.create({
   formEdit: {
     flex: 9,
     marginVertical: 20,
+    paddingHorizontal: 20,
   },
   container: {
     backgroundColor: '#394C69',
     flex: 1,
-    paddingHorizontal: 20,
   },
   inputInfo: {
     backgroundColor: 'white',

@@ -3,7 +3,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from './apiRequest/url';
 const useGetServiceOfRepairman = (id:string) => {
-    // console.log(id)
   const [serviceOfRepairman, setServiceOfRepairman] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);

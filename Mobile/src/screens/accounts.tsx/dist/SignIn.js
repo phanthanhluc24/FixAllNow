@@ -35,16 +35,12 @@ var SignIn = function (_a) {
                             react_1["default"].createElement(react_native_1.View, null,
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titleEmail }, "Email"),
                                 react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, enterKeyHint: 'next', onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email }),
-                                errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                                    "* ",
-                                    errors.email)) : null)),
+                                errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errors.email)) : null)),
                         react_1["default"].createElement(react_native_1.View, { style: styles.fromInput },
                             react_1["default"].createElement(react_native_1.View, { style: styles.space },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titlePassword }, "M\u00E2\u0323t Kh\u00E2\u0309u"),
                                 react_1["default"].createElement(react_native_1.TextInput, { ref: passwordRef, style: styles.inputPassword, enterKeyHint: 'done', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.clear(); }, onChangeText: handleChange('password'), onBlur: handleBlur('password'), value: values.password }),
-                                errors.password && touched.password ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                                    "* ",
-                                    errors.password)) : null),
+                                errors.password && touched.password ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errors.password)) : null),
                             react_1["default"].createElement(react_native_1.View, { style: styles.confirmInfo },
                                 react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('ForgotPassword'); } },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.titlefg }, "Qu\u00EAn m\u00E2\u0323t kh\u00E2\u0309u?")),
@@ -80,7 +76,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     Imgfooter: {
         marginRight: 20,
-        marginTop: 90
+        marginTop: 150
     },
     title: {
         color: 'white',

@@ -45,7 +45,7 @@ var ConfirmTypeRepairman = function () {
         } }, function (_a) {
         var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values, setFieldValue = _a.setFieldValue;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmTypeContainer },
-            react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
+            react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
                 react_1["default"].createElement(react_native_1.View, { style: styles.header },
                     react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/Confirm/confirmType.png') })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.body },
@@ -56,7 +56,11 @@ var ConfirmTypeRepairman = function () {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "Ba\u0323n la\u0300 th\u01A1\u0323 gi\u0300?"),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error.role),
                             react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles.dropdown, placeholderStyle: styles.placeholderStyle, selectedTextStyle: styles.selectedTextStyle, inputSearchStyle: styles.inputSearchStyle, iconStyle: styles.iconStyle, data: data || [], search: true, maxHeight: 300, labelField: "label", valueField: "value", placeholder: "L\u01B0\u0323a cho\u0323n ngh\u00EA\u0300 nghi\u00EA\u0323p", searchPlaceholder: "Search...", value: selectedCategory, onChange: function (item) {
-                                    setValue(function (prevValue) { return (__assign(__assign({}, prevValue), { label: item.label, value: item.value })); });
+                                    // setValue(prevValue => ({
+                                    //   ...prevValue,
+                                    //   label: item.label,
+                                    //   value: item.value,
+                                    // }));
                                     setSelectedCategory(item);
                                     setFieldValue('_id', item.value);
                                 }, renderItem: renderItem }),
@@ -171,7 +175,7 @@ var styles = react_native_1.StyleSheet.create({
         marginRight: 65
     },
     imgDemo1: {
-        marginTop: 100
+        marginTop: 130
     },
     titleJob: {
         fontSize: 22,

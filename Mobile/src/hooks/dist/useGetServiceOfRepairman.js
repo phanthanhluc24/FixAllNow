@@ -41,7 +41,6 @@ var axios_1 = require("axios");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
 var useGetServiceOfRepairman = function (id) {
-    // console.log(id)
     var _a = react_1.useState([]), serviceOfRepairman = _a[0], setServiceOfRepairman = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];

@@ -43,9 +43,9 @@ var ProfileHeader = function () {
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleProfile },
                     react_1["default"].createElement(react_native_1.View, { style: styles.info },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.nameProfile }, currentUser === null || currentUser === void 0 ? void 0 : currentUser.full_name)),
-                    react_1["default"].createElement(react_native_1.View, null,
+                    react_1["default"].createElement(react_native_1.View, { style: styles.buttonEvent },
                         react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () { return navigation.navigate('EditInfoCurrentUser'); } },
-                            react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "#394C6D" })),
+                            react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "#FCA234" })),
                         react_1["default"].createElement(ButtonLogout_1["default"], null))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoQuality },
             react_1["default"].createElement(react_native_1.View, { style: styles.email },
@@ -101,6 +101,12 @@ var styles = react_native_1.StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    buttonEvent: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        width: "90%",
+        marginRight: 20
+    },
     email: {
         flexDirection: 'row',
         alignItems: 'center'
@@ -111,7 +117,13 @@ var styles = react_native_1.StyleSheet.create({
         marginBottom: 20
     },
     iconEdit: {
-        marginLeft: 20
+        width: 100,
+        height: 40,
+        marginVertical: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        backgroundColor: "#394C6D"
     },
     info: {
         alignItems: 'center',
@@ -129,7 +141,6 @@ var styles = react_native_1.StyleSheet.create({
         color: '#394C6D'
     },
     styleProfile: {
-        flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'
     },
