@@ -32,7 +32,7 @@ const ButtonLogout = () => {
     };
     return (
             <TouchableOpacity style={styles.iconEdit} onPress={handleLogout}>
-                <MaterialCommunityIcons name="logout" size={24} color="#394C6D" />
+                <MaterialCommunityIcons name="logout" size={24} color="#FCA234" />
             </TouchableOpacity>
     );
 };
@@ -41,7 +41,12 @@ export default ButtonLogout;
 
 const styles = StyleSheet.create({
   iconEdit: {
-    marginLeft: 20,
+    width:100,
+    height:40,
     marginVertical: 5,
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:10,
+    backgroundColor:"#394C6D"
   },
 });

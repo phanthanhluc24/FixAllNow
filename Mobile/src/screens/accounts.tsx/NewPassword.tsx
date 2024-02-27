@@ -15,16 +15,16 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Formik} from 'formik';
 import useResetNewPassword from '../../hooks/useResetNewPassword';
 import {NewPasswordSchema} from './ValidationNewPassword';
 const NewPassword = () => {
+  const [errorMessage, setErrorMessage] = useState('');
   const passwordRef: any = useRef();
   const navigation: any = useNavigation();
   const route = useRoute();
   const {resetPasswordToken}: any = route.params;
-  console.log(resetPasswordToken);
   const handleResetSubmit = async (values: {
     newpassword: string;
     confirmpassword: string;
@@ -34,11 +34,10 @@ const NewPassword = () => {
       newPassword: values.newpassword,
       confirmPassword: values.confirmpassword,
     };
-    console.log(newPassword);
     await useResetNewPassword(newPassword)
       .then((res: any) => {
         if (res.status !== 201) {
-          Alert.alert(res.message);
+          setErrorMessage(res.message);
         } else {
           navigation.navigate('SignIn');
         }
@@ -62,7 +61,13 @@ const NewPassword = () => {
                 <View style={styles.titleContainer}>
                   <Text style={styles.title}>MẬT KHẨU MỚI</Text>
                 </View>
+               
                 <View style={styles.spaceForm}>
+                  <View style={{height:20}}>
+                {errorMessage ? (
+                  <Text style={styles.errorMessage}>{errorMessage}</Text>
+                ) : null}
+                </View>
                   <Text style={styles.titles}>Mật khẩu mới</Text>
                   <View style={styles.spaceContainer}>
                     <TextInput
@@ -97,7 +102,7 @@ const NewPassword = () => {
                   </View>
                   <TouchableOpacity
                     style={styles.buttonConfirm}
-                    onPress={(e:GestureResponderEvent)=>handleSubmit()}>
+                    onPress={(e: GestureResponderEvent) => handleSubmit()}>
                     <Text style={styles.textConfirm}>XÁC THỰC</Text>
                   </TouchableOpacity>
                 </View>
@@ -124,6 +129,13 @@ const NewPassword = () => {
 export default NewPassword;
 
 const styles = StyleSheet.create({
+  errorMessage: {
+    color: 'red',
+   fontWeight:"bold",
+    marginTop: 8,
+    marginHorizontal:40,
+    height:40
+  },  
   errorText: {
     fontWeight: 'bold',
     color: 'red',
@@ -174,10 +186,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     width: '80%',
-    paddingLeft:15,
+    paddingLeft: 15,
   },
   spaceContainer: {
     alignItems: 'center',
+    height:90
   },
   timeInput: {
     fontSize: 15,
@@ -189,7 +202,7 @@ const styles = StyleSheet.create({
     color: '#0000ff',
   },
   container: {
-    marginTop: 100,
+    marginTop: 70,
   },
   buttonConfirm: {
     width: '80%',
@@ -199,7 +212,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
+    marginTop: 10,
   },
   textConfirm: {
     color: 'white',
@@ -211,7 +224,8 @@ const styles = StyleSheet.create({
     marginRight: '-60%',
   },
   spaceForm: {
-    marginTop: 50,
+    marginTop: 10,
+    height:300
   },
   demoImg: {
     marginTop: '130%',

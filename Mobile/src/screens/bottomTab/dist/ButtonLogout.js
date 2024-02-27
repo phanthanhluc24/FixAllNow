@@ -73,12 +73,17 @@ var ButtonLogout = function () {
         });
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.TouchableOpacity, { style: styles.iconEdit, onPress: handleLogout },
-        react_1["default"].createElement(MaterialCommunityIcons_1["default"], { name: "logout", size: 24, color: "#394C6D" })));
+        react_1["default"].createElement(MaterialCommunityIcons_1["default"], { name: "logout", size: 24, color: "#FCA234" })));
 };
 exports["default"] = ButtonLogout;
 var styles = react_native_1.StyleSheet.create({
     iconEdit: {
-        marginLeft: 20,
-        marginVertical: 5
+        width: 100,
+        height: 40,
+        marginVertical: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        backgroundColor: "#394C6D"
     }
 });

@@ -66,7 +66,7 @@ const SignIn = ({navigation}: any) => {
                       value={values.email}
                     />
                     {errors.email && touched.email ? (
-                      <Text style={styles.errorText}>* {errors.email}</Text>
+                      <Text style={styles.errorText}>{errors.email}</Text>
                     ) : null}
                   </View>
                 </View>
@@ -84,7 +84,7 @@ const SignIn = ({navigation}: any) => {
                       value={values.password}
                     />
                     {errors.password && touched.password ? (
-                      <Text style={styles.errorText}>* {errors.password}</Text>
+                      <Text style={styles.errorText}>{errors.password}</Text>
                     ) : null}
                   </View>
                   <View style={styles.confirmInfo}>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   Imgfooter: {
     marginRight: 20,
-    marginTop: 90,
+    marginTop: 150,
   },
   title: {
     color: 'white',

@@ -63,7 +63,7 @@ const ConfirmTypeRepairman = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.confirmTypeContainer}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
             <View style={styles.header}>
               <Image source={require('../../assets/Confirm/confirmType.png')} />
             </View>
@@ -90,11 +90,11 @@ const ConfirmTypeRepairman = () => {
                     searchPlaceholder="Search..."
                     value={selectedCategory}
                     onChange={item => {
-                      setValue(prevValue => ({
-                        ...prevValue,
-                        label: item.label,
-                        value: item.value,
-                      }));
+                      // setValue(prevValue => ({
+                      //   ...prevValue,
+                      //   label: item.label,
+                      //   value: item.value,
+                      // }));
 
                       setSelectedCategory(item);
                       setFieldValue('_id', item.value);
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginRight: 65,
   },
   imgDemo1: {
-    marginTop: 100,
+    marginTop: 130,
   },
   titleJob: {
     fontSize: 22,
