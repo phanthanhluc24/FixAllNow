@@ -44,25 +44,28 @@ const ForgotPassword = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.confirmContainer}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
             <View style={styles.body}>
               <View style={styles.container}>
                 <View style={styles.titleContainer}>
                   <Text style={styles.title}>XÁC THỰC TÀI KHOẢN</Text>
                 </View>
                 <View style={styles.spaceContainer}>
-                  <Text style={styles.titles}>Vui lòng nhập Email!</Text>
+                  {/* <Text style={styles.titles}>Vui lòng nhập Email!</Text> */}
                   <Text style={styles.errorText}>{errorServer}</Text>
+                  <View style={styles.heightInput}>
                   <TextInput
                     style={styles.inputCode}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
                     enterKeyHint={'done'}
+                    placeholder='Vui lòng nhập email'
                   />
                   {errors.email && touched.email ? (
                     <Text style={styles.errorText}>* {errors.email}</Text>
                   ) : null}
+                  </View>
                   <TouchableOpacity
                     onPress={(e:GestureResponderEvent)=>handleSubmit()}
                     style={styles.buttonConfirm}>
@@ -155,6 +158,10 @@ const styles = StyleSheet.create({
   spaceContainer: {
     marginLeft:55,
     marginTop: 40,
+    
+  },
+  heightInput:{
+    height:70
   },
   timeInput: {
     fontSize: 15,
@@ -180,7 +187,7 @@ const styles = StyleSheet.create({
   },
   textConfirm: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
   },
   demo: {

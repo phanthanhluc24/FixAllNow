@@ -21,7 +21,10 @@ import DocumentPicker, {
 import {useNavigation} from '@react-navigation/native';
 import useAddNewService from '../../hooks/useAddNewService';
 const FormAddNewService = () => {
+
   const navigation: any = useNavigation();
+
+  
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
@@ -148,6 +151,7 @@ const FormAddNewService = () => {
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
+
             {!!singleFile || (
               <View style={styles.selectedImage}>
                 <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
@@ -157,6 +161,7 @@ const FormAddNewService = () => {
                 </TouchableOpacity>
 
                 {/* {errors.email && (
+          
           <Text style={{color: 'red'}}>{errors.email.message}</Text>
         )} */}
               </View>
@@ -177,6 +182,7 @@ const FormAddNewService = () => {
             )}
           </View>
         </View>
+
         <View style={styles.eventSubmit}>
           <View style={styles.buttonChoose}>
             <View style={styles.buttonNow}>
@@ -194,6 +200,7 @@ const FormAddNewService = () => {
               </TouchableOpacity>
             </View>
           </View>
+
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

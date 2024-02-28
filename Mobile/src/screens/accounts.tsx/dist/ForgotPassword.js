@@ -73,18 +73,18 @@ var ForgotPassword = function () {
     return (react_1["default"].createElement(formik_1.Formik, { initialValues: { email: '' }, onSubmit: handleSubmitVerification, validationSchema: ValidationForgetPassword_1.ForgotPasswordSchema }, function (_a) {
         var errors = _a.errors, touched = _a.touched, handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;
         return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.confirmContainer },
-            react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
+            react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
                 react_1["default"].createElement(react_native_1.View, { style: styles.body },
                     react_1["default"].createElement(react_native_1.View, { style: styles.container },
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "XA\u0301C TH\u01AF\u0323C TA\u0300I KHOA\u0309N")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Vui lo\u0300ng nh\u00E2\u0323p Email!"),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errorServer),
-                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email, enterKeyHint: 'done' }),
-                            errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                                "* ",
-                                errors.email)) : null,
+                            react_1["default"].createElement(react_native_1.View, { style: styles.heightInput },
+                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email, enterKeyHint: 'done', placeholder: 'Vui lo\u0300ng nh\u00E2\u0323p email' }),
+                                errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
+                                    "* ",
+                                    errors.email)) : null),
                             react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function (e) { return handleSubmit(); }, style: styles.buttonConfirm },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C"))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
@@ -157,6 +157,9 @@ var styles = react_native_1.StyleSheet.create({
         marginLeft: 55,
         marginTop: 40
     },
+    heightInput: {
+        height: 70
+    },
     timeInput: {
         fontSize: 15,
         marginTop: 10
@@ -181,7 +184,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     textConfirm: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold'
     },
     demo: {

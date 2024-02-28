@@ -69,9 +69,9 @@ const ProfileHeader = () => {
             <View style={styles.info}>
               <Text style={styles.nameProfile}>{currentUser?.full_name}</Text>
             </View>
-            <View>
+            <View style={styles.buttonEvent}>
               <TouchableOpacity style={styles.iconEdit} onPress={()=>navigation.navigate('EditInfoCurrentUser')}>
-                <Entypo name="edit" size={24} color="#394C6D" />
+                <Entypo name="edit" size={24} color="#FCA234" />
               </TouchableOpacity>
               <ButtonLogout/>
             </View>
@@ -148,6 +148,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  buttonEvent:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    width:"90%",
+    marginRight:20
+  },
   email: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -158,7 +164,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   iconEdit: {
-    marginLeft: 20,
+    width:100,
+    height:40,
+    marginVertical: 5,
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:10,
+    backgroundColor:"#394C6D",
   },
   info: {
     alignItems: 'center',
@@ -176,7 +188,6 @@ const styles = StyleSheet.create({
     color: '#394C6D',
   },
   styleProfile: {
-    flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
   },

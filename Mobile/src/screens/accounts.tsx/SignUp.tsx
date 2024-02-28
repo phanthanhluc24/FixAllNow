@@ -21,7 +21,9 @@ interface Register {
   password: string;
 }
 const SignUp = () => {
-  const [errorServer,setErrorServer]=useState(null)
+  const [errorServer,setErrorServer]=useState(null);
+  const [phoneNumberEntered, setPhoneNumberEntered] = useState(false);
+ 
   const route = useRoute();
   const {selectedRole, _id, address}: any = route.params || {};
   // console.log(selectedRole, _id, address);
@@ -42,6 +44,11 @@ const SignUp = () => {
   const handleInputChange = (field: string, text: string) => () => {
     setRegister({...register, [field]: text});
     setInputErrors({...inputErrors, [field]: false});
+    if (field === 'number_phone' && text.length === 10) {
+      setPhoneNumberEntered(true);
+    } else {
+      setPhoneNumberEntered(false);
+    }
   };
   const repairmanRegister = {
     full_name: register.full_name,
@@ -103,15 +110,15 @@ const SignUp = () => {
           <View style={styles.titleSignup}>
             <Text style={styles.title}>ĐĂNG KÝ</Text>
           </View>
-          <Text style={styles.error}>{errorServer}</Text>
+          <Text style={styles.error}>{!phoneNumberEntered && errorServer}</Text>
           <View style={styles.fromInput}>
-            <View>
+            <View style={styles.space}>
               <Text style={styles.titleEmail}>Họ và tên</Text>
               <TextInput
                 style={styles.inputEmail}
                 onChangeText={text => handleInputChange('full_name', text)()}
               />
-              {inputErrors.full_name && <Text style={styles.errorMessage}>Họ tên không bỏ trống</Text>}
+              {inputErrors.full_name && <Text style={styles.errorMessage}>* Họ tên không bỏ trống</Text>}
             </View>
             <View style={styles.space}>
               <Text style={styles.titleEmail}>Email</Text>
@@ -119,7 +126,7 @@ const SignUp = () => {
                 style={styles.inputEmail}
                 onChangeText={text => handleInputChange('email', text)()}
               />
-              {inputErrors.email && <Text style={styles.errorMessage}>Email không bỏ trống</Text>}
+              {inputErrors.email && <Text style={styles.errorMessage}>* Email không bỏ trống</Text>}
             </View>
             <View style={styles.space}>
               <Text style={styles.titleEmail}>Số điện thoại</Text>
@@ -127,7 +134,7 @@ const SignUp = () => {
                 style={styles.inputEmail}
                 onChangeText={text => handleInputChange('number_phone', text)()}
               />
-              {inputErrors.number_phone && <Text style={styles.errorMessage}>Số điện thoại không bỏ trống</Text>}
+              {inputErrors.number_phone && <Text style={styles.errorMessage}>* Số điện thoại không bỏ trống</Text>}
             </View>
             <View style={styles.space}>
               <Text style={styles.titlePassword}>Mật Khẩu</Text>
@@ -136,7 +143,7 @@ const SignUp = () => {
                 secureTextEntry={true}
                 onChangeText={text => handleInputChange('password', text)()}
               />
-              {inputErrors.password && <Text style={styles.errorMessage}>Mật khẩu không bỏ trống</Text>}
+              {inputErrors.password && <Text style={styles.errorMessage}>* Mật khẩu không bỏ trống</Text>}
             </View>
             <View style={styles.confirmInfo}>
               <View style={styles.confirmcreate}>
@@ -174,7 +181,7 @@ const styles = StyleSheet.create({
     flex: 14,
     justifyContent: 'center',
     width: '100%',
-    marginTop: '30%',
+    marginTop: '10%',
     position: 'absolute',
     zIndex: 2,
   },
@@ -199,7 +206,6 @@ const styles = StyleSheet.create({
   },
   fromInput: {
     marginHorizontal: 40,
-    marginTop: 20,
   },
   titleEmail: {
     color: '#394C6D',
@@ -214,7 +220,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   space: {
-    marginTop: 4,
+    height:110
   },
   titlePassword: {
     color: '#394C6D',
@@ -229,7 +235,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   confirmInfo: {
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -253,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    marginTop: 440,
+    marginTop: 500,
     zIndex: 3,
     height: 60,
   },
@@ -274,5 +280,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color:"red",
     paddingLeft: 40,
+    marginTop:45
   }
 });

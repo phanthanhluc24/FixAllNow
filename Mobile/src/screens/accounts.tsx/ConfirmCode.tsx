@@ -82,6 +82,7 @@ const ConfirmCode = () => {
       } else {
         setNewCode(res.code);
         setCountdown(180);
+        setCountdownMessage('');
         Alert.alert('Vui lòng kiểm tra email để lấy mã!');
       }
     } catch (error) {
@@ -118,7 +119,7 @@ const ConfirmCode = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.confirmContainer}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
             <View style={styles.body}>
               <View style={styles.container}>
                 <View style={styles.titleContainer}>
