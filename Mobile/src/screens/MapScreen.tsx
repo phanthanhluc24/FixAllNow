@@ -1,24 +1,49 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import React,{useRef} from 'react';
+import MapView from 'react-native-maps';
 const MapScreen = () => {
+  const mapRef = useRef(null);
+  const {
+    width,
+    height,
+  } = Dimensions.get('window');
+  const region = {
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta:  0.0922,
+    longitudeDelta: 0.0922 * (width / height)
+  };
+  const latitudes = [-15.806553, -15.8202434];
+  const longitudes = [-47.8891454, -47.9045093];
   return (
-    <View style={{...StyleSheet.absoluteFillObject,flex: 1, alignItems: 'center', justifyContent:"flex-end"}}>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={{...StyleSheet.absoluteFillObject}}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      />
-    </View>
+    <MapView
+    ref={mapRef}
+    zoom={5}
+    style={{
+      flex: 1
+    }}
+    region={region}
+    showsUserLocation
+    router={{
+      titleA: "The point A",
+      titleB: "The point B",
+      descriptionA: "Bank",
+      descriptionB: "Scholl",
+      coordinates: [
+        {
+          latitude: latitudes[0],
+          longitude: longitudes[1],
+        },
+        {
+          latitude: latitudes[1],
+          longitude: longitudes[1],
+        }
+      ]
+    }}
+  />
   );
 };
 
 export default MapScreen;
 
 const styles = StyleSheet.create({});
-

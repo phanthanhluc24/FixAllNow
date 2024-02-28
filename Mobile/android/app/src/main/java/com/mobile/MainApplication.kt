@@ -14,7 +14,11 @@ import com.facebook.soloader.SoLoader
 
   
 class MainApplication : Application(), ReactApplication {
-
+  @Override
+    protected List<ReactPackage> getPackages() {
+      new MainReactPackage(),
+      new MapsPackage() 
+    }
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> {
