@@ -44,10 +44,8 @@ var react_native_document_picker_1 = require("react-native-document-picker");
 var native_1 = require("@react-navigation/native");
 var useAddNewService_1 = require("../../hooks/useAddNewService");
 var FormAddNewService = function () {
-
     var navigation = native_1.useNavigation();
     var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
-
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
         return __generator(this, function (_a) {
@@ -59,7 +57,6 @@ var FormAddNewService = function () {
                         })];
                 case 1:
                     res = (_a.sent())[0];
-
                     setSingleFile(res);
                     return [3 /*break*/, 3];
                 case 2:
@@ -85,6 +82,7 @@ var FormAddNewService = function () {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+                    console.log(data);
                     errorFields = [];
                     if (!data.service_name.trim())
                         errorFields.push('service_name');
@@ -146,7 +144,6 @@ var FormAddNewService = function () {
                     errors.desc && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.desc.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
-
                     !!singleFile || (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
                         react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
                             react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
@@ -166,7 +163,6 @@ var FormAddNewService = function () {
                         react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleSubmit(onSubmit) },
                             react_1["default"].createElement(react_native_1.View, { style: styles.book },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "Th\u00EAm m\u01A1\u0301i")))))))));
-
 };
 exports["default"] = FormAddNewService;
 var styles = react_native_1.StyleSheet.create({
