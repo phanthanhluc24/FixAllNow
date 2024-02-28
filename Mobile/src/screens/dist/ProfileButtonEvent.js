@@ -2,10 +2,12 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var native_1 = require("@react-navigation/native");
 var ProfileButtonEvent = function () {
+    var navigation = native_1.useNavigation();
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerEvent },
         react_1["default"].createElement(react_native_1.View, { style: styles.styleEvent },
-            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.addService },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.addService, onPress: function () { return navigation.navigate('FormAddNewService'); } },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.nameAddService }, "Th\u00EAm m\u01A1\u0301i di\u0323ch vu\u0323")),
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.viewHistory },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Li\u0323ch s\u01B0\u0309 giao di\u0323ch")))));

@@ -25,6 +25,11 @@ import DetailService from '../../screens/DetailService';
 import RatedComment from '../../screens/RatedComment';
 import EditInfoCurrentUser from '../../screens/forms/EditInfoCurrentUser';
 import FormBookSchedule from '../../screens/forms/FormBookSchedule';
+import ConfirmInforBooking from '../../screens/ConfirmInforBooking';
+import FormAddNewService from '../../screens/forms/FormAddNewService';
+import EditInfoService from '../../screens/forms/EditInfoService';
+import EditAvatarCurrentUser from '../../screens/forms/EditAvatarCurrentUser';
+import MapScreen from '../../screens/MapScreen';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -113,7 +118,10 @@ const Main = () => {
         <Stack.Screen
           name="RatedComment"
           component={RatedComment}
-          options={{headerShown: true}}
+          options={() => ({
+            headerShown: true,
+            headerTitle:`Đánh giá của bạn về thợ` ,
+          })}
         />
          <Stack.Screen
           name="EditInfoCurrentUser"
@@ -129,6 +137,46 @@ const Main = () => {
           options={() => ({
             headerShown: true,
             headerTitle: "Đặt lịch",
+          })}
+        />
+        <Stack.Screen
+          name="ConfirmInforBooking"
+          component={ConfirmInforBooking}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Xác nhận đặt lịch",
+          })}
+        />
+        <Stack.Screen
+          name="FormAddNewService"
+          component={FormAddNewService}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Thêm mới dịch vụ",
+          })}
+        />
+        <Stack.Screen
+          name="EditInfoService"
+          component={EditInfoService}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Chỉnh sửa dịch vụ",
+          })}
+        />
+        <Stack.Screen
+          name="EditAvatarCurrentUser"
+          component={EditAvatarCurrentUser}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Chỉnh sửa ảnh đại diện",
+          })}
+        />
+        <Stack.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Tìm vị trí thợ",
           })}
         />
         {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}

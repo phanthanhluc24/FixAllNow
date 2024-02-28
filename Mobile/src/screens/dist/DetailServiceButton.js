@@ -3,15 +3,22 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
-var DetailServiceButton = function () {
+var DetailServiceButton = function (_a) {
+    var serviceInfo = _a.serviceInfo;
     var navigation = native_1.useNavigation();
+    var handleBookNow = function () {
+        navigation.navigate('MapScreen');
+    };
+    var handleBookSchedule = function () {
+        navigation.navigate('FormBookSchedule', { serviceInfo: serviceInfo });
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.belowInfoService },
         react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
             react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
                 react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.bookNow },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bookNow, onPress: handleBookNow },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u0103\u0323t ngay"))),
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: function () { return navigation.navigate('FormBookSchedule'); } },
+                react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleBookSchedule },
                     react_1["default"].createElement(react_native_1.View, { style: styles.book },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "\u0110\u0103\u0323t li\u0323ch")))))));
 };

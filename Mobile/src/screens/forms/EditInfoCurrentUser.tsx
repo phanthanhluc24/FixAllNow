@@ -5,22 +5,21 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
-  Dimensions,
-  SafeAreaView,
-  StatusBar,
-  Image,
   Alert,
-  ScrollView,
   Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import useGetCurrentUser from '../../hooks/useGetCurrentUser';
 
 const EditInfoCurrentUser = () => {
+  const {currentUser, isLoading, isError}: any = useGetCurrentUser();
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
@@ -89,149 +88,139 @@ const EditInfoCurrentUser = () => {
   const onSubmit = () => {};
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formEdit}>
-        <View style={styles.part}>
-          <Text style={styles.infoEdit}>Tên của bạn </Text>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.inputInfo}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="full_name"
-            rules={{required: 'Tên không được bỏ trống'}}
-            defaultValue=""
-          />
-          {/* {errors.name && (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        keyboardShouldPersistTaps="handled">
+        <View style={styles.formEdit}>
+          <View style={styles.part}>
+            <Text style={styles.infoEdit}>Tên của bạn </Text>
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.inputInfo}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={currentUser?.full_name}
+                />
+              )}
+              name="full_name"
+              rules={{required: 'Tên không được bỏ trống'}}
+              defaultValue=""
+            />
+            {/* {errors.name && (
             <Text style={{color: 'red'}}>{errors.name.message}</Text>
           )} */}
-        </View>
-        <View style={styles.part}>
-          <Text style={styles.infoEdit}>Số điện thoại</Text>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.inputInfo}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="number_phone"
-            rules={{required: 'SĐT không được bỏ trống '}}
-            defaultValue=""
-          />
-          {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
-        </View>
-        <View style={styles.part}>
-          <Text style={styles.infoEdit}>Email của bạn</Text>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.inputInfo}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="email"
-            rules={{required: 'Email không được bỏ trống'}}
-            defaultValue=""
-          />
-          {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
-        </View>
-        <View style={styles.part}>
-          <Text style={styles.infoEdit}>Ảnh của bạn</Text>
-          <View>
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <View style={{flex: 1, alignItems: 'center'}}>
-                <TouchableOpacity onPress={selectFile}  activeOpacity={0.5}>
-                  <View style={styles.imageView}>
-                    <Entypo name="camera" size={50} color="#FCA234" />
-                  </View>
-                </TouchableOpacity>
-                
-              </View>
-            )}
-            name="email"
-            rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
-            defaultValue=""
-          />
-          
-          {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )}
           </View>
-          
-          <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={selectFile}>
-              <Text style={styles.buttonTextStyle}>Select File</Text>
-            </TouchableOpacity>
+          <View style={styles.part}>
+            <Text style={styles.infoEdit}>Số điện thoại</Text>
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.inputInfo}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={currentUser?.number_phone}
+                />
+              )}
+              name="number_phone"
+              rules={{required: 'SĐT không được bỏ trống '}}
+              defaultValue=""
+            />
+            {/* {errors.email && (
+            <Text style={{color: 'red'}}>{errors.email.message}</Text>
+          )} */}
+          </View>
+          <View style={styles.part}>
+            <Text style={styles.infoEdit}>Email của bạn</Text>
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={styles.inputInfo}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={currentUser?.email}
+                />
+              )}
+              name="email"
+              rules={{required: 'Email không được bỏ trống'}}
+              defaultValue=""
+            />
+            {/* {errors.email && (
+            <Text style={{color: 'red'}}>{errors.email.message}</Text>
+          )} */}
+          </View>
+          <View style={styles.part}>
+            <Text style={styles.infoEdit}>Ảnh của bạn</Text>
+            <View>
+              <Controller
+                control={control}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <View style={{flex: 1, alignItems: 'center'}}>
+                    <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
+                      <View style={styles.imageView}>
+                        <Entypo name="camera" size={50} color="#FCA234" />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                name="email"
+                rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
+                defaultValue=""
+              />
 
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={uploadImage}>
-              <Text style={styles.buttonTextStyle}>Upload File</Text>
-            </TouchableOpacity>
+              {/* {errors.email && (
+            <Text style={{color: 'red'}}>{errors.email.message}</Text>
+          )} */}
+            </View>
+          </View>
         </View>
-        
-      </View>
-      {/* <View style={styles.container}>
-            {singleFile != null ? (
-              <Text style={styles.textStyle}>
-                File Name: {singleFile.name ? singleFile.name : ''}
-                {'\n'}
-                Type: {singleFile.type ? singleFile.type : ''}
-                {'\n'}
-                File Size: {singleFile.size ? singleFile.size : ''}
-                {'\n'}
-                URI: {singleFile.uri ? singleFile.uri : ''}
-                {'\n'}
-              </Text>
-            ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={selectFile}>
-              <Text style={styles.buttonTextStyle}>Select File</Text>
-            </TouchableOpacity>
+     
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          activeOpacity={0.5}
+          onPress={selectFile}>
+          <Text style={styles.buttonTextStyle}>Select File</Text>
+        </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={uploadImage}>
-              <Text style={styles.buttonTextStyle}>Upload File</Text>
-            </TouchableOpacity>
-          </View> */}
-      <View style={styles.eventSubmit}>
-        <Button
-          color={'#FCA234'}
-          onPress={handleSubmit(onSubmit)}
-          title="Hủy"
-        />
-        <Button
-          color={'#FCA234'}
-          onPress={handleSubmit(onSubmit)}
-          title="Cập nhật"
-        />
-      </View>
-    </View>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          activeOpacity={0.5}
+          onPress={uploadImage}>
+          <Text style={styles.buttonTextStyle}>Upload File</Text>
+        </TouchableOpacity>
+        {singleFile != null ? (
+          <Text style={styles.textStyle}>
+            File Name: {singleFile.name ? singleFile.name : ''}
+            {'\n'}
+            Type: {singleFile.type ? singleFile.type : ''}
+            {'\n'}
+            File Size: {singleFile.size ? singleFile.size : ''}
+            {'\n'}
+            URI: {singleFile.uri ? singleFile.uri : ''}
+            {'\n'}
+          </Text>
+        ) : null}
+
+        <View style={styles.eventSubmit}>
+          <Button
+            color={'#FCA234'}
+            onPress={handleSubmit(onSubmit)}
+            title="Hủy"
+          />
+          <Button
+            color={'#FCA234'}
+            onPress={handleSubmit(onSubmit)}
+            title="Cập nhật"
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 export default EditInfoCurrentUser;
@@ -244,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-    marginVertical: 30,
+    marginVertical: 10,
   },
   part: {
     marginVertical: 5,

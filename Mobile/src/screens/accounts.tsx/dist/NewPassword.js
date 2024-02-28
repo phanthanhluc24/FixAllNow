@@ -43,11 +43,11 @@ var formik_1 = require("formik");
 var useResetNewPassword_1 = require("../../hooks/useResetNewPassword");
 var ValidationNewPassword_1 = require("./ValidationNewPassword");
 var NewPassword = function () {
+    var _a = react_1.useState(''), errorMessage = _a[0], setErrorMessage = _a[1];
     var passwordRef = react_1.useRef();
     var navigation = native_1.useNavigation();
     var route = native_1.useRoute();
     var resetPasswordToken = route.params.resetPasswordToken;
-    console.log(resetPasswordToken);
     var handleResetSubmit = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         var newPassword;
         return __generator(this, function (_a) {
@@ -58,11 +58,10 @@ var NewPassword = function () {
                         newPassword: values.newpassword,
                         confirmPassword: values.confirmpassword
                     };
-                    console.log(newPassword);
                     return [4 /*yield*/, useResetNewPassword_1["default"](newPassword)
                             .then(function (res) {
                             if (res.status !== 201) {
-                                react_native_1.Alert.alert(res.message);
+                                setErrorMessage(res.message);
                             }
                             else {
                                 navigation.navigate('SignIn');
@@ -85,6 +84,7 @@ var NewPassword = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "M\u00C2\u0323T KH\u00C2\u0309U M\u01A0\u0301I")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceForm },
+                            react_1["default"].createElement(react_native_1.View, { style: { height: 20 } }, errorMessage ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, errorMessage)) : null),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "M\u00E2\u0323t kh\u00E2\u0309u m\u01A1\u0301i"),
                             react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
                                 react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('newpassword'), enterKeyHint: 'next', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onBlur: handleBlur('newpassword'), value: values.newpassword }),
@@ -106,6 +106,13 @@ var NewPassword = function () {
 };
 exports["default"] = NewPassword;
 var styles = react_native_1.StyleSheet.create({
+    errorMessage: {
+        color: 'red',
+        fontWeight: "bold",
+        marginTop: 8,
+        marginHorizontal: 40,
+        height: 40
+    },
     errorText: {
         fontWeight: 'bold',
         color: 'red',
@@ -159,7 +166,8 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     spaceContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
+        height: 90
     },
     timeInput: {
         fontSize: 15,
@@ -171,7 +179,7 @@ var styles = react_native_1.StyleSheet.create({
         color: '#0000ff'
     },
     container: {
-        marginTop: 100
+        marginTop: 70
     },
     buttonConfirm: {
         width: '80%',
@@ -181,7 +189,7 @@ var styles = react_native_1.StyleSheet.create({
         marginHorizontal: 40,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 40
+        marginTop: 10
     },
     textConfirm: {
         color: 'white',
@@ -193,7 +201,8 @@ var styles = react_native_1.StyleSheet.create({
         marginRight: '-60%'
     },
     spaceForm: {
-        marginTop: 50
+        marginTop: 10,
+        height: 300
     },
     demoImg: {
         marginTop: '130%'

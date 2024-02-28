@@ -20,37 +20,23 @@ const ProfileHeaderRepairmanFinder =() => {
   }
   )
   const {currentUser, isLoading, isError} = useGetCurrentUser();
-  const handleLogout =() => {
-    Alert.alert("Logout")
-    console.log(token);
-       logout(token)
-      .then((res)=>{
-        if (res.status===201) {
-          navigation.navigate('SignIn');
-          console.log(res.message);
-        }
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
-}
   return (
     <View style={styles.profileHeader}>
       <View style={styles.infoProfile}>
-        <View style={styles.avatarPro}>
+        <TouchableOpacity style={styles.avatarPro} onPress={()=>navigation.navigate("EditAvatarCurrentUser")}>
           <Image
             style={styles.avatarProfile}
             source={{uri: currentUser?.image}}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.contentProfile}>
           <View style={styles.styleProfile}>
             <View style={styles.info}>
               <Text style={styles.nameProfile}>{currentUser?.full_name}</Text>
             </View>
-            <View>
+            <View style={styles.buttonEvent}>
               <TouchableOpacity style={styles.iconEdit} onPress={()=>navigation.navigate('EditInfoCurrentUser')}>
-                <Entypo name="edit" size={24} color="#394C6D" />
+                <Entypo name="edit" size={24} color="#FCA234" />
               </TouchableOpacity>
               <ButtonLogout/>
             </View>
@@ -82,6 +68,11 @@ const ProfileHeaderRepairmanFinder =() => {
 };
 export default ProfileHeaderRepairmanFinder;
 const styles = StyleSheet.create({
+  buttonEvent:{
+    flexDirection:"row",
+    justifyContent:"space-around",
+    width:"100%"
+  },
   detailEmail: {
     fontSize: 15,
     color: '#394C6D',
@@ -121,8 +112,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   iconEdit: {
-    marginLeft: 20,
+    width:100,
+    height:40,
     marginVertical: 5,
+    alignItems:"center",
+    justifyContent:"center",
+    borderRadius:10,
+    backgroundColor:"#394C6D",
+    
   },
   info: {
     alignItems: 'center',
@@ -138,8 +135,6 @@ const styles = StyleSheet.create({
     color: '#394C6D',
   },
   styleProfile: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
   },
   contentProfile: {

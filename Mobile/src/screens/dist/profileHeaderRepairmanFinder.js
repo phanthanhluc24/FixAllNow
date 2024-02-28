@@ -65,30 +65,17 @@ var ProfileHeaderRepairmanFinder = function () {
         getToken();
     });
     var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
-    var handleLogout = function () {
-        react_native_1.Alert.alert("Logout");
-        console.log(token);
-        logout(token)
-            .then(function (res) {
-            if (res.status === 201) {
-                navigation.navigate('SignIn');
-                console.log(res.message);
-            }
-        })["catch"](function (error) {
-            console.log(error);
-        });
-    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.profileHeader },
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
-            react_1["default"].createElement(react_native_1.View, { style: styles.avatarPro },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro, onPress: function () { return navigation.navigate("EditAvatarCurrentUser"); } },
                 react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } })),
             react_1["default"].createElement(react_native_1.View, { style: styles.contentProfile },
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleProfile },
                     react_1["default"].createElement(react_native_1.View, { style: styles.info },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.nameProfile }, currentUser === null || currentUser === void 0 ? void 0 : currentUser.full_name)),
-                    react_1["default"].createElement(react_native_1.View, null,
+                    react_1["default"].createElement(react_native_1.View, { style: styles.buttonEvent },
                         react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () { return navigation.navigate('EditInfoCurrentUser'); } },
-                            react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "#394C6D" })),
+                            react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "#FCA234" })),
                         react_1["default"].createElement(ButtonLogout_1["default"], null))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoQuality },
             react_1["default"].createElement(react_native_1.View, { style: styles.email },
@@ -106,6 +93,11 @@ var ProfileHeaderRepairmanFinder = function () {
 };
 exports["default"] = ProfileHeaderRepairmanFinder;
 var styles = react_native_1.StyleSheet.create({
+    buttonEvent: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        width: "100%"
+    },
     detailEmail: {
         fontSize: 15,
         color: '#394C6D'
@@ -145,8 +137,13 @@ var styles = react_native_1.StyleSheet.create({
         marginBottom: 20
     },
     iconEdit: {
-        marginLeft: 20,
-        marginVertical: 5
+        width: 100,
+        height: 40,
+        marginVertical: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        backgroundColor: "#394C6D"
     },
     info: {
         alignItems: 'center'
@@ -162,8 +159,6 @@ var styles = react_native_1.StyleSheet.create({
         color: '#394C6D'
     },
     styleProfile: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
         alignItems: 'center'
     },
     contentProfile: {

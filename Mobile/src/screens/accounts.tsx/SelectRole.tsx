@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   title_2: {
     fontSize: 25,
     marginTop: 40,
-    marginLeft: 10,
+    marginLeft: 40,
     color: 'black',
   },
   radioContainer: {
@@ -173,7 +173,8 @@ const styles = StyleSheet.create({
   error:{
     color:"red",
     fontWeight: 'bold',
-    paddingLeft:10
+    paddingLeft:40,
+    paddingTop:10
   }
 });
 
