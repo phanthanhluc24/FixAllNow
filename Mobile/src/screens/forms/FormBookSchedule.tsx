@@ -12,13 +12,19 @@ import {
   Platform,
   GestureResponderEvent,
   Pressable,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useNavigation } from '@react-navigation/native';
-const FormBookSchedule = () => {
-  const navigation= useNavigation();
+import {useNavigation} from '@react-navigation/native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+const FormBookSchedule = ({route}: any) => {
+  const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const {serviceInfo} = route.params;
+  const navigation: any = useNavigation();
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -28,7 +34,7 @@ const FormBookSchedule = () => {
   const toggleDatepicker = () => {
     setShowPicker(!showPicker);
   };
-  const onChange = ({type}, selectedDate): any => {
+  const onChange = ({type}: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
     setShowPicker(Platform.OS === 'ios');
     setSelectedDate(currentDate);
@@ -37,26 +43,42 @@ const FormBookSchedule = () => {
   const toggleTimepicker = () => {
     setShowTimePicker(!showTimePicker);
   };
-  const onChangeTime = ({type}, selectedTime) => {
+  const onChangeTime = ({type}: any, selectedTime: any) => {
     const currentTime = selectedTime || time;
     setShowTimePicker(Platform.OS === 'ios');
     setSelectedTime(currentTime);
     setTime(currentTime);
   };
-
+  const handleSubmitInfoBooking = async (values: {
+    selectedDate: string;
+    selectedTime: string;
+    address: string;
+    demobug: string;
+  }) => {
+    setSubmitted(true);
+    if (!selectedDate || !selectedTime || !values.address || !values.demobug) {
+      setError('Vui lòng nhập đầy đủ thông tin!');
+    } else {
+      setError('');
+      const infoBooking = {
+        infoServiceBooking: serviceInfo,
+        date: selectedDate.toLocaleDateString('vi-VN'),
+        time: selectedTime.toLocaleTimeString('vi-VN'),
+        address: values.address,
+        bugService: values.demobug,
+      };
+      navigation.navigate('ConfirmInforBooking', {infoBooking: infoBooking});
+    }
+  };
   return (
     <Formik
-      initialValues={{}}
-      onSubmit={values => {
-        setTimeout(() => {
-          let account = {
-            email: values.email,
-            password: values.password,
-          };
-          handleInfo(account);
-          // console.log(account);
-        }, 100);
-      }}>
+      initialValues={{
+        selectedDate: '',
+        selectedTime: '',
+        address: '',
+        demobug: '',
+      }}
+      onSubmit={handleSubmitInfoBooking}>
       {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
@@ -68,8 +90,22 @@ const FormBookSchedule = () => {
                   VUI LÒNG NHẬP THÔNG TIN BÊN DƯỚI
                 </Text>
               </View>
+
               <View style={styles.boxInput}>
-                <View>
+                <View style={{height: 25}}>
+                  {submitted && error !== '' && (
+                    <Text style={styles.messageError}>{error}</Text>
+                  )}
+                </View>
+                <Pressable style={styles.inputDate}>
+                  <TextInput
+                    style={{color: '#000000'}}
+                    enterKeyHint={'next'}
+                    value={date.toLocaleDateString('vi-VN')}
+                    placeholder="Chọn ngày hẹn"
+                    placeholderTextColor={'#000000'}
+                    editable={false}
+                  />
                   {showPicker && (
                     <DateTimePicker
                       mode="date"
@@ -78,21 +114,23 @@ const FormBookSchedule = () => {
                       onChange={onChange}
                     />
                   )}
-                  {!showPicker && (
-                    <Pressable onPress={toggleDatepicker}>
-                      <TextInput
-                        style={styles.inputDate}
-                        enterKeyHint={'next'}
-                        onChangeText={setDate}
-                        // onBlur={handleBlur('date')}
-                        value={date.toLocaleDateString('vi-VN')}
-                        placeholder="Chọn ngày hẹn"
-                        editable={false}
-                      />
-                    </Pressable>
-                  )}
-                </View>
-                <View>
+                  <MaterialIcons
+                    style={styles.clock}
+                    name="date-range"
+                    size={30}
+                    color="#FCA234"
+                    onPress={toggleDatepicker}
+                  />
+                </Pressable>
+                <Pressable style={styles.inputDate}>
+                  <TextInput
+                    style={{color: '#000000'}}
+                    enterKeyHint={'next'}
+                    value={time.toLocaleTimeString('vi-VN')}
+                    placeholder="Chọn giờ hẹn"
+                    placeholderTextColor={'#000000'}
+                    editable={false}
+                  />
                   {showTimePicker && (
                     <DateTimePicker
                       mode="time"
@@ -101,40 +139,14 @@ const FormBookSchedule = () => {
                       onChange={onChangeTime}
                     />
                   )}
-                  {!showTimePicker && (
-                    <Pressable onPress={toggleTimepicker}>
-                      <TextInput
-                        style={styles.inputDate}
-                        enterKeyHint={'next'}
-                        onChangeText={setTime}
-                        // onBlur={handleBlur('time')}
-                        value={time.toLocaleTimeString('vi-VN')}
-                        placeholder="Chọn thời gian"
-                        editable={false}
-                      />
-                    </Pressable>
-                  )}
-                </View>
-                <View>
-                  <TextInput
-                    style={styles.inputDate}
-                    enterKeyHint={'next'}
-                    onChangeText={handleChange('full_name')}
-                    onBlur={handleBlur('full_name')}
-                    value={values.full_name}
-                    placeholder="Họ và tên"
+                  <AntDesign
+                    style={styles.clock}
+                    name="clockcircle"
+                    size={30}
+                    color="#FCA234"
+                    onPress={toggleTimepicker}
                   />
-                </View>
-                <View>
-                  <TextInput
-                    style={styles.inputDate}
-                    enterKeyHint={'next'}
-                    onChangeText={handleChange('number_phone')}
-                    onBlur={handleBlur('number_phone')}
-                    value={values.number_phone}
-                    placeholder="Số điện thoại"
-                  />
-                </View>
+                </Pressable>
                 <View>
                   <TextInput
                     style={styles.inputDate}
@@ -142,17 +154,19 @@ const FormBookSchedule = () => {
                     onChangeText={handleChange('address')}
                     onBlur={handleBlur('address')}
                     value={values.address}
-                    placeholder="Địa chỉ"
+                    placeholder="* Địa chỉ"
                   />
                 </View>
                 <View>
                   <TextInput
                     style={styles.inputDate}
                     enterKeyHint={'next'}
+                    numberOfLines={4}
+                    multiline={true}
                     onChangeText={handleChange('demobug')}
                     onBlur={handleBlur('demobug')}
                     value={values.demobug}
-                    placeholder="Mô tả vấn đề hư hỏng thiết bị"
+                    placeholder="* Mô tả vấn đề hư hỏng thiết bị"
                   />
                 </View>
               </View>
@@ -161,7 +175,9 @@ const FormBookSchedule = () => {
                   style={styles.imgFooter}
                   source={require('../../assets/Form/book.png')}
                 />
-                <TouchableOpacity style={styles.bgButton} onPress={()=>navigation.navigate('ConfirmInforBooking')}>
+                <TouchableOpacity
+                  style={styles.bgButton}
+                  onPress={() => handleSubmit()}>
                   <Text style={styles.nameBook}>Đặt lịch</Text>
                 </TouchableOpacity>
               </View>
@@ -174,6 +190,13 @@ const FormBookSchedule = () => {
 };
 export default FormBookSchedule;
 const styles = StyleSheet.create({
+  messageError: {
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  clock: {
+    marginHorizontal: 20,
+  },
   nameBook: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -189,7 +212,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '50%',
     borderRadius: 10,
-    borderWidth: 2,
   },
   footer: {
     flexDirection: 'row',
@@ -199,6 +221,7 @@ const styles = StyleSheet.create({
   },
   boxInput: {
     marginVertical: 30,
+    height: 245,
   },
   styleTitle: {
     alignItems: 'center',
@@ -218,6 +241,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#394C6D',
   },
   inputDate: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: 'white',
     borderColor: '#FCA234',
     borderRadius: 10,

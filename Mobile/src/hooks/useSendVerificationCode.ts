@@ -5,5 +5,3 @@ const useSendVerificationCode = async(data:any) => {
     return response.data
 }
 export default useSendVerificationCode;
-
-

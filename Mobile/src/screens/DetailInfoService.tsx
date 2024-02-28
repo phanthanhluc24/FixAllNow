@@ -11,6 +11,7 @@ import {useRoute} from '@react-navigation/native';
 import useGetDetailService from '../hooks/useGetDetailService';
 import {useNavigation} from '@react-navigation/native';
 import useGetServiceRevolve from '../hooks/useGetServiceRevolve';
+import DetailServiceButton from './DetailServiceButton';
 interface typeService {
   _id: string;
   status: string;
@@ -108,6 +109,7 @@ const DetailInfoService = () => {
           </View>
         </View>
       </View>
+      <DetailServiceButton serviceInfo={service}/>
     </View>
   );
 };

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DetailHeaderRepairman from './DetailHeaderRepairman';
-import DetailCommentRepairman from './DetailCommentRepairman';
 interface typeService {
   _id: string;
   status: string;
@@ -28,20 +27,13 @@ const DetailRepairman = ({route}: any) => {
       </View>
     );
   }
-  const renderBodyRepairman = () => {
-    return (
-      <View>
-        <DetailCommentRepairman />
-      </View>
-    );
-  };
+  
   return (
     <View style={styles.containerServiceSpecific}>
       <FlatList
         data={data}
         keyExtractor={item => item.key}
-        renderItem={renderBodyRepairman}
-        ListHeaderComponent={renderHeader}
+        renderItem={renderHeader}
       />
     </View>
   );

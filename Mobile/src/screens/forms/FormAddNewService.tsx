@@ -9,6 +9,8 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  Image,
+  ImageBackground,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -16,75 +18,22 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import { useNavigation } from '@react-navigation/native';
 import useAddNewService from '../../hooks/useAddNewService';
 const FormAddNewService = () => {
-  const {
-    control,
-    formState: {errors},
-  } = useForm();
-
-  const {isLoading, error, sendData} = useAddNewService();
-
-  const onSubmit = async (data: any) => {
-    try {
-        console.log("Submitted Data:", data);
-        const responseData = await sendData(data);
-      } catch (error) {
-        console.error('Error while sending data:', error);
-     
-      }
-  };
+  const navigation:any= useNavigation();
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
-  const uploadImage = async () => {
-    if (singleFile != null) {
-      try {
-        const formData = new FormData();
-        formData.append('image', {
-          uri:
-            Platform.OS === 'android'
-              ? `file://${singleFile.uri}`
-              : singleFile.uri,
-          type: singleFile.type || 'image/jpeg', // Provide a default type if not available
-          name: singleFile.name || 'image.jpg', // Provide a default name if not available
-        });
-        const res = await fetch(
-          'https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile',
-          {
-            method: 'POST',
-            body: data,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            timeout: 5000,
-          },
-        );
-        if (res.status === 201) {
-          Alert.alert('Upload Successful');
-        } else {
-          Alert.alert('Upload Failed');
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        Alert.alert('Error uploading file');
-      }
-    } else {
-      Alert.alert('Please Select File first');
-    }
-  };
+  const [formData, setFormData] = useState<any>({});
   const selectFile = async () => {
     try {
-      const res = await DocumentPicker.pick({
+      const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-
-      console.log('res :', res);
-
       setSingleFile(res);
     } catch (err) {
       setSingleFile(null);
-
       if (DocumentPicker.isCancel(err)) {
         Alert.alert('Canceled');
       } else {
@@ -93,7 +42,24 @@ const FormAddNewService = () => {
       }
     }
   };
-
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
+  const {sendData} = useAddNewService();
+  const onSubmit = async (data: any) => {
+    try {
+      data.image = singleFile;
+      const responseData = await sendData(data);
+      if(responseData){
+        Alert.alert("Dịch vụ thêm thành công!")
+        navigation.navigate("Profile")
+      }
+    } catch (error) {
+      console.error('Error while sending data:', error);
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -123,7 +89,7 @@ const FormAddNewService = () => {
         )} */}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Gía dịch vụ</Text>
+            <Text style={styles.infoEdit}>Giá dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -164,57 +130,44 @@ const FormAddNewService = () => {
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
-            <View>
-              {/* <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <View style={{flex: 1, alignItems: 'center'}}>
-                    <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
-                      <View style={styles.imageView}>
-                        <Entypo name="camera" size={50} color="#FCA234" />
-                      </View>
-                    </TouchableOpacity>
+            {!!singleFile || (
+              <View style={styles.selectedImage}>
+                <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
+                  <View style={styles.imageView}>
+                    <Entypo name="camera" size={50} color="#FCA234" />
                   </View>
-                )}
-                name="email"
-                rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
-                defaultValue=""
-              /> */}
-              {/* {errors.email && (
+                </TouchableOpacity>
+
+                {/* {errors.email && (
           <Text style={{color: 'red'}}>{errors.email.message}</Text>
         )} */}
-            </View>
+              </View>
+            )}
+            {singleFile && (
+              <View style={styles.selectedImage}>
+                <Image
+                  source={{uri: singleFile?.uri}}
+                  style={styles.imageStyle}></Image>
+                <View style={{position:"absolute" }}>
+                  <TouchableOpacity onPress={selectFile}>
+                    <View style={styles.imageViews}>
+                      <Entypo name="camera" size={25} color="#394C6D" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={selectFile}>
-          <Text style={styles.buttonTextStyle}>Select File</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={uploadImage}>
-          <Text style={styles.buttonTextStyle}>Upload File</Text>
-        </TouchableOpacity>
-        {singleFile != null ? (
-          <Text style={styles.textStyle}>
-            File Name: {singleFile.name ? singleFile.name : ''}
-            {'\n'}
-            Type: {singleFile.type ? singleFile.type : ''}
-            {'\n'}
-            File Size: {singleFile.size ? singleFile.size : ''}
-            {'\n'}
-            URI: {singleFile.uri ? singleFile.uri : ''}
-            {'\n'}
-          </Text>
-        ) : null}
-
         <View style={styles.eventSubmit}>
           <Button color={'#FCA234'} onPress={onSubmit} title="Hủy" />
-          <Button color={'#FCA234'} onPress={onSubmit} title="Thêm mới" />
+          <TouchableOpacity>
+            <Button
+              color={'#FCA234'}
+              onPress={handleSubmit(onSubmit)}
+              title="Thêm mới"
+            />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -224,6 +177,16 @@ const FormAddNewService = () => {
 export default FormAddNewService;
 
 const styles = StyleSheet.create({
+  selectedImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  imageStyle: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
   imageView: {
     width: 100,
     height: 100,
@@ -233,6 +196,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50,
     marginVertical: 10,
+    
+  },
+  imageViews: {
+    width: 40,
+    height: 40,
+    borderWidth: 2,
+    borderColor: '#394C6D',
+    backgroundColor:"#FCA234",
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginLeft:140,
+    marginTop:140
   },
   part: {
     marginVertical: 5,
@@ -247,15 +223,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   formEdit: {
     flex: 9,
     marginVertical: 20,
+    paddingHorizontal: 20,
   },
   container: {
     backgroundColor: '#394C69',
     flex: 1,
-    paddingHorizontal: 20,
   },
   inputInfo: {
     backgroundColor: 'white',

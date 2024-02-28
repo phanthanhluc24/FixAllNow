@@ -6,6 +6,7 @@ var native_1 = require("@react-navigation/native");
 var useGetDetailService_1 = require("../hooks/useGetDetailService");
 var native_2 = require("@react-navigation/native");
 var useGetServiceRevolve_1 = require("../hooks/useGetServiceRevolve");
+var DetailServiceButton_1 = require("./DetailServiceButton");
 var DetailInfoService = function () {
     var route = native_1.useRoute();
     var id = route.params.id;
@@ -60,7 +61,8 @@ var DetailInfoService = function () {
                                             react_1["default"].createElement(react_native_1.Text, { style: styles.price }, item.price.toLocaleString('vi-VN')),
                                             react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VND")),
                                         react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
-                        } }))))));
+                        } })))),
+        react_1["default"].createElement(DetailServiceButton_1["default"], { serviceInfo: service })));
 };
 exports["default"] = DetailInfoService;
 var styles = react_native_1.StyleSheet.create({

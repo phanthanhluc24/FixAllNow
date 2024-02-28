@@ -37,38 +37,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var axios_1 = require("axios");
-var react_1 = require("react");
 var url_1 = require("./apiRequest/url");
+var async_storage_1 = require("@react-native-async-storage/async-storage");
 var useAddNewService = function () {
-    var _a = react_1.useState(false), isLoading = _a[0], setIsLoading = _a[1];
-    var _b = react_1.useState(null), error = _b[0], setError = _b[1];
     var sendData = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, error_1;
+        var accessToken, formData, response, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    setIsLoading(true);
-                    _a.label = 1;
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].post(url_1.url + "/service", data, {
+                    accessToken = _a.sent();
+                    formData = new FormData();
+                    formData.append('desc', data.desc);
+                    formData.append('price', data.price);
+                    formData.append('service_name', data.service_name);
+                    formData.append('image', data.image);
+                    return [4 /*yield*/, axios_1["default"].post(url_1.url + "/service", formData, {
                             headers: {
-                                'Content-Type': 'multipart/form-data'
+                                "Content-Type": "multipart/form-data",
+                                Authorization: "Bearer " + accessToken
                             }
                         })];
                 case 2:
                     response = _a.sent();
-                    setIsLoading(false);
-                    return [2 /*return*/, response.data];
+                    return [2 /*return*/, response];
                 case 3:
                     error_1 = _a.sent();
-                    setIsLoading(false);
-                    setError(error_1);
-                    return [3 /*break*/, 4];
+                    console.log(error_1);
+                    throw error_1;
                 case 4: return [2 /*return*/];
             }
         });
     }); };
-    return { isLoading: isLoading, error: error, sendData: sendData };
+    return { sendData: sendData };
 };
 exports["default"] = useAddNewService;

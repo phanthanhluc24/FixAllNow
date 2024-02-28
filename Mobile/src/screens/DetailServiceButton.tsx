@@ -1,11 +1,23 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
-const DetailServiceButton = () => {
+interface typeService {
+  _id: string;
+  status: string;
+  user_id: string;
+  service_name: string;
+  price: number;
+  image: string;
+  desc: string;
+}
+const DetailServiceButton: React.FC<{ serviceInfo: typeService }>= ({ serviceInfo}) => {
     const navigation:any= useNavigation();
     const handleBookNow =()=>{
       navigation.navigate('MapScreen')
     }
+    const handleBookSchedule = () => {
+      navigation.navigate('FormBookSchedule', { serviceInfo });
+    };
   return (
     <View style={styles.belowInfoService}>
     <View style={styles.buttonChoose}>
@@ -15,7 +27,7 @@ const DetailServiceButton = () => {
             <Text style={styles.books}>Đặt ngay</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button1} onPress={()=>navigation.navigate('FormBookSchedule')}>
+        <TouchableOpacity style={styles.button1} onPress={handleBookSchedule}>
           <View style={styles.book}>
             <Text style={styles.books}>Đặt lịch</Text>
           </View>

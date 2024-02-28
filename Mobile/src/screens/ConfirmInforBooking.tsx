@@ -1,7 +1,15 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-const ConfirmInforBooking = () => {
+const ConfirmInforBooking = ({route}:any) => {
+  const {infoBooking} = route.params;
+  const serviceBooking =infoBooking.infoServiceBooking.service_name;
+  const repairman=infoBooking.infoServiceBooking.user_id.full_name;
+  const priceRepair=infoBooking.infoServiceBooking.price;
+  const addressRepair= infoBooking.address;
+  const priceService=(5/100)*priceRepair;
+  const totalPrice= priceRepair+ priceService;
+  console.log(infoBooking);
   const navigation: any = useNavigation();
   return (
     <View style={styles.container}>
@@ -13,31 +21,35 @@ const ConfirmInforBooking = () => {
           <Text style={styles.titleInfo}>Thông tin dịch vụ</Text>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Đơn sửa:</Text>
-            <Text style={styles.infors}>Sửa ô tô</Text>
+            <Text style={styles.infors}>{serviceBooking}</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Thợ:</Text>
-            <Text style={styles.infors}>Trần Quốc Hữu</Text>
+            <Text style={styles.infors}>{repairman}</Text>
           </View>
           <View style={styles.styleInfo}>
-            <Text style={styles.infor}>Gía sửa:</Text>
-            <Text style={styles.infors}>1.500.000</Text>
+            <Text style={styles.infor}>Giá sửa:</Text>
+            <Text style={styles.infors}>{priceRepair.toLocaleString("vi-VN")}</Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Phí dịch vụ:</Text>
-            <Text style={styles.infors}>70.000</Text>
+            <Text style={styles.infors}>{priceService.toLocaleString("vi-VN")}</Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Phí di chuyển:</Text>
             <Text style={styles.infors}>10.000</Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Địa điểm:</Text>
-            <Text style={styles.infors}>Bến xe trung tâm</Text>
+            <Text style={styles.infors}>{addressRepair}</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Tổng:</Text>
-            <Text style={styles.infors}>12.000.000</Text>
+            <Text style={styles.infors}>{totalPrice.toLocaleString("vi-VN")}</Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
         </View>
         <View style={styles.infoService}>
@@ -170,11 +182,18 @@ const styles = StyleSheet.create({
     color: '#FCA234',
     width: '50%',
   },
+  inforss: {
+    fontSize: 18,
+    color: '#FCA234',
+    width: '50%',
+    fontWeight:"bold",
+  },
   styleInfo: {
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-between',
     marginVertical: 10,
+    width:"80%",
   },
   titleInfo: {
     fontSize: 20,
