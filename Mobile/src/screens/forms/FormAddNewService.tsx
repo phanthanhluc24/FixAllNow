@@ -52,7 +52,9 @@ const FormAddNewService = () => {
   } = useForm();
   const {sendData} = useAddNewService();
   const onSubmit = async (data: any) => {
+    
     try {
+      console.log(data)
       const errorFields = [];
       if (!data.service_name.trim()) errorFields.push('service_name');
       if (!data.price) errorFields.push('price');
