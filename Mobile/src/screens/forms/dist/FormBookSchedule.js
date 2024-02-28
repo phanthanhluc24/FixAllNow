@@ -1,18 +1,60 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var formik_1 = require("formik");
 var datetimepicker_1 = require("@react-native-community/datetimepicker");
 var native_1 = require("@react-navigation/native");
-var FormBookSchedule = function () {
+var AntDesign_1 = require("react-native-vector-icons/AntDesign");
+var MaterialIcons_1 = require("react-native-vector-icons/MaterialIcons");
+var FormBookSchedule = function (_a) {
+    var route = _a.route;
+    var _b = react_1.useState(''), error = _b[0], setError = _b[1];
+    var _c = react_1.useState(false), submitted = _c[0], setSubmitted = _c[1];
+    var serviceInfo = route.params.serviceInfo;
     var navigation = native_1.useNavigation();
-    var _a = react_1.useState(new Date()), date = _a[0], setDate = _a[1];
-    var _b = react_1.useState(new Date()), time = _b[0], setTime = _b[1];
-    var _c = react_1.useState(false), showPicker = _c[0], setShowPicker = _c[1];
-    var _d = react_1.useState(false), showTimePicker = _d[0], setShowTimePicker = _d[1];
-    var _e = react_1.useState(new Date()), selectedDate = _e[0], setSelectedDate = _e[1];
-    var _f = react_1.useState(new Date()), selectedTime = _f[0], setSelectedTime = _f[1];
+    var _d = react_1.useState(new Date()), date = _d[0], setDate = _d[1];
+    var _e = react_1.useState(new Date()), time = _e[0], setTime = _e[1];
+    var _f = react_1.useState(false), showPicker = _f[0], setShowPicker = _f[1];
+    var _g = react_1.useState(false), showTimePicker = _g[0], setShowTimePicker = _g[1];
+    var _h = react_1.useState(new Date()), selectedDate = _h[0], setSelectedDate = _h[1];
+    var _j = react_1.useState(new Date()), selectedTime = _j[0], setSelectedTime = _j[1];
     var toggleDatepicker = function () {
         setShowPicker(!showPicker);
     };
@@ -33,16 +75,33 @@ var FormBookSchedule = function () {
         setSelectedTime(currentTime);
         setTime(currentTime);
     };
-    return (react_1["default"].createElement(formik_1.Formik, { initialValues: {}, onSubmit: function (values) {
-            setTimeout(function () {
-                var account = {
-                    email: values.email,
-                    password: values.password
+    var handleSubmitInfoBooking = function (values) { return __awaiter(void 0, void 0, void 0, function () {
+        var infoBooking;
+        return __generator(this, function (_a) {
+            setSubmitted(true);
+            if (!selectedDate || !selectedTime || !values.address || !values.demobug) {
+                setError('Vui lòng nhập đầy đủ thông tin!');
+            }
+            else {
+                setError('');
+                infoBooking = {
+                    infoServiceBooking: serviceInfo,
+                    date: selectedDate.toLocaleDateString('vi-VN'),
+                    time: selectedTime.toLocaleTimeString('vi-VN'),
+                    address: values.address,
+                    bugService: values.demobug
                 };
-                handleInfo(account);
-                // console.log(account);
-            }, 100);
-        } }, function (_a) {
+                navigation.navigate('ConfirmInforBooking', { infoBooking: infoBooking });
+            }
+            return [2 /*return*/];
+        });
+    }); };
+    return (react_1["default"].createElement(formik_1.Formik, { initialValues: {
+            selectedDate: '',
+            selectedTime: '',
+            address: '',
+            demobug: ''
+        }, onSubmit: handleSubmitInfoBooking }, function (_a) {
         var errors = _a.errors, touched = _a.touched, handleChange = _a.handleChange, handleBlur = _a.handleBlur, values = _a.values, handleSubmit = _a.handleSubmit;
         return (react_1["default"].createElement(react_native_1.TouchableWithoutFeedback, { onPress: react_native_1.Keyboard.dismiss },
             react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.editInfoCurrentUserContainer },
@@ -50,34 +109,34 @@ var FormBookSchedule = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.styleTitle },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleForm }, "VUI LO\u0300NG NH\u00C2\u0323P TH\u00D4NG TIN B\u00CAN D\u01AF\u01A0\u0301I")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.boxInput },
-                        react_1["default"].createElement(react_native_1.View, null,
+                        react_1["default"].createElement(react_native_1.View, { style: { height: 25 } }, submitted && error !== '' && (react_1["default"].createElement(react_native_1.Text, { style: styles.messageError }, error))),
+                        react_1["default"].createElement(react_native_1.Pressable, { style: styles.inputDate },
+                            react_1["default"].createElement(react_native_1.TextInput, { style: { color: '#000000' }, enterKeyHint: 'next', value: date.toLocaleDateString('vi-VN'), placeholder: "Cho\u0323n nga\u0300y he\u0323n", placeholderTextColor: '#000000', editable: false }),
                             showPicker && (react_1["default"].createElement(datetimepicker_1["default"], { mode: "date", display: "spinner", value: selectedDate, onChange: onChange })),
-                            !showPicker && (react_1["default"].createElement(react_native_1.Pressable, { onPress: toggleDatepicker },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: setDate, 
-                                    // onBlur={handleBlur('date')}
-                                    value: date.toLocaleDateString('vi-VN'), placeholder: "Cho\u0323n nga\u0300y he\u0323n", editable: false })))),
-                        react_1["default"].createElement(react_native_1.View, null,
+                            react_1["default"].createElement(MaterialIcons_1["default"], { style: styles.clock, name: "date-range", size: 30, color: "#FCA234", onPress: toggleDatepicker })),
+                        react_1["default"].createElement(react_native_1.Pressable, { style: styles.inputDate },
+                            react_1["default"].createElement(react_native_1.TextInput, { style: { color: '#000000' }, enterKeyHint: 'next', value: time.toLocaleTimeString('vi-VN'), placeholder: "Cho\u0323n gi\u01A1\u0300 he\u0323n", placeholderTextColor: '#000000', editable: false }),
                             showTimePicker && (react_1["default"].createElement(datetimepicker_1["default"], { mode: "time", display: "spinner", value: selectedTime, onChange: onChangeTime })),
-                            !showTimePicker && (react_1["default"].createElement(react_native_1.Pressable, { onPress: toggleTimepicker },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: setTime, 
-                                    // onBlur={handleBlur('time')}
-                                    value: time.toLocaleTimeString('vi-VN'), placeholder: "Cho\u0323n th\u01A1\u0300i gian", editable: false })))),
+                            react_1["default"].createElement(AntDesign_1["default"], { style: styles.clock, name: "clockcircle", size: 30, color: "#FCA234", onPress: toggleTimepicker })),
                         react_1["default"].createElement(react_native_1.View, null,
-                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('full_name'), onBlur: handleBlur('full_name'), value: values.full_name, placeholder: "Ho\u0323 va\u0300 t\u00EAn" })),
+                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('address'), onBlur: handleBlur('address'), value: values.address, placeholder: "* \u0110i\u0323a chi\u0309" })),
                         react_1["default"].createElement(react_native_1.View, null,
-                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('number_phone'), onBlur: handleBlur('number_phone'), value: values.number_phone, placeholder: "S\u00F4\u0301 \u0111i\u00EA\u0323n thoa\u0323i" })),
-                        react_1["default"].createElement(react_native_1.View, null,
-                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('address'), onBlur: handleBlur('address'), value: values.address, placeholder: "\u0110i\u0323a chi\u0309" })),
-                        react_1["default"].createElement(react_native_1.View, null,
-                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('demobug'), onBlur: handleBlur('demobug'), value: values.demobug, placeholder: "M\u00F4 ta\u0309 v\u00E2\u0301n \u0111\u00EA\u0300 h\u01B0 ho\u0309ng thi\u00EA\u0301t bi\u0323" }))),
+                            react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', numberOfLines: 4, multiline: true, onChangeText: handleChange('demobug'), onBlur: handleBlur('demobug'), value: values.demobug, placeholder: "* M\u00F4 ta\u0309 v\u00E2\u0301n \u0111\u00EA\u0300 h\u01B0 ho\u0309ng thi\u00EA\u0301t bi\u0323" }))),
                     react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                         react_1["default"].createElement(react_native_1.Image, { style: styles.imgFooter, source: require('../../assets/Form/book.png') }),
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton, onPress: function () { return navigation.navigate('ConfirmInforBooking'); } },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton, onPress: function () { return handleSubmit(); } },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameBook }, "\u0110\u0103\u0323t li\u0323ch")))))));
     }));
 };
 exports["default"] = FormBookSchedule;
 var styles = react_native_1.StyleSheet.create({
+    messageError: {
+        color: 'red',
+        fontWeight: 'bold'
+    },
+    clock: {
+        marginHorizontal: 20
+    },
     nameBook: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -92,8 +151,7 @@ var styles = react_native_1.StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '50%',
-        borderRadius: 10,
-        borderWidth: 2
+        borderRadius: 10
     },
     footer: {
         flexDirection: 'row',
@@ -102,7 +160,8 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: -20
     },
     boxInput: {
-        marginVertical: 30
+        marginVertical: 30,
+        height: 245
     },
     styleTitle: {
         alignItems: 'center',
@@ -122,6 +181,9 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: '#394C6D'
     },
     inputDate: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         backgroundColor: 'white',
         borderColor: '#FCA234',
         borderRadius: 10,

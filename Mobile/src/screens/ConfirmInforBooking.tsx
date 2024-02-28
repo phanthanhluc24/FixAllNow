@@ -1,8 +1,28 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-const ConfirmInforBooking = () => {
+const ConfirmInforBooking = ({route}: any) => {
+  const {infoBooking} = route.params;
+  const serviceBooking = infoBooking.infoServiceBooking.service_name;
+  const repairman = infoBooking.infoServiceBooking.user_id.full_name;
+  const priceRepair = infoBooking.infoServiceBooking.price;
+  const addressRepair = infoBooking.address;
+  const priceService = (5 / 100) * priceRepair;
+  const priceMoves = 10000;
+  const totalPrice = priceRepair + priceService + priceMoves;
+  console.log(infoBooking);
   const navigation: any = useNavigation();
+  const [selectedMethod, setSelectedMethod] = useState(null);
+
+  const handleMethodSelect = (method: any) => {
+    setSelectedMethod(method);
+  };
+  const handleConfirm = () => {
+    navigation.navigate('');
+  };
+  const handleMomoSelect=()=>{
+    console.log("hello momo");
+  }
   return (
     <View style={styles.container}>
       <View style={styles.titleConfirm}>
@@ -13,48 +33,70 @@ const ConfirmInforBooking = () => {
           <Text style={styles.titleInfo}>Thông tin dịch vụ</Text>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Đơn sửa:</Text>
-            <Text style={styles.infors}>Sửa ô tô</Text>
+            <Text style={styles.infors}>{serviceBooking}</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Thợ:</Text>
-            <Text style={styles.infors}>Trần Quốc Hữu</Text>
+            <Text style={styles.infors}>{repairman}</Text>
           </View>
           <View style={styles.styleInfo}>
-            <Text style={styles.infor}>Gía sửa:</Text>
-            <Text style={styles.infors}>1.500.000</Text>
+            <Text style={styles.infor}>Giá sửa:</Text>
+            <Text style={styles.infors}>
+              {priceRepair.toLocaleString('vi-VN')}
+            </Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Phí dịch vụ:</Text>
-            <Text style={styles.infors}>70.000</Text>
+            <Text style={styles.infors}>
+              {priceService.toLocaleString('vi-VN')}
+            </Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Phí di chuyển:</Text>
-            <Text style={styles.infors}>10.000</Text>
+            <Text style={styles.infors}>
+              {priceMoves.toLocaleString('vi-VN')}
+            </Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Địa điểm:</Text>
-            <Text style={styles.infors}>Bến xe trung tâm</Text>
+            <Text style={styles.infors}>{addressRepair}</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Tổng:</Text>
-            <Text style={styles.infors}>12.000.000</Text>
+            <Text style={styles.infors}>
+              {totalPrice.toLocaleString('vi-VN')}
+            </Text>
+            <Text style={styles.inforss}>VNĐ</Text>
           </View>
         </View>
         <View style={styles.infoService}>
           <Text style={styles.titleInfo}>Chọn phương thức thanh toán</Text>
           <View style={styles.method}>
-            <View style={styles.buttonMethod}>
+            <TouchableOpacity
+              style={[
+                styles.buttonMethod,
+                selectedMethod === 'cash' && styles.selectedMethod,
+              ]}
+              onPress={() => handleMethodSelect('cash')}>
               <Image
                 source={require('../assets/ConfirmBooking/iconMomo.png')}
               />
               <Text style={styles.titleMethod}>TT tiền mặt</Text>
-            </View>
-            <View style={styles.buttonMethod}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.buttonMethod,
+                selectedMethod === 'momo' && styles.selectedMethod,
+              ]}
+              onPress={() => handleMOmoSelect('momo')}>
               <Image
                 source={require('../assets/ConfirmBooking/iconPrice.png')}
               />
               <Text style={styles.titleMethod}>TT qua momo</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.reConfirm}>
@@ -86,6 +128,20 @@ const ConfirmInforBooking = () => {
 export default ConfirmInforBooking;
 
 const styles = StyleSheet.create({
+  buttonMethod: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  selectedMethod: {
+    borderColor: 'green',
+  },
+  titleMethod: {
+    marginLeft: 10,
+  },
   buttonChoose: {
     width: '100%',
   },
@@ -170,11 +226,18 @@ const styles = StyleSheet.create({
     color: '#FCA234',
     width: '50%',
   },
+  inforss: {
+    fontSize: 18,
+    color: '#FCA234',
+    width: '50%',
+    fontWeight: 'bold',
+  },
   styleInfo: {
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-between',
     marginVertical: 10,
+    width: '80%',
   },
   titleInfo: {
     fontSize: 20,

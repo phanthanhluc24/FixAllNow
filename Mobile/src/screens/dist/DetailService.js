@@ -3,27 +3,18 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var DetailInfoService_1 = require("./DetailInfoService");
-var DetailServiceButton_1 = require("./DetailServiceButton");
 var DetailService = function () {
-    var data = [{ key: 'DetailServiceRevolve' }];
+    var data = [{ key: 'DetailInfoService ' }];
     var renderDetailService = function () {
         return (react_1["default"].createElement(react_native_1.View, null,
             react_1["default"].createElement(DetailInfoService_1["default"], null)));
     };
-    var renderDetailServiceButton = function () {
-        return (react_1["default"].createElement(react_native_1.View, null,
-            react_1["default"].createElement(DetailServiceButton_1["default"], null)));
-    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerServiceSpecific },
-        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderDetailServiceButton, ListHeaderComponent: renderDetailService })));
+        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderDetailService })));
 };
 exports["default"] = DetailService;
 var styles = react_native_1.StyleSheet.create({
-    buttonEvent: {
-    // padding:20,
-    // alignItems:"center",
-    // justifyContent:"center",
-    },
+    buttonEvent: {},
     detailRepairman: {
         fontSize: 15,
         fontWeight: 'bold',

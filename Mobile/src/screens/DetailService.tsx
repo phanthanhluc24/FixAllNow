@@ -8,13 +8,9 @@ import {
   FlatList,
 } from 'react-native';
 import React from 'react';
-
 import DetailInfoService from './DetailInfoService';
-import DetailServiceButton from './DetailServiceButton';
-
 const DetailService = () => {
-  const data = [{ key: 'DetailServiceRevolve' }];
-
+  const data = [{ key: 'DetailInfoService ' }];
   const renderDetailService = () => {
     return (
       <View>
@@ -22,33 +18,19 @@ const DetailService = () => {
       </View>
     );
   };
-
-  const renderDetailServiceButton = () => {
-    return (
-      <View>
-        <DetailServiceButton />
-      </View>
-    );
-  };
-
   return (
     <View style={styles.containerServiceSpecific}>
       <FlatList
         data={data}
         keyExtractor={item => item.key}
-        renderItem={renderDetailServiceButton}
-        ListHeaderComponent={renderDetailService}
+        renderItem={renderDetailService}
       />
     </View>
   );
 };
-
 export default DetailService;
 const styles = StyleSheet.create({
   buttonEvent: {
-    // padding:20,
-    // alignItems:"center",
-    // justifyContent:"center",
   },
   detailRepairman: {
     fontSize: 15,

@@ -77,7 +77,7 @@ const ConfirmCode = () => {
     setIsResending(true);
     try {
       const res = await sendResendVerificationCode({refreshCode: refreshCode});
-      if (res.status != 201) {
+      if (res.status != 201){
         Alert.alert(res.message);
       } else {
         setNewCode(res.code);

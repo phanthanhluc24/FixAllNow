@@ -3,8 +3,28 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
-var ConfirmInforBooking = function () {
+var ConfirmInforBooking = function (_a) {
+    var route = _a.route;
+    var infoBooking = route.params.infoBooking;
+    var serviceBooking = infoBooking.infoServiceBooking.service_name;
+    var repairman = infoBooking.infoServiceBooking.user_id.full_name;
+    var priceRepair = infoBooking.infoServiceBooking.price;
+    var addressRepair = infoBooking.address;
+    var priceService = (5 / 100) * priceRepair;
+    var priceMoves = 10000;
+    var totalPrice = priceRepair + priceService + priceMoves;
+    console.log(infoBooking);
     var navigation = native_1.useNavigation();
+    var _b = react_1.useState(null), selectedMethod = _b[0], setSelectedMethod = _b[1];
+    var handleMethodSelect = function (method) {
+        setSelectedMethod(method);
+    };
+    var handleConfirm = function () {
+        navigation.navigate('');
+    };
+    var handleMomoSelect = function () {
+        console.log("hello momo");
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.View, { style: styles.titleConfirm },
             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "XA\u0301C NH\u00C2\u0323N TH\u00D4NG TIN")),
@@ -13,32 +33,42 @@ var ConfirmInforBooking = function () {
                 react_1["default"].createElement(react_native_1.Text, { style: styles.titleInfo }, "Th\u00F4ng tin di\u0323ch vu\u0323"),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "\u0110\u01A1n s\u01B0\u0309a:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "S\u01B0\u0309a \u00F4 t\u00F4")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, serviceBooking)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "Th\u01A1\u0323:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "Tr\u00E2\u0300n Qu\u00F4\u0301c H\u01B0\u0303u")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, repairman)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "Gi\u0301a s\u01B0\u0309a:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "1.500.000")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "Gia\u0301 s\u01B0\u0309a:"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, priceRepair.toLocaleString('vi-VN')),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110")),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "Phi\u0301 di\u0323ch vu\u0323:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "70.000")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, priceService.toLocaleString('vi-VN')),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110")),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "Phi\u0301 di chuy\u00EA\u0309n:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "10.000")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, priceMoves.toLocaleString('vi-VN')),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110")),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "\u0110i\u0323a \u0111i\u00EA\u0309m:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "B\u00EA\u0301n xe trung t\u00E2m")),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, addressRepair)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "T\u00F4\u0309ng:"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, "12.000.000"))),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, totalPrice.toLocaleString('vi-VN')),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110"))),
             react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.titleInfo }, "Cho\u0323n ph\u01B0\u01A1ng th\u01B0\u0301c thanh toa\u0301n"),
                 react_1["default"].createElement(react_native_1.View, { style: styles.method },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.buttonMethod },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [
+                            styles.buttonMethod,
+                            selectedMethod === 'cash' && styles.selectedMethod,
+                        ], onPress: function () { return handleMethodSelect('cash'); } },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../assets/ConfirmBooking/iconMomo.png') }),
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleMethod }, "TT ti\u00EA\u0300n m\u0103\u0323t")),
-                    react_1["default"].createElement(react_native_1.View, { style: styles.buttonMethod },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [
+                            styles.buttonMethod,
+                            selectedMethod === 'momo' && styles.selectedMethod,
+                        ], onPress: function () { return handleMOmoSelect('momo'); } },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../assets/ConfirmBooking/iconPrice.png') }),
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleMethod }, "TT qua momo")))),
             react_1["default"].createElement(react_native_1.View, { style: styles.reConfirm },
@@ -55,6 +85,20 @@ var ConfirmInforBooking = function () {
 };
 exports["default"] = ConfirmInforBooking;
 var styles = react_native_1.StyleSheet.create({
+    buttonMethod: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+    },
+    selectedMethod: {
+        borderColor: 'green'
+    },
+    titleMethod: {
+        marginLeft: 10
+    },
     buttonChoose: {
         width: '100%'
     },
@@ -139,11 +183,18 @@ var styles = react_native_1.StyleSheet.create({
         color: '#FCA234',
         width: '50%'
     },
+    inforss: {
+        fontSize: 18,
+        color: '#FCA234',
+        width: '50%',
+        fontWeight: 'bold'
+    },
     styleInfo: {
         flexDirection: 'row',
         marginHorizontal: 20,
         justifyContent: 'space-between',
-        marginVertical: 10
+        marginVertical: 10,
+        width: '80%'
     },
     titleInfo: {
         fontSize: 20,

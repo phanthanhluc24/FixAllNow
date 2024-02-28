@@ -5,6 +5,7 @@ var react_1 = require("react");
 var useGetDetailRepairman_1 = require("../hooks/useGetDetailRepairman");
 var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var native_1 = require("@react-navigation/native");
+var DetailCommentRepairman_1 = require("./DetailCommentRepairman");
 var DetailHeaderRepairman = function () {
     var route = native_1.useRoute();
     var id = route.params.id;
@@ -26,9 +27,6 @@ var DetailHeaderRepairman = function () {
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Ho\u0323 va\u0300 t\u00EAn: "),
             react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.full_name)),
-        react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
-            react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Ngh\u1EC1 nghi\u1EC7p: "),
-            react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.category_id.name)),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i: "),
             react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.number_phone)),
@@ -57,7 +55,8 @@ var DetailHeaderRepairman = function () {
                                         react_1["default"].createElement(react_native_1.Text, { style: styles.price }, item.price.toLocaleString('vi-VN')),
                                         react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VND")),
                                     react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
-                    } })))));
+                    } }))),
+        react_1["default"].createElement(DetailCommentRepairman_1["default"], null)));
 };
 exports["default"] = DetailHeaderRepairman;
 var styles = react_native_1.StyleSheet.create({

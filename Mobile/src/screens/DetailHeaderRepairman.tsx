@@ -10,6 +10,7 @@ import React from 'react';
 import useGetDetailRepairman from '../hooks/useGetDetailRepairman';
 import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import DetailCommentRepairman from './DetailCommentRepairman';
 interface typeService {
   _id: string;
   status: string;
@@ -43,10 +44,10 @@ const DetailHeaderRepairman = () => {
         <Text style={styles.titles}>Họ và tên: </Text>
         <Text style={styles.content}>{repairman?.full_name}</Text>
       </View>
-      <View style={styles.detailInfo}>
+      {/* <View style={styles.detailInfo}>
         <Text style={styles.titles}>Nghề nghiệp: </Text>
         <Text style={styles.content}>{repairman?.category_id.name}</Text>
-      </View>
+      </View> */}
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>Số điện thoại: </Text>
         <Text style={styles.content}>{repairman?.number_phone}</Text>
@@ -97,6 +98,7 @@ const DetailHeaderRepairman = () => {
           />
         </View>
       </View>
+      <DetailCommentRepairman />
     </View>
   );
 };

@@ -1,26 +1,26 @@
 import axios from 'axios';
-import React, {useState} from 'react';
 import {url} from './apiRequest/url';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const useAddNewService = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const sendData = async (data:any) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post(`${url}/service`, data, {
+  const sendData = async (data: any) => {
+    try{
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      const formData = new FormData();
+      formData.append('desc', data.desc);
+      formData.append('price', data.price);
+      formData.append('service_name', data.service_name);
+      formData.append('image',data.image);
+      const response = await axios.post(`${url}/service`, formData ,{
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+         "Content-Type":"multipart/form-data",
+         Authorization: `Bearer ${accessToken}`
+        }
       });
-      setIsLoading(false);
-      return response.data;
-    } catch (error:any) {
-      setIsLoading(false);
-      setError(error);
-    }
-  };
-
-  return {isLoading, error, sendData};
+      return response;
+  }catch(error:any){
+    console.log(error);
+    throw error;
+  }};
+  return {sendData};
 };
-
 export default useAddNewService;
