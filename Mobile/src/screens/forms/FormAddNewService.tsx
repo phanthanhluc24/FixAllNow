@@ -18,14 +18,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import useAddNewService from '../../hooks/useAddNewService';
 const FormAddNewService = () => {
-  const navigation:any= useNavigation();
+  const navigation: any = useNavigation();
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
-  const [formData, setFormData] = useState<any>({});
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
@@ -46,19 +45,33 @@ const FormAddNewService = () => {
     control,
     handleSubmit,
     formState: {errors},
+    setError,
   } = useForm();
   const {sendData} = useAddNewService();
   const onSubmit = async (data: any) => {
     try {
+      const errorFields = [];
+      if (!data.service_name.trim()) errorFields.push('service_name');
+      if (!data.price) errorFields.push('price');
+      if (!data.desc.trim()) errorFields.push('desc');
+
+      if (errorFields.length > 0) {
+        setError(errorFields.map(field => ({type: 'manual', name: field})));
+        return;
+      }
+
       data.image = singleFile;
       const responseData = await sendData(data);
-      if(responseData){
-        Alert.alert("Dịch vụ thêm thành công!")
-        navigation.navigate("Profile")
+      if (responseData) {
+        Alert.alert('Dịch vụ thêm thành công!');
+        navigation.navigate('Profile');
       }
     } catch (error) {
       console.error('Error while sending data:', error);
     }
+  };
+  const isNumeric = (value:any) => {
+    return /^\d+$/.test(value);
   };
   return (
     <KeyboardAvoidingView
@@ -81,12 +94,12 @@ const FormAddNewService = () => {
                 />
               )}
               name="service_name"
-              rules={{required: 'Tên không được bỏ trống'}}
+              rules={{required: '* Tên không được bỏ trống'}}
               defaultValue=""
             />
-            {/* {errors.name && (
-          <Text style={{color: 'red'}}>{errors.name.message}</Text>
-        )} */}
+            {errors.service_name && (
+              <Text style={{color: 'red'}}>{errors.service_name.message}</Text>
+            )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Giá dịch vụ</Text>
@@ -96,17 +109,22 @@ const FormAddNewService = () => {
                 <TextInput
                   style={styles.inputInfo}
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={text => {
+                    if (isNumeric(text)) {
+                      onChange(text);
+                    }
+                  }}
                   value={value}
+              keyboardType="numeric"
                 />
               )}
               name="price"
-              rules={{required: 'Gía không được bỏ trống '}}
+              rules={{required: '* Giá không được bỏ trống '}}
               defaultValue=""
             />
-            {/* {errors.email && (
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
-        )} */}
+            {errors.price && (
+              <Text style={{color: 'red'}}>{errors.price.message}</Text>
+            )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Mô tả dịch vụ</Text>
@@ -121,12 +139,12 @@ const FormAddNewService = () => {
                 />
               )}
               name="desc"
-              rules={{required: 'Mô tả không được bỏ trống'}}
+              rules={{required: '* Mô tả không được bỏ trống'}}
               defaultValue=""
             />
-            {/* {errors.email && (
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
-        )} */}
+            {errors.desc && (
+              <Text style={{color: 'red'}}>{errors.desc.message}</Text>
+            )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
@@ -148,7 +166,7 @@ const FormAddNewService = () => {
                 <Image
                   source={{uri: singleFile?.uri}}
                   style={styles.imageStyle}></Image>
-                <View style={{position:"absolute" }}>
+                <View style={{position: 'absolute'}}>
                   <TouchableOpacity onPress={selectFile}>
                     <View style={styles.imageViews}>
                       <Entypo name="camera" size={25} color="#394C6D" />
@@ -160,14 +178,22 @@ const FormAddNewService = () => {
           </View>
         </View>
         <View style={styles.eventSubmit}>
-          <Button color={'#FCA234'} onPress={onSubmit} title="Hủy" />
-          <TouchableOpacity>
-            <Button
-              color={'#FCA234'}
-              onPress={handleSubmit(onSubmit)}
-              title="Thêm mới"
-            />
-          </TouchableOpacity>
+          <View style={styles.buttonChoose}>
+            <View style={styles.buttonNow}>
+              <View style={styles.button1}>
+                <TouchableOpacity style={styles.bookNow} onPress={onSubmit}>
+                  <Text style={styles.books}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.button1}
+                onPress={handleSubmit(onSubmit)}>
+                <View style={styles.book}>
+                  <Text style={styles.books}>Thêm mới</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -177,6 +203,49 @@ const FormAddNewService = () => {
 export default FormAddNewService;
 
 const styles = StyleSheet.create({
+  buttonChoose: {
+    width: '100%',
+  },
+  buttonNow: {
+    marginHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  button1: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  bookNow: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  book: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  books: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  oneLine: {
+    width: '100%',
+    backgroundColor: '#FCA234',
+    height: 1,
+    marginTop: 15,
+  },
   selectedImage: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -196,22 +265,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50,
     marginVertical: 10,
-    
   },
   imageViews: {
     width: 40,
     height: 40,
     borderWidth: 2,
     borderColor: '#394C6D',
-    backgroundColor:"#FCA234",
+    backgroundColor: '#FCA234',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    marginLeft:140,
-    marginTop:140
+    marginLeft: 140,
+    marginTop: 140,
   },
   part: {
     marginVertical: 5,
+    height: 110,
   },
   infoEdit: {
     color: '#FCA234',
