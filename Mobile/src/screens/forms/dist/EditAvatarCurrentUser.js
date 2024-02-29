@@ -38,58 +38,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var react_hook_form_1 = require("react-hook-form");
 var Entypo_1 = require("react-native-vector-icons/Entypo");
 var react_native_document_picker_1 = require("react-native-document-picker");
-var EditAvatarCurrentUser = function () {
-    var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
-    var uploadImage = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var formData, res, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!(singleFile != null)) return [3 /*break*/, 5];
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    formData = new FormData();
-                    formData.append('image', {
-                        uri: react_native_1.Platform.OS === 'android'
-                            ? "file://" + singleFile.uri
-                            : singleFile.uri,
-                        type: singleFile.type || 'image/jpeg',
-                        name: singleFile.name || 'image.jpg'
-                    });
-                    return [4 /*yield*/, fetch('https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile', {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            },
-                            timeout: 5000
-                        })];
-                case 2:
-                    res = _a.sent();
-                    if (res.status === 201) {
-                        react_native_1.Alert.alert('Upload Successful');
-                    }
-                    else {
-                        react_native_1.Alert.alert('Upload Failed');
-                    }
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error('Error uploading file:', error_1);
-                    react_native_1.Alert.alert('Error uploading file');
-                    return [3 /*break*/, 4];
-                case 4: return [3 /*break*/, 6];
-                case 5:
-                    react_native_1.Alert.alert('Please Select File first');
-                    _a.label = 6;
-                case 6: return [2 /*return*/];
-            }
-        });
-    }); };
+var native_1 = require("@react-navigation/native");
+var useUploadAvatarUser_1 = require("../../hooks/useUploadAvatarUser");
+var EditAvatarCurrentUser = function (_a) {
+    var route = _a.route;
+    var navigation = native_1.useNavigation();
+    var image = route.params.image;
+    var _b = react_1.useState(image), singleFile = _b[0], setSingleFile = _b[1];
+    react_1.useEffect(function () {
+        setSingleFile(image);
+    }, [image]);
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
         return __generator(this, function (_a) {
@@ -100,7 +60,7 @@ var EditAvatarCurrentUser = function () {
                             type: [react_native_document_picker_1["default"].types.allFiles]
                         })];
                 case 1:
-                    res = _a.sent();
+                    res = (_a.sent())[0];
                     console.log('res :', res);
                     setSingleFile(res);
                     return [3 /*break*/, 3];
@@ -119,44 +79,118 @@ var EditAvatarCurrentUser = function () {
             }
         });
     }); };
-    var _b = react_hook_form_1.useForm(), control = _b.control, handleSubmit = _b.handleSubmit, errors = _b.formState.errors;
-    var onSubmit = function () { };
+    var sendData = useUploadAvatarUser_1["default"]().sendData;
+    var handleSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
+        var responseData, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    data.image = singleFile;
+                    return [4 /*yield*/, sendData(data)];
+                case 1:
+                    responseData = _a.sent();
+                    if (responseData) {
+                        react_native_1.Alert.alert('Cập nhật ảnh đại diện thành công!');
+                        navigation.navigate('Profile');
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _a.sent();
+                    console.error('Error while sending data:', error_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleCancle = function () {
+        navigation.navigate("Profile");
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.View, { style: { flex: 9 } },
             react_1["default"].createElement(react_native_1.View, { style: styles.part },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh cu\u0309a ba\u0323n"),
                 react_1["default"].createElement(react_native_1.View, null,
-                    react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
-                            var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.View, { style: { flex: 1, alignItems: 'center' } },
-                                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
-                                    react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
-                                        react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 50, color: "#FCA234" })))));
-                        }, name: "email", rules: { required: 'Vui lòng ảnh không được bỏ trống' }, defaultValue: "" })))),
-        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonStyle, activeOpacity: 0.5, onPress: selectFile },
-            react_1["default"].createElement(react_native_1.Text, { style: styles.buttonTextStyle }, "Select File")),
-        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonStyle, activeOpacity: 0.5, onPress: uploadImage },
-            react_1["default"].createElement(react_native_1.Text, { style: styles.buttonTextStyle }, "Upload File")),
-        singleFile != null ? (react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle },
-            "File Name: ",
-            singleFile.name ? singleFile.name : '',
-            '\n',
-            "Type: ",
-            singleFile.type ? singleFile.type : '',
-            '\n',
-            "File Size: ",
-            singleFile.size ? singleFile.size : '',
-            '\n',
-            "URI: ",
-            singleFile.uri ? singleFile.uri : '',
-            '\n')) : null,
-        react_1["default"].createElement(react_native_1.View, { style: { flex: 1 } },
-            react_1["default"].createElement(react_native_1.View, { style: styles.eventSubmit },
-                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: handleSubmit(onSubmit), title: "Hu\u0309y" }),
-                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: handleSubmit(onSubmit), title: "C\u00E2\u0323p nh\u00E2\u0323t" })))));
+                    !!singleFile || (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
+                                react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 50, color: "#FCA234" }))))),
+                    singleFile && (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
+                        react_1["default"].createElement(react_native_1.Image, { source: { uri: singleFile === null || singleFile === void 0 ? void 0 : singleFile.uri }, style: styles.imageStyle }),
+                        react_1["default"].createElement(react_native_1.View, { style: { position: 'absolute' } },
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.imageViews },
+                                    react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 25, color: "#394C6D" }))))))))),
+        react_1["default"].createElement(react_native_1.View, { style: { flex: 1, marginBottom: 10 } },
+            react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
+                react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bookNow, onPress: handleCancle },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "Hu\u0309y"))),
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleSubmit },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.book },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "C\u00E2\u0323p nh\u00E2\u0323t"))))))));
 };
 exports["default"] = EditAvatarCurrentUser;
 var styles = react_native_1.StyleSheet.create({
+    selectedImage: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20
+    },
+    imageStyle: {
+        width: '90%',
+        height: '100%',
+        borderWidth: 2,
+        borderColor: '#FCA234',
+        borderRadius: 10
+    },
+    imageViews: {
+        width: 40,
+        height: 40,
+        borderWidth: 2,
+        borderColor: '#394C6D',
+        backgroundColor: '#FCA234',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10
+    },
+    buttonChoose: {
+        width: '100%'
+    },
+    buttonNow: {
+        marginHorizontal: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 15,
+        marginBottom: 10
+    },
+    button1: {
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    bookNow: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#FCA234',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    book: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#FCA234',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    books: {
+        fontSize: 20,
+        color: '#FFFFFF',
+        fontWeight: 'bold'
+    },
     imageView: {
         width: 100,
         height: 100,

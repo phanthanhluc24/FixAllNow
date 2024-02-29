@@ -45,6 +45,7 @@ var native_1 = require("@react-navigation/native");
 var useLogout_1 = require("../hooks/useLogout");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var ButtonLogout_1 = require("./bottomTab/ButtonLogout");
+var react_native_document_picker_1 = require("react-native-document-picker");
 var ProfileHeaderRepairmanFinder = function () {
     var navigation = native_1.useNavigation();
     var logout = useLogout_1["default"]().logout;
@@ -65,17 +66,53 @@ var ProfileHeaderRepairmanFinder = function () {
         getToken();
     });
     var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
+    var _c = react_1.useState(null), singleFile = _c[0], setSingleFile = _c[1];
+    var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, react_native_document_picker_1["default"].pick({
+                            type: [react_native_document_picker_1["default"].types.allFiles]
+                        })];
+                case 1:
+                    res = (_a.sent())[0];
+                    setSingleFile(res);
+                    if (res) {
+                        navigation.navigate('EditAvatarCurrentUser', { image: res });
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    err_1 = _a.sent();
+                    setSingleFile(null);
+                    if (react_native_document_picker_1["default"].isCancel(err_1)) {
+                        react_native_1.Alert.alert('Canceled');
+                    }
+                    else {
+                        react_native_1.Alert.alert('Unknown Error: ' + JSON.stringify(err_1));
+                        throw err_1;
+                    }
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.profileHeader },
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
-            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro, onPress: function () { return navigation.navigate("EditAvatarCurrentUser"); } },
-                react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } })),
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro },
+                react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } }),
+                react_1["default"].createElement(react_native_1.View, { style: { position: 'absolute' } },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.imageViews },
+                            react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 20, color: "#394C6D" }))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.contentProfile },
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleProfile },
                     react_1["default"].createElement(react_native_1.View, { style: styles.info },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.nameProfile }, currentUser === null || currentUser === void 0 ? void 0 : currentUser.full_name)),
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonEvent },
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () { return navigation.navigate('EditInfoCurrentUser'); } },
-                            react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "#FCA234" })),
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () { return navigation.navigate('EditInfoCurrentUser', { user: currentUser }); } },
+                            react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "white" })),
                         react_1["default"].createElement(ButtonLogout_1["default"], null))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoQuality },
             react_1["default"].createElement(react_native_1.View, { style: styles.email },
@@ -89,10 +126,24 @@ var ProfileHeaderRepairmanFinder = function () {
                     react_1["default"].createElement(Entypo_1["default"], { name: "phone", size: 24, color: "#394C6D" })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.infoPhone },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.namePhone }, "S\u00F4\u0301 \u0111i\u00EA\u0323n thoa\u0323i"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.detailPhone }, currentUser === null || currentUser === void 0 ? void 0 : currentUser.number_phone))))));
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.detailPhone },
+                        "(+84)", currentUser === null || currentUser === void 0 ? void 0 :
+                        currentUser.number_phone))))));
 };
 exports["default"] = ProfileHeaderRepairmanFinder;
 var styles = react_native_1.StyleSheet.create({
+    imageViews: {
+        width: 30,
+        height: 30,
+        borderWidth: 2,
+        borderColor: '#394C6D',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        marginTop: 50,
+        marginLeft: 50
+    },
     buttonEvent: {
         flexDirection: "row",
         justifyContent: "space-around",

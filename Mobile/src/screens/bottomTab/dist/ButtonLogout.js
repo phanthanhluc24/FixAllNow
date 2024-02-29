@@ -73,7 +73,7 @@ var ButtonLogout = function () {
         });
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.TouchableOpacity, { style: styles.iconEdit, onPress: handleLogout },
-        react_1["default"].createElement(MaterialCommunityIcons_1["default"], { name: "logout", size: 24, color: "#FCA234" })));
+        react_1["default"].createElement(MaterialCommunityIcons_1["default"], { name: "logout", size: 24, color: "#ffffff" })));
 };
 exports["default"] = ButtonLogout;
 var styles = react_native_1.StyleSheet.create({

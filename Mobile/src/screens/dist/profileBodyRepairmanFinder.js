@@ -2,8 +2,17 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var native_1 = require("@react-navigation/native");
 var ProfileBodyRepairmanFinder = function () {
+    var navigation = native_1.useNavigation();
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerProfileBodyRepairmanFinder },
+        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.container, onPress: function () { return navigation.navigate("Home"); } },
+            react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                react_1["default"].createElement(react_native_1.View, { style: { width: '70%' } },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.hello }, "ALO TH\u01A0\u0323"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.detaildemo }, "T\u00ECm ki\u1EBFm th\u1EE3 s\u1EEDa ch\u1EEFa d\u1EC5 d\u00E0ng h\u01A1n ch\u1EC9 v\u1EDBi v\u00E0i ph\u00FAt m\u00E0 kh\u00F4ng t\u1ED1n nhi\u1EC1u th\u1EDDi gian")),
+                react_1["default"].createElement(react_native_1.View, { style: { width: '30%' } },
+                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/demo.png') })))),
         react_1["default"].createElement(react_native_1.View, { style: styles.profileBodyRepairmanFinder },
             react_1["default"].createElement(react_native_1.View, null,
                 react_1["default"].createElement(react_native_1.Text, { style: styles.nameAccount }, "Ta\u0300i khoa\u0309n"),
@@ -24,6 +33,31 @@ var ProfileBodyRepairmanFinder = function () {
 };
 exports["default"] = ProfileBodyRepairmanFinder;
 var styles = react_native_1.StyleSheet.create({
+    container: {
+        marginHorizontal: 20,
+        borderRadius: 10,
+        backgroundColor: '#394C6D',
+        width: '90%',
+        height: 120,
+        marginTop: 10
+    },
+    content: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 20
+    },
+    hello: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#FCA234',
+        width: '90%'
+    },
+    detaildemo: {
+        fontSize: 13,
+        color: '#FFFFFF',
+        width: '90%'
+    },
     containerProfileBodyRepairmanFinder: {
         flex: 1
     },

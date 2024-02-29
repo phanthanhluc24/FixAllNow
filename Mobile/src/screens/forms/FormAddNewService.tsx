@@ -75,6 +75,9 @@ const FormAddNewService = () => {
       console.error('Error while sending data:', error);
     }
   };
+  const handleCancle=()=>{
+    navigation.navigate('Profile')
+  }
   const isNumeric = (value:any) => {
     return /^\d+$/.test(value);
   };
@@ -189,7 +192,7 @@ const FormAddNewService = () => {
           <View style={styles.buttonChoose}>
             <View style={styles.buttonNow}>
               <View style={styles.button1}>
-                <TouchableOpacity style={styles.bookNow} onPress={onSubmit}>
+                <TouchableOpacity style={styles.bookNow} onPress={handleCancle}>
                   <Text style={styles.books}>Hủy</Text>
                 </TouchableOpacity>
               </View>

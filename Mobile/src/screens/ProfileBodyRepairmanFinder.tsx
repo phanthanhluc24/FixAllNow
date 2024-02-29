@@ -1,8 +1,24 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image , TouchableOpacity} from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 const ProfileBodyRepairmanFinder = () => {
+  const navigation:any= useNavigation();
   return (
     <View style={styles.containerProfileBodyRepairmanFinder}>
+      <TouchableOpacity style={styles.container} onPress={()=>navigation.navigate("Home")}>
+        <View style={styles.content}>
+          <View style={{width: '70%'}}>
+            <Text style={styles.hello}>ALO THỢ</Text>
+            <Text style={styles.detaildemo}>
+              Tìm kiếm thợ sửa chữa dễ dàng hơn chỉ với vài phút mà không tốn
+              nhiều thời gian
+            </Text>
+          </View>
+          <View style={{width: '30%'}}>
+            <Image source={require('../assets/Homes/demo.png')} />
+          </View>
+        </View>
+      </TouchableOpacity> 
       <View style={styles.profileBodyRepairmanFinder}>
         <View>
           <Text style={styles.nameAccount}>Tài khoản</Text>
@@ -30,6 +46,31 @@ const ProfileBodyRepairmanFinder = () => {
 export default ProfileBodyRepairmanFinder;
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: '#394C6D',
+    width: '90%',
+    height: 120,
+    marginTop:10
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  hello: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FCA234',
+    width: '90%',
+  },
+  detaildemo: {
+    fontSize: 13,
+    color: '#FFFFFF',
+    width: '90%',
+  },
   containerProfileBodyRepairmanFinder: {
     flex: 1,
   },

@@ -32,7 +32,7 @@ const ButtonLogout = () => {
     };
     return (
             <TouchableOpacity style={styles.iconEdit} onPress={handleLogout}>
-                <MaterialCommunityIcons name="logout" size={24} color="#FCA234" />
+                <MaterialCommunityIcons name="logout" size={24} color="#ffffff" />
             </TouchableOpacity>
     );
 };

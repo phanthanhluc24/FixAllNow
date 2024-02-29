@@ -41,55 +41,34 @@ var react_1 = require("react");
 var react_hook_form_1 = require("react-hook-form");
 var Entypo_1 = require("react-native-vector-icons/Entypo");
 var react_native_document_picker_1 = require("react-native-document-picker");
-var EditInfoService = function () {
-    var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
-    var uploadImage = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var formData, res, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!(singleFile != null)) return [3 /*break*/, 5];
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    formData = new FormData();
-                    formData.append('image', {
-                        uri: react_native_1.Platform.OS === 'android'
-                            ? "file://" + singleFile.uri
-                            : singleFile.uri,
-                        type: singleFile.type || 'image/jpeg',
-                        name: singleFile.name || 'image.jpg'
-                    });
-                    return [4 /*yield*/, fetch('https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile', {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            },
-                            timeout: 5000
-                        })];
-                case 2:
-                    res = _a.sent();
-                    if (res.status === 201) {
-                        react_native_1.Alert.alert('Upload Successful');
-                    }
-                    else {
-                        react_native_1.Alert.alert('Upload Failed');
-                    }
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error('Error uploading file:', error_1);
-                    react_native_1.Alert.alert('Error uploading file');
-                    return [3 /*break*/, 4];
-                case 4: return [3 /*break*/, 6];
-                case 5:
-                    react_native_1.Alert.alert('Please Select File first');
-                    _a.label = 6;
-                case 6: return [2 /*return*/];
-            }
-        });
-    }); };
+var useEditInfoService_1 = require("../../hooks/useEditInfoService");
+var EditInfoService = function (_a) {
+    var route = _a.route;
+    var service = route.params.service;
+    var _b = react_1.useState(service.service_name), nameService = _b[0], setNameService = _b[1];
+    var _c = react_1.useState(service === null || service === void 0 ? void 0 : service.price.toString()), priceService = _c[0], setPriceService = _c[1];
+    var _d = react_1.useState(service === null || service === void 0 ? void 0 : service.desc), descService = _d[0], setDescService = _d[1];
+    var _e = react_1.useState(null), singleFile = _e[0], setSingleFile = _e[1];
+    var handleInputChange = function (fieldName, value) {
+        switch (fieldName) {
+            case 'service_name':
+                setNameService(value);
+                break;
+            case 'price':
+                setPriceService(value);
+                break;
+            case 'desc':
+                setDescService(value);
+                break;
+            default:
+                break;
+        }
+    };
+    react_1.useEffect(function () {
+        if (service === null || service === void 0 ? void 0 : service.image) {
+            setSingleFile({ uri: service.image });
+        }
+    }, [service]);
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
         return __generator(this, function (_a) {
@@ -100,7 +79,7 @@ var EditInfoService = function () {
                             type: [react_native_document_picker_1["default"].types.allFiles]
                         })];
                 case 1:
-                    res = _a.sent();
+                    res = (_a.sent())[0];
                     console.log('res :', res);
                     setSingleFile(res);
                     return [3 /*break*/, 3];
@@ -119,8 +98,19 @@ var EditInfoService = function () {
             }
         });
     }); };
-    var _b = react_hook_form_1.useForm(), control = _b.control, handleSubmit = _b.handleSubmit, errors = _b.formState.errors;
-    var onSubmit = function () { };
+    var _f = react_hook_form_1.useForm(), control = _f.control, handleSubmit = _f.handleSubmit, errors = _f.formState.errors;
+    var onSubmit = function () {
+        var formData = {
+            service_name: nameService,
+            price: priceService,
+            desc: descService,
+            singleFile: singleFile
+        };
+        useEditInfoService_1["default"](formData);
+    };
+    var handleCancle = function () {
+        console.log('Hủy');
+    };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
             react_1["default"].createElement(react_native_1.View, { style: styles.formEdit },
@@ -128,53 +118,75 @@ var EditInfoService = function () {
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "T\u00EAn di\u0323ch vu\u0323 "),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "service_name", rules: { required: 'Tên không được bỏ trống' }, defaultValue: "" })),
+                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
+                                    onChange(text);
+                                    handleInputChange('service_name', text);
+                                }, value: value, defaultValue: nameService }));
+                        }, name: "service_name", rules: { required: 'Tên không được bỏ trống' }, defaultValue: nameService })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gi\u0301a di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "price", rules: { required: 'Gía không được bỏ trống ' }, defaultValue: "" })),
+                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
+                                    onChange(text);
+                                    handleInputChange('price', text);
+                                }, value: value, defaultValue: priceService }));
+                        }, name: "price", rules: { required: 'Gía không được bỏ trống ' }, defaultValue: priceService })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "M\u00F4 ta\u0309 di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "desc", rules: { required: 'Mô tả không được bỏ trống' }, defaultValue: "" })),
+                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
+                                    onChange(text);
+                                    handleInputChange('desc', text);
+                                }, value: value, defaultValue: descService }));
+                        }, name: "desc", rules: { required: 'Mô tả không được bỏ trống' }, defaultValue: descService })),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
-                    react_1["default"].createElement(react_native_1.View, null,
-                        react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
-                                var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                                return (react_1["default"].createElement(react_native_1.View, { style: { flex: 1, alignItems: 'center' } },
-                                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
-                                        react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
-                                            react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 50, color: "#FCA234" })))));
-                            }, name: "email", rules: { required: 'Vui lòng ảnh không được bỏ trống' }, defaultValue: "" })))),
-            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonStyle, activeOpacity: 0.5, onPress: selectFile },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.buttonTextStyle }, "Select File")),
-            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonStyle, activeOpacity: 0.5, onPress: uploadImage },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.buttonTextStyle }, "Upload File")),
-            singleFile != null ? (react_1["default"].createElement(react_native_1.Text, { style: styles.textStyle },
-                "File Name: ",
-                singleFile.name ? singleFile.name : '',
-                '\n',
-                "Type: ",
-                singleFile.type ? singleFile.type : '',
-                '\n',
-                "File Size: ",
-                singleFile.size ? singleFile.size : '',
-                '\n',
-                "URI: ",
-                singleFile.uri ? singleFile.uri : '',
-                '\n')) : null,
+                    !!singleFile || (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
+                                react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 50, color: "#FCA234" }))))),
+                    singleFile && (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
+                        react_1["default"].createElement(react_native_1.Image, { source: { uri: singleFile === null || singleFile === void 0 ? void 0 : singleFile.uri }, style: styles.imageStyle }),
+                        react_1["default"].createElement(react_native_1.View, { style: { position: 'absolute' } },
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.imageViews },
+                                    react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 25, color: "#394C6D" })))))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.eventSubmit },
-                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: handleSubmit(onSubmit), title: "Hu\u0309y" }),
-                react_1["default"].createElement(react_native_1.Button, { color: '#FCA234', onPress: handleSubmit(onSubmit), title: "Th\u00EAm m\u01A1\u0301i" })))));
+                react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bookNow, onPress: handleCancle },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "Hu\u0309y"))),
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleSubmit(onSubmit) },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.book },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "C\u00E2\u0323p nh\u00E2\u0323t")))))))));
 };
 exports["default"] = EditInfoService;
 var styles = react_native_1.StyleSheet.create({
+    imageViews: {
+        width: 40,
+        height: 40,
+        borderWidth: 2,
+        borderColor: '#394C6D',
+        backgroundColor: '#FCA234',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        marginLeft: 140,
+        marginTop: 140
+    },
+    selectedImage: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20
+    },
+    imageStyle: {
+        width: 150,
+        height: 150,
+        borderRadius: 10
+    },
     imageView: {
         width: 100,
         height: 100,
@@ -184,6 +196,42 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 50,
         marginVertical: 10
+    },
+    buttonChoose: {
+        width: '100%'
+    },
+    buttonNow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 15,
+        marginBottom: 10
+    },
+    button1: {
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    bookNow: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#FCA234',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    book: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#FCA234',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    books: {
+        fontSize: 20,
+        color: '#FFFFFF',
+        fontWeight: 'bold'
     },
     part: {
         marginVertical: 5

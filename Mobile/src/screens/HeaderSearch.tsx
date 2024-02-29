@@ -97,6 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   images:{
-    width:50, height:50,borderRadius:100
+    width:50, height:50,borderRadius:100,
+    borderWidth:3,
+    borderColor:"#394C6D"
   }
 });
