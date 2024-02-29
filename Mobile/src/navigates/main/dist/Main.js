@@ -10,11 +10,6 @@ var ConfirmCode_1 = require("../../screens/accounts.tsx/ConfirmCode");
 var ConfirmTypeRepairman_1 = require("../../screens/accounts.tsx/ConfirmTypeRepairman");
 var ForgotPassword_1 = require("../../screens/accounts.tsx/ForgotPassword");
 var NewPassword_1 = require("../../screens/accounts.tsx/NewPassword");
-var Home_1 = require("../../screens/feed/Repairman_Finder/Home");
-// import HeaderSearch from '../../screens/HeaderSearch';
-// import HomeCategories from '../../screens/HomeCategories';
-// import HomeRepairmanPopular from '../../screens/HomeRepairmanPopular';
-// import HomeServicePopular from '../../assets/HomeServicePopular';
 var ListOfElectrician_1 = require("../../screens/ListOfElectrician");
 var DetailRepairman_1 = require("../../screens/DetailRepairman");
 var DetailService_1 = require("../../screens/DetailService");
@@ -26,6 +21,7 @@ var FormAddNewService_1 = require("../../screens/forms/FormAddNewService");
 var EditInfoService_1 = require("../../screens/forms/EditInfoService");
 var EditAvatarCurrentUser_1 = require("../../screens/forms/EditAvatarCurrentUser");
 var MapScreen_1 = require("../../screens/MapScreen");
+var HistoryStore_1 = require("../../screens/HistoryStore");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -38,7 +34,6 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "ConfirmTypeRepairman", component: ConfirmTypeRepairman_1["default"], options: { headerShown: false } }),
             react_1["default"].createElement(Stack.Screen, { name: "ForgotPassword", component: ForgotPassword_1["default"], options: { headerShown: false } }),
             react_1["default"].createElement(Stack.Screen, { name: "NewPassword", component: NewPassword_1["default"], options: { headerShown: false } }),
-            react_1["default"].createElement(Stack.Screen, { name: "Home", component: Home_1["default"], options: { headerShown: true } }),
             react_1["default"].createElement(Stack.Screen, { name: "ListOfElectrician", component: ListOfElectrician_1["default"], options: function (_a) {
                     var _b;
                     var route = _a.route;
@@ -94,6 +89,10 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "MapScreen", component: MapScreen_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Tìm vị trí thợ"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "HistoryStore", component: HistoryStore_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Lịch sử cửa hàng"
                 }); } }))));
 };
 exports["default"] = Main;

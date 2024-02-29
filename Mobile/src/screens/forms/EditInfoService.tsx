@@ -9,59 +9,48 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  Image
 } from 'react-native';
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-const EditInfoService = () => {
+import useEditInfoService from '../../hooks/useEditInfoService';
+const EditInfoService = ({route}: any) => {
+  const {service}=route.params;
+  const [nameService, setNameService] = useState(service.service_name);
+  const [priceService, setPriceService] = useState(service?.price.toString());
+  const [descService, setDescService] = useState(service?.desc);
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
-  const uploadImage = async () => {
-    if (singleFile != null) {
-      try {
-        const formData = new FormData();
-        formData.append('image', {
-          uri:
-            Platform.OS === 'android'
-              ? `file://${singleFile.uri}`
-              : singleFile.uri,
-          type: singleFile.type || 'image/jpeg', // Provide a default type if not available
-          name: singleFile.name || 'image.jpg', // Provide a default name if not available
-        });
-        const res = await fetch(
-          'https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile',
-          {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            timeout: 5000,
-          },
-        );
-        if (res.status === 201) {
-          Alert.alert('Upload Successful');
-        } else {
-          Alert.alert('Upload Failed');
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        Alert.alert('Error uploading file');
-      }
-    } else {
-      Alert.alert('Please Select File first');
+  const handleInputChange = (fieldName: string, value: string) => {
+    switch (fieldName) {
+      case 'service_name':
+        setNameService(value);
+        break;
+      case 'price':
+        setPriceService(value);
+        break;
+      case 'desc':
+        setDescService(value);
+        break;
+      default:
+        break;
     }
   };
+  useEffect(() => {
+    if (service?.image) {
+      setSingleFile({uri: service.image});
+    }
+  }, [service]);
   const selectFile = async () => {
     try {
-      const res = await DocumentPicker.pick({
+      const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-
       console.log('res :', res);
 
       setSingleFile(res);
@@ -82,7 +71,18 @@ const EditInfoService = () => {
     handleSubmit,
     formState: {errors},
   } = useForm();
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    const formData = {
+      service_name: nameService,
+      price: priceService,
+      desc: descService,
+      singleFile: singleFile, 
+    };
+    useEditInfoService(formData);
+  };
+  const handleCancle = () => {
+    console.log('Hủy');
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -99,13 +99,17 @@ const EditInfoService = () => {
                 <TextInput
                   style={styles.inputInfo}
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={text => {
+                    onChange(text);
+                    handleInputChange('service_name', text); 
+                  }}
                   value={value}
+                  defaultValue={nameService}
                 />
               )}
               name="service_name"
               rules={{required: 'Tên không được bỏ trống'}}
-              defaultValue=""
+              defaultValue={nameService}
             />
             {/* {errors.name && (
           <Text style={{color: 'red'}}>{errors.name.message}</Text>
@@ -119,13 +123,17 @@ const EditInfoService = () => {
                 <TextInput
                   style={styles.inputInfo}
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={text => {
+                    onChange(text);
+                    handleInputChange('price', text); 
+                  }}
                   value={value}
+                  defaultValue={priceService}
                 />
               )}
               name="price"
               rules={{required: 'Gía không được bỏ trống '}}
-              defaultValue=""
+              defaultValue={priceService}
             />
             {/* {errors.email && (
           <Text style={{color: 'red'}}>{errors.email.message}</Text>
@@ -139,13 +147,17 @@ const EditInfoService = () => {
                 <TextInput
                   style={styles.inputInfo}
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={text => {
+                    onChange(text);
+                    handleInputChange('desc', text); 
+                  }}
                   value={value}
+                  defaultValue={descService}
                 />
               )}
               name="desc"
               rules={{required: 'Mô tả không được bỏ trống'}}
-              defaultValue=""
+              defaultValue={descService}
             />
             {/* {errors.email && (
           <Text style={{color: 'red'}}>{errors.email.message}</Text>
@@ -153,66 +165,55 @@ const EditInfoService = () => {
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
-            <View>
-              <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <View style={{flex: 1, alignItems: 'center'}}>
-                    <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
-                      <View style={styles.imageView}>
-                        <Entypo name="camera" size={50} color="#FCA234" />
-                      </View>
-                    </TouchableOpacity>
+            {!!singleFile || (
+              <View style={styles.selectedImage}>
+                <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
+                  <View style={styles.imageView}>
+                    <Entypo name="camera" size={50} color="#FCA234" />
                   </View>
-                )}
-                name="email"
-                rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
-                defaultValue=""
-              />
+                </TouchableOpacity>
 
-              {/* {errors.email && (
+                {/* {errors.email && (
+          
           <Text style={{color: 'red'}}>{errors.email.message}</Text>
         )} */}
-            </View>
+              </View>
+            )}
+            {singleFile && (
+              <View style={styles.selectedImage}>
+                <Image
+                  source={{uri: singleFile?.uri}}
+                  style={styles.imageStyle}></Image>
+                <View style={{position: 'absolute'}}>
+                  <TouchableOpacity onPress={selectFile}>
+                    <View style={styles.imageViews}>
+                      <Entypo name="camera" size={25} color="#394C6D" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={selectFile}>
-          <Text style={styles.buttonTextStyle}>Select File</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={uploadImage}>
-          <Text style={styles.buttonTextStyle}>Upload File</Text>
-        </TouchableOpacity>
-        {singleFile != null ? (
-          <Text style={styles.textStyle}>
-            File Name: {singleFile.name ? singleFile.name : ''}
-            {'\n'}
-            Type: {singleFile.type ? singleFile.type : ''}
-            {'\n'}
-            File Size: {singleFile.size ? singleFile.size : ''}
-            {'\n'}
-            URI: {singleFile.uri ? singleFile.uri : ''}
-            {'\n'}
-          </Text>
-        ) : null}
-
         <View style={styles.eventSubmit}>
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Hủy"
-          />
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Thêm mới"
-          />
+        <View style={styles.buttonChoose}>
+            <View style={styles.buttonNow}>
+              <View style={styles.button1}>
+                <TouchableOpacity
+                  style={styles.bookNow}
+                  onPress={handleCancle}>
+                  <Text style={styles.books}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={styles.button1}
+                onPress={handleSubmit(onSubmit)}>
+                <View style={styles.book}>
+                  <Text style={styles.books}>Cập nhật</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -222,6 +223,28 @@ const EditInfoService = () => {
 export default EditInfoService;
 
 const styles = StyleSheet.create({
+  imageViews: {
+    width: 40,
+    height: 40,
+    borderWidth: 2,
+    borderColor: '#394C6D',
+    backgroundColor: '#FCA234',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginLeft: 140,
+    marginTop: 140,
+  },
+  selectedImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  imageStyle: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
   imageView: {
     width: 100,
     height: 100,
@@ -232,6 +255,43 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginVertical: 10,
   },
+  buttonChoose: {
+    width: '100%',
+  },
+  buttonNow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  button1: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  bookNow: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  book: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  books: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  
   part: {
     marginVertical: 5,
   },

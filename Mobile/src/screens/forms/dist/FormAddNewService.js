@@ -111,6 +111,9 @@ var FormAddNewService = function () {
             }
         });
     }); };
+    var handleCancle = function () {
+        navigation.navigate('Profile');
+    };
     var isNumeric = function (value) {
         return /^\d+$/.test(value);
     };
@@ -158,7 +161,7 @@ var FormAddNewService = function () {
                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
                         react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
-                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bookNow, onPress: onSubmit },
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bookNow, onPress: handleCancle },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "Hu\u0309y"))),
                         react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleSubmit(onSubmit) },
                             react_1["default"].createElement(react_native_1.View, { style: styles.book },

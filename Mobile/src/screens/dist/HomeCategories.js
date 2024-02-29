@@ -2,11 +2,19 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var react_native_snap_carousel_1 = require("react-native-snap-carousel");
+var useAutoPlay_1 = require("../hooks/useAutoPlay");
+var useGetServicePopular_1 = require("../hooks/useGetServicePopular");
 var useGetCategoryService_1 = require("../hooks/useGetCategoryService");
 var native_1 = require("@react-navigation/native");
+var width = react_native_1.Dimensions.get('window').width;
 var HomeCategories = function () {
     var navigation = native_1.useNavigation();
-    var _a = useGetCategoryService_1["default"](), categories = _a.categories, isLoading = _a.isLoading, isError = _a.isError;
+    var services = useGetServicePopular_1["default"]().services;
+    var carouselRef = react_1.useRef(null);
+    var _a = react_1.useState(0), currentIndex = _a[0], setCurrentIndex = _a[1];
+    useAutoPlay_1["default"]((services === null || services === void 0 ? void 0 : services.length) || 0, currentIndex, setCurrentIndex);
+    var _b = useGetCategoryService_1["default"](), categories = _b.categories, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading) {
         return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
     }
@@ -14,17 +22,27 @@ var HomeCategories = function () {
         return react_1["default"].createElement(react_native_1.Text, { style: styles.error }, "Error loading categories");
     }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerCategory },
-        react_1["default"].createElement(react_native_1.View, { style: styles.container },
-            react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                react_1["default"].createElement(react_native_1.View, null,
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.hello }, "ALO TH\u01A0\u0323"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.detaildemo }, "T\u00ECm ki\u1EBFm th\u1EE3 s\u1EEDa ch\u1EEFa d\u1EC5 d\u00E0ng h\u01A1n ch\u1EC9 v\u1EDBi v\u00E0i ph\u00FAt m\u00E0 kh\u00F4ng t\u1ED1n nhi\u1EC1u th\u1EDDi gian")),
-                react_1["default"].createElement(react_native_1.View, null,
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/demo.png') })))),
+        react_1["default"].createElement(react_native_snap_carousel_1["default"], { data: services || [], renderItem: function (_a) {
+                var item = _a.item;
+                return (react_1["default"].createElement(react_native_1.View, { style: styles.imgTitle },
+                    react_1["default"].createElement(react_native_1.ImageBackground, { source: { uri: item.image }, style: styles.imgs },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.container, onPress: function () { return navigation.navigate('DetailService', { id: item._id, title: item.service_name }); } },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                                react_1["default"].createElement(react_native_1.View, { style: { width: '70%' } },
+                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.hello }, item.service_name),
+                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 3, style: styles.detaildemo }, item.desc)),
+                                react_1["default"].createElement(react_native_1.View, { style: { width: '30%' } },
+                                    react_1["default"].createElement(react_native_1.Image, { style: styles.logoSetting, source: require('../assets/Homes/logo_setting.png') })))))));
+            }, ref: carouselRef, sliderWidth: width, itemWidth: width - 30, loop: true, autoplayInterval: 3000, enableSnap: true, onSnapToItem: function (index) { return setCurrentIndex(index); }, autoplay: true }),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailCategory },
             react_1["default"].createElement(react_native_1.FlatList, { data: categories, keyExtractor: function (categories) { return categories._id; }, numColumns: 3, renderItem: function (_a) {
                     var item = _a.item;
-                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () { return navigation.navigate('ListOfElectrician', { id: item._id, title: item.name }); } },
+                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.category, onPress: function () {
+                            return navigation.navigate('ListOfElectrician', {
+                                id: item._id,
+                                title: item.name
+                            });
+                        } },
                         react_1["default"].createElement(react_native_1.View, { style: styles.imgCategory },
                             react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img, blurRadius: 0 })),
                         react_1["default"].createElement(react_native_1.View, { style: styles.nameCategory },
@@ -33,16 +51,54 @@ var HomeCategories = function () {
 };
 exports["default"] = HomeCategories;
 var styles = react_native_1.StyleSheet.create({
+    logoSetting: {
+        width: 100,
+        height: 100
+    },
+    imgs: {
+        width: 345,
+        height: 250,
+        borderRadius: 20
+    },
+    contents: {
+        color: '#394C6D',
+        fontWeight: 'bold',
+        fontSize: 22
+    },
+    imgContent: {
+        marginHorizontal: 24,
+        borderRadius: 10,
+        marginTop: '55%',
+        backgroundColor: '#FCA234',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    contentdescription: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#FCA234',
+        height: 80,
+        backgroundColor: '#394C6D'
+    },
+    imgTitle: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    load: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     containerCategory: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: '#fff'
     },
     container: {
         marginHorizontal: 20,
         borderRadius: 10,
         backgroundColor: '#394C6D',
         width: '90%',
-        height: 139
+        height: 120,
+        marginTop: '35%'
     },
     content: {
         flexDirection: 'row',
@@ -53,12 +109,13 @@ var styles = react_native_1.StyleSheet.create({
     hello: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#FCA234'
+        color: '#FCA234',
+        width: '90%'
     },
     detaildemo: {
         fontSize: 13,
         color: '#FFFFFF',
-        width: 150
+        width: '90%'
     },
     detailCategory: {
         marginHorizontal: 20,
@@ -78,8 +135,8 @@ var styles = react_native_1.StyleSheet.create({
     category: {
         alignItems: 'center',
         width: 110,
-        justifyContent: "center",
-        height: "auto",
+        justifyContent: 'center',
+        height: 'auto',
         padding: 5
     },
     titleCategory: {
@@ -94,18 +151,18 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 40
     },
     nameCategory: {
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     imgCategory: {
         width: 63,
         height: 63,
         borderRadius: 50,
-        borderColor: "#000",
+        borderColor: '#000',
         borderWidth: 1,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center"
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     error: {
         marginHorizontal: 20

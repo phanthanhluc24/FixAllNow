@@ -7,6 +7,9 @@ import {useNavigation} from '@react-navigation/native';
 import useLogout from '../hooks/useLogout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonLogout from './bottomTab/ButtonLogout';
+import DocumentPicker, {
+  DocumentPickerResponse,
+} from 'react-native-document-picker';
 const ProfileHeaderRepairmanFinder =() => {
   const navigation:any= useNavigation();
   const {logout}=useLogout()
@@ -20,14 +23,44 @@ const ProfileHeaderRepairmanFinder =() => {
   }
   )
   const {currentUser, isLoading, isError} = useGetCurrentUser();
+  const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
+    null,
+  );
+  const selectFile = async () => {
+    try {
+      const [res] = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setSingleFile(res);
+      if (res) {
+        navigation.navigate('EditAvatarCurrentUser', {image: res});
+      }
+    } catch (err) {
+      setSingleFile(null);
+
+      if (DocumentPicker.isCancel(err)) {
+        Alert.alert('Canceled');
+      } else {
+        Alert.alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
   return (
     <View style={styles.profileHeader}>
       <View style={styles.infoProfile}>
-        <TouchableOpacity style={styles.avatarPro} onPress={()=>navigation.navigate("EditAvatarCurrentUser")}>
+        <TouchableOpacity style={styles.avatarPro} >
           <Image
             style={styles.avatarProfile}
             source={{uri: currentUser?.image}}
           />
+          <View style={{position: 'absolute'}}>
+            <TouchableOpacity onPress={selectFile}>
+              <View style={styles.imageViews}>
+                <Entypo name="camera" size={20} color="#394C6D" />
+              </View>
+            </TouchableOpacity>
+          </View>
         </TouchableOpacity>
         <View style={styles.contentProfile}>
           <View style={styles.styleProfile}>
@@ -35,8 +68,8 @@ const ProfileHeaderRepairmanFinder =() => {
               <Text style={styles.nameProfile}>{currentUser?.full_name}</Text>
             </View>
             <View style={styles.buttonEvent}>
-              <TouchableOpacity style={styles.iconEdit} onPress={()=>navigation.navigate('EditInfoCurrentUser')}>
-                <Entypo name="edit" size={24} color="#FCA234" />
+              <TouchableOpacity style={styles.iconEdit} onPress={()=>navigation.navigate('EditInfoCurrentUser',{user: currentUser})}>
+                <Entypo name="edit" size={24} color="white" />
               </TouchableOpacity>
               <ButtonLogout/>
             </View>
@@ -59,7 +92,7 @@ const ProfileHeaderRepairmanFinder =() => {
           </Text>
           <View style={styles.infoPhone}>
             <Text style={styles.namePhone}>Số điện thoại</Text>
-            <Text style={styles.detailPhone}>{currentUser?.number_phone}</Text>
+            <Text style={styles.detailPhone}>(+84){currentUser?.number_phone}</Text>
           </View>
         </View>
       </View>
@@ -68,6 +101,18 @@ const ProfileHeaderRepairmanFinder =() => {
 };
 export default ProfileHeaderRepairmanFinder;
 const styles = StyleSheet.create({
+  imageViews: {
+    width: 30,
+    height: 30,
+    borderWidth: 2,
+    borderColor: '#394C6D',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginTop: 50,
+    marginLeft: 50,
+  },
   buttonEvent:{
     flexDirection:"row",
     justifyContent:"space-around",

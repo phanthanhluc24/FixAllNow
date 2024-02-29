@@ -7,8 +7,7 @@ const ProfileButtonEvent = () => {
     <View style={styles.containerEvent}>
      <View style={styles.styleEvent}>
       <TouchableOpacity style={styles.addService} onPress={()=>navigation.navigate('FormAddNewService')}><Text style={styles.nameAddService}>Thêm mới dịch vụ</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.viewHistory}><Text style={styles.nameViewHistory}>Lịch sử giao dịch</Text></TouchableOpacity>
-
+      <TouchableOpacity style={styles.viewHistory}><Text style={styles.nameViewHistory}onPress={()=>navigation.navigate('HistoryStore')}>Lịch sử cửa hàng</Text></TouchableOpacity>
      </View>
     </View>
   )

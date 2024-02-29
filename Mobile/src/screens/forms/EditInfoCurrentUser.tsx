@@ -9,6 +9,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  Image,
 } from 'react-native';
 import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -16,52 +17,39 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import useGetCurrentUser from '../../hooks/useGetCurrentUser';
-
-const EditInfoCurrentUser = () => {
-  const {currentUser, isLoading, isError}: any = useGetCurrentUser();
+import useEditInfoCurrentUser from '../../hooks/useEditInfoCurrentUser';
+const EditInfoCurrentUser = ({route}: any) => {
+  const {user} = route.params;
+  console.log(user);
+  const [numberPhone, setNumberPhone] = useState(user?.number_phone.toString());
+  const [fullName, setFullName] = useState(user?.full_name);
+  const [email, setEmail] = useState(user?.email);
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
-  const uploadImage = async () => {
-    if (singleFile != null) {
-      try {
-        const formData = new FormData();
-        formData.append('image', {
-          uri:
-            Platform.OS === 'android'
-              ? `file://${singleFile.uri}`
-              : singleFile.uri,
-          type: singleFile.type || 'image/jpeg', // Provide a default type if not available
-          name: singleFile.name || 'image.jpg', // Provide a default name if not available
-        });
-        const res = await fetch(
-          'https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile',
-          {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            timeout: 5000,
-          },
-        );
-        if (res.status === 201) {
-          Alert.alert('Upload Successful');
-        } else {
-          Alert.alert('Upload Failed');
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        Alert.alert('Error uploading file');
-      }
-    } else {
-      Alert.alert('Please Select File first');
+  const handleInputChange = (fieldName: string, value: string) => {
+    switch (fieldName) {
+      case 'full_name':
+        setFullName(value);
+        break;
+      case 'number_phone':
+        setNumberPhone(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      default:
+        break;
     }
   };
+  useEffect(() => {
+    if (user?.image) {
+      setSingleFile({uri: user.image});
+    }
+  }, [user]);
   const selectFile = async () => {
     try {
-      const res = await DocumentPicker.pick({
+      const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
 
@@ -83,10 +71,23 @@ const EditInfoCurrentUser = () => {
   const {
     control,
     handleSubmit,
+    // getValues,
     formState: {errors},
   } = useForm();
-  const onSubmit = () => {};
 
+  const onSubmit = () => {
+    const formData = {
+      full_name: fullName,
+      number_phone: numberPhone,
+      email: email,
+      singleFile: singleFile, 
+    };
+    
+    useEditInfoCurrentUser(formData);
+  };
+  const handleCancle = () => {
+    console.log('Hủy');
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -103,13 +104,17 @@ const EditInfoCurrentUser = () => {
                 <TextInput
                   style={styles.inputInfo}
                   onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={currentUser?.full_name}
+                  onChangeText={text => {
+                    onChange(text);
+                    handleInputChange('full_name', text); 
+                  }}
+                  value={value}
+                  defaultValue={fullName}
                 />
               )}
               name="full_name"
               rules={{required: 'Tên không được bỏ trống'}}
-              defaultValue=""
+              defaultValue={fullName}
             />
             {/* {errors.name && (
             <Text style={{color: 'red'}}>{errors.name.message}</Text>
@@ -120,16 +125,22 @@ const EditInfoCurrentUser = () => {
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.inputInfo}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={currentUser?.number_phone}
-                />
+                <View style={styles.inputInfo}>
+                  <Text>(+84)</Text>
+                  <TextInput
+                    onBlur={onBlur}
+                    onChangeText={text => {
+                      onChange(text);
+                      handleInputChange('number_phone', text); 
+                    }}
+                    value={value}
+                    defaultValue={numberPhone}
+                  />
+                </View>
               )}
               name="number_phone"
-              rules={{required: 'SĐT không được bỏ trống '}}
-              defaultValue=""
+              rules={{required: 'Tên không được bỏ trống'}}
+              defaultValue={numberPhone}
             />
             {/* {errors.email && (
             <Text style={{color: 'red'}}>{errors.email.message}</Text>
@@ -143,13 +154,17 @@ const EditInfoCurrentUser = () => {
                 <TextInput
                   style={styles.inputInfo}
                   onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={currentUser?.email}
+                  onChangeText={text => {
+                    onChange(text);
+                    handleInputChange('email', text); // Cập nhật giá trị email
+                  }}
+                  value={value}
+                  defaultValue={email}
                 />
               )}
               name="email"
               rules={{required: 'Email không được bỏ trống'}}
-              defaultValue=""
+              defaultValue={email} 
             />
             {/* {errors.email && (
             <Text style={{color: 'red'}}>{errors.email.message}</Text>
@@ -157,67 +172,54 @@ const EditInfoCurrentUser = () => {
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh của bạn</Text>
-            <View>
-              <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <View style={{flex: 1, alignItems: 'center'}}>
-                    <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
-                      <View style={styles.imageView}>
-                        <Entypo name="camera" size={50} color="#FCA234" />
-                      </View>
-                    </TouchableOpacity>
+            {!!singleFile || (
+              <View style={styles.selectedImage}>
+                <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
+                  <View style={styles.imageView}>
+                    <Entypo name="camera" size={50} color="#FCA234" />
                   </View>
-                )}
-                name="email"
-                rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
-                defaultValue=""
-              />
+                </TouchableOpacity>
 
-              {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
-            </View>
+                {/* {errors.email && (
+          
+          <Text style={{color: 'red'}}>{errors.email.message}</Text>
+        )} */}
+              </View>
+            )}
+            {singleFile && (
+              <View style={styles.selectedImage}>
+                <Image
+                  source={{uri: singleFile?.uri}}
+                  style={styles.imageStyle}></Image>
+                <View style={{position: 'absolute'}}>
+                  <TouchableOpacity onPress={selectFile}>
+                    <View style={styles.imageViews}>
+                      <Entypo name="camera" size={25} color="#394C6D" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </View>
         </View>
-     
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={selectFile}>
-          <Text style={styles.buttonTextStyle}>Select File</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={uploadImage}>
-          <Text style={styles.buttonTextStyle}>Upload File</Text>
-        </TouchableOpacity>
-        {singleFile != null ? (
-          <Text style={styles.textStyle}>
-            File Name: {singleFile.name ? singleFile.name : ''}
-            {'\n'}
-            Type: {singleFile.type ? singleFile.type : ''}
-            {'\n'}
-            File Size: {singleFile.size ? singleFile.size : ''}
-            {'\n'}
-            URI: {singleFile.uri ? singleFile.uri : ''}
-            {'\n'}
-          </Text>
-        ) : null}
-
         <View style={styles.eventSubmit}>
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Hủy"
-          />
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Cập nhật"
-          />
+          <View style={styles.buttonChoose}>
+            <View style={styles.buttonNow}>
+              <View style={styles.button1}>
+                <TouchableOpacity style={styles.bookNow} onPress={handleCancle}>
+                  <Text style={styles.books}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.button1}>
+                <TouchableOpacity
+                  style={styles.book}
+                  onPress={
+                    handleSubmit(onSubmit)}>
+                  <Text style={styles.books}>Cập nhật</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -225,6 +227,28 @@ const EditInfoCurrentUser = () => {
 };
 export default EditInfoCurrentUser;
 const styles = StyleSheet.create({
+  imageViews: {
+    width: 40,
+    height: 40,
+    borderWidth: 2,
+    borderColor: '#394C6D',
+    backgroundColor: '#FCA234',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginLeft: 140,
+    marginTop: 140,
+  },
+  selectedImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  imageStyle: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+  },
   imageView: {
     width: 100,
     height: 100,
@@ -234,6 +258,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50,
     marginVertical: 10,
+  },
+  buttonChoose: {
+    width: '100%',
+  },
+  buttonNow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  button1: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  bookNow: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  book: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  books: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
   part: {
     marginVertical: 5,
@@ -266,6 +326,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 15,
     color: '#000000',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   mainBody: {
     flex: 1,
