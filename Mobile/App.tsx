@@ -4,12 +4,17 @@ import Main from './src/navigates/main/Main';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import { ToastProvider } from 'react-native-toast-notifications';
 const queryClient= new QueryClient();
 const App = () => {
   return (
-    <NavigationContainer>
-      <AppWrapper />
-    </NavigationContainer>
+    <ToastProvider>
+      <NavigationContainer>
+        <AppWrapper />
+        <Toast/>
+      </NavigationContainer>
+    </ToastProvider>
   );
 };
 const AppWrapper = () => {

@@ -11,14 +11,31 @@ import {
   ScrollView,
   Platform,
   GestureResponderEvent,
+  Alert,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Formik} from 'formik';
 import {SignupSchema} from './Validation';
 import useSignin from '../../hooks/useSignin';
+import { requestUserPermission } from '../../utils/notificationHelper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from "@react-native-firebase/messaging"
+import Toast from "react-native-toast-message"
+
 const SignIn = ({navigation}: any) => {
   const passwordRef: any = useRef();
   const {handleSignin, errorServer} = useSignin({navigation});
+  const [deviceToken,setDeviceToken]=useState("")
+  useEffect(()=>{
+    requestUserPermission()
+    getFcmToken()
+  },[])
+  const getFcmToken=async()=>{
+    const token=await AsyncStorage.getItem("fcmToken")
+    if (token) {
+      setDeviceToken(token)
+    }
+  }
   return (
     <Formik
       initialValues={{email: '', password: ''}}
@@ -28,6 +45,7 @@ const SignIn = ({navigation}: any) => {
           let account = {
             email: values.email,
             password: values.password,
+            deviceToken:deviceToken
           };
           handleSignin(account);
           // console.log(account);
