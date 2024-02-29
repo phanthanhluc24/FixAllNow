@@ -1,27 +1,44 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import useBookingService from '../hooks/useBookingService';
 const ConfirmInforBooking = ({route}: any) => {
   const {infoBooking} = route.params;
   const serviceBooking = infoBooking.infoServiceBooking.service_name;
   const repairman = infoBooking.infoServiceBooking.user_id.full_name;
   const priceRepair = infoBooking.infoServiceBooking.price;
   const addressRepair = infoBooking.address;
+  const desc=infoBooking.bugService
   const priceService = (5 / 100) * priceRepair;
   const priceMoves = 10000;
   const totalPrice = priceRepair + priceService + priceMoves;
-  console.log(infoBooking);
   const navigation: any = useNavigation();
-  const [selectedMethod, setSelectedMethod] = useState(null);
-
-  const handleMethodSelect = (method: any) => {
-    setSelectedMethod(method);
+  const [selectedMethod, setSelectedMethod] = useState<number|null>(null);
+  const [errorPayment,setErrorPayment]=useState<string|null>(null)
+  const {bookingService}=useBookingService()
+  const data={
+    dayRepair:infoBooking.date,
+    timeRepair:infoBooking.time,
+    priceMoves,
+    priceService,
+    address:addressRepair,
+    desc:desc
+  }
+  const handleMethodSelect = () => {
+    setSelectedMethod(1)
+    setErrorPayment("OK")
   };
   const handleConfirm = () => {
-    navigation.navigate('');
+    if (errorPayment==null) {
+      setErrorPayment("Vui lòng chọn phương thức thanh toán")
+    }else{
+      bookingService(data,infoBooking.infoServiceBooking._id,infoBooking.infoServiceBooking.user_id._id)
+    }
   };
   const handleMomoSelect=()=>{
-    console.log("hello momo");
+    setSelectedMethod(2)
+    setErrorPayment("OK")
   }
   return (
     <View style={styles.container}>
@@ -74,13 +91,14 @@ const ConfirmInforBooking = ({route}: any) => {
         </View>
         <View style={styles.infoService}>
           <Text style={styles.titleInfo}>Chọn phương thức thanh toán</Text>
+          {errorPayment!=="OK" && <Text>{errorPayment}</Text>}
           <View style={styles.method}>
             <TouchableOpacity
               style={[
                 styles.buttonMethod,
-                selectedMethod === 'cash' && styles.selectedMethod,
+                selectedMethod === 1 && styles.selectedMethod,
               ]}
-              onPress={() => handleMethodSelect('cash')}>
+              onPress={handleMethodSelect}>
               <Image
                 source={require('../assets/ConfirmBooking/iconMomo.png')}
               />
@@ -89,9 +107,9 @@ const ConfirmInforBooking = ({route}: any) => {
             <TouchableOpacity
               style={[
                 styles.buttonMethod,
-                selectedMethod === 'momo' && styles.selectedMethod,
+                selectedMethod === 2 && styles.selectedMethod,
               ]}
-              onPress={() => handleMOmoSelect('momo')}>
+              onPress={() => handleMomoSelect()}>
               <Image
                 source={require('../assets/ConfirmBooking/iconPrice.png')}
               />
@@ -113,7 +131,7 @@ const ConfirmInforBooking = ({route}: any) => {
             </View>
             <TouchableOpacity
               style={styles.button1}
-              onPress={() => navigation.navigate('FormBookSchedule')}>
+              onPress={handleConfirm}>
               <View style={styles.book}>
                 <Text style={styles.books}>Đồng ý</Text>
               </View>
@@ -194,27 +212,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  titleMethod: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#FCA234',
-  },
+  // titleMethod: {
+  //   fontSize: 15,
+  //   fontWeight: 'bold',
+  //   color: '#FCA234',
+  // },
   method: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 20,
   },
-  buttonMethod: {
-    width: 140,
-    height: 70,
-    borderWidth: 3,
-    borderColor: '#394C6D',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-  },
+  // buttonMethod: {
+  //   width: 140,
+  //   height: 70,
+  //   borderWidth: 3,
+  //   borderColor: '#394C6D',
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   borderRadius: 10,
+  // },
   infor: {
     fontSize: 18,
     fontWeight: 'bold',
