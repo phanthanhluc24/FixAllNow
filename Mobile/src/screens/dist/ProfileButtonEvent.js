@@ -10,7 +10,7 @@ var ProfileButtonEvent = function () {
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.addService, onPress: function () { return navigation.navigate('FormAddNewService'); } },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.nameAddService }, "Th\u00EAm m\u01A1\u0301i di\u0323ch vu\u0323")),
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.viewHistory },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Li\u0323ch s\u01B0\u0309 giao di\u0323ch")))));
+                react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory, onPress: function () { return navigation.navigate('HistoryStore'); } }, "Li\u0323ch s\u01B0\u0309 c\u01B0\u0309a ha\u0300ng")))));
 };
 exports["default"] = ProfileButtonEvent;
 var styles = react_native_1.StyleSheet.create({

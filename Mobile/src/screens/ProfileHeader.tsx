@@ -1,15 +1,42 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity , Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
+import DocumentPicker, {
+  DocumentPickerResponse,
+} from 'react-native-document-picker';
 import {useNavigation} from '@react-navigation/native';
 import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import ButtonLogout from './bottomTab/ButtonLogout';
-import { TouchEventType } from 'react-native-gesture-handler/lib/typescript/TouchEventType';
+import {TouchEventType} from 'react-native-gesture-handler/lib/typescript/TouchEventType';
 const ProfileHeader = () => {
+  
+  const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
+    null,
+  );
+  const selectFile = async () => {
+    try {
+      const [res] = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setSingleFile(res);
+      if (res) {
+        navigation.navigate('EditAvatarCurrentUser', {image: res});
+      }
+    } catch (err) {
+      setSingleFile(null);
+
+      if (DocumentPicker.isCancel(err)) {
+        Alert.alert('Canceled');
+      } else {
+        Alert.alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
   const navigation: any = useNavigation();
   const {currentUser, isLoading, isError}: any = useGetCurrentUser();
   const {serviceOfRepairman} = useGetServiceOfRepairman(currentUser?._id);
@@ -45,12 +72,14 @@ const ProfileHeader = () => {
       </View>
     </TouchableOpacity>
   );
-  const renderHiddenItem = () => (
+  const renderHiddenItem = (data:any) => (
     <View style={styles.rowBack}>
       <Text style={styles.deleteService}>
         <AntDesign name="delete" color="#FFFFFF" size={25} />
       </Text>
-      <TouchableOpacity style={styles.editService} onPress={()=>navigation.navigate('EditInfoService')}>
+      <TouchableOpacity
+        style={styles.editService}
+        onPress={() => navigation.navigate('EditInfoService',{service:data.item})}>
         <Entypo name="edit" size={25} color="#FFFFFF" />
       </TouchableOpacity>
     </View>
@@ -58,11 +87,19 @@ const ProfileHeader = () => {
   return (
     <View style={styles.profileHeader}>
       <View style={styles.infoProfile}>
-        <TouchableOpacity style={styles.avatarPro}  onPress={()=>navigation.navigate('EditAvatarCurrentUser')}>
+        <TouchableOpacity
+          style={styles.avatarPro}>
           <Image
             style={styles.avatarProfile}
             source={{uri: currentUser?.image}}
           />
+          <View style={{position: 'absolute'}}>
+            <TouchableOpacity onPress={selectFile}>
+              <View style={styles.imageViews}>
+                <Entypo name="camera" size={20} color="#394C6D" />
+              </View>
+            </TouchableOpacity>
+          </View>
         </TouchableOpacity>
         <View style={styles.contentProfile}>
           <View style={styles.styleProfile}>
@@ -70,10 +107,12 @@ const ProfileHeader = () => {
               <Text style={styles.nameProfile}>{currentUser?.full_name}</Text>
             </View>
             <View style={styles.buttonEvent}>
-              <TouchableOpacity style={styles.iconEdit} onPress={()=>navigation.navigate('EditInfoCurrentUser')}>
-                <Entypo name="edit" size={24} color="#FCA234" />
+              <TouchableOpacity
+                style={styles.iconEdit}
+                onPress={() => navigation.navigate('EditInfoCurrentUser',{user:currentUser})}>
+                <Entypo name="edit" size={24} color="#ffffff" />
               </TouchableOpacity>
-              <ButtonLogout/>
+              <ButtonLogout />
             </View>
           </View>
         </View>
@@ -94,7 +133,7 @@ const ProfileHeader = () => {
           </Text>
           <View style={styles.infoPhone}>
             <Text style={styles.namePhone}>Số điện thoại</Text>
-            <Text style={styles.detailPhone}>{currentUser?.number_phone}</Text>
+            <Text style={styles.detailPhone}>(+84){currentUser?.number_phone}</Text>
           </View>
         </View>
       </View>
@@ -113,6 +152,18 @@ const ProfileHeader = () => {
 };
 export default ProfileHeader;
 const styles = StyleSheet.create({
+  imageViews: {
+    width: 30,
+    height: 30,
+    borderWidth: 2,
+    borderColor: '#394C6D',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginTop: 50,
+    marginLeft: 50,
+  },
   nameListService: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -148,11 +199,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  buttonEvent:{
-    flexDirection:"row",
-    justifyContent:"space-around",
-    width:"90%",
-    marginRight:20
+  buttonEvent: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '90%',
+    marginRight: 20,
   },
   email: {
     flexDirection: 'row',
@@ -164,13 +215,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   iconEdit: {
-    width:100,
-    height:40,
+    width: 100,
+    height: 40,
     marginVertical: 5,
-    alignItems:"center",
-    justifyContent:"center",
-    borderRadius:10,
-    backgroundColor:"#394C6D",
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    backgroundColor: '#394C6D',
   },
   info: {
     alignItems: 'center',
@@ -207,6 +258,8 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
+    borderWidth: 3,
+    borderColor: 'white',
   },
   avatarPro: {
     alignItems: 'center',
@@ -264,6 +317,9 @@ const styles = StyleSheet.create({
   img: {
     width: 100,
     height: 100,
+    borderRadius:10,
+    borderWidth:2,
+    borderColor:"#394C6D"
   },
   nameRepairman: {
     fontSize: 18,

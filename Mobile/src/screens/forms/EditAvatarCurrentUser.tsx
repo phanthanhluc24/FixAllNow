@@ -7,57 +7,27 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  Image,
 } from 'react-native';
-import React, {useState, Fragment} from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import React, {useState, Fragment, useEffect} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-
-const EditAvatarCurrentUser = () => {
+import {useNavigation} from '@react-navigation/native';
+import useUploadAvatarUser from '../../hooks/useUploadAvatarUser';
+const EditAvatarCurrentUser = ({route}: any) => {
+  const navigation: any = useNavigation();
+  const {image} = route.params;
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
-    null,
+    image,
   );
-  const uploadImage = async () => {
-    if (singleFile != null) {
-      try {
-        const formData = new FormData();
-        formData.append('image', {
-          uri:
-            Platform.OS === 'android'
-              ? `file://${singleFile.uri}`
-              : singleFile.uri,
-          type: singleFile.type || 'image/jpeg', // Provide a default type if not available
-          name: singleFile.name || 'image.jpg', // Provide a default name if not available
-        });
-        const res = await fetch(
-          'https://63aa9ceffdc006ba6046faf6.mockapi.io/api/12/UploadFile',
-          {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            timeout: 5000,
-          },
-        );
-        if (res.status === 201) {
-          Alert.alert('Upload Successful');
-        } else {
-          Alert.alert('Upload Failed');
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        Alert.alert('Error uploading file');
-      }
-    } else {
-      Alert.alert('Please Select File first');
-    }
-  };
+  useEffect(() => {
+    setSingleFile(image); 
+  }, [image]);
   const selectFile = async () => {
     try {
-      const res = await DocumentPicker.pick({
+      const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
 
@@ -75,75 +45,67 @@ const EditAvatarCurrentUser = () => {
       }
     }
   };
-
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
-  const onSubmit = () => {};
+  const {sendData} = useUploadAvatarUser();
+  const handleSubmit = async (data: any) => {
+    try {
+      data.image = singleFile;
+      const responseData = await sendData(data);
+      if (responseData) {
+        Alert.alert('Cập nhật ảnh đại diện thành công!');
+        navigation.navigate('Profile');
+      }
+    } catch (error) {
+      console.error('Error while sending data:', error);
+    }
+  };
+  const handleCancle=()=>{
+    navigation.navigate("Profile")
+  }
   return (
     <View style={styles.container}>
       <View style={{flex: 9}}>
         <View style={styles.part}>
-          <Text style={styles.infoEdit}>Ảnh của bạn</Text>
           <View>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <View style={{flex: 1, alignItems: 'center'}}>
-                  <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
-                    <View style={styles.imageView}>
-                      <Entypo name="camera" size={50} color="#FCA234" />
+            {!!singleFile || (
+              <View style={styles.selectedImage}>
+                <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
+                  <View style={styles.imageView}>
+                    <Entypo name="camera" size={50} color="#FCA234" />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+            {singleFile && (
+              <View style={styles.selectedImage}>
+                <Image
+                  source={{uri: singleFile?.uri}}
+                  style={styles.imageStyle}></Image>
+                <View style={{position: 'absolute'}}>
+                  <TouchableOpacity onPress={selectFile}>
+                    <View style={styles.imageViews}>
+                      <Entypo name="camera" size={25} color="#394C6D" />
                     </View>
                   </TouchableOpacity>
                 </View>
-              )}
-              name="email"
-              rules={{required: 'Vui lòng ảnh không được bỏ trống'}}
-              defaultValue=""
-            />
+              </View>
+            )}
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.buttonStyle}
-        activeOpacity={0.5}
-        onPress={selectFile}>
-        <Text style={styles.buttonTextStyle}>Select File</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.buttonStyle}
-        activeOpacity={0.5}
-        onPress={uploadImage}>
-        <Text style={styles.buttonTextStyle}>Upload File</Text>
-      </TouchableOpacity>
-      {singleFile != null ? (
-        <Text style={styles.textStyle}>
-          File Name: {singleFile.name ? singleFile.name : ''}
-          {'\n'}
-          Type: {singleFile.type ? singleFile.type : ''}
-          {'\n'}
-          File Size: {singleFile.size ? singleFile.size : ''}
-          {'\n'}
-          URI: {singleFile.uri ? singleFile.uri : ''}
-          {'\n'}
-        </Text>
-      ) : null}
-
-      <View style={{flex: 1}}>
-        <View style={styles.eventSubmit}>
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Hủy"
-          />
-          <Button
-            color={'#FCA234'}
-            onPress={handleSubmit(onSubmit)}
-            title="Cập nhật"
-          />
+      <View style={{flex: 1,marginBottom:10}}>
+        <View style={styles.buttonChoose}>
+          <View style={styles.buttonNow}>
+            <View style={styles.button1}>
+              <TouchableOpacity style={styles.bookNow} onPress={handleCancle}>
+                <Text style={styles.books}>Hủy</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.button1} onPress={handleSubmit}>
+              <View style={styles.book}>
+                <Text style={styles.books}>Cập nhật</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -153,6 +115,66 @@ const EditAvatarCurrentUser = () => {
 export default EditAvatarCurrentUser;
 
 const styles = StyleSheet.create({
+  selectedImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  imageStyle: {
+    width: '90%',
+    height: '100%',
+    borderWidth: 2,
+    borderColor: '#FCA234',
+    borderRadius: 10,
+  },
+  imageViews: {
+    width: 40,
+    height: 40,
+    borderWidth: 2,
+    borderColor: '#394C6D',
+    backgroundColor: '#FCA234',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
+  buttonChoose: {
+    width: '100%',
+    
+  },
+  buttonNow: {
+    marginHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 15,
+    marginBottom: 10,
+  },
+  button1: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  bookNow: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  book: {
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FCA234',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  books: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
   imageView: {
     width: 100,
     height: 100,

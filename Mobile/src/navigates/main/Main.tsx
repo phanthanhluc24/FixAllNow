@@ -14,11 +14,6 @@ import ConfirmCode from '../../screens/accounts.tsx/ConfirmCode';
 import ConfirmTypeRepairman from '../../screens/accounts.tsx/ConfirmTypeRepairman';
 import ForgotPassword from '../../screens/accounts.tsx/ForgotPassword';
 import NewPassword from '../../screens/accounts.tsx/NewPassword';
-import Home from '../../screens/feed/Repairman_Finder/Home';
-// import HeaderSearch from '../../screens/HeaderSearch';
-// import HomeCategories from '../../screens/HomeCategories';
-// import HomeRepairmanPopular from '../../screens/HomeRepairmanPopular';
-// import HomeServicePopular from '../../assets/HomeServicePopular';
 import ListOfElectrician from '../../screens/ListOfElectrician';
 import DetailRepairman from '../../screens/DetailRepairman';
 import DetailService from '../../screens/DetailService';
@@ -30,6 +25,8 @@ import FormAddNewService from '../../screens/forms/FormAddNewService';
 import EditInfoService from '../../screens/forms/EditInfoService';
 import EditAvatarCurrentUser from '../../screens/forms/EditAvatarCurrentUser';
 import MapScreen from '../../screens/MapScreen';
+import HistoryStore from '../../screens/HistoryStore';
+import HeaderTitleComponent from '../../screens/HeaderTitleComponent';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -86,11 +83,7 @@ const Main = () => {
           component={NewPassword}
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: true}}
-        />
+       
         <Stack.Screen
           name="ListOfElectrician"
           component={ListOfElectrician}
@@ -177,6 +170,14 @@ const Main = () => {
           options={() => ({
             headerShown: true,
             headerTitle: "Tìm vị trí thợ",
+          })}
+        />
+        <Stack.Screen
+          name="HistoryStore"
+          component={HistoryStore}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Lịch sử cửa hàng",
           })}
         />
         {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
