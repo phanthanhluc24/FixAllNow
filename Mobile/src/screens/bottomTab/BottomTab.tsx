@@ -16,15 +16,15 @@ const BottomTab = () => {
         tabBarIcon: ({focused, size}) => {
           let rn = route.name;
           let imageSource;
-          if (rn === 'Home') {
+          if (rn === 'Home'){
             imageSource = require(`${URL_IMAGE}/iconhome.png`);
-          } else if (rn === 'Shop') {
+          } else if (rn === 'Shop'){
             imageSource = require(`${URL_IMAGE}/iconshop.png`);
-          } else if (rn === 'Scan') {
-            imageSource = require(`${URL_IMAGE}/scans.png`);
-          } else if (rn === 'Notification') {
+          } else if (rn === 'Scan'){
+            imageSource = require(`${URL_IMAGE}/AI.png`);
+          } else if (rn === 'Notification'){
             imageSource = require(`${URL_IMAGE}/iconnotification.png`);
-          } else if (rn === 'Profile') {
+          } else if (rn === 'Profile'){
             imageSource = require(`${URL_IMAGE}/iconprofile.png`);
           }
           return (

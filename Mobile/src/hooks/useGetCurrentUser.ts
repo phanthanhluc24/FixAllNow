@@ -18,8 +18,6 @@ const useGetCurrentUser = () => {
   const [currentUser, setCurrentUser] = useState<typeProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  // console.log(currentUser);
-  
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -30,10 +28,7 @@ const useGetCurrentUser = () => {
         const {status, data} = response.data;
         if (status === 201) {
           setCurrentUser(data);
-          // console.log(data);
-          
           await AsyncStorage.setItem('roleCurrentUser',data.role);
-          // await AsyncStorage.setItem('idCurrentUser',data._id);
         } 
         else {
           console.error('Error fetching user:', data.message);

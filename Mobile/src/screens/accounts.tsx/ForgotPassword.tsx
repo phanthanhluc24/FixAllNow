@@ -24,7 +24,6 @@ const ForgotPassword = () => {
   const passwordRef: any = useRef();
   const navigation: any = useNavigation();
   const handleSubmitVerification = async (values: {email: any}) => {
-    console.log(values.email);
     await useVerificationEmail(values.email).then((res: any) => {
       if (res.status != 201) {
         setErrorServer(res.message)
@@ -34,7 +33,6 @@ const ForgotPassword = () => {
           refreshCode: res.refreshCode,
           resetPasswordToken: res.resetPasswordToken,
         });
-        console.log(res.code);
       }
     });
   };
@@ -51,7 +49,6 @@ const ForgotPassword = () => {
                   <Text style={styles.title}>XÁC THỰC TÀI KHOẢN</Text>
                 </View>
                 <View style={styles.spaceContainer}>
-                  {/* <Text style={styles.titles}>Vui lòng nhập Email!</Text> */}
                   <Text style={styles.errorText}>{errorServer}</Text>
                   <View style={styles.heightInput}>
                   <TextInput

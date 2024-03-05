@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import HeaderSearch from './HeaderSearch';
 import {useNavigation} from '@react-navigation/native';
 interface typeService {
   _id: string;
@@ -23,6 +22,7 @@ interface ListServiceSearchProps {
 }
 const ListServiceSearch: React.FC<ListServiceSearchProps> = ({data}) => {
   const navigation: any = useNavigation();
+
   const renderItemSearch = ({item}: {item: typeService}) => (
     <TouchableOpacity
       style={styles.repairman}
@@ -48,7 +48,13 @@ const ListServiceSearch: React.FC<ListServiceSearchProps> = ({data}) => {
       </View>
     </TouchableOpacity>
   );
-
+  if (!data ||data.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.emptyText}>Không có thông tin trùng khớp nào!</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.repairmanPopulars}>
       <View style={styles.containerss}>
@@ -65,6 +71,15 @@ const ListServiceSearch: React.FC<ListServiceSearchProps> = ({data}) => {
 export default ListServiceSearch;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 18,
+    color:"#FCA234"
+  },
   repairmanPopulars: {
     flex: 1,
     marginTop: 10,

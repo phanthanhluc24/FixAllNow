@@ -90,18 +90,11 @@ const ConfirmTypeRepairman = () => {
                     searchPlaceholder="Search..."
                     value={selectedCategory}
                     onChange={item => {
-                      // setValue(prevValue => ({
-                      //   ...prevValue,
-                      //   label: item.label,
-                      //   value: item.value,
-                      // }));
-
                       setSelectedCategory(item);
                       setFieldValue('_id', item.value);
                     }}
                     renderItem={renderItem}
                   />
-
                   <Text style={styles.titleJob}>Địa chỉ</Text>
                   <Text style={styles.error}>{error.address}</Text>
                   <View style={styles.spaceContainer}>
@@ -124,7 +117,6 @@ const ConfirmTypeRepairman = () => {
                             ...prevState,
                             role: 'Vui lòng chọn nghề nghiệp' as string,
                           }));
-                          // Alert.alert('Lỗi', 'Vui lòng chọn nghề nghiệp');
                         }
                         if (!values.address) {
                           isValid = false;
@@ -132,7 +124,6 @@ const ConfirmTypeRepairman = () => {
                             ...prevState,
                             address: 'Vui lòng điền địa chỉ',
                           }));
-                          // Alert.alert('Lỗi', 'Vui lòng điền địa chỉ');
                         }
                         if (isValid) {
                           navigation.navigate('SignUp', {
@@ -165,9 +156,7 @@ const ConfirmTypeRepairman = () => {
     </Formik>
   );
 };
-
 export default ConfirmTypeRepairman;
-
 const styles = StyleSheet.create({
   confirmTypeContainer: {
     flex: 1,

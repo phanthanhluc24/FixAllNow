@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import useGetServicePopular from '../hooks/useGetServicePopular';
 import {useNavigation} from '@react-navigation/native';
+import LoaderKit from 'react-native-loader-kit';
 interface typeService {
   _id: string;
   status: string;
@@ -22,7 +23,18 @@ const HomeServicePopular = () => {
   const navigation: any = useNavigation();
   const {services, isLoading, isError} = useGetServicePopular();
   if (isLoading) {
-    return <Text style={styles.loadingText}>Loading...</Text>;
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+          ;
+        </Text>
+      </View>
+    );
   }
   if (services.length === 0) {
     return <Text>Services not available!</Text>;
@@ -39,7 +51,10 @@ const HomeServicePopular = () => {
           <TouchableOpacity
             style={styles.repairman}
             onPress={() =>
-              navigation.navigate('DetailService', {id: item._id,title:item.service_name})
+              navigation.navigate('DetailService', {
+                id: item._id,
+                title: item.service_name,
+              })
             }>
             <View style={styles.content}>
               <View style={styles.image}>
@@ -51,7 +66,9 @@ const HomeServicePopular = () => {
                     {item.service_name}
                   </Text>
                   <View style={styles.prices}>
-                    <Text style={styles.price}>{item.price.toLocaleString("vi-VN")}</Text>
+                    <Text style={styles.price}>
+                      {item.price.toLocaleString('vi-VN')}
+                    </Text>
                     <Text style={styles.vnd}> VND</Text>
                   </View>
                   <Text numberOfLines={2} style={styles.description}>
@@ -123,12 +140,13 @@ const styles = StyleSheet.create({
   },
   infos: {
     marginHorizontal: 10,
-  },loadingText: {
+  },
+  loadingText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 10,
-  }
-
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
 });

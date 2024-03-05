@@ -8,6 +8,7 @@ import {
   Dimensions,
   ActivityIndicator,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import Carousel from 'react-native-snap-carousel';
@@ -15,6 +16,7 @@ import useAutoplay from '../hooks/useAutoPlay';
 import useGetServicePopular from '../hooks/useGetServicePopular';
 import useGetCategoryService from '../hooks/useGetCategoryService';
 import {useNavigation} from '@react-navigation/native';
+import LoaderKit from 'react-native-loader-kit';
 const {width} = Dimensions.get('window');
 interface typeCategory {
   _id: string;
@@ -31,14 +33,24 @@ interface typeService {
   desc: string;
 }
 const HomeCategories = () => {
-  const navigation:any= useNavigation();
+  const navigation: any = useNavigation();
   const {services} = useGetServicePopular();
   const carouselRef = useRef<Carousel<typeService>>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   useAutoplay(services?.length || 0, currentIndex, setCurrentIndex);
   const {categories, isLoading, isError} = useGetCategoryService();
   if (isLoading) {
-    return <Text style={styles.loadingText}>Loading...</Text>;
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+        </Text>
+      </View>
+    );
   }
   if (isError) {
     return <Text style={styles.error}>Error loading categories</Text>;
@@ -46,26 +58,19 @@ const HomeCategories = () => {
 
   return (
     <View style={styles.containerCategory}>
-      {/* <View style={styles.container}>
-        <View style={styles.content}>
-          <View>
-            <Text style={styles.hello}>ALO THỢ</Text>
-            <Text style={styles.detaildemo}>
-              Tìm kiếm thợ sửa chữa dễ dàng hơn chỉ với vài phút mà không tốn
-              nhiều thời gian
-            </Text>
-          </View>
-          <View>
-            <Image source={require('../assets/Homes/demo.png')} />
-          </View>
-        </View>
-      </View> */}
       <Carousel
         data={services || []}
         renderItem={({item}: any) => (
           <View style={styles.imgTitle}>
             <ImageBackground source={{uri: item.image}} style={styles.imgs}>
-              <TouchableOpacity style={styles.container} onPress={()=> navigation.navigate('DetailService', {id: item._id,title:item.service_name})}>
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() =>
+                  navigation.navigate('DetailService', {
+                    id: item._id,
+                    title: item.service_name,
+                  })
+                }>
                 <View style={styles.content}>
                   <View style={{width: '70%'}}>
                     <Text numberOfLines={1} style={styles.hello}>
@@ -96,6 +101,7 @@ const HomeCategories = () => {
         autoplay={true}
       />
       <View style={styles.detailCategory}>
+        {/* <Text style={styles.titles}>DANH MỤC</Text> */}
         <FlatList
           data={categories as typeCategory[]}
           keyExtractor={categories => categories._id}
@@ -131,6 +137,12 @@ const HomeCategories = () => {
 
 export default HomeCategories;
 const styles = StyleSheet.create({
+  titles: {
+    color: '#394C6D',
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 10,
+  },
   logoSetting: {
     width: 100,
     height: 100,
@@ -251,10 +263,10 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 10,
     marginHorizontal: 20,
+    width: 50,
+    height: 50,
   },
 });

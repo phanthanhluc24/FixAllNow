@@ -39,9 +39,7 @@ const ProfileHeaderRepairmanFinder =() => {
       setSingleFile(null);
 
       if (DocumentPicker.isCancel(err)) {
-        Alert.alert('Canceled');
       } else {
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }

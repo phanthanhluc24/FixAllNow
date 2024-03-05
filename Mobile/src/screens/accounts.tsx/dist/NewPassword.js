@@ -67,7 +67,6 @@ var NewPassword = function () {
                                 navigation.navigate('SignIn');
                             }
                         })["catch"](function (error) {
-                            console.log(error);
                         })];
                 case 1:
                     _a.sent();

@@ -30,17 +30,12 @@ const EditAvatarCurrentUser = ({route}: any) => {
       const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-
-      console.log('res :', res);
-
       setSingleFile(res);
     } catch (err) {
       setSingleFile(null);
-
       if (DocumentPicker.isCancel(err)) {
-        Alert.alert('Canceled');
+          navigation.navigate("Profile")
       } else {
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
@@ -51,15 +46,13 @@ const EditAvatarCurrentUser = ({route}: any) => {
       data.image = singleFile;
       const responseData = await sendData(data);
       if (responseData) {
-        Alert.alert('Cập nhật ảnh đại diện thành công!');
         navigation.navigate('Profile');
       }
     } catch (error) {
-      console.error('Error while sending data:', error);
     }
   };
   const handleCancle=()=>{
-    navigation.navigate("Profile")
+    navigation.navigate('Profile');
   }
   return (
     <View style={styles.container}>

@@ -10,10 +10,10 @@ interface typeService {
   image: string;
   desc: string;
 }
-const DetailServiceButton: React.FC<{ serviceInfo: typeService }>= ({ serviceInfo}) => {
+const DetailServiceButton: React.FC<{ serviceInfo: typeService|any}>= ({ serviceInfo}) => {
     const navigation:any= useNavigation();
     const handleBookNow =()=>{
-      navigation.navigate('MapScreen')
+      navigation.navigate('MapBookingScreen')
     }
     const handleBookSchedule = () => {
       navigation.navigate('FormBookSchedule', { serviceInfo });
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
         width: '100%',
       },
       buttonNow: {
-        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

@@ -43,6 +43,7 @@ var Entypo_1 = require("react-native-vector-icons/Entypo");
 var react_native_document_picker_1 = require("react-native-document-picker");
 var native_1 = require("@react-navigation/native");
 var useAddNewService_1 = require("../../hooks/useAddNewService");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
 var FormAddNewService = function () {
     var navigation = native_1.useNavigation();
     var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
@@ -63,10 +64,8 @@ var FormAddNewService = function () {
                     err_1 = _a.sent();
                     setSingleFile(null);
                     if (react_native_document_picker_1["default"].isCancel(err_1)) {
-                        react_native_1.Alert.alert('Canceled');
                     }
                     else {
-                        react_native_1.Alert.alert('Unknown Error: ' + JSON.stringify(err_1));
                         throw err_1;
                     }
                     return [3 /*break*/, 3];
@@ -76,13 +75,15 @@ var FormAddNewService = function () {
     }); };
     var _b = react_hook_form_1.useForm(), control = _b.control, handleSubmit = _b.handleSubmit, errors = _b.formState.errors, setError = _b.setError;
     var sendData = useAddNewService_1["default"]().sendData;
+    var hasLettersAndNoNumbers = function (value) {
+        return /[a-zA-Z]/.test(value) && !/\d/.test(value);
+    };
     var onSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
         var errorFields, responseData, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    console.log(data);
                     errorFields = [];
                     if (!data.service_name.trim())
                         errorFields.push('service_name');
@@ -99,13 +100,16 @@ var FormAddNewService = function () {
                 case 1:
                     responseData = _a.sent();
                     if (responseData) {
-                        react_native_1.Alert.alert('Dịch vụ thêm thành công!');
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                            title: 'Thành công',
+                            textBody: "Dịch vụ đã thêm thành công!"
+                        });
                         navigation.navigate('Profile');
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
-                    console.error('Error while sending data:', error_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -125,7 +129,9 @@ var FormAddNewService = function () {
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
                             return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "service_name", rules: { required: '* Tên không được bỏ trống' }, defaultValue: "" }),
+                        }, name: "service_name", rules: { required: '* Tên không được bỏ trống', validate: function (value) {
+                                return hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số';
+                            } }, defaultValue: "" }),
                     errors.service_name && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.service_name.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gia\u0301 di\u0323ch vu\u0323"),
@@ -143,7 +149,9 @@ var FormAddNewService = function () {
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
                             return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "desc", rules: { required: '* Mô tả không được bỏ trống' }, defaultValue: "" }),
+                        }, name: "desc", rules: { required: '* Mô tả không được bỏ trống', validate: function (value) {
+                                return hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số';
+                            } }, defaultValue: "" }),
                     errors.desc && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.desc.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
@@ -173,7 +181,6 @@ var styles = react_native_1.StyleSheet.create({
         width: '100%'
     },
     buttonNow: {
-        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

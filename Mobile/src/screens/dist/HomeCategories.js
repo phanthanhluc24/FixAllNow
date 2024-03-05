@@ -7,6 +7,7 @@ var useAutoPlay_1 = require("../hooks/useAutoPlay");
 var useGetServicePopular_1 = require("../hooks/useGetServicePopular");
 var useGetCategoryService_1 = require("../hooks/useGetCategoryService");
 var native_1 = require("@react-navigation/native");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
 var width = react_native_1.Dimensions.get('window').width;
 var HomeCategories = function () {
     var navigation = native_1.useNavigation();
@@ -16,7 +17,9 @@ var HomeCategories = function () {
     useAutoPlay_1["default"]((services === null || services === void 0 ? void 0 : services.length) || 0, currentIndex, setCurrentIndex);
     var _b = useGetCategoryService_1["default"](), categories = _b.categories, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
+            react_1["default"].createElement(react_native_1.Text, null,
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, { style: styles.error }, "Error loading categories");
@@ -26,7 +29,12 @@ var HomeCategories = function () {
                 var item = _a.item;
                 return (react_1["default"].createElement(react_native_1.View, { style: styles.imgTitle },
                     react_1["default"].createElement(react_native_1.ImageBackground, { source: { uri: item.image }, style: styles.imgs },
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.container, onPress: function () { return navigation.navigate('DetailService', { id: item._id, title: item.service_name }); } },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.container, onPress: function () {
+                                return navigation.navigate('DetailService', {
+                                    id: item._id,
+                                    title: item.service_name
+                                });
+                            } },
                             react_1["default"].createElement(react_native_1.View, { style: styles.content },
                                 react_1["default"].createElement(react_native_1.View, { style: { width: '70%' } },
                                     react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.hello }, item.service_name),
@@ -51,6 +59,12 @@ var HomeCategories = function () {
 };
 exports["default"] = HomeCategories;
 var styles = react_native_1.StyleSheet.create({
+    titles: {
+        color: '#394C6D',
+        fontSize: 20,
+        fontWeight: 'bold',
+        padding: 10
+    },
     logoSetting: {
         width: 100,
         height: 100
@@ -169,10 +183,10 @@ var styles = react_native_1.StyleSheet.create({
     },
     loadingText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
-        textAlign: 'center',
+        alignItems: 'center',
         marginTop: 10,
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
     }
 });

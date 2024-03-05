@@ -6,16 +6,17 @@ var useGetDetailRepairman_1 = require("../hooks/useGetDetailRepairman");
 var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var native_1 = require("@react-navigation/native");
 var DetailCommentRepairman_1 = require("./DetailCommentRepairman");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
 var DetailHeaderRepairman = function () {
     var route = native_1.useRoute();
     var id = route.params.id;
-    console.log(id);
     var repairman = useGetDetailRepairman_1["default"](id).repairman;
     var _a = useGetServiceOfRepairman_1["default"](id), serviceOfRepairman = _a.serviceOfRepairman, isLoading = _a.isLoading, isError = _a.isError;
-    console.log(serviceOfRepairman);
     var navigation = native_1.useNavigation();
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: "center" } },
+            react_1["default"].createElement(react_native_1.Text, null,
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
@@ -37,35 +38,40 @@ var DetailHeaderRepairman = function () {
                 repairman.address)),
         react_1["default"].createElement(react_native_1.View, { style: styles.containerService },
             react_1["default"].createElement(react_native_1.Text, { style: styles.service }, "Di\u0323ch vu\u0323"),
-            react_1["default"].createElement(react_native_1.View, { style: { marginHorizontal: 20 } },
-                react_1["default"].createElement(react_native_1.FlatList, { data: serviceOfRepairman, keyExtractor: function (services) { return services._id; }, renderItem: function (_a) {
-                        var item = _a.item;
-                        return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
-                                return navigation.navigate('DetailService', {
-                                    id: item._id,
-                                    title: item.service_name
-                                });
-                            } },
-                            react_1["default"].createElement(react_native_1.View, { style: styles.contents },
-                                react_1["default"].createElement(react_native_1.View, { style: styles.imgSer },
-                                    react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
-                                react_1["default"].createElement(react_native_1.View, { style: styles.infos },
-                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, item.service_name),
-                                    react_1["default"].createElement(react_native_1.View, { style: styles.prices },
-                                        react_1["default"].createElement(react_native_1.Text, { style: styles.price }, item.price.toLocaleString('vi-VN')),
-                                        react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VND")),
-                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
-                    } }))),
+            react_1["default"].createElement(react_native_1.View, { style: { marginHorizontal: 20 } }, serviceOfRepairman.length > 0 ? (react_1["default"].createElement(react_native_1.FlatList, { data: serviceOfRepairman, keyExtractor: function (services) { return services._id; }, renderItem: function (_a) {
+                    var item = _a.item;
+                    return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
+                            return navigation.navigate('DetailService', {
+                                id: item._id,
+                                title: item.service_name
+                            });
+                        } },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.contents },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.imgSer },
+                                react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.infos },
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, item.service_name),
+                                react_1["default"].createElement(react_native_1.View, { style: styles.prices },
+                                    react_1["default"].createElement(react_native_1.Text, { style: styles.price }, item.price.toLocaleString('vi-VN')),
+                                    react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VND")),
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
+                } })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Ch\u01B0a c\u00F3 d\u1ECBch v\u1EE5 n\u00E0o!)"))))),
         react_1["default"].createElement(DetailCommentRepairman_1["default"], null)));
 };
 exports["default"] = DetailHeaderRepairman;
 var styles = react_native_1.StyleSheet.create({
+    noService: {
+        fontSize: 15,
+        color: 'black'
+    },
     loadingText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
-        textAlign: 'center',
-        marginTop: 10
+        alignItems: 'center',
+        marginTop: 10,
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
     },
     containerHeaderRepairman: {
         flex: 1

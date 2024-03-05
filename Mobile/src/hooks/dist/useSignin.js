@@ -39,8 +39,8 @@ exports.__esModule = true;
 var axios_1 = require("axios");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
-var react_native_1 = require("react-native");
 var react_1 = require("react");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
 var useSignin = function (_a) {
     var navigation = _a.navigation;
     var _b = react_1.useState(null), errorServer = _b[0], setErrorServer = _b[1];
@@ -58,8 +58,11 @@ var useSignin = function (_a) {
                     return [4 /*yield*/, async_storage_1["default"].setItem('accessToken', accessToken)];
                 case 2:
                     _a.sent();
-                    console.log(accessToken);
-                    react_native_1.ToastAndroid.showWithGravity(res.data.message, react_native_1.ToastAndroid.LONG, react_native_1.ToastAndroid.CENTER);
+                    react_native_alert_notification_1.Toast.show({
+                        type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                        title: 'Thành công',
+                        textBody: 'Đăng nhập thành công!'
+                    });
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'Root' }]
@@ -71,7 +74,6 @@ var useSignin = function (_a) {
                 case 4: return [3 /*break*/, 6];
                 case 5:
                     error_1 = _a.sent();
-                    console.log(error_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }

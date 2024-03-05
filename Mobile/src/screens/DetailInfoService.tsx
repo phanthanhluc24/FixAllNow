@@ -12,6 +12,7 @@ import useGetDetailService from '../hooks/useGetDetailService';
 import {useNavigation} from '@react-navigation/native';
 import useGetServiceRevolve from '../hooks/useGetServiceRevolve';
 import DetailServiceButton from './DetailServiceButton';
+import LoaderKit from 'react-native-loader-kit';
 interface typeService {
   _id: string;
   status: string;
@@ -28,7 +29,17 @@ const DetailInfoService = () => {
   const {serviceRevolve} = useGetServiceRevolve(id);
   const {service, isLoading, isError} = useGetDetailService(id);
   if (isLoading) {
-    return <Text style={styles.loadingText}>Loading...</Text>;
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+        </Text>
+      </View>
+    );
   }
   if (isError) {
     return <Text>Error loading info service</Text>;
@@ -50,82 +61,87 @@ const DetailInfoService = () => {
 
         <View style={styles.oneLine}></View>
         <View style={styles.infoUser}>
-          <View style={styles.containerInfoUser}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('DetailRepairman', {
+                id: service?.user_id._id,
+                title: service?.user_id.full_name,
+              })
+            }
+            style={styles.containerInfoUser}>
             <Image
               source={{uri: service?.user_id.image}}
               style={styles.imageStyle}></Image>
             <View style={styles.buttonEvent}>
               <Text style={styles.fullName}>{service?.user_id.full_name}</Text>
-              <TouchableOpacity
-                style={styles.buttonView}
-                onPress={() =>
-                  navigation.navigate('DetailRepairman', {
-                    id: service?.user_id._id,
-                    title: service?.user_id.full_name,
-                  })
-                }>
-                <Text style={styles.detailRepairman}>Xem thợ!</Text>
-              </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.listServiceRevolve}>
           <Text style={styles.serviceRevolve}>Dịch vụ liên quan</Text>
           <View style={{marginHorizontal: 10}}>
-            <FlatList
-              data={serviceRevolve as typeService[]}
-              keyExtractor={services => services._id}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={styles.repairman}
-                  onPress={() =>
-                    navigation.navigate('DetailService', {
-                      id: item._id,
-                      title: item.service_name,
-                    })
-                  }>
-                  <View style={styles.contents}>
-                    <View style={styles.imgSer}>
-                      <Image source={{uri: item.image}} style={styles.img} />
-                    </View>
-                    <View style={styles.infos}>
-                      <Text numberOfLines={1} style={styles.nameRepairman}>
-                        {item.service_name}
-                      </Text>
-                      <View style={styles.prices}>
-                        <Text style={styles.price}>
-                          {item.price.toLocaleString('vi-VN')}
-                        </Text>
-                        <Text style={styles.vnd}> VND</Text>
+            {serviceRevolve.length > 0 ? (
+              <FlatList
+                data={serviceRevolve as typeService[]}
+                keyExtractor={services => services._id}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    style={styles.repairman}
+                    onPress={() =>
+                      navigation.navigate('DetailService', {
+                        id: item._id,
+                        title: item.service_name,
+                      })
+                    }>
+                    <View style={styles.contents}>
+                      <View style={styles.imgSer}>
+                        <Image source={{uri: item.image}} style={styles.img} />
                       </View>
-                      <Text numberOfLines={2} style={styles.description}>
-                        {item.desc}
-                      </Text>
+                      <View style={styles.infos}>
+                        <Text numberOfLines={1} style={styles.nameRepairman}>
+                          {item.service_name}
+                        </Text>
+                        <View style={styles.prices}>
+                          <Text style={styles.price}>
+                            {item.price.toLocaleString('vi-VN')}
+                          </Text>
+                          <Text style={styles.vnd}> VND</Text>
+                        </View>
+                        <Text numberOfLines={2} style={styles.description}>
+                          {item.desc}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
-              )}
-            />
+                  </TouchableOpacity>
+                )}
+              />
+            ) : (
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={styles.noService}>
+                  (Không có dịch vụ liên quan!)
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
-      <DetailServiceButton serviceInfo={service}/>
+      <DetailServiceButton serviceInfo={service} />
     </View>
   );
 };
 export default DetailInfoService;
 const styles = StyleSheet.create({
+  noService: {
+    fontSize: 15,
+    color: '#FCA234',
+  },
   serviceRevolve: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#394C6D',
     marginHorizontal: 10,
   },
-  buttonEvent: {
-    // padding:20,
-    // alignItems:"center",
-    // justifyContent:"center",
-  },
+  buttonEvent: {},
   detailRepairman: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -167,10 +183,11 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
   },
   infoServices: {
     flex: 9,

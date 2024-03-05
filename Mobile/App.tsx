@@ -6,15 +6,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { ToastProvider } from 'react-native-toast-notifications';
+import { AlertNotificationRoot,  } from 'react-native-alert-notification';
 const queryClient= new QueryClient();
 const App = () => {
   return (
-    <ToastProvider>
+    <AlertNotificationRoot>
       <NavigationContainer>
         <AppWrapper />
-        <Toast/>
+        {/* <Toast/> */}
       </NavigationContainer>
-    </ToastProvider>
+    </AlertNotificationRoot>
   );
 };
 const AppWrapper = () => {

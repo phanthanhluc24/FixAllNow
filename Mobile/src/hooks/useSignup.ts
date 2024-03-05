@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Alert, ToastAndroid} from 'react-native';
+import { StyleSheet, Text, View , ToastAndroid} from 'react-native';
 import React from 'react';
 import axios from 'axios';
 import { url } from './apiRequest/url';

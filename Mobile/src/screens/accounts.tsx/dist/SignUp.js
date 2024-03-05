@@ -56,7 +56,6 @@ var SignUp = function () {
     var _b = react_1.useState(false), phoneNumberEntered = _b[0], setPhoneNumberEntered = _b[1];
     var route = native_1.useRoute();
     var _c = route.params || {}, selectedRole = _c.selectedRole, _id = _c._id, address = _c.address;
-    // console.log(selectedRole, _id, address);
     var navigation = native_1.useNavigation();
     var _d = react_1.useState(''), error = _d[0], setError = _d[1];
     var _e = react_1.useState({
@@ -133,7 +132,6 @@ var SignUp = function () {
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
-                    console.error('Error during signup', error_1);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }

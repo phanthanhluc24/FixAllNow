@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useUploadAvatarUser = () =>{ 
     const sendData = async (data: any) => {
-        console.log(data)
     try{
       const accessToken = await AsyncStorage.getItem('accessToken');
       const formData = new FormData();
@@ -17,7 +16,6 @@ const useUploadAvatarUser = () =>{
       });
       return response;
   }catch(error:any){
-    console.log(error);
     throw error;
   }};
   return {sendData};

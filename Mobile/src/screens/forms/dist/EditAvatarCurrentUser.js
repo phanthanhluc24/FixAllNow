@@ -61,17 +61,15 @@ var EditAvatarCurrentUser = function (_a) {
                         })];
                 case 1:
                     res = (_a.sent())[0];
-                    console.log('res :', res);
                     setSingleFile(res);
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
                     setSingleFile(null);
                     if (react_native_document_picker_1["default"].isCancel(err_1)) {
-                        react_native_1.Alert.alert('Canceled');
+                        navigation.navigate("Profile");
                     }
                     else {
-                        react_native_1.Alert.alert('Unknown Error: ' + JSON.stringify(err_1));
                         throw err_1;
                     }
                     return [3 /*break*/, 3];
@@ -91,20 +89,18 @@ var EditAvatarCurrentUser = function (_a) {
                 case 1:
                     responseData = _a.sent();
                     if (responseData) {
-                        react_native_1.Alert.alert('Cập nhật ảnh đại diện thành công!');
                         navigation.navigate('Profile');
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
-                    console.error('Error while sending data:', error_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });
     }); };
     var handleCancle = function () {
-        navigation.navigate("Profile");
+        navigation.navigate('Profile');
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.View, { style: { flex: 9 } },

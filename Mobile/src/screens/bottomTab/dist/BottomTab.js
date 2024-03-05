@@ -25,7 +25,7 @@ var BottomTab = function () {
                         imageSource = require(URL_IMAGE + "/iconshop.png");
                     }
                     else if (rn === 'Scan') {
-                        imageSource = require(URL_IMAGE + "/scans.png");
+                        imageSource = require(URL_IMAGE + "/AI.png");
                     }
                     else if (rn === 'Notification') {
                         imageSource = require(URL_IMAGE + "/iconnotification.png");
@@ -42,6 +42,7 @@ var BottomTab = function () {
                                 },
                             ] })));
                 },
+                tabBarHideOnKeyboard: true,
                 tabBarLabel: function () {
                     return null;
                 },

@@ -47,6 +47,7 @@ var react_native_document_picker_1 = require("react-native-document-picker");
 var native_1 = require("@react-navigation/native");
 var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var ButtonLogout_1 = require("./bottomTab/ButtonLogout");
+var useDeleteService_1 = require("../hooks/useDeleteService");
 var ProfileHeader = function () {
     var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -69,10 +70,8 @@ var ProfileHeader = function () {
                     err_1 = _a.sent();
                     setSingleFile(null);
                     if (react_native_document_picker_1["default"].isCancel(err_1)) {
-                        react_native_1.Alert.alert('Canceled');
                     }
                     else {
-                        react_native_1.Alert.alert('Unknown Error: ' + JSON.stringify(err_1));
                         throw err_1;
                     }
                     return [3 /*break*/, 3];
@@ -82,7 +81,21 @@ var ProfileHeader = function () {
     }); };
     var navigation = native_1.useNavigation();
     var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
+    var _c = react_1.useState(false), hasServices = _c[0], setHasServices = _c[1];
     var serviceOfRepairman = useGetServiceOfRepairman_1["default"](currentUser === null || currentUser === void 0 ? void 0 : currentUser._id).serviceOfRepairman;
+    react_1.useEffect(function () {
+        if (serviceOfRepairman.length > 0) {
+            setHasServices(true);
+        }
+        else {
+            setHasServices(false);
+        }
+    }, [serviceOfRepairman]);
+    var destroyService = useDeleteService_1["default"]().destroyService;
+    var handleDeleteService = function (service_id) { return function () {
+        destroyService(service_id);
+        navigation.navigate('Profile');
+    }; };
     var renderItem = function (data) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
             return navigation.navigate('DetailService', {
                 id: data.item._id,
@@ -100,9 +113,11 @@ var ProfileHeader = function () {
                         react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VND")),
                     react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, data.item.desc)))))); };
     var renderHiddenItem = function (data) { return (react_1["default"].createElement(react_native_1.View, { style: styles.rowBack },
-        react_1["default"].createElement(react_native_1.Text, { style: styles.deleteService },
+        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.deleteService, onPress: handleDeleteService(data.item._id) },
             react_1["default"].createElement(AntDesign_1["default"], { name: "delete", color: "#FFFFFF", size: 25 })),
-        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.editService, onPress: function () { return navigation.navigate('EditInfoService', { service: data.item }); } },
+        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.editService, onPress: function () {
+                return navigation.navigate('EditInfoService', { service: data.item });
+            } },
             react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 25, color: "#FFFFFF" })))); };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.profileHeader },
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
@@ -117,7 +132,11 @@ var ProfileHeader = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.info },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.nameProfile }, currentUser === null || currentUser === void 0 ? void 0 : currentUser.full_name)),
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonEvent },
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () { return navigation.navigate('EditInfoCurrentUser', { user: currentUser }); } },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () {
+                                return navigation.navigate('EditInfoCurrentUser', {
+                                    user: currentUser
+                                });
+                            } },
                             react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "#ffffff" })),
                         react_1["default"].createElement(ButtonLogout_1["default"], null))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoQuality },
@@ -137,10 +156,15 @@ var ProfileHeader = function () {
                         currentUser.number_phone)))),
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.nameListService }, "Danh sa\u0301ch di\u0323ch vu\u0323"),
-            react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 }))));
+            hasServices ? (react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Ch\u01B0a c\u00F3 d\u1ECBch v\u1EE5 n\u00E0o!)"))))));
 };
 exports["default"] = ProfileHeader;
 var styles = react_native_1.StyleSheet.create({
+    noService: {
+        fontSize: 15,
+        color: 'white'
+    },
     imageViews: {
         width: 30,
         height: 30,
@@ -308,7 +332,7 @@ var styles = react_native_1.StyleSheet.create({
         height: 100,
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: "#394C6D"
+        borderColor: '#394C6D'
     },
     nameRepairman: {
         fontSize: 18,
@@ -332,7 +356,8 @@ var styles = react_native_1.StyleSheet.create({
     },
     description: {
         width: '100%',
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        maxWidth: '100%'
     },
     image: {
         width: '30%'

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import LoaderKit from 'react-native-loader-kit';
 import useGetListRepairmanOfCategorySpecific from '../hooks/useGetListRepairmanOfCategorySpecific';
 interface typeRepairman {
   _id: string;
@@ -16,7 +17,7 @@ interface typeRepairman {
   number_phone: number;
   address: string;
   role: string;
-  image: string;
+  avatar: string;
   password: string;
   averageStar: number;
 }
@@ -25,19 +26,25 @@ const ListOfElectrician = ({route}: any) => {
   const navigation: any = useNavigation();
   const {listRepairmanOfCategory, isLoading, isError} =
     useGetListRepairmanOfCategorySpecific(id);
-  // console.log(listRepairmanOfCategory);
   if (isLoading) {
-    return <Text
-      style={styles.loadingText}
-    >
-      Loading...
-    </Text>
+    return (
+      <View style={{alignItems: 'center', flex:1, justifyContent:"center"}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+          
+        </Text>
+      </View>
+    );
   }
   if (isError) {
     return <Text>Error loading repairman</Text>;
   }
-  if(listRepairmanOfCategory.length <=0){
-    return <Text>Chưa có danh mục nào!</Text>
+  if (listRepairmanOfCategory.length <= 0) {
+    return <Text>Chưa có danh mục nào!</Text>;
   }
   return (
     <View style={styles.repairmanPopular}>
@@ -51,11 +58,14 @@ const ListOfElectrician = ({route}: any) => {
               <TouchableOpacity
                 style={styles.repairman}
                 onPress={() =>
-                  navigation.navigate('DetailRepairman', {id: item._id})
+                  navigation.navigate('DetailRepairman', {
+                    id: item._id,
+                    title: item.full_name,
+                  })
                 }>
                 <View style={styles.content}>
                   <View style={styles.imgRepairman}>
-                  <Image source={{uri: item.image}} style={styles.img} />
+                    <Image source={{uri: item.avatar}} style={styles.img} />
                   </View>
                   <View style={styles.infoRepairman}>
                     <Text style={styles.nameRepairman}>{item.full_name} </Text>
@@ -96,8 +106,8 @@ const ListOfElectrician = ({route}: any) => {
 export default ListOfElectrician;
 
 const styles = StyleSheet.create({
-  imgRepairman:{
-    width:"30%"
+  imgRepairman: {
+    width: '30%',
   },
   iconStar: {
     width: 30,
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
   },
   infoRepairman: {
     marginHorizontal: 20,
-    width:"70%"
+    width: '70%',
   },
   repairmanPopular: {
     flex: 1,
@@ -148,7 +158,7 @@ const styles = StyleSheet.create({
   img: {
     width: 100,
     height: 100,
-    borderRadius:50
+    borderRadius: 50,
   },
   nameRepairman: {
     fontSize: 18,
@@ -162,9 +172,10 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 10,
-  }
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
 });

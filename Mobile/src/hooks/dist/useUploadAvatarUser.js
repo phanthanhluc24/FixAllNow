@@ -45,12 +45,9 @@ var useUploadAvatarUser = function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(data);
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 4, , 5]);
+                    _a.trys.push([0, 3, , 4]);
                     return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
-                case 2:
+                case 1:
                     accessToken = _a.sent();
                     formData = new FormData();
                     formData.append('image', data.image);
@@ -60,14 +57,13 @@ var useUploadAvatarUser = function () {
                                 Authorization: "Bearer " + accessToken
                             }
                         })];
-                case 3:
+                case 2:
                     response = _a.sent();
                     return [2 /*return*/, response];
-                case 4:
+                case 3:
                     error_1 = _a.sent();
-                    console.log(error_1);
                     throw error_1;
-                case 5: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     }); };

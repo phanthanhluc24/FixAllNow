@@ -3,15 +3,17 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
 var useGetListRepairmanOfCategorySpecific_1 = require("../hooks/useGetListRepairmanOfCategorySpecific");
 var ListOfElectrician = function (_a) {
     var route = _a.route;
     var id = route.params.id;
     var navigation = native_1.useNavigation();
     var _b = useGetListRepairmanOfCategorySpecific_1["default"](id), listRepairmanOfCategory = _b.listRepairmanOfCategory, isLoading = _b.isLoading, isError = _b.isError;
-    // console.log(listRepairmanOfCategory);
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: "center" } },
+            react_1["default"].createElement(react_native_1.Text, null,
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
@@ -26,11 +28,14 @@ var ListOfElectrician = function (_a) {
                 react_1["default"].createElement(react_native_1.FlatList, { data: listRepairmanOfCategory, keyExtractor: function (repairman) { return repairman._id; }, renderItem: function (_a) {
                         var item = _a.item;
                         return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
-                                return navigation.navigate('DetailRepairman', { id: item._id });
+                                return navigation.navigate('DetailRepairman', {
+                                    id: item._id,
+                                    title: item.full_name
+                                });
                             } },
                             react_1["default"].createElement(react_native_1.View, { style: styles.content },
                                 react_1["default"].createElement(react_native_1.View, { style: styles.imgRepairman },
-                                    react_1["default"].createElement(react_native_1.Image, { source: { uri: item.image }, style: styles.img })),
+                                    react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img })),
                                 react_1["default"].createElement(react_native_1.View, { style: styles.infoRepairman },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman },
                                         item.full_name,
@@ -49,7 +54,7 @@ var ListOfElectrician = function (_a) {
 exports["default"] = ListOfElectrician;
 var styles = react_native_1.StyleSheet.create({
     imgRepairman: {
-        width: "30%"
+        width: '30%'
     },
     iconStar: {
         width: 30,
@@ -70,7 +75,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     infoRepairman: {
         marginHorizontal: 20,
-        width: "70%"
+        width: '70%'
     },
     repairmanPopular: {
         flex: 1,
@@ -114,9 +119,10 @@ var styles = react_native_1.StyleSheet.create({
     },
     loadingText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
-        textAlign: 'center',
-        marginTop: 10
+        alignItems: 'center',
+        marginTop: 10,
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
     }
 });

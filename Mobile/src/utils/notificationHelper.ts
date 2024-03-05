@@ -25,7 +25,6 @@ export const getFcmToken=async()=>{
             }
         } catch (error:any) {
             console.log("can't get fcmToken",error.message);
-            
         }
     }
 }

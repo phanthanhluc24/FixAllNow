@@ -49,6 +49,7 @@ var formik_1 = require("formik");
 var native_1 = require("@react-navigation/native");
 var useSendVerificationCode_1 = require("../../hooks/useSendVerificationCode");
 var useSendResendVerificationCode_1 = require("../../hooks/useSendResendVerificationCode");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
 var ConfirmCode = function () {
     var _a = react_1.useState(180), countdown = _a[0], setCountdown = _a[1];
     var _b = react_1.useState(''), countdownMessage = _b[0], setCountdownMessage = _b[1];
@@ -73,9 +74,6 @@ var ConfirmCode = function () {
         }
         return function () {
             clearInterval(interval);
-            // if (countdown === 0) {
-            //   Alert.alert('Mã xác thực hết hiệu lực');
-            // }
         };
     }, [countdown]);
     var handleSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -95,7 +93,11 @@ var ConfirmCode = function () {
                 case 2:
                     res = _a.sent();
                     if (res.status != 201) {
-                        react_native_1.Alert.alert(res.message);
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
+                            title: 'Lỗi',
+                            textBody: res.message
+                        });
                     }
                     else {
                         if (resetPasswordToken) {
@@ -108,9 +110,7 @@ var ConfirmCode = function () {
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
-                    console.error('Đã có lỗi xảy ra', error_1);
-                    react_native_1.Alert.alert('Đã có lỗi xảy ra trong quá trình xác thực');
-                    return [3 /*break*/, 4];
+                    throw error_1;
                 case 4: return [2 /*return*/];
             }
         });
@@ -131,20 +131,26 @@ var ConfirmCode = function () {
                 case 2:
                     res = _a.sent();
                     if (res.status != 201) {
-                        react_native_1.Alert.alert(res.message);
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
+                            title: 'Lỗi',
+                            textBody: res.message
+                        });
                     }
                     else {
                         setNewCode(res.code);
                         setCountdown(180);
                         setCountdownMessage('');
-                        react_native_1.Alert.alert('Vui lòng kiểm tra email để lấy mã!');
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                            title: 'Thành công',
+                            textBody: "Vui lòng kiểm tra email để lấy mã!"
+                        });
                     }
                     return [3 /*break*/, 5];
                 case 3:
                     error_2 = _a.sent();
-                    console.error('Đã có lỗi xảy ra', error_2);
-                    react_native_1.Alert.alert('Đã có lỗi xảy ra trong quá trình gửi lại mã');
-                    return [3 /*break*/, 5];
+                    throw error_2;
                 case 4:
                     setIsResending(false);
                     return [7 /*endfinally*/];
@@ -164,13 +170,6 @@ var ConfirmCode = function () {
             newCode[index] = '';
             setCodeDigits(newCode);
         }
-        // if (!isNaN(Number(digit))) {
-        //   setCodeDigits(prevDigits => {
-        //     const newDigits = [...prevDigits];
-        //     newDigits[index] = digit;
-        //     return newDigits;
-        //   });
-        // }
     };
     return (react_1["default"].createElement(formik_1.Formik, { initialValues: { code: '' }, onSubmit: handleSubmit }, function (_a) {
         var handleChange = _a.handleChange, handleBlur = _a.handleBlur, handleSubmit = _a.handleSubmit, values = _a.values;

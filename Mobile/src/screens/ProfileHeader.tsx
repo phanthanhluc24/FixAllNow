@@ -1,22 +1,30 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity , Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
-import DocumentPicker, {
+import DocumentPicker,{
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import {useNavigation} from '@react-navigation/native';
 import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import ButtonLogout from './bottomTab/ButtonLogout';
 import {TouchEventType} from 'react-native-gesture-handler/lib/typescript/TouchEventType';
+import useDeleteService from '../hooks/useDeleteService';
 const ProfileHeader = () => {
-  
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
+
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
@@ -30,16 +38,27 @@ const ProfileHeader = () => {
       setSingleFile(null);
 
       if (DocumentPicker.isCancel(err)) {
-        Alert.alert('Canceled');
       } else {
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
   };
   const navigation: any = useNavigation();
   const {currentUser, isLoading, isError}: any = useGetCurrentUser();
+  const [hasServices, setHasServices] = useState<boolean>(false);
   const {serviceOfRepairman} = useGetServiceOfRepairman(currentUser?._id);
+  useEffect(() => {
+    if (serviceOfRepairman.length > 0) {
+      setHasServices(true);
+    } else {
+      setHasServices(false);
+    }
+  }, [serviceOfRepairman]);
+  const {destroyService}=useDeleteService()
+  const handleDeleteService=(service_id:string)=>()=>{
+    destroyService(service_id)
+    navigation.navigate('Profile')
+  }
   const renderItem = (data: any) => (
     <TouchableOpacity
       style={styles.repairman}
@@ -72,23 +91,26 @@ const ProfileHeader = () => {
       </View>
     </TouchableOpacity>
   );
-  const renderHiddenItem = (data:any) => (
+
+  const renderHiddenItem = (data: any) => (
     <View style={styles.rowBack}>
-      <Text style={styles.deleteService}>
+      <TouchableOpacity style={styles.deleteService} onPress={handleDeleteService(data.item._id)}>
         <AntDesign name="delete" color="#FFFFFF" size={25} />
-      </Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.editService}
-        onPress={() => navigation.navigate('EditInfoService',{service:data.item})}>
+        onPress={() =>
+          navigation.navigate('EditInfoService', {service: data.item})
+        }>
         <Entypo name="edit" size={25} color="#FFFFFF" />
       </TouchableOpacity>
     </View>
   );
+
   return (
     <View style={styles.profileHeader}>
       <View style={styles.infoProfile}>
-        <TouchableOpacity
-          style={styles.avatarPro}>
+        <TouchableOpacity style={styles.avatarPro}>
           <Image
             style={styles.avatarProfile}
             source={{uri: currentUser?.image}}
@@ -109,7 +131,11 @@ const ProfileHeader = () => {
             <View style={styles.buttonEvent}>
               <TouchableOpacity
                 style={styles.iconEdit}
-                onPress={() => navigation.navigate('EditInfoCurrentUser',{user:currentUser})}>
+                onPress={() =>
+                  navigation.navigate('EditInfoCurrentUser', {
+                    user: currentUser,
+                  })
+                }>
                 <Entypo name="edit" size={24} color="#ffffff" />
               </TouchableOpacity>
               <ButtonLogout />
@@ -133,25 +159,37 @@ const ProfileHeader = () => {
           </Text>
           <View style={styles.infoPhone}>
             <Text style={styles.namePhone}>Số điện thoại</Text>
-            <Text style={styles.detailPhone}>(+84){currentUser?.number_phone}</Text>
+            <Text style={styles.detailPhone}>
+              (+84){currentUser?.number_phone}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.container}>
         <Text style={styles.nameListService}>Danh sách dịch vụ</Text>
-        <SwipeListView
-          data={serviceOfRepairman}
-          renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          leftOpenValue={75}
-          rightOpenValue={-75}
-        />
+        {hasServices ? (
+          <SwipeListView
+            data={serviceOfRepairman}
+            renderItem={renderItem}
+            renderHiddenItem={renderHiddenItem}
+            leftOpenValue={75}
+            rightOpenValue={-75}
+          />
+        ) : (
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.noService}>(Chưa có dịch vụ nào!)</Text>
+          </View>
+        )}
       </View>
     </View>
   );
 };
 export default ProfileHeader;
 const styles = StyleSheet.create({
+  noService: {
+    fontSize: 15,
+    color: 'white',
+  },
   imageViews: {
     width: 30,
     height: 30,
@@ -317,9 +355,9 @@ const styles = StyleSheet.create({
   img: {
     width: 100,
     height: 100,
-    borderRadius:10,
-    borderWidth:2,
-    borderColor:"#394C6D"
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#394C6D',
   },
   nameRepairman: {
     fontSize: 18,
@@ -344,6 +382,7 @@ const styles = StyleSheet.create({
   description: {
     width: '100%',
     color: '#FFFFFF',
+    maxWidth: '100%',
   },
   image: {
     width: '30%',

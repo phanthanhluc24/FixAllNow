@@ -60,27 +60,4 @@ var useLogout = function () {
     }); };
     return { logout: logout };
 };
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   const logout = async () => {
-//     setIsLoading(true);
-//     setError(null);
-//     try {
-//       const accessToken = await AsyncStorage.getItem('accessToken');
-//       const response = await axios.post(
-//         `${url}/auth/logout`,
-//         {
-//           headers: {Authorization: `Bearer ${accessToken}`},
-//         },
-//       );
-//       setIsLoading(false);
-//       return response.data;
-//     } catch (error: any) {
-//       setIsLoading(false);
-//       setError(error);
-//       console.error('Error logging out:', error);
-//     }
-//   };
-//   return {logout, isLoading, error};
-// };
 exports["default"] = useLogout;

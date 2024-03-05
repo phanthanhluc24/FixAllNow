@@ -63,7 +63,6 @@ var useGetServiceOfRepairman = function (id) {
                         return [3 /*break*/, 5];
                     case 3:
                         error_1 = _a.sent();
-                        console.error('Error fetching service of repairman:', error_1);
                         setIsError(true);
                         return [3 /*break*/, 5];
                     case 4:

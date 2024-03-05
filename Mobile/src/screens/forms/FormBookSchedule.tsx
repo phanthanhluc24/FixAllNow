@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   },
   imgFooter: {
     width: '50%',
+    marginTop:40
   },
   bgButton: {
     backgroundColor: '#FCA234',
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
   boxInput: {
-    marginVertical: 30,
+    marginVertical: 10,
     height: 245,
   },
   styleTitle: {

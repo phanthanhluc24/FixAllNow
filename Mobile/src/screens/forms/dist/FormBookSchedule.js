@@ -143,7 +143,8 @@ var styles = react_native_1.StyleSheet.create({
         color: '#394C6D'
     },
     imgFooter: {
-        width: '50%'
+        width: '50%',
+        marginTop: 40
     },
     bgButton: {
         backgroundColor: '#FCA234',
@@ -160,7 +161,7 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: -20
     },
     boxInput: {
-        marginVertical: 30,
+        marginVertical: 10,
         height: 245
     },
     styleTitle: {
