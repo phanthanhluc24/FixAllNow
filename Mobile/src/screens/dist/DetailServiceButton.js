@@ -7,7 +7,7 @@ var DetailServiceButton = function (_a) {
     var serviceInfo = _a.serviceInfo;
     var navigation = native_1.useNavigation();
     var handleBookNow = function () {
-        navigation.navigate('MapScreen');
+        navigation.navigate('MapBookingScreen');
     };
     var handleBookSchedule = function () {
         navigation.navigate('FormBookSchedule', { serviceInfo: serviceInfo });
@@ -31,7 +31,6 @@ var styles = react_native_1.StyleSheet.create({
         width: '100%'
     },
     buttonNow: {
-        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

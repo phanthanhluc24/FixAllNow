@@ -87,10 +87,8 @@ var ProfileHeaderRepairmanFinder = function () {
                     err_1 = _a.sent();
                     setSingleFile(null);
                     if (react_native_document_picker_1["default"].isCancel(err_1)) {
-                        react_native_1.Alert.alert('Canceled');
                     }
                     else {
-                        react_native_1.Alert.alert('Unknown Error: ' + JSON.stringify(err_1));
                         throw err_1;
                     }
                     return [3 /*break*/, 3];

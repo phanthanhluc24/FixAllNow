@@ -20,11 +20,9 @@ import DocumentPicker, {
 } from 'react-native-document-picker';
 import {useNavigation} from '@react-navigation/native';
 import useAddNewService from '../../hooks/useAddNewService';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const FormAddNewService = () => {
-
   const navigation: any = useNavigation();
-
-  
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
@@ -37,9 +35,7 @@ const FormAddNewService = () => {
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {
-        Alert.alert('Canceled');
       } else {
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
@@ -51,10 +47,12 @@ const FormAddNewService = () => {
     setError,
   } = useForm();
   const {sendData} = useAddNewService();
+  const hasLettersAndNoNumbers = (value: string) => {
+    return /[a-zA-Z]/.test(value) && !/\d/.test(value);
+  };
   const onSubmit = async (data: any) => {
     
     try {
-      console.log(data)
       const errorFields = [];
       if (!data.service_name.trim()) errorFields.push('service_name');
       if (!data.price) errorFields.push('price');
@@ -68,11 +66,14 @@ const FormAddNewService = () => {
       data.image = singleFile;
       const responseData = await sendData(data);
       if (responseData) {
-        Alert.alert('Dịch vụ thêm thành công!');
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Thành công',
+          textBody: "Dịch vụ đã thêm thành công!",
+        });
         navigation.navigate('Profile');
       }
     } catch (error) {
-      console.error('Error while sending data:', error);
     }
   };
   const handleCancle=()=>{
@@ -102,7 +103,9 @@ const FormAddNewService = () => {
                 />
               )}
               name="service_name"
-              rules={{required: '* Tên không được bỏ trống'}}
+              rules={{required: '* Tên không được bỏ trống',
+              validate: value =>
+              hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số',}}
               defaultValue=""
             />
             {errors.service_name && (
@@ -147,7 +150,9 @@ const FormAddNewService = () => {
                 />
               )}
               name="desc"
-              rules={{required: '* Mô tả không được bỏ trống'}}
+              rules={{required: '* Mô tả không được bỏ trống',
+              validate: value =>
+              hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số',}}
               defaultValue=""
             />
             {errors.desc && (
@@ -219,7 +224,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonNow: {
-    marginHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

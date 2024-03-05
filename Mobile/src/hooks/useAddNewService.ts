@@ -18,7 +18,6 @@ const useAddNewService = () => {
       });
       return response;
   }catch(error:any){
-    console.log(error);
     throw error;
   }};
   return {sendData};

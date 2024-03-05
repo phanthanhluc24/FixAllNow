@@ -60,39 +60,39 @@ var styles = react_native_1.StyleSheet.create({
         marginHorizontal: 20
     },
     comment: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     writeComment: {
-        width: "100%",
+        width: '100%',
         height: 50,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: "#394C6D",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
+        borderColor: '#394C6D',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     avatar: {
         width: 54,
         height: 54,
         borderRadius: 100,
         borderWidth: 3,
-        borderColor: "black",
-        alignItems: "center",
-        justifyContent: "center"
+        borderColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     avatarComment: {
         width: 50,
         height: 50
     },
     content: {
-        width: "80%"
+        width: '80%'
     },
     comments: {
         fontSize: 16,
-        color: "#394C6D",
+        color: '#394C6D',
         marginVertical: 10
     }
 });

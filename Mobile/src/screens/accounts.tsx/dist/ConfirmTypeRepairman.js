@@ -56,11 +56,6 @@ var ConfirmTypeRepairman = function () {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titleJob }, "Ba\u0323n la\u0300 th\u01A1\u0323 gi\u0300?"),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error.role),
                             react_1["default"].createElement(react_native_element_dropdown_1.Dropdown, { style: styles.dropdown, placeholderStyle: styles.placeholderStyle, selectedTextStyle: styles.selectedTextStyle, inputSearchStyle: styles.inputSearchStyle, iconStyle: styles.iconStyle, data: data || [], search: true, maxHeight: 300, labelField: "label", valueField: "value", placeholder: "L\u01B0\u0323a cho\u0323n ngh\u00EA\u0300 nghi\u00EA\u0323p", searchPlaceholder: "Search...", value: selectedCategory, onChange: function (item) {
-                                    // setValue(prevValue => ({
-                                    //   ...prevValue,
-                                    //   label: item.label,
-                                    //   value: item.value,
-                                    // }));
                                     setSelectedCategory(item);
                                     setFieldValue('_id', item.value);
                                 }, renderItem: renderItem }),
@@ -75,12 +70,10 @@ var ConfirmTypeRepairman = function () {
                                         if (!selectedCategory) {
                                             isValid = false;
                                             setError(function (prevState) { return (__assign(__assign({}, prevState), { role: 'Vui lòng chọn nghề nghiệp' })); });
-                                            // Alert.alert('Lỗi', 'Vui lòng chọn nghề nghiệp');
                                         }
                                         if (!values.address) {
                                             isValid = false;
                                             setError(function (prevState) { return (__assign(__assign({}, prevState), { address: 'Vui lòng điền địa chỉ' })); });
-                                            // Alert.alert('Lỗi', 'Vui lòng điền địa chỉ');
                                         }
                                         if (isValid) {
                                             navigation.navigate('SignUp', {

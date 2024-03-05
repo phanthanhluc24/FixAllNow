@@ -17,9 +17,7 @@ const useGetListRepairmanOfCategorySpecific = (id:string) => {
           },
         );
         setListRepairmanOfCategory(response.data.data);
-        console.log(response.data.data)
       } catch (error) {
-        console.error('Error fetching service of repairman:', error);
         setIsError(true);
       } finally {
         setIsLoading(false);

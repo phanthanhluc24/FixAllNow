@@ -20,12 +20,25 @@ var ListServiceSearch = function (_a) {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, "vn\u0111")),
                         react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc))))));
     };
+    if (!data || data.length === 0) {
+        return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
+            react_1["default"].createElement(react_native_1.Text, { style: styles.emptyText }, "Kh\u00F4ng co\u0301 th\u00F4ng tin tru\u0300ng kh\u01A1\u0301p na\u0300o!")));
+    }
     return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopulars },
         react_1["default"].createElement(react_native_1.View, { style: styles.containerss },
             react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item._id; }, renderItem: renderItemSearch }))));
 };
 exports["default"] = ListServiceSearch;
 var styles = react_native_1.StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    emptyText: {
+        fontSize: 18,
+        color: "#FCA234"
+    },
     repairmanPopulars: {
         flex: 1,
         marginTop: 10

@@ -18,14 +18,13 @@ const useGetServiceRevolve = (id:string) => {
         );
         setServiceRevolve(response.data.data);
       } catch (error) {
-        console.error('Error fetching service of repairman:', error);
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
     };
     fetchServiceRevolve();
-  }, []);
+  }, [id]);
   return {serviceRevolve, isLoading, isError};
 };
 export default useGetServiceRevolve;

@@ -49,21 +49,18 @@ var ForgotPassword = function () {
     var handleSubmitVerification = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log(values.email);
-                    return [4 /*yield*/, useVerificationEmail_1["default"](values.email).then(function (res) {
-                            if (res.status != 201) {
-                                setErrorServer(res.message);
-                            }
-                            else {
-                                navigation.navigate('ConfirmCode', {
-                                    code: res.code,
-                                    refreshCode: res.refreshCode,
-                                    resetPasswordToken: res.resetPasswordToken
-                                });
-                                console.log(res.code);
-                            }
-                        })];
+                case 0: return [4 /*yield*/, useVerificationEmail_1["default"](values.email).then(function (res) {
+                        if (res.status != 201) {
+                            setErrorServer(res.message);
+                        }
+                        else {
+                            navigation.navigate('ConfirmCode', {
+                                code: res.code,
+                                refreshCode: res.refreshCode,
+                                resetPasswordToken: res.resetPasswordToken
+                            });
+                        }
+                    })];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];

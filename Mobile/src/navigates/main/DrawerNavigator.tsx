@@ -9,6 +9,7 @@ import Notification from '../../screens/feed/Repairman_Finder/Notification';
 import Profile from '../../screens/feed/Repairman_Finder/Profile';
 import HeaderTitleComponent from '../../screens/HeaderTitleComponent';
 import BottomTab from '../../screens/bottomTab/BottomTab';
+import HeaderNotification from '../../screens/HeaderNotification/';
 interface OptionsScreenProps {
   drawerIcon: any;
   backgroundColor?: string;
@@ -27,7 +28,7 @@ const DrawerNavigator = () => {
   const optionsScreen = ({
     drawerIcon,
     headerTitle,
-    size = 24,
+    size = 24,labelColor = 'black'
   }: OptionsScreenProps) => ({
     drawerIcon: ({color}: {color: string}) => (
       <Image
@@ -37,6 +38,8 @@ const DrawerNavigator = () => {
     ),
     ...headerOptions,
     headerTitle,
+    drawerLabelStyle: { color: labelColor }, 
+    activeTintColor: labelColor 
   });
   return (
     <GestureHandlerRootView style={styles.DrawerContainer}>
@@ -56,6 +59,7 @@ const DrawerNavigator = () => {
             drawerIcon: require(`${URL_IMAGE}/iconhome.png`),
             headerTitle: () => <HeaderTitleComponent />,
             backgroundColor: 'white',
+            
           })
         }
         >
@@ -75,7 +79,7 @@ const DrawerNavigator = () => {
           component={Notification}
           options={optionsScreen({
             drawerIcon: require(`${URL_IMAGE}/iconnotification.png`),
-            headerTitle: () => <HeaderTitleComponent />,
+            headerTitle: () => <HeaderNotification/>,
             backgroundColor: 'white',
           })}
         />

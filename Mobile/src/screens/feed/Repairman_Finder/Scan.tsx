@@ -1,8 +1,6 @@
 import { Alert, Button, Image, StyleSheet, Text, View, Keyboard } from 'react-native'
 import React, { useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
-// import { Dropdown } from 'react-native-element-dropdown'
-// import useCategoryData from '../../../hooks/useCategoryData'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import QuestionAndAnswer from '../../QuestionAndAnswer'
 import useAskAiToGiveAnswer from '../../../hooks/useAskAiToGiveAnswer'
@@ -11,10 +9,6 @@ interface ItemType {
   value: any;
 }
 const Scan = () => {
-  // const data = useCategoryData();
-  // const [selectedCategory, setSelectedCategory] = useState<ItemType | null>(
-  //   null,
-  // );
   const { questionAndAnswer, answer,isLoading,setIsLoading } = useAskAiToGiveAnswer()
   const [question, setQuestion] = useState<string>("")
   const clientQuestion = { question: question }
@@ -28,21 +22,6 @@ const Scan = () => {
     <View style={styles.container}>
       <View style={styles.headerScan}>
         <Image source={require("../../../assets/Landing/logo.png")} style={styles.image}></Image>
-        {/* <Text style={styles.textTitle}>Bạn muốn hỏi về dịch vụ nào?</Text> */}
-        {/* <Dropdown
-          style={styles.dropdown}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          placeholder="Lựa chọn loại dịch vụ bạn muốn hỏi"
-          minHeight={300}
-          labelField="label"
-          valueField={"value"}
-          data={data || []}
-          value={selectedCategory}
-          onChange={(value)=>setSelectedCategory(value.value)}
-        /> */}
       </View>
       <QuestionAndAnswer answer={answer} isLoading={isLoading} />
       <View style={{ flex: 2 }}>
@@ -59,7 +38,6 @@ const Scan = () => {
     </View>
   )
 }
-
 export default Scan
 
 const styles = StyleSheet.create({

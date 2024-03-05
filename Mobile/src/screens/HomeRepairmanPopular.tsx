@@ -9,6 +9,7 @@ import {
 import React, {useState} from 'react';
 import useGetRepairmansPopular from '../hooks/useGetRepairmansPopular';
 import {useNavigation} from '@react-navigation/native';
+import LoaderKit from 'react-native-loader-kit';
 interface typeRepairman {
   _id: string;
   full_name: string;
@@ -31,7 +32,17 @@ const HomeRepairmanPopular = () => {
     }
   };
   if (isLoading) {
-    return <Text style={styles.loadingText}>Loading...</Text>;
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+        </Text>
+      </View>
+    );
   }
   if (isError) {
     return <Text>Error loading categories</Text>;
@@ -199,9 +210,10 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
   },
 });

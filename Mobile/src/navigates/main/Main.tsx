@@ -24,9 +24,10 @@ import ConfirmInforBooking from '../../screens/ConfirmInforBooking';
 import FormAddNewService from '../../screens/forms/FormAddNewService';
 import EditInfoService from '../../screens/forms/EditInfoService';
 import EditAvatarCurrentUser from '../../screens/forms/EditAvatarCurrentUser';
-import MapScreen from '../../screens/MapScreen';
+import MapBookingScreen from '../../screens/MapBookingScreen';
 import HistoryStore from '../../screens/HistoryStore';
 import HeaderTitleComponent from '../../screens/HeaderTitleComponent';
+import ResultSearch from '../../screens/ResultSearch';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -103,9 +104,9 @@ const Main = () => {
         <Stack.Screen
           name="DetailService"
           component={DetailService}
-          options={({route}: any) => ({
+          options={() => ({
             headerShown: true,
-            headerTitle: `${route.params?.title}`,
+            headerTitle: `Chi tiết dịch vụ`,
           })}
         />
         <Stack.Screen
@@ -165,8 +166,8 @@ const Main = () => {
           })}
         />
         <Stack.Screen
-          name="MapScreen"
-          component={MapScreen}
+          name="MapBookingScreen"
+          component={MapBookingScreen}
           options={() => ({
             headerShown: true,
             headerTitle: "Tìm vị trí thợ",
@@ -178,6 +179,14 @@ const Main = () => {
           options={() => ({
             headerShown: true,
             headerTitle: "Lịch sử cửa hàng",
+          })}
+        />
+        <Stack.Screen
+          name="ResultSearch"
+          component={ResultSearch}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Kết quả tìm kiếm",
           })}
         />
         {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}

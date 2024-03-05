@@ -6,6 +6,16 @@ var AntDesign_1 = require("react-native-vector-icons/AntDesign");
 var react_native_2 = require("react-native");
 var Notification = function () {
     var _a = react_1.useState(false), clicked = _a[0], setClicked = _a[1];
+    // const {notifications, isLoading, isError} =useGetNotificationBooking();
+    // if (isLoading) {
+    //   return <Text style={styles.loadingText}>Loading...</Text>;
+    // }
+    // if (notifications.length === 0) {
+    //   return <Text>Services not available!</Text>;
+    // }
+    // if (isError) {
+    //   return <Text>Error loading categories</Text>;
+    // }
     var handlePress = function () {
         setClicked(true);
     };
@@ -28,6 +38,13 @@ var Notification = function () {
 };
 exports["default"] = Notification;
 var styles = react_native_1.StyleSheet.create({
+    loadingText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'gray',
+        textAlign: 'center',
+        marginTop: 10
+    },
     time: {
         color: 'blue'
     },

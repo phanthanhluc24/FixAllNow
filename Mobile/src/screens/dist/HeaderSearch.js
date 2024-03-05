@@ -63,42 +63,50 @@ var HeaderSearch = function (_a) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
+                    if (!(searchValue.trim() !== '')) return [3 /*break*/, 5];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
+                case 2:
                     accessToken = _a.sent();
                     return [4 /*yield*/, axios_1["default"].post(url_1.url + "/service/research", {
                             search: searchValue
                         }, {
                             headers: { Authorization: "Bearer " + accessToken }
                         })];
-                case 2:
+                case 3:
                     response = _a.sent();
                     searchData = response.data.data;
                     onSearch(searchData);
-                    return [3 /*break*/, 4];
-                case 3:
+                    return [3 /*break*/, 5];
+                case 4:
                     error_1 = _a.sent();
-                    console.error('Error searching:', error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 5:
+                    ;
+                    return [2 /*return*/];
             }
         });
     }); };
+    react_1.useEffect(function () {
+        setSearchValue(function (prevSearchValue) { return prevSearchValue; });
+    }, []);
+    react_1.useEffect(function () {
+        if (searchValue.trim() !== '') {
+            handleSearch();
+        }
+    }, [searchValue]);
     return (react_1["default"].createElement(react_native_1.View, { style: styles.SearchBarContainer },
         react_1["default"].createElement(react_native_1.View, { style: styles.SearchInputs },
             react_1["default"].createElement(react_native_1.View, { style: styles.searchInput },
-                react_1["default"].createElement(react_native_1.TextInput, { multiline: true, value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
+                react_1["default"].createElement(react_native_1.TextInput, { value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.messageIcon, onPress: handleSearch },
-                    react_1["default"].createElement(Feather_1["default"], { name: "search", color: "black", size: 28 }))),
-            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('Profile'); } },
-                react_1["default"].createElement(react_native_1.Image, { source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image }, style: styles.images })))));
+                    react_1["default"].createElement(Feather_1["default"], { name: "search", color: "black", size: 28 }))))));
 };
 exports["default"] = HeaderSearch;
 var styles = react_native_1.StyleSheet.create({
-    SearchBarContainer: {
-        flex: 1
-    },
+    SearchBarContainer: {},
     searchInput: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -107,12 +115,11 @@ var styles = react_native_1.StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 10,
         borderWidth: 1,
-        width: '80%',
+        width: '100%',
         backgroundColor: 'white',
         paddingLeft: 15
     },
     SearchInputs: {
-        flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 20,
         marginVertical: 5,
@@ -125,8 +132,10 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'center'
     },
     images: {
-        width: 50, height: 50, borderRadius: 100,
+        width: 50,
+        height: 50,
+        borderRadius: 100,
         borderWidth: 3,
-        borderColor: "#394C6D"
+        borderColor: '#394C6D'
     }
 });

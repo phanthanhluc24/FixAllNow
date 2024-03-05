@@ -11,6 +11,7 @@ import useGetDetailRepairman from '../hooks/useGetDetailRepairman';
 import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DetailCommentRepairman from './DetailCommentRepairman';
+import LoaderKit from 'react-native-loader-kit';
 interface typeService {
   _id: string;
   status: string;
@@ -23,13 +24,22 @@ interface typeService {
 const DetailHeaderRepairman = () => {
   const route = useRoute();
   const {id}: any = route.params;
-  console.log(id);
-  const {repairman } = useGetDetailRepairman(id);
-  const {serviceOfRepairman,isLoading, isError} = useGetServiceOfRepairman(id);
-  console.log(serviceOfRepairman);
+  const {repairman} = useGetDetailRepairman(id);
+  const {serviceOfRepairman, isLoading, isError} = useGetServiceOfRepairman(id);
   const navigation: any = useNavigation();
   if (isLoading) {
-    return <Text style={styles.loadingText}>Loading...</Text>;
+    return (
+      <View style={{alignItems: 'center', flex:1, justifyContent:"center"}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+          
+        </Text>
+      </View>
+    );
   }
   if (isError) {
     return <Text>Error loading repairman</Text>;
@@ -44,10 +54,6 @@ const DetailHeaderRepairman = () => {
         <Text style={styles.titles}>Họ và tên: </Text>
         <Text style={styles.content}>{repairman?.full_name}</Text>
       </View>
-      {/* <View style={styles.detailInfo}>
-        <Text style={styles.titles}>Nghề nghiệp: </Text>
-        <Text style={styles.content}>{repairman?.category_id.name}</Text>
-      </View> */}
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>Số điện thoại: </Text>
         <Text style={styles.content}>{repairman?.number_phone}</Text>
@@ -62,40 +68,46 @@ const DetailHeaderRepairman = () => {
       <View style={styles.containerService}>
         <Text style={styles.service}>Dịch vụ</Text>
         <View style={{marginHorizontal: 20}}>
-          <FlatList
-            data={serviceOfRepairman as typeService[]}
-            keyExtractor={services => services._id}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                style={styles.repairman}
-                onPress={() =>
-                  navigation.navigate('DetailService', {
-                    id: item._id,
-                    title: item.service_name,
-                  })
-                }>
-                <View style={styles.contents}>
-                  <View style={styles.imgSer}>
-                    <Image source={{uri: item.image}} style={styles.img} />
-                  </View>
-                  <View style={styles.infos}>
-                    <Text numberOfLines={1} style={styles.nameRepairman}>
-                      {item.service_name}
-                    </Text>
-                    <View style={styles.prices}>
-                      <Text style={styles.price}>
-                        {item.price.toLocaleString('vi-VN')}
-                      </Text>
-                      <Text style={styles.vnd}> VND</Text>
+          {serviceOfRepairman.length > 0 ? (
+            <FlatList
+              data={serviceOfRepairman as typeService[]}
+              keyExtractor={services => services._id}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  style={styles.repairman}
+                  onPress={() =>
+                    navigation.navigate('DetailService', {
+                      id: item._id,
+                      title: item.service_name,
+                    })
+                  }>
+                  <View style={styles.contents}>
+                    <View style={styles.imgSer}>
+                      <Image source={{uri: item.image}} style={styles.img} />
                     </View>
-                    <Text numberOfLines={2} style={styles.description}>
-                      {item.desc}
-                    </Text>
+                    <View style={styles.infos}>
+                      <Text numberOfLines={1} style={styles.nameRepairman}>
+                        {item.service_name}
+                      </Text>
+                      <View style={styles.prices}>
+                        <Text style={styles.price}>
+                          {item.price.toLocaleString('vi-VN')}
+                        </Text>
+                        <Text style={styles.vnd}> VND</Text>
+                      </View>
+                      <Text numberOfLines={2} style={styles.description}>
+                        {item.desc}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+                </TouchableOpacity>
+              )}
+            />
+          ) : (
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={styles.noService}>(Chưa có dịch vụ nào!)</Text>
+            </View>
+          )}
         </View>
       </View>
       <DetailCommentRepairman />
@@ -106,12 +118,17 @@ const DetailHeaderRepairman = () => {
 export default DetailHeaderRepairman;
 
 const styles = StyleSheet.create({
+  noService: {
+    fontSize: 15,
+    color: 'black',
+  },
   loadingText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+    alignItems: 'center',
     marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
   },
   containerHeaderRepairman: {
     flex: 1,

@@ -26,7 +26,6 @@ const SignUp = () => {
  
   const route = useRoute();
   const {selectedRole, _id, address}: any = route.params || {};
-  // console.log(selectedRole, _id, address);
   const navigation: any = useNavigation();
   const [error, setError] = useState('');
   const [register, setRegister] = useState<Register>({
@@ -91,7 +90,6 @@ const SignUp = () => {
         }
       })
     } catch (error) {
-      console.error('Error during signup', error);
     }
   }
   };

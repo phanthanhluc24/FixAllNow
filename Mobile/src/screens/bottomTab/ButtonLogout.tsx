@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import useLogout from '../../hooks/useLogout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 const ButtonLogout = () => {
   const {logout} = useLogout();
@@ -22,11 +23,15 @@ const ButtonLogout = () => {
     logout(token)
       .then(res => {
         if (res.status === 201) {
+          Toast.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'Thành công',
+            textBody: 'Đăng xuất thành công!',
+          })
           navigation.navigate('SignIn');
         }
       })
       .catch(error => {
-        console.log(error);
       });
 
     };

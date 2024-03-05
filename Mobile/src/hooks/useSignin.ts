@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from './apiRequest/url';
 import {Alert, ToastAndroid} from 'react-native';
 import {useState} from "react"
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+
 interface Account {
   email: string;
   password: string;
@@ -21,8 +23,11 @@ const useSignin = ({navigation}: any) => {
       if (res.data.status=== 201){
         const accessToken= res.data.accessToken;
         await AsyncStorage.setItem('accessToken',accessToken);
-        console.log(accessToken)
-        ToastAndroid.showWithGravity(res.data.message, ToastAndroid.LONG, ToastAndroid.CENTER);
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Thành công',
+          textBody: 'Đăng nhập thành công!',
+        })
         navigation.reset({
           index: 0,
           routes: [{ name: 'Root' }],
@@ -31,16 +36,6 @@ const useSignin = ({navigation}: any) => {
         setErrorServer(res.data.message)
       }
     } catch (error:any){
-      console.log(error);
-      
-      // if (error.response) {
-      //   const errorMessage = error.response.data.message;
-      //   ToastAndroid.showWithGravity(errorMessage, ToastAndroid.LONG, ToastAndroid.CENTER);
-      // } else if (error.request) {
-      //   ToastAndroid.showWithGravity('Không có phản hồi từ máy chủ', ToastAndroid.LONG, ToastAndroid.CENTER);
-      // } else {
-      //   ToastAndroid.showWithGravity('Lỗi khi thiết lập yêu cầu', ToastAndroid.LONG, ToastAndroid.CENTER);
-      // }
     }
   };
   return {handleSignin,errorServer};

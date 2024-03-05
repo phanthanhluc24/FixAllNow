@@ -59,7 +59,6 @@ var Profile = function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
-                        console.error('Chưa lấy được thông tin của người dùng');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

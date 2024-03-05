@@ -43,6 +43,7 @@ var MaterialCommunityIcons_1 = require("react-native-vector-icons/MaterialCommun
 var useLogout_1 = require("../../hooks/useLogout");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var native_1 = require("@react-navigation/native");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
 var ButtonLogout = function () {
     var logout = useLogout_1["default"]().logout;
     var _a = react_1.useState(''), token = _a[0], setToken = _a[1];
@@ -66,10 +67,14 @@ var ButtonLogout = function () {
         logout(token)
             .then(function (res) {
             if (res.status === 201) {
+                react_native_alert_notification_1.Toast.show({
+                    type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                    title: 'Thành công',
+                    textBody: 'Đăng xuất thành công!'
+                });
                 navigation.navigate('SignIn');
             }
         })["catch"](function (error) {
-            console.log(error);
         });
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.TouchableOpacity, { style: styles.iconEdit, onPress: handleLogout },

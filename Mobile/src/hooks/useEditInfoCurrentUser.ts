@@ -1,24 +1,24 @@
 import axios from 'axios';
 import {url} from './apiRequest/url';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const useEditInfoCurrentUser = async(formData: any) => {
-    console.log(formData)
     try{
       const accessToken = await AsyncStorage.getItem('accessToken');
-      const data = new FormData();
-      data.append('full_name', formData.full_name);
-      data.append('number_phone', formData.number_phone);
-      data.append('email', formData.email);
-      data.append('image',formData.image);
-      const response = await axios.post(`${url}/editCurrentUser`, data ,{
+      const response = await axios.put(`${url}/user/editInformation`,formData,{
         headers: {
-         "Content-Type":"multipart/form-data",
          Authorization: `Bearer ${accessToken}`
         }
       });
+      if(response.data.status){
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Thành công',
+          textBody: 'Thông tin người dùng đã được chỉnh sửa!',
+        })
+      }
       return response;
   }catch(error:any){
-    console.log(error);
     throw error;
   };
   

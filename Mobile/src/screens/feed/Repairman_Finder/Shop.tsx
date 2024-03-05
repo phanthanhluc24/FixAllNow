@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { View, Modal, Button, Text } from 'react-native';
-
+import { ALERT_TYPE, Dialog, Toast } from 'react-native-alert-notification';
 const Shop = () => {
-
-
     return (
        <View>
-          {/* <Modal visible={true} >
-            <View style={styles.modal}>
-              <View style={styles.modalContent}>
-                <Text style={styles.title}>Dịch vụ của bạn có người đặt lịch</Text>
-                <View style={styles.underline}></View>
-                <Image style={styles.image} source={require("../../../assets/role/logo.png")}></Image>
-                <View style={styles.viewDetails}>
-                  <Text style={styles.textTitle}>Người đặt:<Text style={styles.textSubTitle}>Phan Thanh Lực</Text></Text>
-                  <Text style={styles.textTitle}>Ngày:<Text style={styles.textSubTitle}>13-03-2003</Text> </Text>
-                  <Text style={styles.textTitle}>Giờ:<Text style={styles.textSubTitle}>15 AM</Text></Text>
-                </View>
-                <View style={styles.spaceButton}>
-                <Button title="Đóng" onPress={hideModal} color={"gray"}/>
-                <Button title="Chi tiết" onPress={detailBooking} color={"#FCA234"}/>
-                </View>
-              </View>
-            </View>
-          </Modal> */}
+          <Button
+      title={'dialog box'}
+      onPress={() =>
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Congrats! this is dialog box success',
+          button: 'close',
+        })
+      }
+    />
+     <Button
+      title={'toast notification'}
+      onPress={() =>
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Congrats! this is toast notification success',
+        })
+      }
+    />
         </View>
     )
 };

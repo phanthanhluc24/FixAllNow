@@ -7,7 +7,6 @@ var StarRating_1 = require("./StarRating");
 var RatedComment = function () {
     var navigation = native_1.useNavigation();
     var handleRatingPress = function (rating) {
-        console.log('Rated:', rating);
     };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },

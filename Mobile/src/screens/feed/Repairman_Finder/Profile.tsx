@@ -13,7 +13,6 @@ const Profile = () => {
         const role = await AsyncStorage.getItem('roleCurrentUser');
         setRoleCurrentUser(role);
       } catch (error) {
-        console.error('Chưa lấy được thông tin của người dùng');
       }
     };
 

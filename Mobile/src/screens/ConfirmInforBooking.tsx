@@ -11,8 +11,8 @@ const ConfirmInforBooking = ({route}: any) => {
   const addressRepair = infoBooking.address;
   const desc=infoBooking.bugService
   const priceService = (5 / 100) * priceRepair;
-  const priceMoves = 10000;
-  const totalPrice = priceRepair + priceService + priceMoves;
+  const priceTransport = 10000;
+  const totalPrice = priceRepair + priceService + priceTransport;
   const navigation: any = useNavigation();
   const [selectedMethod, setSelectedMethod] = useState<number|null>(null);
   const [errorPayment,setErrorPayment]=useState<string|null>(null)
@@ -20,7 +20,7 @@ const ConfirmInforBooking = ({route}: any) => {
   const data={
     dayRepair:infoBooking.date,
     timeRepair:infoBooking.time,
-    priceMoves,
+    priceTransport,
     priceService,
     address:addressRepair,
     desc:desc
@@ -42,15 +42,16 @@ const ConfirmInforBooking = ({route}: any) => {
   }
   return (
     <View style={styles.container}>
+     
+      <View style={styles.infoContainer}>
       <View style={styles.titleConfirm}>
         <Text style={styles.title}>XÁC NHẬN THÔNG TIN</Text>
       </View>
-      <View style={styles.infoContainer}>
         <View style={styles.infoService}>
           <Text style={styles.titleInfo}>Thông tin dịch vụ</Text>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Đơn sửa:</Text>
-            <Text style={styles.infors}>{serviceBooking}</Text>
+            <Text numberOfLines={2} style={styles.infors}>{serviceBooking}</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Thợ:</Text>
@@ -73,13 +74,13 @@ const ConfirmInforBooking = ({route}: any) => {
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Phí di chuyển:</Text>
             <Text style={styles.infors}>
-              {priceMoves.toLocaleString('vi-VN')}
+              {priceTransport.toLocaleString('vi-VN')}
             </Text>
             <Text style={styles.inforss}>VNĐ</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Địa điểm:</Text>
-            <Text style={styles.infors}>{addressRepair}</Text>
+            <Text numberOfLines={2} style={styles.infors}>{addressRepair}</Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Tổng:</Text>
@@ -91,15 +92,19 @@ const ConfirmInforBooking = ({route}: any) => {
         </View>
         <View style={styles.infoService}>
           <Text style={styles.titleInfo}>Chọn phương thức thanh toán</Text>
-          {errorPayment!=="OK" && <Text>{errorPayment}</Text>}
+          <View style={{height:20}}>
+          {errorPayment!=="OK" && <Text style={{color:"red", fontWeight:"bold"}}>{errorPayment}</Text>}
+          </View>
+          
           <View style={styles.method}>
+           
             <TouchableOpacity
               style={[
                 styles.buttonMethod,
                 selectedMethod === 1 && styles.selectedMethod,
               ]}
               onPress={handleMethodSelect}>
-              <Image
+              <Image style={styles.image1}
                 source={require('../assets/ConfirmBooking/iconMomo.png')}
               />
               <Text style={styles.titleMethod}>TT tiền mặt</Text>
@@ -110,7 +115,7 @@ const ConfirmInforBooking = ({route}: any) => {
                 selectedMethod === 2 && styles.selectedMethod,
               ]}
               onPress={() => handleMomoSelect()}>
-              <Image
+              <Image  style={styles.image2}
                 source={require('../assets/ConfirmBooking/iconPrice.png')}
               />
               <Text style={styles.titleMethod}>TT qua momo</Text>
@@ -146,6 +151,14 @@ const ConfirmInforBooking = ({route}: any) => {
 export default ConfirmInforBooking;
 
 const styles = StyleSheet.create({
+  image1:{
+    width:20,
+    height:20
+  },
+  image2:{
+    width:20,
+    height:20
+  },
   buttonMethod: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -156,6 +169,7 @@ const styles = StyleSheet.create({
   },
   selectedMethod: {
     borderColor: 'green',
+    borderWidth: 3,
   },
   titleMethod: {
     marginLeft: 10,
@@ -164,7 +178,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonNow: {
-    marginHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -218,6 +231,7 @@ const styles = StyleSheet.create({
   //   color: '#FCA234',
   // },
   method: {
+    height:100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -254,7 +268,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginVertical: 5,
     width: '80%',
   },
   titleInfo: {
@@ -268,7 +282,6 @@ const styles = StyleSheet.create({
   titleConfirm: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
   },
   title: {
     fontSize: 25,
@@ -280,7 +293,7 @@ const styles = StyleSheet.create({
     flex: 8,
   },
   event: {
-    flex: 1,
+    flex: 2,
   },
   infoService: {
     marginHorizontal: 20,

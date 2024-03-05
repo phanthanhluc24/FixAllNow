@@ -65,7 +65,6 @@ var useAddNewService = function () {
                     return [2 /*return*/, response];
                 case 3:
                     error_1 = _a.sent();
-                    console.log(error_1);
                     throw error_1;
                 case 4: return [2 /*return*/];
             }

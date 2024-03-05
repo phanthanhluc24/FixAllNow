@@ -60,11 +60,9 @@ var useGetListRepairmanOfCategorySpecific = function (id) {
                     case 2:
                         response = _a.sent();
                         setListRepairmanOfCategory(response.data.data);
-                        console.log(response.data.data);
                         return [3 /*break*/, 5];
                     case 3:
                         error_1 = _a.sent();
-                        console.error('Error fetching service of repairman:', error_1);
                         setIsError(true);
                         return [3 /*break*/, 5];
                     case 4:

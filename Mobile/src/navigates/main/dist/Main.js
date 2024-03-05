@@ -20,8 +20,9 @@ var ConfirmInforBooking_1 = require("../../screens/ConfirmInforBooking");
 var FormAddNewService_1 = require("../../screens/forms/FormAddNewService");
 var EditInfoService_1 = require("../../screens/forms/EditInfoService");
 var EditAvatarCurrentUser_1 = require("../../screens/forms/EditAvatarCurrentUser");
-var MapScreen_1 = require("../../screens/MapScreen");
+var MapBookingScreen_1 = require("../../screens/MapBookingScreen");
 var HistoryStore_1 = require("../../screens/HistoryStore");
+var ResultSearch_1 = require("../../screens/ResultSearch");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -50,14 +51,10 @@ var Main = function () {
                         headerTitle: "" + ((_b = route.params) === null || _b === void 0 ? void 0 : _b.title)
                     });
                 } }),
-            react_1["default"].createElement(Stack.Screen, { name: "DetailService", component: DetailService_1["default"], options: function (_a) {
-                    var _b;
-                    var route = _a.route;
-                    return ({
-                        headerShown: true,
-                        headerTitle: "" + ((_b = route.params) === null || _b === void 0 ? void 0 : _b.title)
-                    });
-                } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailService", component: DetailService_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Chi ti\u00EA\u0301t di\u0323ch vu\u0323"
+                }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "\u0110a\u0301nh gia\u0301 cu\u0309a ba\u0323n v\u00EA\u0300 th\u01A1\u0323"
@@ -86,13 +83,17 @@ var Main = function () {
                     headerShown: true,
                     headerTitle: "Chỉnh sửa ảnh đại diện"
                 }); } }),
-            react_1["default"].createElement(Stack.Screen, { name: "MapScreen", component: MapScreen_1["default"], options: function () { return ({
+            react_1["default"].createElement(Stack.Screen, { name: "MapBookingScreen", component: MapBookingScreen_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Tìm vị trí thợ"
                 }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "HistoryStore", component: HistoryStore_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Lịch sử cửa hàng"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "ResultSearch", component: ResultSearch_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Kết quả tìm kiếm"
                 }); } }))));
 };
 exports["default"] = Main;

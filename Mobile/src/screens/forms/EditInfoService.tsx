@@ -18,14 +18,19 @@ import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import useEditInfoService from '../../hooks/useEditInfoService';
+import SignIn from '../accounts.tsx/SignIn';
+import { useNavigation } from '@react-navigation/native';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoService = ({route}: any) => {
-  const {service}=route.params;
+  const {service}:any=route.params;
+  const navigation:any= useNavigation();
   const [nameService, setNameService] = useState(service.service_name);
   const [priceService, setPriceService] = useState(service?.price.toString());
   const [descService, setDescService] = useState(service?.desc);
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
+  const [displayDemo,setDisplayDemo]=useState(service.image)
   const handleInputChange = (fieldName: string, value: string) => {
     switch (fieldName) {
       case 'service_name':
@@ -39,49 +44,58 @@ const EditInfoService = ({route}: any) => {
         break;
       default:
         break;
-    }
-  };
-  useEffect(() => {
-    if (service?.image) {
-      setSingleFile({uri: service.image});
-    }
-  }, [service]);
+    };
+  }
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      console.log('res :', res);
-
-      setSingleFile(res);
+      if(res){
+        setDisplayDemo(res.uri)
+        setSingleFile(res);
+      }else{
+        setSingleFile(null);
+      }
     } catch (err) {
-      setSingleFile(null);
-
       if (DocumentPicker.isCancel(err)) {
-        Alert.alert('Canceled');
       } else {
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
     }
   };
-
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
+  const hasNumbersOnly = (value: string) => {
+    return /^\d+$/.test(value);
+  };
+  const hasLettersAndNoNumbers = (value: string) => {
+    return /[a-zA-Z]/.test(value) && !/\d/.test(value);
+  };
+  const isValidPrice = (value: string) => {
+    return /^\d+$/.test(value);
+  };
   const onSubmit = () => {
     const formData = {
+      service_id:service._id,
       service_name: nameService,
       price: priceService,
       desc: descService,
-      singleFile: singleFile, 
+      image: singleFile,
     };
     useEditInfoService(formData);
+    // Toast.show({
+    //   type: ALERT_TYPE.SUCCESS,
+    //   title: 'Thành công',
+    //   textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
+    // })
+    navigation.navigate('Profile');
   };
   const handleCancle = () => {
-    console.log('Hủy');
+    navigation.navigate("Profile")
   };
   return (
     <KeyboardAvoidingView
@@ -108,12 +122,15 @@ const EditInfoService = ({route}: any) => {
                 />
               )}
               name="service_name"
-              rules={{required: 'Tên không được bỏ trống'}}
+              rules={{required: '* Tên không được bỏ trống',
+              validate: value =>
+              hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số',
+          }}
               defaultValue={nameService}
             />
-            {/* {errors.name && (
-          <Text style={{color: 'red'}}>{errors.name.message}</Text>
-        )} */}
+             {errors.service_name && (
+          <Text style={{color: 'red'}}>{errors.service_name.message}</Text>
+        )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Gía dịch vụ</Text>
@@ -132,12 +149,13 @@ const EditInfoService = ({route}: any) => {
                 />
               )}
               name="price"
-              rules={{required: 'Gía không được bỏ trống '}}
+              rules={{required: '* Giá không được bỏ trống ',
+              validate: value => isValidPrice(value) || '* Giá chỉ được chứa số'}}
               defaultValue={priceService}
             />
-            {/* {errors.email && (
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
-        )} */}
+            {errors.price && (
+          <Text style={{color: 'red'}}>{errors.price.message}</Text>
+        )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Mô tả dịch vụ</Text>
@@ -145,6 +163,7 @@ const EditInfoService = ({route}: any) => {
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
+                multiline={true}
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={text => {
@@ -156,33 +175,22 @@ const EditInfoService = ({route}: any) => {
                 />
               )}
               name="desc"
-              rules={{required: 'Mô tả không được bỏ trống'}}
+              rules={{required: '* Mô tả không được bỏ trống',
+              validate: value =>
+              hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số',
+            }}
               defaultValue={descService}
             />
-            {/* {errors.email && (
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
-        )} */}
+            {errors.desc && (
+          <Text style={{color: 'red'}}>{errors.desc.message}</Text>
+        )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
-            {!!singleFile || (
-              <View style={styles.selectedImage}>
-                <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
-                  <View style={styles.imageView}>
-                    <Entypo name="camera" size={50} color="#FCA234" />
-                  </View>
-                </TouchableOpacity>
-
-                {/* {errors.email && (
-          
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
-        )} */}
-              </View>
-            )}
-            {singleFile && (
+           
               <View style={styles.selectedImage}>
                 <Image
-                  source={{uri: singleFile?.uri}}
+                  source={{uri: displayDemo}}
                   style={styles.imageStyle}></Image>
                 <View style={{position: 'absolute'}}>
                   <TouchableOpacity onPress={selectFile}>
@@ -192,7 +200,7 @@ const EditInfoService = ({route}: any) => {
                   </TouchableOpacity>
                 </View>
               </View>
-            )}
+           
           </View>
         </View>
         <View style={styles.eventSubmit}>
@@ -238,7 +246,7 @@ const styles = StyleSheet.create({
   selectedImage: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 40,
   },
   imageStyle: {
     width: 150,
@@ -294,6 +302,7 @@ const styles = StyleSheet.create({
   
   part: {
     marginVertical: 5,
+    height:100
   },
   infoEdit: {
     color: '#FCA234',
@@ -323,6 +332,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 15,
     color: '#000000',
+    height:50
   },
   mainBody: {
     flex: 1,

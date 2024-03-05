@@ -19,6 +19,7 @@ import {Formik} from 'formik';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import sendVerificationCode from '../../hooks/useSendVerificationCode';
 import sendResendVerificationCode from '../../hooks/useSendResendVerificationCode';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const ConfirmCode = () => {
   const [countdown, setCountdown] = useState(180);
   const [countdownMessage, setCountdownMessage] = useState('');
@@ -42,9 +43,6 @@ const ConfirmCode = () => {
     }
     return () => {
       clearInterval(interval);
-      // if (countdown === 0) {
-      //   Alert.alert('Mã xác thực hết hiệu lực');
-      // }
     };
   }, [countdown]);
   const handleSubmit = async () => {
@@ -56,7 +54,11 @@ const ConfirmCode = () => {
         code: enteredCode,
       });
       if (res.status != 201) {
-        Alert.alert(res.message);
+        Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: 'Lỗi',
+          textBody: res.message,
+        });
       } else {
         if(resetPasswordToken){
           navigation.navigate('NewPassword',{resetPasswordToken})
@@ -66,8 +68,7 @@ const ConfirmCode = () => {
         }
       }
     } catch (error) {
-      console.error('Đã có lỗi xảy ra', error);
-      Alert.alert('Đã có lỗi xảy ra trong quá trình xác thực');
+        throw error
     }
   };
   const handleResendCode = async () => {
@@ -78,16 +79,23 @@ const ConfirmCode = () => {
     try {
       const res = await sendResendVerificationCode({refreshCode: refreshCode});
       if (res.status != 201){
-        Alert.alert(res.message);
+        Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: 'Lỗi',
+          textBody: res.message,
+        });
       } else {
         setNewCode(res.code);
         setCountdown(180);
         setCountdownMessage('');
-        Alert.alert('Vui lòng kiểm tra email để lấy mã!');
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Thành công',
+          textBody: "Vui lòng kiểm tra email để lấy mã!",
+        });
       }
     } catch (error) {
-      console.error('Đã có lỗi xảy ra', error);
-      Alert.alert('Đã có lỗi xảy ra trong quá trình gửi lại mã');
+      throw error
     } finally {
       setIsResending(false);
     }
@@ -105,13 +113,6 @@ const ConfirmCode = () => {
       newCode[index] = '';
       setCodeDigits(newCode);
     }
-    // if (!isNaN(Number(digit))) {
-    //   setCodeDigits(prevDigits => {
-    //     const newDigits = [...prevDigits];
-    //     newDigits[index] = digit;
-    //     return newDigits;
-    //   });
-    // }
   };
   return (
     <Formik initialValues={{code: ''}} onSubmit={handleSubmit}>

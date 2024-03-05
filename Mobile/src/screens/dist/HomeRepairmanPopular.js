@@ -4,6 +4,7 @@ var react_native_1 = require("react-native");
 var react_1 = require("react");
 var useGetRepairmansPopular_1 = require("../hooks/useGetRepairmansPopular");
 var native_1 = require("@react-navigation/native");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
 var HomeRepairmanPopular = function () {
     var navigation = native_1.useNavigation();
     var _a = react_1.useState(1), currentPage = _a[0], setCurrentPage = _a[1];
@@ -14,7 +15,9 @@ var HomeRepairmanPopular = function () {
         }
     };
     if (isLoading) {
-        return react_1["default"].createElement(react_native_1.Text, { style: styles.loadingText }, "Loading...");
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
+            react_1["default"].createElement(react_native_1.Text, null,
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
@@ -140,9 +143,10 @@ var styles = react_native_1.StyleSheet.create({
     },
     loadingText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
-        textAlign: 'center',
-        marginTop: 10
+        alignItems: 'center',
+        marginTop: 10,
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
     }
 });

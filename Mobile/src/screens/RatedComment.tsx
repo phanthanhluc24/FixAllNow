@@ -16,7 +16,6 @@ import StarRating from './StarRating';
 const RatedComment = () => {
   const navigation:any = useNavigation();
   const handleRatingPress = (rating:any) => {
-    console.log('Rated:', rating);
   };
   return (
     <KeyboardAvoidingView

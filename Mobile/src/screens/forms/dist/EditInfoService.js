@@ -42,13 +42,16 @@ var react_hook_form_1 = require("react-hook-form");
 var Entypo_1 = require("react-native-vector-icons/Entypo");
 var react_native_document_picker_1 = require("react-native-document-picker");
 var useEditInfoService_1 = require("../../hooks/useEditInfoService");
+var native_1 = require("@react-navigation/native");
 var EditInfoService = function (_a) {
     var route = _a.route;
     var service = route.params.service;
+    var navigation = native_1.useNavigation();
     var _b = react_1.useState(service.service_name), nameService = _b[0], setNameService = _b[1];
     var _c = react_1.useState(service === null || service === void 0 ? void 0 : service.price.toString()), priceService = _c[0], setPriceService = _c[1];
     var _d = react_1.useState(service === null || service === void 0 ? void 0 : service.desc), descService = _d[0], setDescService = _d[1];
     var _e = react_1.useState(null), singleFile = _e[0], setSingleFile = _e[1];
+    var _f = react_1.useState(service.image), displayDemo = _f[0], setDisplayDemo = _f[1];
     var handleInputChange = function (fieldName, value) {
         switch (fieldName) {
             case 'service_name':
@@ -63,12 +66,8 @@ var EditInfoService = function (_a) {
             default:
                 break;
         }
+        ;
     };
-    react_1.useEffect(function () {
-        if (service === null || service === void 0 ? void 0 : service.image) {
-            setSingleFile({ uri: service.image });
-        }
-    }, [service]);
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
         return __generator(this, function (_a) {
@@ -80,17 +79,19 @@ var EditInfoService = function (_a) {
                         })];
                 case 1:
                     res = (_a.sent())[0];
-                    console.log('res :', res);
-                    setSingleFile(res);
+                    if (res) {
+                        setDisplayDemo(res.uri);
+                        setSingleFile(res);
+                    }
+                    else {
+                        setSingleFile(null);
+                    }
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
-                    setSingleFile(null);
                     if (react_native_document_picker_1["default"].isCancel(err_1)) {
-                        react_native_1.Alert.alert('Canceled');
                     }
                     else {
-                        react_native_1.Alert.alert('Unknown Error: ' + JSON.stringify(err_1));
                         throw err_1;
                     }
                     return [3 /*break*/, 3];
@@ -98,18 +99,34 @@ var EditInfoService = function (_a) {
             }
         });
     }); };
-    var _f = react_hook_form_1.useForm(), control = _f.control, handleSubmit = _f.handleSubmit, errors = _f.formState.errors;
+    var _g = react_hook_form_1.useForm(), control = _g.control, handleSubmit = _g.handleSubmit, errors = _g.formState.errors;
+    var hasNumbersOnly = function (value) {
+        return /^\d+$/.test(value);
+    };
+    var hasLettersAndNoNumbers = function (value) {
+        return /[a-zA-Z]/.test(value) && !/\d/.test(value);
+    };
+    var isValidPrice = function (value) {
+        return /^\d+$/.test(value);
+    };
     var onSubmit = function () {
         var formData = {
+            service_id: service._id,
             service_name: nameService,
             price: priceService,
             desc: descService,
-            singleFile: singleFile
+            image: singleFile
         };
         useEditInfoService_1["default"](formData);
+        // Toast.show({
+        //   type: ALERT_TYPE.SUCCESS,
+        //   title: 'Thành công',
+        //   textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
+        // })
+        navigation.navigate('Profile');
     };
     var handleCancle = function () {
-        console.log('Hủy');
+        navigation.navigate("Profile");
     };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
@@ -122,7 +139,11 @@ var EditInfoService = function (_a) {
                                     onChange(text);
                                     handleInputChange('service_name', text);
                                 }, value: value, defaultValue: nameService }));
-                        }, name: "service_name", rules: { required: 'Tên không được bỏ trống' }, defaultValue: nameService })),
+                        }, name: "service_name", rules: { required: '* Tên không được bỏ trống', validate: function (value) {
+                                return hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số';
+                            }
+                        }, defaultValue: nameService }),
+                    errors.service_name && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.service_name.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gi\u0301a di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
@@ -131,28 +152,29 @@ var EditInfoService = function (_a) {
                                     onChange(text);
                                     handleInputChange('price', text);
                                 }, value: value, defaultValue: priceService }));
-                        }, name: "price", rules: { required: 'Gía không được bỏ trống ' }, defaultValue: priceService })),
+                        }, name: "price", rules: { required: '* Giá không được bỏ trống ', validate: function (value) { return isValidPrice(value) || '* Giá chỉ được chứa số'; } }, defaultValue: priceService }),
+                    errors.price && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.price.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "M\u00F4 ta\u0309 di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
+                            return (react_1["default"].createElement(react_native_1.TextInput, { multiline: true, style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
                                     onChange(text);
                                     handleInputChange('desc', text);
                                 }, value: value, defaultValue: descService }));
-                        }, name: "desc", rules: { required: 'Mô tả không được bỏ trống' }, defaultValue: descService })),
+                        }, name: "desc", rules: { required: '* Mô tả không được bỏ trống', validate: function (value) {
+                                return hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số';
+                            }
+                        }, defaultValue: descService }),
+                    errors.desc && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.desc.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
-                    !!singleFile || (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
-                            react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
-                                react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 50, color: "#FCA234" }))))),
-                    singleFile && (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
-                        react_1["default"].createElement(react_native_1.Image, { source: { uri: singleFile === null || singleFile === void 0 ? void 0 : singleFile.uri }, style: styles.imageStyle }),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
+                        react_1["default"].createElement(react_native_1.Image, { source: { uri: displayDemo }, style: styles.imageStyle }),
                         react_1["default"].createElement(react_native_1.View, { style: { position: 'absolute' } },
                             react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile },
                                 react_1["default"].createElement(react_native_1.View, { style: styles.imageViews },
-                                    react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 25, color: "#394C6D" })))))))),
+                                    react_1["default"].createElement(Entypo_1["default"], { name: "camera", size: 25, color: "#394C6D" }))))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.eventSubmit },
                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
@@ -180,7 +202,7 @@ var styles = react_native_1.StyleSheet.create({
     selectedImage: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 40
     },
     imageStyle: {
         width: 150,
@@ -234,7 +256,8 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     part: {
-        marginVertical: 5
+        marginVertical: 5,
+        height: 100
     },
     infoEdit: {
         color: '#FCA234',
@@ -263,7 +286,8 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 5,
         borderWidth: 1,
         paddingLeft: 15,
-        color: '#000000'
+        color: '#000000',
+        height: 50
     },
     mainBody: {
         flex: 1,

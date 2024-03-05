@@ -43,7 +43,6 @@ const NewPassword = () => {
         }
       })
       .catch(error => {
-        console.log(error);
       });
   };
   return (
@@ -61,7 +60,6 @@ const NewPassword = () => {
                 <View style={styles.titleContainer}>
                   <Text style={styles.title}>MẬT KHẨU MỚI</Text>
                 </View>
-               
                 <View style={styles.spaceForm}>
                   <View style={{height:20}}>
                 {errorMessage ? (
@@ -125,7 +123,6 @@ const NewPassword = () => {
     </Formik>
   );
 };
-
 export default NewPassword;
 
 const styles = StyleSheet.create({

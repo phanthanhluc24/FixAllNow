@@ -17,16 +17,17 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import {useNavigation} from '@react-navigation/native';
 import useEditInfoCurrentUser from '../../hooks/useEditInfoCurrentUser';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoCurrentUser = ({route}: any) => {
+  const navigation: any = useNavigation();
   const {user} = route.params;
-  console.log(user);
-  const [numberPhone, setNumberPhone] = useState(user?.number_phone.toString());
-  const [fullName, setFullName] = useState(user?.full_name);
-  const [email, setEmail] = useState(user?.email);
-  const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
-    null,
+  const [number_phone, setNumberPhone] = useState(
+    user?.number_phone.toString(),
   );
+  const [full_name, setFullName] = useState(user?.full_name);
+
   const handleInputChange = (fieldName: string, value: string) => {
     switch (fieldName) {
       case 'full_name':
@@ -35,58 +36,37 @@ const EditInfoCurrentUser = ({route}: any) => {
       case 'number_phone':
         setNumberPhone(value);
         break;
-      case 'email':
-        setEmail(value);
-        break;
       default:
         break;
     }
   };
-  useEffect(() => {
-    if (user?.image) {
-      setSingleFile({uri: user.image});
-    }
-  }, [user]);
-  const selectFile = async () => {
-    try {
-      const [res] = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
-
-      console.log('res :', res);
-
-      setSingleFile(res);
-    } catch (err) {
-      setSingleFile(null);
-
-      if (DocumentPicker.isCancel(err)) {
-        Alert.alert('Canceled');
-      } else {
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
-        throw err;
-      }
-    }
-  };
-
   const {
     control,
     handleSubmit,
-    // getValues,
     formState: {errors},
   } = useForm();
-
+  const hasLettersAndNoNumbers = (value: string) => {
+    return /[a-zA-Z]/.test(value) && !/\d/.test(value);
+  };
+  const hasNumbersOnly = (value: string) => {
+    return /^\d+$/.test(value);
+  };
   const onSubmit = () => {
     const formData = {
-      full_name: fullName,
-      number_phone: numberPhone,
-      email: email,
-      singleFile: singleFile, 
+      full_name: full_name,
+      number_phone: number_phone,
     };
-    
+
     useEditInfoCurrentUser(formData);
+    // Toast.show({
+    //   type: ALERT_TYPE.SUCCESS,
+    //   title: 'Thành công',
+    //   textBody: 'Thông tin người dùng đã được chỉnh sửa!',
+    // })
+    navigation.navigate('Profile');
   };
   const handleCancle = () => {
-    console.log('Hủy');
+    navigation.navigate('Profile');
   };
   return (
     <KeyboardAvoidingView
@@ -106,19 +86,23 @@ const EditInfoCurrentUser = ({route}: any) => {
                   onBlur={onBlur}
                   onChangeText={text => {
                     onChange(text);
-                    handleInputChange('full_name', text); 
+                    handleInputChange('full_name', text);
                   }}
                   value={value}
-                  defaultValue={fullName}
+                  defaultValue={full_name}
                 />
               )}
               name="full_name"
-              rules={{required: 'Tên không được bỏ trống'}}
-              defaultValue={fullName}
+              rules={{
+                required: 'Tên không được bỏ trống',
+                validate: value =>
+                  hasLettersAndNoNumbers(value) || 'Tên không được chỉ chứa số',
+              }}
+              defaultValue={full_name}
             />
-            {/* {errors.name && (
-            <Text style={{color: 'red'}}>{errors.name.message}</Text>
-          )} */}
+            {errors.full_name && (
+              <Text style={{color: 'red'}}>{errors.full_name.message}</Text>
+            )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Số điện thoại</Text>
@@ -131,75 +115,37 @@ const EditInfoCurrentUser = ({route}: any) => {
                     onBlur={onBlur}
                     onChangeText={text => {
                       onChange(text);
-                      handleInputChange('number_phone', text); 
+                      handleInputChange('number_phone', text);
                     }}
                     value={value}
-                    defaultValue={numberPhone}
+                    defaultValue={number_phone}
                   />
                 </View>
               )}
               name="number_phone"
-              rules={{required: 'Tên không được bỏ trống'}}
-              defaultValue={numberPhone}
+              rules={{
+                required: 'Số điện thoại không được bỏ trống',
+                minLength: {
+                  value: 10,
+                  message: 'Số điện thoại phải có đủ 10 chữ số',
+                },
+                validate: value => hasNumbersOnly(value) || 'Số điện thoại chỉ được chứa số'
+              }}
+              defaultValue={number_phone}
             />
-            {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
+
+            {errors.number_phone && (
+              <Text style={{color: 'red'}}>{errors.number_phone.message}</Text>
+            )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Email của bạn</Text>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  style={styles.inputInfo}
-                  onBlur={onBlur}
-                  onChangeText={text => {
-                    onChange(text);
-                    handleInputChange('email', text); // Cập nhật giá trị email
-                  }}
-                  value={value}
-                  defaultValue={email}
-                />
-              )}
-              name="email"
-              rules={{required: 'Email không được bỏ trống'}}
-              defaultValue={email} 
-            />
-            {/* {errors.email && (
-            <Text style={{color: 'red'}}>{errors.email.message}</Text>
-          )} */}
-          </View>
-          <View style={styles.part}>
-            <Text style={styles.infoEdit}>Ảnh của bạn</Text>
-            {!!singleFile || (
-              <View style={styles.selectedImage}>
-                <TouchableOpacity onPress={selectFile} activeOpacity={0.5}>
-                  <View style={styles.imageView}>
-                    <Entypo name="camera" size={50} color="#FCA234" />
-                  </View>
-                </TouchableOpacity>
-
-                {/* {errors.email && (
-          
-          <Text style={{color: 'red'}}>{errors.email.message}</Text>
-        )} */}
-              </View>
-            )}
-            {singleFile && (
-              <View style={styles.selectedImage}>
-                <Image
-                  source={{uri: singleFile?.uri}}
-                  style={styles.imageStyle}></Image>
-                <View style={{position: 'absolute'}}>
-                  <TouchableOpacity onPress={selectFile}>
-                    <View style={styles.imageViews}>
-                      <Entypo name="camera" size={25} color="#394C6D" />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
+            <Text style={styles.email}>{user?.email}</Text>
+            <View style={styles.selectedImage}>
+              <Image
+                source={{uri: user?.image}}
+                style={styles.imageStyle}></Image>
+            </View>
           </View>
         </View>
         <View style={styles.eventSubmit}>
@@ -213,8 +159,7 @@ const EditInfoCurrentUser = ({route}: any) => {
               <View style={styles.button1}>
                 <TouchableOpacity
                   style={styles.book}
-                  onPress={
-                    handleSubmit(onSubmit)}>
+                  onPress={handleSubmit(onSubmit)}>
                   <Text style={styles.books}>Cập nhật</Text>
                 </TouchableOpacity>
               </View>
@@ -227,6 +172,11 @@ const EditInfoCurrentUser = ({route}: any) => {
 };
 export default EditInfoCurrentUser;
 const styles = StyleSheet.create({
+  email: {
+    fontSize: 15,
+    padding: 10,
+    color: 'white',
+  },
   imageViews: {
     width: 40,
     height: 40,
@@ -242,11 +192,11 @@ const styles = StyleSheet.create({
   selectedImage: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 50,
   },
   imageStyle: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
     borderRadius: 10,
   },
   imageView: {
@@ -297,6 +247,7 @@ const styles = StyleSheet.create({
   },
   part: {
     marginVertical: 5,
+    height: 100,
   },
   infoEdit: {
     color: '#FCA234',
