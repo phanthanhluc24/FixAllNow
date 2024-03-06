@@ -94,7 +94,10 @@ var ProfileHeader = function () {
     var destroyService = useDeleteService_1["default"]().destroyService;
     var handleDeleteService = function (service_id) { return function () {
         destroyService(service_id);
-        navigation.navigate('Profile');
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Profile' }]
+        });
     }; };
     var renderItem = function (data) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
             return navigation.navigate('DetailService', {
@@ -157,7 +160,7 @@ var ProfileHeader = function () {
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.nameListService }, "Danh sa\u0301ch di\u0323ch vu\u0323"),
             hasServices ? (react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Ch\u01B0a c\u00F3 d\u1ECBch v\u1EE5 n\u00E0o!)"))))));
+                react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Ba\u0323n ch\u01B0a \u0111\u0103ng d\u1ECBch v\u1EE5 n\u00E0o!)"))))));
 };
 exports["default"] = ProfileHeader;
 var styles = react_native_1.StyleSheet.create({
@@ -309,14 +312,18 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'space-between',
         marginHorizontal: 15,
         borderWidth: 1,
-        borderColor: '#FCA234'
+        borderColor: '#FCA234',
+        marginTop: 3,
+        borderRadius: 10
     },
     repairman: {
         backgroundColor: '#FCA234',
         flex: 1,
         height: 132,
         marginHorizontal: 15,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        marginTop: 3,
+        borderRadius: 10
     },
     containerRepairman: {
         flex: 1

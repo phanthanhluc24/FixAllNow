@@ -12,10 +12,10 @@ const Profile = () => {
       try {
         const role = await AsyncStorage.getItem('roleCurrentUser');
         setRoleCurrentUser(role);
-      } catch (error) {
+      } 
+      catch (error) {
       }
     };
-
     getRole();
   }, []);
   const data = [{key: 'ProfileListService'}];

@@ -13,7 +13,7 @@ interface typeService {
 const DetailServiceButton: React.FC<{ serviceInfo: typeService|any}>= ({ serviceInfo}) => {
     const navigation:any= useNavigation();
     const handleBookNow =()=>{
-      navigation.navigate('MapBookingScreen')
+      navigation.navigate('MapBookingScreen',{serviceInfo})
     }
     const handleBookSchedule = () => {
       navigation.navigate('FormBookSchedule', { serviceInfo });

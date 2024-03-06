@@ -13,13 +13,8 @@ import {
 } from 'react-native';
 import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-import Entypo from 'react-native-vector-icons/Entypo';
-import DocumentPicker, {
-  DocumentPickerResponse,
-} from 'react-native-document-picker';
 import {useNavigation} from '@react-navigation/native';
 import useEditInfoCurrentUser from '../../hooks/useEditInfoCurrentUser';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoCurrentUser = ({route}: any) => {
   const navigation: any = useNavigation();
   const {user} = route.params;
@@ -58,11 +53,6 @@ const EditInfoCurrentUser = ({route}: any) => {
     };
 
     useEditInfoCurrentUser(formData);
-    // Toast.show({
-    //   type: ALERT_TYPE.SUCCESS,
-    //   title: 'Thành công',
-    //   textBody: 'Thông tin người dùng đã được chỉnh sửa!',
-    // })
     navigation.navigate('Profile');
   };
   const handleCancle = () => {

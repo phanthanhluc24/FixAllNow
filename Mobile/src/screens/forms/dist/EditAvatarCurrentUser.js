@@ -89,7 +89,10 @@ var EditAvatarCurrentUser = function (_a) {
                 case 1:
                     responseData = _a.sent();
                     if (responseData) {
-                        navigation.navigate('Profile');
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Root' }]
+                        });
                     }
                     return [3 /*break*/, 3];
                 case 2:

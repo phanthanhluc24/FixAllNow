@@ -8,7 +8,9 @@ const Shop = () => {
         </View>
     )
 };
+
+export default Shop;
 const styles = StyleSheet.create({
   
 });
-export default Shop;
+
