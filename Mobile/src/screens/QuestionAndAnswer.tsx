@@ -1,32 +1,43 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import LoaderKit from 'react-native-loader-kit';
+import React, { useEffect, useRef } from 'react'
 interface Answer {
     question: string;
     answer: string;
 }
-const QuestionAndAnswer = (answer: any,isLoading:any) => {
+const QuestionAndAnswer = ({answer,isLoading}:any) => {
+    const flatListRef:any = useRef(null);
     const renderItem = ({ item }: { item: Answer }) => {
         return (
         <>
             <View style={styles.container}>
                 <View style={styles.questionContainer}>
-                    <Text style={styles.question}>{item.question}</Text>
+                    <Text style={styles.question}>{item?.question}</Text>
                 </View>
                 <View style={styles.answerContainer}>
-                    <Text style={styles.answer}>{item.answer}</Text>
+                    <Text style={styles.answer}>{item?.answer}</Text>
                 </View>
             </View>
-            {isLoading==true && <Text style={styles.loadingText}>loading...</Text>}
         </>
         );
     };
+    useEffect(() => {
+        if (!isLoading && flatListRef.current) {
+            flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+        }
+    }, [isLoading]);
     return (
         <View style={{ flex: 8.5 }}>
             <FlatList
-                data={answer.answer}
+                data={answer}
                 renderItem={renderItem}
-                keyExtractor={item => item.answer}
+                keyExtractor={(item, index) => index.toString()}
             />
+            {isLoading!==false && <Text style={styles.loadingText}>
+            <LoaderKit style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          /></Text>}
         </View>
     )
 }
@@ -34,42 +45,46 @@ const QuestionAndAnswer = (answer: any,isLoading:any) => {
 export default QuestionAndAnswer;
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        borderRadius: 10,
+        alignItems: 'flex-start',
         margin: 10,
         padding: 10,
-    },
-    questionContainer: {
-        paddingBottom: 10,
-    },
-    answerContainer: {
-        paddingTop: 10,
-    },
-    question: {
-        color: '#FCA234',
-        fontSize: 15,
-        textAlign: 'right',
-        borderWidth:1,
-        backgroundColor:"#394C6D",
-        padding:4,
-        borderRadius:10,
-    },
-    answer: {
-        color: '#394C6D',
-        fontSize: 15,
-        maxWidth: 250,
-        borderWidth:1,
-        borderColor:"#FCA234",
-        backgroundColor:"#FCA234",
-        padding:4,
-        borderRadius:10
-    },
-    loadingText: {
+        borderRadius: 8,
+        backgroundColor: '#f5f5f5',
+      },
+      questionContainer: {
+        marginBottom: 8,
+        backgroundColor: '#e0f2ff',
+        borderRadius: 8,
+        borderTopLeftRadius: 8,
+        padding: 8,
+        maxWidth: 300,
+      },
+      answerContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        borderBottomRightRadius: 8,
+        padding: 8,
+        maxWidth: 300,
+      },
+      text: {
+        fontSize: 16,
+        lineHeight: 1.5,
+      },
+      question: {
+        color: '#333',
+      },
+      answer: {
+        color: '#000',
+      },
+      loadingText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
         textAlign: 'center',
+        alignSelf:"center",
         marginTop: 10,
-      }
+        marginHorizontal: 20,
+        width: 50,
+        height: 50,
+      },
 });
