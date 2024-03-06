@@ -29,6 +29,8 @@ const Shop = () => {
         </View>
     )
 };
+
+export default Shop;
 const styles = StyleSheet.create({
   modal: {
     position: 'absolute',
@@ -79,4 +81,3 @@ const styles = StyleSheet.create({
     color:"#394C6D"
   }
 });
-export default Shop;

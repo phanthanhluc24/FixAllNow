@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React,{useEffect} from 'react';
+import React,{useEffect, useState} from 'react';
 import Main from './src/navigates/main/Main';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -7,31 +7,35 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { ToastProvider } from 'react-native-toast-notifications';
 import { AlertNotificationRoot,  } from 'react-native-alert-notification';
+import AuthNavigation from './src/navigates/main/AuthNavigation';
+import { set } from 'react-hook-form';
+
 const queryClient= new QueryClient();
 const App = () => {
   return (
     <AlertNotificationRoot>
       <NavigationContainer>
         <AppWrapper />
-        {/* <Toast/> */}
       </NavigationContainer>
     </AlertNotificationRoot>
   );
 };
 const AppWrapper = () => {
-  const navigation:any = useNavigation();
+  const [status, setStatus] = useState(false);
   useEffect(() => {
     const checkLogin = async () => {
       const accessToken = await AsyncStorage.getItem('accessToken');
+      console.log("Tken",accessToken);
       if (accessToken) {
-        navigation.navigate('Root');
+        setStatus(true);
+        console.log('status: ', status);
       }
     };
     checkLogin();
-  }, [navigation]);
+  }, [1000]);
   return (
    <QueryClientProvider client={queryClient}>
-     <Main/>
+    {status? <Main/>: <AuthNavigation/>}
     </QueryClientProvider>
   )
 }

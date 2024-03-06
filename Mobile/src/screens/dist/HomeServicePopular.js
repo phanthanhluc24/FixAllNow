@@ -11,8 +11,7 @@ var HomeServicePopular = function () {
     if (isLoading) {
         return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
             react_1["default"].createElement(react_native_1.Text, null,
-                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }),
-                ";")));
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
     if (services.length === 0) {
         return react_1["default"].createElement(react_native_1.Text, null, "Services not available!");

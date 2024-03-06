@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, FlatList, Image,TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState} from 'react';
 import HomeCategories from '../../HomeCategories';
 import HeaderSearch from '../../HeaderSearch';
@@ -6,7 +13,7 @@ import HomeRepairmanPopular from '../../HomeRepairmanPopular';
 import HomeServicePopular from '../../HomeServicePopular';
 import ListServiceSearch from '../../ListServiceSearch';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 interface typeService {
   _id: string;
@@ -18,7 +25,7 @@ interface typeService {
   desc: string;
 }
 const Home = () => {
-  const navigation:any = useNavigation();
+  const navigation: any = useNavigation();
   const [searchData, setSearchData] = useState<typeService[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,7 +39,12 @@ const Home = () => {
     setIsSearching(false);
   };
   const data = [{key: 'HomeServicePopular'}];
-
+  const handleResetMain = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Root' }],
+    });
+  };
   const renderHeader = () => (
     <View>
       <HeaderSearch
@@ -68,11 +80,11 @@ const Home = () => {
       {isSearching ? (
         <>
           <View style={styles.search}>
-            <TouchableOpacity  style={styles.iconExit} onPress={()=>navigation.navigate("Main")}>
-            <AntDesign name="arrowleft" size={30} color="#FCA234" />
+            <TouchableOpacity style={styles.iconExit} onPress={handleResetMain}>
+              <AntDesign name="arrowleft" size={30} color="#FCA234" />
             </TouchableOpacity>
-           
-            <View  style={{width:"90%"}}>
+
+            <View style={{width: '90%'}}>
               <HeaderSearch
                 onSearch={handleSearch}
                 onChangeText={handleChangeSearch}
@@ -95,16 +107,15 @@ const Home = () => {
 };
 export default Home;
 const styles = StyleSheet.create({
-  iconExit:{
-    width:"10%",
-    alignItems:"center",
-    justifyContent:"center",
-    marginLeft:5
+  iconExit: {
+    width: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 5,
   },
   search: {
     flexDirection: 'row',
     alignItems: 'center',
-  
   },
   container: {
     flex: 1,

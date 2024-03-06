@@ -28,27 +28,13 @@ import MapBookingScreen from '../../screens/MapBookingScreen';
 import HistoryStore from '../../screens/HistoryStore';
 import HeaderTitleComponent from '../../screens/HeaderTitleComponent';
 import ResultSearch from '../../screens/ResultSearch';
+import AuthNavigation from './AuthNavigation';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
   return (
     <QueryClientProvider client={queryClient}>
       <Stack.Navigator>
-        {/* <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Landing"
-          component={Landing}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-          options={{headerShown: false}}
-        /> */}
         <Stack.Screen
           name="Root"
           component={DrawerNavigator}
@@ -189,7 +175,12 @@ const Main = () => {
             headerTitle: "Kết quả tìm kiếm",
           })}
         />
-        {/* <Stack.Screen name="Roots" component={DrawerNavigator} options={{headerShown: false}}/> */}
+         <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{headerShown: false}}
+        />
+       
       </Stack.Navigator>
     </QueryClientProvider>
   );

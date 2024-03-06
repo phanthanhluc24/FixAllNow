@@ -7,7 +7,7 @@ var DetailServiceButton = function (_a) {
     var serviceInfo = _a.serviceInfo;
     var navigation = native_1.useNavigation();
     var handleBookNow = function () {
-        navigation.navigate('MapBookingScreen');
+        navigation.navigate('MapBookingScreen', { serviceInfo: serviceInfo });
     };
     var handleBookSchedule = function () {
         navigation.navigate('FormBookSchedule', { serviceInfo: serviceInfo });

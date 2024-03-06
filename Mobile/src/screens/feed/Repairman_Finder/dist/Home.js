@@ -23,33 +23,39 @@ var Home = function () {
         setIsSearching(false);
     };
     var data = [{ key: 'HomeServicePopular' }];
+    var handleResetMain = function () {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Root' }]
+        });
+    };
     var renderHeader = function () { return (react_1["default"].createElement(react_native_1.View, null,
         react_1["default"].createElement(HeaderSearch_1["default"], { onSearch: handleSearch, onChangeText: handleChangeSearch, value: searchQuery }),
         !isSearching && (react_1["default"].createElement(react_1["default"].Fragment, null,
             react_1["default"].createElement(HomeCategories_1["default"], null),
             react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
                 react_1["default"].createElement(react_native_1.View, { style: styles.containers },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t:"),
                     react_1["default"].createElement(HomeRepairmanPopular_1["default"], null))))))); };
     var renderService = function () { return (react_1["default"].createElement(react_native_1.View, null,
         react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopulars },
             react_1["default"].createElement(react_native_1.View, { style: styles.containerss },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Di\u0323ch vu\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
+                react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Di\u0323ch vu\u0323 n\u00F4\u0309i b\u00E2\u0323t:"),
                 react_1["default"].createElement(HomeServicePopular_1["default"], null))))); };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container }, isSearching ? (react_1["default"].createElement(react_1["default"].Fragment, null,
         react_1["default"].createElement(react_native_1.View, { style: styles.search },
-            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconExit, onPress: function () { return navigation.navigate("Main"); } },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconExit, onPress: handleResetMain },
                 react_1["default"].createElement(AntDesign_1["default"], { name: "arrowleft", size: 30, color: "#FCA234" })),
-            react_1["default"].createElement(react_native_1.View, { style: { width: "90%" } },
+            react_1["default"].createElement(react_native_1.View, { style: { width: '90%' } },
                 react_1["default"].createElement(HeaderSearch_1["default"], { onSearch: handleSearch, onChangeText: handleChangeSearch, value: searchQuery }))),
         react_1["default"].createElement(ListServiceSearch_1["default"], { data: searchData }))) : (react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderService, ListHeaderComponent: renderHeader }))));
 };
 exports["default"] = Home;
 var styles = react_native_1.StyleSheet.create({
     iconExit: {
-        width: "10%",
-        alignItems: "center",
-        justifyContent: "center",
+        width: '10%',
+        alignItems: 'center',
+        justifyContent: 'center',
         marginLeft: 5
     },
     search: {

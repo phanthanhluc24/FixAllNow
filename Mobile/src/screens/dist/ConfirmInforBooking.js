@@ -243,10 +243,10 @@ var styles = react_native_1.StyleSheet.create({
         marginVertical: 20
     },
     infoContainer: {
-        flex: 8
+        flex: 9
     },
     event: {
-        flex: 2
+        flex: 1
     },
     infoService: {
         marginHorizontal: 20
