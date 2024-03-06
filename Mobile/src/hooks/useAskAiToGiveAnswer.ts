@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useAskAiToGiveAnswer = () => {
     const [answer, setAnswer] = useState<[]>([])
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading,setIsLoading]=useState(false)
     const questionAndAnswer = (question: any) => {
         const getAccessToken = async () => {
             const accessToken = await AsyncStorage.getItem('accessToken');
@@ -15,9 +15,11 @@ const useAskAiToGiveAnswer = () => {
             })
             setAnswer(response.data.data)
             setIsLoading(false)
+            console.log(response.status);
+            
         }
         getAccessToken()
     }
-    return { questionAndAnswer,answer,isLoading,setIsLoading }
+    return { questionAndAnswer,answer,isLoading,setIsLoading}
 }
 export default useAskAiToGiveAnswer

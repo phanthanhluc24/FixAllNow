@@ -34,7 +34,7 @@ const Main = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Welcome"
           component={Welcome}
           options={{headerShown: false}}
@@ -48,7 +48,7 @@ const Main = () => {
           name="SignIn"
           component={SignIn}
           options={{headerShown: false}}
-        /> */}
+        />
         <Stack.Screen
           name="Root"
           component={DrawerNavigator}

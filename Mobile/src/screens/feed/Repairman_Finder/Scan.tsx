@@ -1,5 +1,5 @@
 import { Alert, Button, Image, StyleSheet, Text, View, Keyboard } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import QuestionAndAnswer from '../../QuestionAndAnswer'
@@ -9,7 +9,7 @@ interface ItemType {
   value: any;
 }
 const Scan = () => {
-  const { questionAndAnswer, answer,isLoading,setIsLoading } = useAskAiToGiveAnswer()
+  const { questionAndAnswer, answer,isLoading,setIsLoading} = useAskAiToGiveAnswer()
   const [question, setQuestion] = useState<string>("")
   const clientQuestion = { question: question }
   const handleSendQuestion = async () => {
@@ -23,16 +23,20 @@ const Scan = () => {
       <View style={styles.headerScan}>
         <Image source={require("../../../assets/Landing/logo.png")} style={styles.image}></Image>
       </View>
-      <QuestionAndAnswer answer={answer} isLoading={isLoading} />
+      <QuestionAndAnswer isLoading={isLoading} answer={answer}  />
       <View style={{ flex: 2 }}>
         <View style={styles.inputAskDiv}>
           <TextInput style={styles.inputAsk}
             placeholder="Nhập câu hỏi của bạn"
             multiline={true}
             value={question}
-            onChangeText={(text) => setQuestion(text)}
+            onChangeText={(text) => {setQuestion(text),setIsLoading(false)}}
           ></TextInput>
-          <Ionicons name="send" size={24} color="#000" style={styles.iconSend} onPress={handleSendQuestion} />
+          {question.trim().length===0?(
+            <Ionicons name="send" size={24} color="#000" style={styles.iconUnSend}/>
+          ):(
+            <Ionicons name="send" size={24} color="#000" style={styles.iconSend} onPress={handleSendQuestion} />
+          )}
         </View>
       </View>
     </View>
@@ -121,6 +125,11 @@ const styles = StyleSheet.create({
   },
   iconSend: {
     paddingRight: 10,
-    alignSelf: "center"
+    alignSelf: "center",
+    color:"#FCA234"
+  },
+  iconUnSend: {
+    paddingRight: 10,
+    alignSelf: "center",
   }
 })
