@@ -44,6 +44,7 @@ var useLogout_1 = require("../../hooks/useLogout");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var native_1 = require("@react-navigation/native");
 var react_native_alert_notification_1 = require("react-native-alert-notification");
+var react_native_restart_1 = require("react-native-restart");
 var ButtonLogout = function () {
     var logout = useLogout_1["default"]().logout;
     var _a = react_1.useState(''), token = _a[0], setToken = _a[1];
@@ -73,9 +74,13 @@ var ButtonLogout = function () {
                     textBody: 'Đăng xuất thành công!'
                 });
                 navigation.navigate('SignIn');
+                // navigation.reset({
+                //     index:0,
+                //     routes:[{name:"AuthNavigation"}]
+                // })
+                react_native_restart_1["default"].Restart();
             }
-        })["catch"](function (error) {
-        });
+        })["catch"](function (error) { });
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.TouchableOpacity, { style: styles.iconEdit, onPress: handleLogout },
         react_1["default"].createElement(MaterialCommunityIcons_1["default"], { name: "logout", size: 24, color: "#ffffff" })));
@@ -86,9 +91,9 @@ var styles = react_native_1.StyleSheet.create({
         width: 100,
         height: 40,
         marginVertical: 5,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 10,
-        backgroundColor: "#394C6D"
+        backgroundColor: '#394C6D'
     }
 });

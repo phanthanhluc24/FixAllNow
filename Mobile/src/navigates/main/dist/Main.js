@@ -4,6 +4,7 @@ var react_1 = require("react");
 var react_query_1 = require("@tanstack/react-query");
 var DrawerNavigator_1 = require("./DrawerNavigator");
 var stack_1 = require("@react-navigation/stack");
+var SignIn_1 = require("../../screens/accounts.tsx/SignIn");
 var SignUp_1 = require("../../screens/accounts.tsx/SignUp");
 var SelectRole_1 = require("../../screens/accounts.tsx/SelectRole");
 var ConfirmCode_1 = require("../../screens/accounts.tsx/ConfirmCode");
@@ -94,6 +95,7 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "ResultSearch", component: ResultSearch_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Kết quả tìm kiếm"
-                }); } }))));
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "SignIn", component: SignIn_1["default"], options: { headerShown: false } }))));
 };
 exports["default"] = Main;

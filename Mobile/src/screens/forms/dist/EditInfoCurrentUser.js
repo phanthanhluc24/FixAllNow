@@ -36,11 +36,6 @@ var EditInfoCurrentUser = function (_a) {
             number_phone: number_phone
         };
         useEditInfoCurrentUser_1["default"](formData);
-        // Toast.show({
-        //   type: ALERT_TYPE.SUCCESS,
-        //   title: 'Thành công',
-        //   textBody: 'Thông tin người dùng đã được chỉnh sửa!',
-        // })
         navigation.navigate('Profile');
     };
     var handleCancle = function () {

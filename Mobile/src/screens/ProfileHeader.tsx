@@ -57,7 +57,10 @@ const ProfileHeader = () => {
   const {destroyService}=useDeleteService()
   const handleDeleteService=(service_id:string)=>()=>{
     destroyService(service_id)
-    navigation.navigate('Profile')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Profile' }],
+    });
   }
   const renderItem = (data: any) => (
     <TouchableOpacity
@@ -177,7 +180,7 @@ const ProfileHeader = () => {
           />
         ) : (
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={styles.noService}>(Chưa có dịch vụ nào!)</Text>
+            <Text style={styles.noService}>(Bạn chưa đăng dịch vụ nào!)</Text>
           </View>
         )}
       </View>
@@ -335,6 +338,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     borderWidth: 1,
     borderColor: '#FCA234',
+    marginTop:3,
+    borderRadius:10
   },
   repairman: {
     backgroundColor: '#FCA234',
@@ -342,6 +347,8 @@ const styles = StyleSheet.create({
     height: 132,
     marginHorizontal: 15,
     borderBottomWidth: 1,
+    marginTop:3,
+    borderRadius:10
   },
   containerRepairman: {
     flex: 1,

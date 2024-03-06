@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   },
   containerEvent:{
     flex:1,
-    backgroundColor:"#394C6D"
+    backgroundColor:"#394C6D",
+    
   },
   styleEvent:{
     flexDirection:"row",

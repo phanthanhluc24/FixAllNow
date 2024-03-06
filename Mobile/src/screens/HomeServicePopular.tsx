@@ -31,7 +31,6 @@ const HomeServicePopular = () => {
             name={'BallPulse'}
             color={'#FCA234'}
           />
-          ;
         </Text>
       </View>
     );
