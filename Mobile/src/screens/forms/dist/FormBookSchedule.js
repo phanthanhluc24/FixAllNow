@@ -55,6 +55,7 @@ var FormBookSchedule = function (_a) {
     var _g = react_1.useState(false), showTimePicker = _g[0], setShowTimePicker = _g[1];
     var _h = react_1.useState(new Date()), selectedDate = _h[0], setSelectedDate = _h[1];
     var _j = react_1.useState(new Date()), selectedTime = _j[0], setSelectedTime = _j[1];
+    var currentDate = new Date();
     var toggleDatepicker = function () {
         setShowPicker(!showPicker);
     };
@@ -81,6 +82,14 @@ var FormBookSchedule = function (_a) {
             setSubmitted(true);
             if (!selectedDate || !selectedTime || !values.address || !values.demobug) {
                 setError('Vui lòng nhập đầy đủ thông tin!');
+            }
+            if (selectedDate.getFullYear() < currentDate.getFullYear() ||
+                (selectedDate.getFullYear() === currentDate.getFullYear() &&
+                    selectedDate.getMonth() < currentDate.getMonth()) ||
+                (selectedDate.getFullYear() === currentDate.getFullYear() &&
+                    selectedDate.getMonth() === currentDate.getMonth() &&
+                    selectedDate.getDate() < currentDate.getDate())) {
+                setError('Vui lòng chọn ngày từ ngày hiện tại trở đi!');
             }
             else {
                 setError('');

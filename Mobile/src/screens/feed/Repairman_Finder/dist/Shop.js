@@ -3,73 +3,37 @@ exports.__esModule = true;
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var react_native_2 = require("react-native");
-var react_native_alert_notification_1 = require("react-native-alert-notification");
 var Shop = function () {
-    return (react_1["default"].createElement(react_native_2.View, null,
-        react_1["default"].createElement(react_native_2.Button, { title: 'dialog box', onPress: function () {
-                return react_native_alert_notification_1.Dialog.show({
-                    type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
-                    title: 'Success',
-                    textBody: 'Congrats! this is dialog box success',
-                    button: 'close'
-                });
-            } }),
-        react_1["default"].createElement(react_native_2.Button, { title: 'toast notification', onPress: function () {
-                return react_native_alert_notification_1.Toast.show({
-                    type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
-                    title: 'Success',
-                    textBody: 'Congrats! this is toast notification success'
-                });
-            } })));
+    var _a = react_1.useState('Initial Data'), data = _a[0], setData = _a[1];
+    var handleButtonPress = function (option) {
+        switch (option) {
+            case '1':
+                setData('Data for Option 1');
+                break;
+            case '2':
+                setData('Data for Option 2');
+                break;
+            case '3':
+                setData('Data for Option 3');
+                break;
+            default:
+                setData('Initial Data');
+        }
+    };
+    var ratingCompleted = function (rating) {
+        console.log('Rating is: ' + rating);
+    };
+    return (react_1["default"].createElement(react_native_2.View, { style: styles.container },
+        react_1["default"].createElement(react_native_2.Button, { title: "1", onPress: function () { return handleButtonPress('1'); } }),
+        react_1["default"].createElement(react_native_2.Button, { title: "2", onPress: function () { return handleButtonPress('2'); } }),
+        react_1["default"].createElement(react_native_2.Button, { title: "3", onPress: function () { return handleButtonPress('3'); } }),
+        react_1["default"].createElement(react_native_2.Text, null, data)));
 };
 exports["default"] = Shop;
 var styles = react_native_1.StyleSheet.create({
-    modal: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+    container: {
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
-    },
-    modalContent: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 20,
-        width: 300
-    },
-    title: {
-        fontSize: 17,
-        fontWeight: "bold",
-        alignSelf: "center",
-        color: "#FCA234"
-    },
-    image: {
-        alignSelf: "center",
-        width: 80,
-        height: 80
-    },
-    underline: {
-        width: "100%",
-        height: 1,
-        backgroundColor: "#394C6D",
-        alignItems: "center"
-    },
-    spaceButton: {
-        flexDirection: 'row',
-        justifyContent: "space-around",
-        paddingTop: 20
-    },
-    viewDetails: {
-        marginLeft: 10
-    },
-    textTitle: {
-        fontSize: 18,
-        color: "#FCA234"
-    },
-    textSubTitle: {
-        color: "#394C6D"
+        alignItems: 'center'
     }
 });

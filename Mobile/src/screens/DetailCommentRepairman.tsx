@@ -1,10 +1,35 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, FlatList} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import useGetRateComment from '../hooks/useGetRateComment';
+import LoaderKit from 'react-native-loader-kit';
+interface typeRateComment{
+  _id:string
+}
 const DetailCommentRepairman = () => {
   const navigation: any = useNavigation();
+  const {rateComment, isLoading, isError} = useGetRateComment();
+  if (isLoading) {
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+        </Text>
+      </View>
+    );
+  }
+  if (rateComment.length === 0) {
+    return <Text>Services not available!</Text>;
+  }
+  if (isError) {
+    return <Text>Error loading categories</Text>;
+  }
   return (
-    <View>
+    <View style={{marginBottom: 10}}>
       <View style={styles.rateComment}>
         <View style={styles.containerTitle}>
           <View style={styles.rating}>
@@ -15,27 +40,35 @@ const DetailCommentRepairman = () => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('RatedComment')}>
-            <Text style={styles.suggest}>Xem đánh giá ngay nào!</Text>
+            <Text style={styles.suggest}>
+              Hãy xem họ nói gì về tôi bạn nhé!
+            </Text>
           </TouchableOpacity>
-          <View style={styles.containerRatedComment}>
-            <View style={styles.comment}>
-              <View style={styles.avatar}>
-                <Image
-                  style={styles.avatarComment}
-                  source={require('../assets/Homes/avatars.png')}
-                />
+          <FlatList
+            data={rateComment as typeRateComment[]}
+            keyExtractor={rateComment => rateComment._id}
+            renderItem={({item}) => (
+              <View style={styles.containerRatedComment}>
+                <View style={styles.comment}>
+                  <View style={styles.avatar}>
+                    <Image
+                      style={styles.avatarComment}
+                      source={require('../assets/Homes/avatars.png')}
+                    />
+                  </View>
+                  <View style={styles.content}>
+                    <Text style={styles.comments}>
+                      Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận tâm Thợ rất
+                      tận tâm Thợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ
+                      rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận
+                      tâmThợ rất tận tâm
+                    </Text>
+                    <Image source={require('../assets/Homes/star.png')} />
+                  </View>
+                </View>
               </View>
-              <View style={styles.content}>
-                <Text style={styles.comments}>
-                  Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận
-                  tâm Thợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận
-                  tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận
-                  tâm
-                </Text>
-                <Image source={require('../assets/Homes/star.png')} />
-              </View>
-            </View>
-          </View>
+            )}
+          />
         </View>
       </View>
     </View>
@@ -43,6 +76,14 @@ const DetailCommentRepairman = () => {
 };
 export default DetailCommentRepairman;
 const styles = StyleSheet.create({
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
   rateComment: {
     marginTop: 20,
   },
@@ -71,7 +112,6 @@ const styles = StyleSheet.create({
     padding: 3,
   },
   containerRatedComment: {
-    marginHorizontal: 20,
     flex: 9,
   },
   bottom: {

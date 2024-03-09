@@ -46,10 +46,7 @@ const EditAvatarCurrentUser = ({route}: any) => {
       data.image = singleFile;
       const responseData = await sendData(data);
       if (responseData) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Root' }],
-        });
+        navigation.navigate('Profile', { reload: true });
       }
     } catch (error) {
     }

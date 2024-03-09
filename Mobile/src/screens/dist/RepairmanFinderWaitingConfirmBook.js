@@ -2,44 +2,43 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var RepairmanFinderWaitingConfirmBook = function () {
+var moment_1 = require("moment");
+var native_1 = require("@react-navigation/native");
+var RepairmanFinderWaitingConfirmBook = function (_a) {
+    var statusBooking = _a.statusBooking, data = _a.data;
+    var navigation = native_1.useNavigation();
+    var navigateToDetailPage = function (item) { return function () {
+        navigation.navigate('DetailViewBookSchedule', { booking_id: item });
+    }; };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
-        react_1["default"].createElement(react_native_1.View, { style: styles.cartService },
-            react_1["default"].createElement(react_native_1.View, { style: styles.headerCart },
-                react_1["default"].createElement(react_native_1.View, { style: styles.nameShop },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.groundNameApp },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameApp }, "FixAllNow")),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameService }, " Di\u0323ch vu\u0323")),
-                react_1["default"].createElement(react_native_1.View, null,
-                    react_1["default"].createElement(react_native_1.TouchableOpacity, null,
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.waitPayment }, "Ch\u01A1\u0300 xa\u0301c nh\u00E2\u0323n")))),
-            react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                react_1["default"].createElement(react_native_1.View, { style: styles.image },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avatar.png'), style: styles.img })),
-                react_1["default"].createElement(react_native_1.View, { style: styles.info },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.infos },
-                        react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, "Di\u0323ch vu\u0323 ba\u0309o tri\u0300 \u00F4 t\u00F4"),
-                        react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.description }, "Qua\u0323t nha\u0300 t\u00F4i m\u01A1\u0301i mua v\u00EA\u0300 nh\u01B0ng cha\u0323y 5 phu\u0301t la\u0300 no\u0301 la\u0323i bay ra mu\u0300i kh\u0103\u0301c"),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
-                            react_1["default"].createElement(react_native_1.View, null),
-                            react_1["default"].createElement(react_native_1.View, null,
-                                react_1["default"].createElement(react_native_1.View, { style: styles.prices },
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, "\u0111"),
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "100.000"))))))),
-            react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
-                react_1["default"].createElement(react_native_1.View, { style: { width: "40%" } },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.background },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Hu\u0309y \u0111\u0103\u0323t di\u0323ch vu\u0323"))),
-                react_1["default"].createElement(react_native_1.View, { style: styles.paymentContainer },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/History/totalPayment.png'), style: styles.imageTotal }),
-                    react_1["default"].createElement(react_native_1.View, { style: styles.payment },
-                        react_1["default"].createElement(react_native_1.Text, null, "T\u00F4\u0309ng:"),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.prices },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, "\u0111"),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "100.000"))))))));
+        react_1["default"].createElement(react_native_1.FlatList, { data: statusBooking, keyExtractor: function (statusBooking) { return statusBooking._id; }, renderItem: function (_a) {
+                var item = _a.item;
+                return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.cartService, onPress: navigateToDetailPage(item._id) },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.headerCart },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.nameShop }),
+                        react_1["default"].createElement(react_native_1.View, null,
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, null,
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.waitPayment }, item.status)))),
+                    react_1["default"].createElement(react_native_1.View, null,
+                        react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.image },
+                                react_1["default"].createElement(react_native_1.Image, { source: { uri: item.service_id.image }, style: styles.img })),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.info },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.infos },
+                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, item.service_id.service_name),
+                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.description }, item.desc),
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
+                                        react_1["default"].createElement(react_native_1.View, null,
+                                            react_1["default"].createElement(react_native_1.View, null,
+                                                react_1["default"].createElement(react_native_1.Text, { style: styles.dateTime }, moment_1["default"](item.updatedAt).format('DD/MM/YYYY HH:mm'))))))))),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment })));
+            } })));
 };
 exports["default"] = RepairmanFinderWaitingConfirmBook;
 var styles = react_native_1.StyleSheet.create({
+    dateTime: {
+        color: 'blue'
+    },
     nameConfirm: {
         fontSize: 15,
         color: 'white',
@@ -96,15 +95,15 @@ var styles = react_native_1.StyleSheet.create({
     },
     content: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#394C6D'
+        paddingHorizontal: 15
     },
     img: {
         width: 60,
-        height: 60
+        height: 60,
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: '#394C6D'
     },
     nameRepairman: {
         fontSize: 18,
@@ -112,7 +111,7 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     vnd: {
-        fontSize: 18,
+        fontSize: 15,
         color: '#394C6D'
     },
     prices: {
@@ -147,7 +146,8 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 10
     },
     waitPayment: {
-        color: '#394C6D'
+        color: '#394C6D',
+        fontWeight: 'bold'
     },
     nameService: {
         fontWeight: 'bold',
@@ -167,8 +167,18 @@ var styles = react_native_1.StyleSheet.create({
     },
     cartService: {
         padding: 10,
-        backgroundColor: '#C1CDE2',
-        marginTop: 10
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 12,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
     },
     headerCart: {
         flexDirection: 'row',

@@ -112,7 +112,15 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: '#394C6D',
         width: '90%',
         height: 120,
-        marginTop: '35%'
+        marginTop: '35%',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 12
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.0,
+        elevation: 24
     },
     content: {
         flexDirection: 'row',

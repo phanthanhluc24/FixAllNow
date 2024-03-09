@@ -71,7 +71,7 @@ const FormAddNewService = () => {
           title: 'Thành công',
           textBody: "Dịch vụ đã thêm thành công!",
         });
-        navigation.navigate('Profile');
+        navigation.navigate('Profile',{reload:true});
       }
     } catch (error) {
     }

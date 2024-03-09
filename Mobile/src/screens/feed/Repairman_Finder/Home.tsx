@@ -57,7 +57,7 @@ const Home = () => {
           <HomeCategories />
           <View style={styles.repairmanPopular}>
             <View style={styles.containers}>
-              <Text style={styles.title}>Thợ nổi bật:</Text>
+              <Text style={styles.title}>Thợ nổi bật</Text>
               <HomeRepairmanPopular />
             </View>
           </View>
@@ -69,7 +69,7 @@ const Home = () => {
     <View>
       <View style={styles.repairmanPopulars}>
         <View style={styles.containerss}>
-          <Text style={styles.titles}>Dịch vụ nổi bật:</Text>
+          <Text style={styles.titles}>Dịch vụ nổi bật</Text>
           <HomeServicePopular />
         </View>
       </View>
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   repairmanPopulars: {
     flex: 1,
     marginTop: 20,
+    marginBottom:10
   },
   containerss: {
     marginHorizontal: 20,

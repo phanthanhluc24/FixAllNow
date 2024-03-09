@@ -35,12 +35,12 @@ var Home = function () {
             react_1["default"].createElement(HomeCategories_1["default"], null),
             react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
                 react_1["default"].createElement(react_native_1.View, { style: styles.containers },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t:"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
                     react_1["default"].createElement(HomeRepairmanPopular_1["default"], null))))))); };
     var renderService = function () { return (react_1["default"].createElement(react_native_1.View, null,
         react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopulars },
             react_1["default"].createElement(react_native_1.View, { style: styles.containerss },
-                react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Di\u0323ch vu\u0323 n\u00F4\u0309i b\u00E2\u0323t:"),
+                react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Di\u0323ch vu\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
                 react_1["default"].createElement(HomeServicePopular_1["default"], null))))); };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container }, isSearching ? (react_1["default"].createElement(react_1["default"].Fragment, null,
         react_1["default"].createElement(react_native_1.View, { style: styles.search },
@@ -79,7 +79,8 @@ var styles = react_native_1.StyleSheet.create({
     },
     repairmanPopulars: {
         flex: 1,
-        marginTop: 20
+        marginTop: 20,
+        marginBottom: 10
     },
     containerss: {
         marginHorizontal: 20

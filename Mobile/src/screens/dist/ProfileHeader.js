@@ -49,6 +49,9 @@ var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var ButtonLogout_1 = require("./bottomTab/ButtonLogout");
 var useDeleteService_1 = require("../hooks/useDeleteService");
 var ProfileHeader = function () {
+    ///render các trạng thái đặt hàng
+    ////////////////////////////////
+    //lấy ảnh đại diện từ file
     var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
@@ -79,6 +82,7 @@ var ProfileHeader = function () {
             }
         });
     }); };
+    //////////////////////////////////////////////
     var navigation = native_1.useNavigation();
     var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
     var _c = react_1.useState(false), hasServices = _c[0], setHasServices = _c[1];
@@ -91,14 +95,12 @@ var ProfileHeader = function () {
             setHasServices(false);
         }
     }, [serviceOfRepairman]);
+    // xóa dịch vụ
     var destroyService = useDeleteService_1["default"]().destroyService;
     var handleDeleteService = function (service_id) { return function () {
         destroyService(service_id);
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Profile' }]
-        });
-    }; };
+        navigation.navigate('Profile', { reload: true });
+    }; }; ///////////////////////////////////
     var renderItem = function (data) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
             return navigation.navigate('DetailService', {
                 id: data.item._id,
@@ -164,6 +166,84 @@ var ProfileHeader = function () {
 };
 exports["default"] = ProfileHeader;
 var styles = react_native_1.StyleSheet.create({
+    listHistory: {
+        height: 50,
+        backgroundColor: "#ffffff"
+    },
+    eventButton: {
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomWidth: 2,
+        borderBottomColor: '#FCA234',
+        height: 50,
+        width: 140,
+        borderWidth: 0.5
+    },
+    titleButton: {
+        color: '#394C6D'
+    },
+    selectedButton: {
+        backgroundColor: '#394C6D'
+    },
+    selectedText: {
+        color: 'white'
+    },
+    containers: {
+        marginHorizontal: 20,
+        borderRadius: 10,
+        backgroundColor: '#394C6D',
+        width: '90%',
+        height: 120,
+        marginTop: 10
+    },
+    contents: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 20
+    },
+    hello: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#FCA234',
+        width: '90%'
+    },
+    detaildemo: {
+        fontSize: 13,
+        color: '#FFFFFF',
+        width: '90%'
+    },
+    containerProfileBodyRepairmanFinder: {
+        flex: 1
+    },
+    profileBodyRepairmanFinder: {
+        marginHorizontal: 30,
+        marginVertical: 15
+    },
+    nameAccount: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: '#FCA234',
+        paddingVertical: 10
+    },
+    nameSecurity: {
+        fontSize: 20,
+        color: '#394C6D'
+    },
+    nameAddress: {
+        fontSize: 20,
+        color: '#394C6D'
+    },
+    nameBank: {
+        fontSize: 20,
+        color: '#394C6D'
+    },
+    nameLanguage: {
+        marginHorizontal: 20,
+        fontSize: 15,
+        color: '#394C6D'
+    },
     noService: {
         fontSize: 15,
         color: 'white'
@@ -183,7 +263,7 @@ var styles = react_native_1.StyleSheet.create({
     nameListService: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#FCA234',
+        color: '#394C6D',
         padding: 15
     },
     detailEmail: {
@@ -265,7 +345,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     profileHeader: {
         flex: 1,
-        backgroundColor: '#FCA234'
+        backgroundColor: '#fffff0'
     },
     infoProfile: {
         marginHorizontal: 20
@@ -273,9 +353,9 @@ var styles = react_native_1.StyleSheet.create({
     avatarProfile: {
         width: 70,
         height: 70,
-        borderRadius: 50,
+        borderRadius: 100,
         borderWidth: 3,
-        borderColor: 'white'
+        borderColor: '#394C6D'
     },
     avatarPro: {
         alignItems: 'center',
@@ -294,7 +374,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#394C6D'
+        backgroundColor: '#fffff0'
     },
     rowFront: {
         alignItems: 'center',

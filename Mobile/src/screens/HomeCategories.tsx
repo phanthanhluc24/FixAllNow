@@ -191,6 +191,15 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 120,
     marginTop: '35%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
   },
   content: {
     flexDirection: 'row',

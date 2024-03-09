@@ -49,7 +49,7 @@ const DetailInfoService = () => {
       <View style={styles.infoServices}>
         <Image source={{uri: service?.image}} style={styles.imageSer}></Image>
         <View style={styles.infoStyle}>
-          <Text numberOfLines={1} style={styles.nameStyle}>
+          <Text numberOfLines={2} style={styles.nameStyle}>
             {service?.service_name}
           </Text>
           <Text style={styles.priceStyle}>
@@ -235,6 +235,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
   listServiceRevolve: {
     flex: 1,

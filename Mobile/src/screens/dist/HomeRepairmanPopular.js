@@ -5,10 +5,12 @@ var react_1 = require("react");
 var useGetRepairmansPopular_1 = require("../hooks/useGetRepairmansPopular");
 var native_1 = require("@react-navigation/native");
 var react_native_loader_kit_1 = require("react-native-loader-kit");
+var FontAwesome_1 = require("react-native-vector-icons/FontAwesome");
 var HomeRepairmanPopular = function () {
     var navigation = native_1.useNavigation();
     var _a = react_1.useState(1), currentPage = _a[0], setCurrentPage = _a[1];
     var _b = useGetRepairmansPopular_1["default"](currentPage), repairmans = _b.repairmans, totalRepairman = _b.totalRepairman, isLoading = _b.isLoading, isError = _b.isError, fetchMore = _b.fetchMore;
+    // console.log(repairmans);
     var handleLoadMore = function () {
         if (!isLoading) {
             fetchMore();
@@ -31,6 +33,14 @@ var HomeRepairmanPopular = function () {
     var handelChangePage = function (page) {
         setCurrentPage(page);
     };
+    //show star rating
+    var renderStars = function (averageStar) {
+        var stars = [];
+        for (var i = 1; i <= 5; i++) {
+            stars.push(react_1["default"].createElement(FontAwesome_1["default"], { key: i, name: averageStar >= i ? 'star' : 'star-o', size: 20, color: averageStar >= i ? '#FFD700' : '#FFFFFF' }));
+        }
+        return stars;
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRepairman },
         react_1["default"].createElement(react_native_1.FlatList, { data: repairmans, keyExtractor: function (repairmans) { return repairmans._id; }, renderItem: function (_a) {
                 var item = _a.item;
@@ -46,15 +56,7 @@ var HomeRepairmanPopular = function () {
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman },
                                 item.full_name,
                                 " "),
-                            react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, item.averageStar < 1 ? (react_1["default"].createElement(react_1["default"].Fragment, null,
-                                react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
-                                    item.averageStar,
-                                    "/5"),
-                                react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/emptyStar.png') }))) : (react_1["default"].createElement(react_1["default"].Fragment, null,
-                                react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
-                                    item.averageStar,
-                                    "/5"),
-                                react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/starIcon.png') }))))))));
+                            react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, renderStars(item.averageStar))))));
             }, onEndReached: handleLoadMore, onEndReachedThreshold: 0.1 }),
         react_1["default"].createElement(react_native_1.View, { style: styles.paginationContainer }, Array.from({ length: totalPages }, function (_, i) { return i + 1; }).map(function (page) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { key: page, onPress: function () { return handelChangePage(page); }, style: [
                 styles.paginationButton,
@@ -67,12 +69,24 @@ var HomeRepairmanPopular = function () {
 };
 exports["default"] = HomeRepairmanPopular;
 var styles = react_native_1.StyleSheet.create({
+    address: {
+        flexDirection: "row",
+        alignItems: "center"
+    },
     repairman: {
         marginTop: 10,
         backgroundColor: '#FCA234',
         width: '100%',
         height: 132,
-        borderRadius: 10
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 5
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10
     },
     containerRepairman: {
         flex: 1
@@ -96,7 +110,7 @@ var styles = react_native_1.StyleSheet.create({
         fontSize: 18,
         color: '#394C6D',
         fontWeight: 'bold',
-        height: '50%',
+        height: '40%',
         justifyContent: 'center'
     },
     averageStar: {
@@ -130,7 +144,15 @@ var styles = react_native_1.StyleSheet.create({
         marginHorizontal: 5,
         padding: 10,
         backgroundColor: '#DDDDDD',
-        borderRadius: 5
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 5
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10
     },
     paginationButtonText: {
         fontSize: 16

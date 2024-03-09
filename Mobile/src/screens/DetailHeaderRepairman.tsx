@@ -29,14 +29,13 @@ const DetailHeaderRepairman = () => {
   const navigation: any = useNavigation();
   if (isLoading) {
     return (
-      <View style={{alignItems: 'center', flex:1, justifyContent:"center"}}>
+      <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
         <Text>
           <LoaderKit
             style={styles.loadingText}
             name={'BallPulse'}
             color={'#FCA234'}
           />
-          
         </Text>
       </View>
     );
@@ -52,16 +51,15 @@ const DetailHeaderRepairman = () => {
       <Text style={styles.title}>Thông tin cá nhân</Text>
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>Họ và tên: </Text>
-        <Text style={styles.content}>{repairman?.full_name}</Text>
+        <Text numberOfLines={2} style={styles.content}>{repairman?.full_name}</Text>
       </View>
       <View style={styles.detailInfo}>
-        <Text style={styles.titles}>Số điện thoại: </Text>
-        <Text style={styles.content}>{repairman?.number_phone}</Text>
+        <Text style={styles.titles}>SĐT: </Text>
+        <Text style={styles.content}>0{repairman?.number_phone}</Text>
       </View>
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>Địa chỉ:</Text>
-        <Text numberOfLines={1} style={styles.content}>
-          {' '}
+        <Text numberOfLines={2} style={styles.content}>
           {repairman?.address}
         </Text>
       </View>
@@ -156,11 +154,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     alignItems: 'center',
     paddingTop: 10,
+    width:"100%"
   },
   titles: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#394C6D',
+    width:"40%"
   },
   titless: {
     fontSize: 18,
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
   },
   content: {
     fontSize: 18,
+    width:"60%"
   },
   containerService: {
     marginTop: 20,
@@ -197,6 +198,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
   contents: {
     flexDirection: 'row',

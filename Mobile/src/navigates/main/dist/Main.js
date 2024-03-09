@@ -4,7 +4,6 @@ var react_1 = require("react");
 var react_query_1 = require("@tanstack/react-query");
 var DrawerNavigator_1 = require("./DrawerNavigator");
 var stack_1 = require("@react-navigation/stack");
-var SignIn_1 = require("../../screens/accounts.tsx/SignIn");
 var SignUp_1 = require("../../screens/accounts.tsx/SignUp");
 var SelectRole_1 = require("../../screens/accounts.tsx/SelectRole");
 var ConfirmCode_1 = require("../../screens/accounts.tsx/ConfirmCode");
@@ -24,6 +23,9 @@ var EditAvatarCurrentUser_1 = require("../../screens/forms/EditAvatarCurrentUser
 var MapBookingScreen_1 = require("../../screens/MapBookingScreen");
 var HistoryStore_1 = require("../../screens/HistoryStore");
 var ResultSearch_1 = require("../../screens/ResultSearch");
+var HistoryRepairmanBookSchedule_1 = require("../../screens/HistoryRepairmanBookSchedule");
+var DetailRepairmanConfirmBooking_1 = require("../../screens/DetailRepairmanConfirmBooking");
+var DetailViewBookSchedule_1 = require("../../screens/DetailViewBookSchedule");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -58,7 +60,7 @@ var Main = function () {
                 }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "RatedComment", component: RatedComment_1["default"], options: function () { return ({
                     headerShown: true,
-                    headerTitle: "\u0110a\u0301nh gia\u0301 cu\u0309a ba\u0323n v\u00EA\u0300 th\u01A1\u0323"
+                    headerTitle: "\u0110a\u0301nh gia\u0301"
                 }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "EditInfoCurrentUser", component: EditInfoCurrentUser_1["default"], options: function () { return ({
                     headerShown: true,
@@ -92,10 +94,21 @@ var Main = function () {
                     headerShown: true,
                     headerTitle: "Lịch sử cửa hàng"
                 }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "HistoryRepairmanBookSchedule", component: HistoryRepairmanBookSchedule_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Lịch sử đặt lịch"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailRepairmanConfirmBooking", component: DetailRepairmanConfirmBooking_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Chi tiết lịch hẹn"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailViewBookSchedule", component: DetailViewBookSchedule_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Chi tiết lịch hẹn"
+                }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "ResultSearch", component: ResultSearch_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Kết quả tìm kiếm"
-                }); } }),
-            react_1["default"].createElement(Stack.Screen, { name: "SignIn", component: SignIn_1["default"], options: { headerShown: false } }))));
+                }); } }))));
 };
 exports["default"] = Main;

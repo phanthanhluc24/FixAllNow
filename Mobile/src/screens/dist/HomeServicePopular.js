@@ -47,7 +47,15 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: '#394C6D',
         width: '100%',
         height: 132,
-        borderRadius: 10
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 5
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10
     },
     containerRepairman: {
         flex: 1
@@ -60,7 +68,10 @@ var styles = react_native_1.StyleSheet.create({
     },
     img: {
         width: 100,
-        height: 100
+        height: 100,
+        borderRadius: 50,
+        borderWidth: 3,
+        borderColor: "#ffffff"
     },
     nameRepairman: {
         fontSize: 18,

@@ -28,28 +28,22 @@ import MapBookingScreen from '../../screens/MapBookingScreen';
 import HistoryStore from '../../screens/HistoryStore';
 import HeaderTitleComponent from '../../screens/HeaderTitleComponent';
 import ResultSearch from '../../screens/ResultSearch';
+import HistoryRepairmanBookSchedule from '../../screens/HistoryRepairmanBookSchedule';
+import DetailRepairmanConfirmBooking from '../../screens/DetailRepairmanConfirmBooking';
 import AuthNavigation from './AuthNavigation';
+import DetailViewBookSchedule from '../../screens/DetailViewBookSchedule';
+
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
   return (
     <QueryClientProvider client={queryClient}>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Landing"
-          component={Landing}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
+         {/* <Stack.Screen
           name="SignIn"
           component={SignIn}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="Root"
           component={DrawerNavigator}
@@ -115,7 +109,7 @@ const Main = () => {
           component={RatedComment}
           options={() => ({
             headerShown: true,
-            headerTitle:`Đánh giá của bạn về thợ` ,
+            headerTitle:`Đánh giá` ,
           })}
         />
          <Stack.Screen
@@ -182,6 +176,30 @@ const Main = () => {
             headerTitle: "Lịch sử cửa hàng",
           })}
         />
+         <Stack.Screen
+          name="HistoryRepairmanBookSchedule"
+          component={HistoryRepairmanBookSchedule}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Lịch sử đặt lịch",
+          })}
+        />
+        <Stack.Screen
+          name="DetailRepairmanConfirmBooking"
+          component={DetailRepairmanConfirmBooking}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Chi tiết lịch hẹn",
+          })}
+        />
+        <Stack.Screen
+          name="DetailViewBookSchedule"
+          component={DetailViewBookSchedule}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Chi tiết lịch hẹn",
+          })}
+        />
         <Stack.Screen
           name="ResultSearch"
           component={ResultSearch}
@@ -190,11 +208,7 @@ const Main = () => {
             headerTitle: "Kết quả tìm kiếm",
           })}
         />
-         <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-          options={{headerShown: false}}
-        />
+        
        
       </Stack.Navigator>
     </QueryClientProvider>

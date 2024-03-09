@@ -2,27 +2,14 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var native_1 = require("@react-navigation/native");
-var RepairmanFinderFollowProcessing_1 = require("./RepairmanFinderFollowProcessing");
-var RepairmanFinderDeconfirmBooking_1 = require("./RepairmanFinderDeconfirmBooking");
-var RepairmanFinderReviewAccomplishedRepair_1 = require("./RepairmanFinderReviewAccomplishedRepair");
 var RepairmanFinderWaitingConfirmBook_1 = require("./RepairmanFinderWaitingConfirmBook");
+var useRepairmanFinderGetStatusBooking_1 = require("../hooks/useRepairmanFinderGetStatusBooking");
 var ProfileBodyRepairmanFinder = function () {
-    var navigation = native_1.useNavigation();
     var _a = react_1.useState(0), selectedTab = _a[0], setSelectedTab = _a[1];
+    var transformedSelectedTab = selectedTab + 1;
+    var statusBooking = useRepairmanFinderGetStatusBooking_1["default"](transformedSelectedTab).statusBooking;
     var renderComponent = function () {
-        switch (selectedTab) {
-            case 0:
-                return react_1["default"].createElement(RepairmanFinderWaitingConfirmBook_1["default"], null);
-            case 1:
-                return react_1["default"].createElement(RepairmanFinderDeconfirmBooking_1["default"], null);
-            case 2:
-                return react_1["default"].createElement(RepairmanFinderFollowProcessing_1["default"], null);
-            case 3:
-                return react_1["default"].createElement(RepairmanFinderReviewAccomplishedRepair_1["default"], null);
-            default:
-                return null;
-        }
+        return react_1["default"].createElement(RepairmanFinderWaitingConfirmBook_1["default"], { statusBooking: statusBooking });
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerProfileBodyRepairmanFinder },
         react_1["default"].createElement(react_native_1.View, null,
@@ -42,7 +29,7 @@ var ProfileBodyRepairmanFinder = function () {
                     react_1["default"].createElement(react_native_1.Text, { style: [
                             styles.titleButton,
                             selectedTab === 1 ? styles.selectedText : null,
-                        ] }, "\u0110\u01A1n \u0111\u00E3 h\u1EE7y")),
+                        ] }, "\u0110\u01A1n ch\u00E2\u0301p nh\u00E2\u0323n")),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [
                         styles.eventButton,
                         selectedTab === 2 ? styles.selectedButton : null,
@@ -50,7 +37,7 @@ var ProfileBodyRepairmanFinder = function () {
                     react_1["default"].createElement(react_native_1.Text, { style: [
                             styles.titleButton,
                             selectedTab === 2 ? styles.selectedText : null,
-                        ] }, "\u0110ang th\u1EF1c hi\u1EC7n")),
+                        ] }, "\u0110\u01A1n \u0111\u00E3 h\u1EE7y")),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [
                         styles.eventButton,
                         selectedTab === 3 ? styles.selectedButton : null,
@@ -59,7 +46,7 @@ var ProfileBodyRepairmanFinder = function () {
                             styles.titleButton,
                             selectedTab === 3 ? styles.selectedText : null,
                         ] }, "\u0110\u00E3 ho\u00E0n th\u00E0nh")))),
-        react_1["default"].createElement(react_native_1.View, null, renderComponent())));
+        react_1["default"].createElement(react_native_1.View, { style: { marginBottom: 70 } }, renderComponent())));
 };
 exports["default"] = ProfileBodyRepairmanFinder;
 var styles = react_native_1.StyleSheet.create({

@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
   buttonEvent:{
     flexDirection:"row",
     justifyContent:"space-around",
-    width:"100%"
+    width:"100%",
+    marginRight:25
   },
   detailEmail: {
     fontSize: 15,
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   },
   profileHeader: {
     flex: 1,
-    backgroundColor: '#FCA234',
+    backgroundColor: '#fffff0',
   },
   infoProfile: {
     marginHorizontal: 20,
@@ -196,6 +197,8 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
+    borderWidth:3,
+    borderColor:"#394C6D"
   },
   avatarPro: {
     alignItems: 'center',

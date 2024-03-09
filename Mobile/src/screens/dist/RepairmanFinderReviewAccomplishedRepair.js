@@ -2,33 +2,36 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var RepairmanFinderReviewAccomplishedRepair = function () {
+var RepairmanFinderReviewAccomplishedRepair = function (_a) {
+    var statusAccomplishedBooking = _a.statusAccomplishedBooking;
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
-        react_1["default"].createElement(react_native_1.View, { style: styles.cartService },
-            react_1["default"].createElement(react_native_1.View, { style: styles.headerCart },
-                react_1["default"].createElement(react_native_1.View, { style: styles.nameShop },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.groundNameApp },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameApp }, "FixAllNow")),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameService }, " Di\u0323ch vu\u0323")),
-                react_1["default"].createElement(react_native_1.View, null,
-                    react_1["default"].createElement(react_native_1.TouchableOpacity, null,
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.waitPayment }, "Di\u0323ch vu\u0323 \u0111a\u0303 hoa\u0300n t\u00E2\u0301t")))),
-            react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                react_1["default"].createElement(react_native_1.View, { style: styles.image },
-                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avatar.png'), style: styles.img })),
-                react_1["default"].createElement(react_native_1.View, { style: styles.info },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.infos },
-                        react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, "Di\u0323ch vu\u0323 ba\u0309o tri\u0300 \u00F4 t\u00F4"),
-                        react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.description }, "Qua\u0323t nha\u0300 t\u00F4i m\u01A1\u0301i mua v\u00EA\u0300 nh\u01B0ng cha\u0323y 5 phu\u0301t la\u0300 no\u0301 la\u0323i bay ra mu\u0300i kh\u0103\u0301c"),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
-                            react_1["default"].createElement(react_native_1.View, null),
-                            react_1["default"].createElement(react_native_1.View, null,
-                                react_1["default"].createElement(react_native_1.View, { style: styles.prices },
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, "\u0111"),
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "100.000"))))))),
-            react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
-                react_1["default"].createElement(react_native_1.View, { style: styles.background },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "\u0110\u0103\u0323t la\u0323i di\u0323ch vu\u0323"))))));
+        react_1["default"].createElement(react_native_1.FlatList, { data: statusAccomplishedBooking, keyExtractor: function (statusAccomplishedBooking) { return statusAccomplishedBooking._id; }, renderItem: function (_a) {
+                var item = _a.item;
+                return (react_1["default"].createElement(react_native_1.View, { style: styles.cartService },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.headerCart },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.nameShop },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.groundNameApp },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.nameApp }, "FixAllNow")),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameService }, " Di\u0323ch vu\u0323")),
+                        react_1["default"].createElement(react_native_1.View, null,
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, null,
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.waitPayment }, item.status)))),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.image },
+                            react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/avatar.png'), style: styles.img })),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.info },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.infos },
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, "Di\u0323ch vu\u0323 ba\u0309o tri\u0300 \u00F4 t\u00F4"),
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.description }, "Qua\u0323t nha\u0300 t\u00F4i m\u01A1\u0301i mua v\u00EA\u0300 nh\u01B0ng cha\u0323y 5 phu\u0301t la\u0300 no\u0301 la\u0323i bay ra mu\u0300i kh\u0103\u0301c"),
+                                react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
+                                    react_1["default"].createElement(react_native_1.View, null,
+                                        react_1["default"].createElement(react_native_1.View, { style: styles.prices },
+                                            react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, "\u0111"),
+                                            react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "100.000"))))))),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.background },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "\u0110\u0103\u0323t la\u0323i di\u0323ch vu\u0323")))));
+            } })));
 };
 exports["default"] = RepairmanFinderReviewAccomplishedRepair;
 var styles = react_native_1.StyleSheet.create({
@@ -94,7 +97,7 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     vnd: {
-        fontSize: 18,
+        fontSize: 15,
         color: '#394C6D'
     },
     prices: {

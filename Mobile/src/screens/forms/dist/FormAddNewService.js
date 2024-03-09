@@ -105,7 +105,7 @@ var FormAddNewService = function () {
                             title: 'Thành công',
                             textBody: "Dịch vụ đã thêm thành công!"
                         });
-                        navigation.navigate('Profile');
+                        navigation.navigate('Profile', { reload: true });
                     }
                     return [3 /*break*/, 3];
                 case 2:

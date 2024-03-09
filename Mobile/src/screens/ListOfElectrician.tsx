@@ -28,14 +28,13 @@ const ListOfElectrician = ({route}: any) => {
     useGetListRepairmanOfCategorySpecific(id);
   if (isLoading) {
     return (
-      <View style={{alignItems: 'center', flex:1, justifyContent:"center"}}>
+      <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
         <Text>
           <LoaderKit
             style={styles.loadingText}
             name={'BallPulse'}
             color={'#FCA234'}
           />
-          
         </Text>
       </View>
     );
@@ -50,7 +49,7 @@ const ListOfElectrician = ({route}: any) => {
     <View style={styles.repairmanPopular}>
       <View style={styles.container}>
         <Text style={styles.title}>Thợ nổi bật</Text>
-        <View>
+        <View style={{marginBottom:70}}>
           <FlatList
             data={listRepairmanOfCategory as typeRepairman[]}
             keyExtractor={repairman => repairman._id}
@@ -135,19 +134,31 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   container: {
-    marginHorizontal: 20,
+    // marginBottom:60,
   },
   title: {
     color: '#394C6D',
     fontSize: 20,
     fontWeight: 'bold',
+    marginHorizontal:20
   },
   repairman: {
+    
+    marginHorizontal:20,
     marginTop: 10,
     backgroundColor: '#FCA234',
-    width: '100%',
+    width: '90%',
     height: 132,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
   content: {
     flexDirection: 'row',

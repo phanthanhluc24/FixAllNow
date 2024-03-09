@@ -12,7 +12,22 @@ var ConfirmInforBooking = function (_a) {
     var priceRepair = infoBooking.infoServiceBooking.price;
     var addressRepair = infoBooking.address;
     var desc = infoBooking.bugService;
-    var priceService = (5 / 100) * priceRepair;
+    var priceService;
+    if (priceRepair <= 100000) {
+        priceService = 0;
+    }
+    else if (priceRepair > 100000 && priceRepair <= 300000) {
+        priceService = (5 / 100) * priceRepair;
+    }
+    else if (priceRepair > 300000 && priceRepair <= 500000) {
+        priceService = (10 / 100) * priceRepair;
+    }
+    else if (priceRepair > 500000 && priceRepair <= 1000000) {
+        priceService = (15 / 100) * priceRepair;
+    }
+    else {
+        priceService = (20 / 100) * priceRepair;
+    }
     var priceTransport = 10000;
     var totalPrice = priceRepair + priceService + priceTransport;
     var navigation = native_1.useNavigation();
@@ -29,11 +44,11 @@ var ConfirmInforBooking = function (_a) {
     };
     var handleMethodSelect = function () {
         setSelectedMethod(1);
-        setErrorPayment("OK");
+        setErrorPayment('OK');
     };
     var handleConfirm = function () {
         if (errorPayment == null) {
-            setErrorPayment("Vui lòng chọn phương thức thanh toán");
+            setErrorPayment('Vui lòng chọn phương thức thanh toán');
         }
         else {
             bookingService(data, infoBooking.infoServiceBooking._id, infoBooking.infoServiceBooking.user_id._id);
@@ -41,7 +56,7 @@ var ConfirmInforBooking = function (_a) {
     };
     var handleMomoSelect = function () {
         setSelectedMethod(2);
-        setErrorPayment("OK");
+        setErrorPayment('OK');
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.View, { style: styles.infoContainer },
@@ -76,7 +91,7 @@ var ConfirmInforBooking = function (_a) {
                     react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110"))),
             react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.titleInfo }, "Cho\u0323n ph\u01B0\u01A1ng th\u01B0\u0301c thanh toa\u0301n"),
-                react_1["default"].createElement(react_native_1.View, { style: { height: 20 } }, errorPayment !== "OK" && react_1["default"].createElement(react_native_1.Text, { style: { color: "red", fontWeight: "bold" } }, errorPayment)),
+                react_1["default"].createElement(react_native_1.View, { style: { height: 20 } }, errorPayment !== 'OK' && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red', fontWeight: 'bold' } }, errorPayment))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.method },
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: [
                             styles.buttonMethod,

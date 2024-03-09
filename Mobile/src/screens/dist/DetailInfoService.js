@@ -26,7 +26,7 @@ var DetailInfoService = function () {
         react_1["default"].createElement(react_native_1.View, { style: styles.infoServices },
             react_1["default"].createElement(react_native_1.Image, { source: { uri: service === null || service === void 0 ? void 0 : service.image }, style: styles.imageSer }),
             react_1["default"].createElement(react_native_1.View, { style: styles.infoStyle },
-                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameStyle }, service === null || service === void 0 ? void 0 : service.service_name),
+                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.nameStyle }, service === null || service === void 0 ? void 0 : service.service_name),
                 react_1["default"].createElement(react_native_1.Text, { style: styles.priceStyle }, service === null || service === void 0 ? void 0 :
                     service.price.toLocaleString('vi-VN'),
                     ' VND'),
@@ -170,7 +170,15 @@ var styles = react_native_1.StyleSheet.create({
         height: 132,
         borderRadius: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7
     },
     listServiceRevolve: {
         flex: 1,
