@@ -39,7 +39,6 @@ exports.__esModule = true;
 var axios_1 = require("axios");
 var url_1 = require("./apiRequest/url");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
-var react_native_alert_notification_1 = require("react-native-alert-notification");
 var useEditInfoCurrentUser = function (formData) { return __awaiter(void 0, void 0, void 0, function () {
     var accessToken, response, error_1;
     return __generator(this, function (_a) {
@@ -56,20 +55,11 @@ var useEditInfoCurrentUser = function (formData) { return __awaiter(void 0, void
                     })];
             case 2:
                 response = _a.sent();
-                if (response.data.status) {
-                    react_native_alert_notification_1.Toast.show({
-                        type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
-                        title: 'Thành công',
-                        textBody: 'Thông tin người dùng đã được chỉnh sửa!'
-                    });
-                }
-                return [2 /*return*/, response];
+                return [2 /*return*/, response.data.status];
             case 3:
                 error_1 = _a.sent();
                 throw error_1;
-            case 4:
-                ;
-                return [2 /*return*/];
+            case 4: return [2 /*return*/];
         }
     });
 }); };

@@ -9,6 +9,10 @@ const ProfileButtonEvent = () => {
       <TouchableOpacity style={styles.addService} onPress={()=>navigation.navigate('FormAddNewService')}><Text style={styles.nameAddService}>Thêm mới dịch vụ</Text></TouchableOpacity>
       <TouchableOpacity style={styles.viewHistory}><Text style={styles.nameViewHistory}onPress={()=>navigation.navigate('HistoryStore')}>Lịch sử cửa hàng</Text></TouchableOpacity>
      </View>
+     <View style={{marginHorizontal:20}}>
+     <TouchableOpacity style={styles.viewHistory}><Text style={styles.nameViewHistory}onPress={()=>navigation.navigate('HistoryRepairmanBookSchedule')}>Lịch sử đặt lịch</Text></TouchableOpacity>
+     </View>
+     
     </View>
   )
 }
@@ -20,23 +24,27 @@ const styles = StyleSheet.create({
     marginHorizontal:10,
     fontSize:15,
     fontWeight:"bold",
-    color:"#394C6D"
+    color:"#FCA234"
   },
   nameViewHistory:{
     marginHorizontal:10,
     fontSize:15,
     fontWeight:"bold",
-    color:"#394C6D"
+    color:"#FCA234"
   },
   viewHistory:{
-    backgroundColor:"#FCA234",
+    backgroundColor:"#394C6D",
     height:40,
     alignItems:"center",
     justifyContent:"center",
     borderRadius:5,
+    marginTop:10,
+    // marginBottom:10,
+    // marginHorizontal:20
+    marginBottom:10
   },
   addService:{
-    backgroundColor:"#FCA234",
+    backgroundColor:"#394C6D",
     height:40,
     alignItems:"center",
     justifyContent:"center",
@@ -44,7 +52,7 @@ const styles = StyleSheet.create({
   },
   containerEvent:{
     flex:1,
-    backgroundColor:"#394C6D",
+    backgroundColor:"#fffff0",
     
   },
   styleEvent:{

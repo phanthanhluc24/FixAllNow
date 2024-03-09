@@ -4,6 +4,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {TouchableOpacity} from 'react-native';
 import useGetNotificationBooking from '../../../hooks/useGetNotificationBooking';
 import LoaderKit from 'react-native-loader-kit';
+import moment from 'moment';
+import 'moment-duration-format';
 interface typeService {
   _id: string;
   booking_id: string;
@@ -15,10 +17,17 @@ interface typeService {
   bodyRepairmanFinder: string;
   image: string;
   desc: string;
+  updatedAt: string;
+  service_id:{
+    image:string
+  };
+
 }
 const Notification = () => {
   const [clicked, setClicked] = useState({});
   const {notifications, isLoading, isError} = useGetNotificationBooking();
+  console.log(notifications);
+
   if (isLoading) {
     return (
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -49,22 +58,22 @@ const Notification = () => {
           <TouchableOpacity
             style={[
               styles.layout,
-              {backgroundColor: clicked ? '#A3C5FF' : '#BCD4E6'},
+              {backgroundColor: clicked ? '#ffffff' : '#FFC278'},
             ]}>
             <View style={styles.notificationContainer}>
               <View style={styles.avatarShop}>
                 <Image
                   style={styles.avatar}
-                  source={require('../../../assets/Homes/avatar.png')}
+                  source={{uri:item?.service_id.image}}
                 />
               </View>
               <View style={styles.contentNotification}>
-                <Text style={styles.title}>{item?.titleRepairmanFinder}</Text>
-                <Text numberOfLines={3}> {item?.bodyRepairmanFinder}</Text>
-                <Text style={styles.time}>16 ngày trước</Text>
-              </View>
-              <View style={styles.openView}>
-                <AntDesign name="ellipsis1" color="#394C6D" size={30} />
+                <Text style={styles.title}>{item?.titleRepairmanFinder || item?.titleRepairman}</Text>
+                <Text numberOfLines={3}>{item?.bodyRepairmanFinder || item?.bodyRepairman}</Text>
+                <Text style={styles.time}>
+                {moment
+                    .duration(moment().diff(moment(item.updatedAt))).format(' D [ngày] h [giờ]')}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -96,13 +105,24 @@ const styles = StyleSheet.create({
   avatar: {
     width: 50,
     height: 50,
+    borderRadius:50,
+    borderWidth:1,
+    borderColor:"#394C6D"
   },
   container: {
     flex: 1,
   },
   layout: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#394C6D',
+    paddingVertical: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    
+    elevation: 10,
   },
   notificationContainer: {
     flexDirection: 'row',

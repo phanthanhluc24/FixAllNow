@@ -15,6 +15,8 @@ import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
 import useEditInfoCurrentUser from '../../hooks/useEditInfoCurrentUser';
+import RNRestart from 'react-native-restart';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoCurrentUser = ({route}: any) => {
   const navigation: any = useNavigation();
   const {user} = route.params;
@@ -46,14 +48,27 @@ const EditInfoCurrentUser = ({route}: any) => {
   const hasNumbersOnly = (value: string) => {
     return /^\d+$/.test(value);
   };
-  const onSubmit = () => {
+  const onSubmit =async () => {
     const formData = {
       full_name: full_name,
       number_phone: number_phone,
     };
 
-    useEditInfoCurrentUser(formData);
-    navigation.navigate('Profile');
+    try {
+      const editSuccess = await useEditInfoCurrentUser(formData);
+      if (editSuccess) {
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Thành công',
+          textBody: "Thông tin người dùng thay đổi thành công!",
+        });
+        navigation.navigate('Profile', { reload: true });
+      } else {
+        console.error('Lỗi khi edit thông tin người dùng');
+      }
+    } catch (error) {
+      console.error('Lỗi khi edit thông tin người dùng:', error);
+    }
   };
   const handleCancle = () => {
     navigation.navigate('Profile');
@@ -117,7 +132,7 @@ const EditInfoCurrentUser = ({route}: any) => {
                 required: 'Số điện thoại không được bỏ trống',
                 minLength: {
                   value: 10,
-                  message: 'Số điện thoại phải có đủ 10 chữ số',
+                  message: 'Số điện thoại phải có đủ 10 chữ số gồm chữ số 0 đầu tiên',
                 },
                 validate: value => hasNumbersOnly(value) || 'Số điện thoại chỉ được chứa số'
               }}

@@ -18,7 +18,7 @@ var styles = react_native_1.StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 100,
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: '#394C6D'
     },
     container: {

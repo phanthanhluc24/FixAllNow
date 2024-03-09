@@ -11,7 +11,7 @@ var ListOfElectrician = function (_a) {
     var navigation = native_1.useNavigation();
     var _b = useGetListRepairmanOfCategorySpecific_1["default"](id), listRepairmanOfCategory = _b.listRepairmanOfCategory, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading) {
-        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: "center" } },
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: 'center' } },
             react_1["default"].createElement(react_native_1.Text, null,
                 react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
@@ -24,7 +24,7 @@ var ListOfElectrician = function (_a) {
     return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
-            react_1["default"].createElement(react_native_1.View, null,
+            react_1["default"].createElement(react_native_1.View, { style: { marginBottom: 70 } },
                 react_1["default"].createElement(react_native_1.FlatList, { data: listRepairmanOfCategory, keyExtractor: function (repairman) { return repairman._id; }, renderItem: function (_a) {
                         var item = _a.item;
                         return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
@@ -82,19 +82,29 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 10
     },
     container: {
-        marginHorizontal: 20
+    // marginBottom:60,
     },
     title: {
         color: '#394C6D',
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginHorizontal: 20
     },
     repairman: {
+        marginHorizontal: 20,
         marginTop: 10,
         backgroundColor: '#FCA234',
-        width: '100%',
+        width: '90%',
         height: 132,
-        borderRadius: 10
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7
     },
     content: {
         flexDirection: 'row',

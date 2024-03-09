@@ -25,10 +25,7 @@ const useBookingService = () => {
       );
 
       if (response.data.status === 200) {
-        navigation.reset({
-          index: 0,
-          routes:[{name:"Root"}]
-        });
+        navigation.navigate("Root", {reload:true})
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
           title: 'Thành công',

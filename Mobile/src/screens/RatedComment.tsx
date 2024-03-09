@@ -13,9 +13,26 @@ import React,{useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import StarRating from './StarRating';
+import useRatingComment from '../hooks/useRatingComment';
 const RatedComment = () => {
   const navigation:any = useNavigation();
-  const handleRatingPress = (rating:any) => {
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+
+  const handleRatingPress = (ratingValue:any) => {
+    setRating(ratingValue);
+  };
+
+  const handleCommentChange = (text:any) => {
+    setComment(text);
+  }
+  const {sendData}= useRatingComment();
+  const handleSubmit = async(data:any) => {
+    console.log('Comment:', comment);
+    console.log('Rating:', rating);
+    data.comment=comment;
+    data.rating=rating
+    const responseData= await sendData(data)
   };
   return (
     <KeyboardAvoidingView
@@ -29,22 +46,25 @@ const RatedComment = () => {
             <TextInput multiline={true}
               style={styles.input}
               placeholderTextColor={'#394C69'}
-              placeholder="Hãy đánh giá theo cảm nhận của bạn!"></TextInput>
+              placeholder="Hãy đánh giá theo cảm nhận của bạn!"
+              value={comment}
+              onChangeText={handleCommentChange}></TextInput>
           </View>
           <Text style={styles.level}>Mức độ hài lòng:</Text>
           <StarRating rating={0} onRatingPress={handleRatingPress} />
         </View>
         <View style={styles.bottom}>
           <View style={styles.footer}>
+          <TouchableOpacity
+              style={styles.bgButton}
+              onPress={handleSubmit}>
+              <Text style={styles.nameBook}>Gửi</Text>
+            </TouchableOpacity>
             <Image
               style={styles.imgFooter}
               source={require('../assets/Form/double.png')}
             />
-            <TouchableOpacity
-              style={styles.bgButton}
-              onPress={() => navigation.navigate('ConfirmInforBooking')}>
-              <Text style={styles.nameBook}>Đánh giá</Text>
-            </TouchableOpacity>
+           
           </View>
         </View>
       </ScrollView>
@@ -71,7 +91,7 @@ const styles = StyleSheet.create({
     width: '50%',
     borderRadius: 10,
     borderWidth: 2,
-    marginBottom: 10,
+    marginTop:50
   },
   footer: {
     alignItems: 'center',

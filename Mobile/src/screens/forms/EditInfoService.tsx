@@ -78,7 +78,7 @@ const EditInfoService = ({route}: any) => {
   const isValidPrice = (value: string) => {
     return /^\d+$/.test(value);
   };
-  const onSubmit = () => {
+  const onSubmit =async () => {
     const formData = {
       service_id:service._id,
       service_name: nameService,
@@ -86,13 +86,22 @@ const EditInfoService = ({route}: any) => {
       desc: descService,
       image: singleFile,
     };
-    useEditInfoService(formData);
-    // Toast.show({
-    //   type: ALERT_TYPE.SUCCESS,
-    //   title: 'Thành công',
-    //   textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
-    // })
-    navigation.navigate('Profile');
+    try {
+      const editSuccess = await useEditInfoService(formData);
+    
+    if (editSuccess) {
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: 'Thành công',
+        textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
+      })
+      navigation.navigate('Profile', { reload: true });
+    } else {
+      console.error('Lỗi khi edit thông tin người dùng');
+    }
+  } catch (error) {
+    console.error('Lỗi khi edit thông tin người dùng:', error);
+  }
   };
   const handleCancle = () => {
     navigation.navigate("Profile")

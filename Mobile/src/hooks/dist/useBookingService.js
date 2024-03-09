@@ -61,10 +61,7 @@ var useBookingService = function () {
                 case 3:
                     response = _a.sent();
                     if (response.data.status === 200) {
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: "Root" }]
-                        });
+                        navigation.navigate("Root", { reload: true });
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
                             title: 'Thành công',

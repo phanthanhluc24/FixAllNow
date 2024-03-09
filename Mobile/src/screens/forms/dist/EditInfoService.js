@@ -43,6 +43,7 @@ var Entypo_1 = require("react-native-vector-icons/Entypo");
 var react_native_document_picker_1 = require("react-native-document-picker");
 var useEditInfoService_1 = require("../../hooks/useEditInfoService");
 var native_1 = require("@react-navigation/native");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
 var EditInfoService = function (_a) {
     var route = _a.route;
     var service = route.params.service;
@@ -109,22 +110,44 @@ var EditInfoService = function (_a) {
     var isValidPrice = function (value) {
         return /^\d+$/.test(value);
     };
-    var onSubmit = function () {
-        var formData = {
-            service_id: service._id,
-            service_name: nameService,
-            price: priceService,
-            desc: descService,
-            image: singleFile
-        };
-        useEditInfoService_1["default"](formData);
-        // Toast.show({
-        //   type: ALERT_TYPE.SUCCESS,
-        //   title: 'Thành công',
-        //   textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
-        // })
-        navigation.navigate('Profile');
-    };
+    var onSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var formData, editSuccess, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    formData = {
+                        service_id: service._id,
+                        service_name: nameService,
+                        price: priceService,
+                        desc: descService,
+                        image: singleFile
+                    };
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, useEditInfoService_1["default"](formData)];
+                case 2:
+                    editSuccess = _a.sent();
+                    if (editSuccess) {
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                            title: 'Thành công',
+                            textBody: 'Thông tin dịch vụ đã được chỉnh sửa!'
+                        });
+                        navigation.navigate('Profile', { reload: true });
+                    }
+                    else {
+                        console.error('Lỗi khi edit thông tin người dùng');
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error('Lỗi khi edit thông tin người dùng:', error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); };
     var handleCancle = function () {
         navigation.navigate("Profile");
     };

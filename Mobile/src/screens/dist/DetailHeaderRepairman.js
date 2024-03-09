@@ -14,7 +14,7 @@ var DetailHeaderRepairman = function () {
     var _a = useGetServiceOfRepairman_1["default"](id), serviceOfRepairman = _a.serviceOfRepairman, isLoading = _a.isLoading, isError = _a.isError;
     var navigation = native_1.useNavigation();
     if (isLoading) {
-        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: "center" } },
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: 'center' } },
             react_1["default"].createElement(react_native_1.Text, null,
                 react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
@@ -27,15 +27,15 @@ var DetailHeaderRepairman = function () {
         react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u00F4ng tin ca\u0301 nh\u00E2n"),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Ho\u0323 va\u0300 t\u00EAn: "),
-            react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.full_name)),
+            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.full_name)),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
-            react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i: "),
-            react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.number_phone)),
+            react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "S\u0110T: "),
+            react_1["default"].createElement(react_native_1.Text, { style: styles.content },
+                "0", repairman === null || repairman === void 0 ? void 0 :
+                repairman.number_phone)),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "\u0110\u1ECBa ch\u1EC9:"),
-            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.content },
-                ' ', repairman === null || repairman === void 0 ? void 0 :
-                repairman.address)),
+            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.address)),
         react_1["default"].createElement(react_native_1.View, { style: styles.containerService },
             react_1["default"].createElement(react_native_1.Text, { style: styles.service }, "Di\u0323ch vu\u0323"),
             react_1["default"].createElement(react_native_1.View, { style: { marginHorizontal: 20 } }, serviceOfRepairman.length > 0 ? (react_1["default"].createElement(react_native_1.FlatList, { data: serviceOfRepairman, keyExtractor: function (services) { return services._id; }, renderItem: function (_a) {
@@ -98,12 +98,14 @@ var styles = react_native_1.StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 40,
         alignItems: 'center',
-        paddingTop: 10
+        paddingTop: 10,
+        width: "100%"
     },
     titles: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#394C6D'
+        color: '#394C6D',
+        width: "40%"
     },
     titless: {
         fontSize: 18,
@@ -119,7 +121,8 @@ var styles = react_native_1.StyleSheet.create({
         padding: 3
     },
     content: {
-        fontSize: 18
+        fontSize: 18,
+        width: "60%"
     },
     containerService: {
         marginTop: 20
@@ -139,7 +142,15 @@ var styles = react_native_1.StyleSheet.create({
         height: 132,
         borderRadius: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7
     },
     contents: {
         flexDirection: 'row'

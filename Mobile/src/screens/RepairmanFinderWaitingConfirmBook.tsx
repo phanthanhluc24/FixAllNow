@@ -1,78 +1,80 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-
-const RepairmanFinderWaitingConfirmBook = () => {
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import React from 'react';
+import moment from 'moment';
+import {useNavigation} from '@react-navigation/native';
+import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetStatusBooking';
+const RepairmanFinderWaitingConfirmBook = ({statusBooking,data}: any) => {
+  const navigation: any = useNavigation();
+  const navigateToDetailPage=(item:any)=>()=>{
+    navigation.navigate('DetailViewBookSchedule',{booking_id:item})
+  }
   return (
     <View style={styles.container}>
-      <View style={styles.cartService}>
-        <View style={styles.headerCart}>
-          <View style={styles.nameShop}>
-            <View style={styles.groundNameApp}>
-              <Text style={styles.nameApp}>FixAllNow</Text>
+      <FlatList
+        data={statusBooking}
+        keyExtractor={statusBooking => statusBooking._id}
+        renderItem={({item}) => (
+          <TouchableOpacity style={styles.cartService}  onPress={navigateToDetailPage(item._id)}>
+            <View style={styles.headerCart}>
+              <View style={styles.nameShop}></View>
+              <View>
+                <TouchableOpacity>
+                  <Text style={styles.waitPayment}>{item.status}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <Text style={styles.nameService}> Dịch vụ</Text>
-          </View>
-          <View>
-            <TouchableOpacity>
-              <Text style={styles.waitPayment}>Chờ xác nhận</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.content}>
-          <View style={styles.image}>
-            <Image
-              source={require('../assets/Homes/avatar.png')}
-              style={styles.img}
-            />
-          </View>
-          <View style={styles.info}>
-            <View style={styles.infos}>
-              <Text numberOfLines={1} style={styles.nameRepairman}>
-                Dịch vụ bảo trì ô tô
-              </Text>
-              <Text numberOfLines={1} style={styles.description}>
-              Quạt nhà tôi mới mua về nhưng chạy 5 phút là nó lại bay ra mùi khắc
-              </Text>
-              <View style={styles.infoService}>
-                <View></View>
-                <View>
-                  <View style={styles.prices}>
-                    <Text style={styles.vnd}>đ</Text>
-                    <Text style={styles.price}>100.000</Text>
+            <View>
+              <View style={styles.content}>
+                <View style={styles.image}>
+                  <Image
+                    source={{uri: item.service_id.image}}
+                    style={styles.img}
+                  />
+                </View>
+                <View style={styles.info}>
+                  <View style={styles.infos}>
+                    <Text numberOfLines={1} style={styles.nameRepairman}>
+                      {item.service_id.service_name}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.description}>
+                      {item.desc}
+                    </Text>
+                    <View style={styles.infoService}>
+                      <View>
+                        <View>
+                          <Text style={styles.dateTime}>
+                            {moment(item.updatedAt).format('DD/MM/YYYY HH:mm')}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
-        </View>
-        <View style={styles.totalPayment}>
-          <View style={{width:"40%"}}>
-          <View style={styles.background}>
-              <Text style={styles.nameConfirm}>Hủy đặt dịch vụ</Text>
+            <View style={styles.totalPayment}>
+            
             </View>
-          </View>
-          <View style={styles.paymentContainer}>
-            <Image
-              source={require('../assets/History/totalPayment.png')}
-              style={styles.imageTotal}
-            />
-            <View style={styles.payment}>
-              <Text>Tổng:</Text>
-              <View style={styles.prices}>
-                <Text style={styles.vnd}>đ</Text>
-                <Text style={styles.price}>100.000</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default RepairmanFinderWaitingConfirmBook
+export default RepairmanFinderWaitingConfirmBook;
 
 const styles = StyleSheet.create({
+  dateTime: {
+    color: 'blue',
+  },
   nameConfirm: {
     fontSize: 15,
     color: 'white',
@@ -129,15 +131,16 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    alignItems: 'center',
+
     justifyContent: 'space-between',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#394C6D',
+    paddingHorizontal: 15,
   },
   img: {
     width: 60,
     height: 60,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#394C6D',
   },
   nameRepairman: {
     fontSize: 18,
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   vnd: {
-    fontSize: 18,
+    fontSize: 15,
     color: '#394C6D',
   },
   prices: {
@@ -181,6 +184,7 @@ const styles = StyleSheet.create({
   },
   waitPayment: {
     color: '#394C6D',
+    fontWeight: 'bold',
   },
   nameService: {
     fontWeight: 'bold',
@@ -200,8 +204,19 @@ const styles = StyleSheet.create({
   },
   cartService: {
     padding: 10,
-    backgroundColor: '#C1CDE2',
+    backgroundColor: '#ffffff',
     marginTop: 10,
+    marginHorizontal: 12,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   headerCart: {
     flexDirection: 'row',
@@ -213,4 +228,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-})
+});

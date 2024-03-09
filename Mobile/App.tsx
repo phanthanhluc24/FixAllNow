@@ -21,14 +21,13 @@ const App = () => {
   );
 };
 const AppWrapper = () => {
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState("");
   useEffect(() => {
     const checkLogin = async () => {
       const accessToken = await AsyncStorage.getItem('accessToken');
       console.log("Tken",accessToken);
       if (accessToken) {
-        setStatus(true);
-        console.log('status: ', status);
+        setStatus('true');
       }
     };
     checkLogin();

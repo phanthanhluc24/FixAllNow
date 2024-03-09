@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
@@ -9,49 +16,66 @@ const ConfirmInforBooking = ({route}: any) => {
   const repairman = infoBooking.infoServiceBooking.user_id.full_name;
   const priceRepair = infoBooking.infoServiceBooking.price;
   const addressRepair = infoBooking.address;
-  const desc=infoBooking.bugService
-  const priceService = (5 / 100) * priceRepair;
+  const desc = infoBooking.bugService;
+  let priceService;
+
+  if (priceRepair <= 100000) {
+    priceService = 0;
+  } else if (priceRepair > 100000 && priceRepair <= 300000) {
+    priceService = (5 / 100) * priceRepair;
+  } else if (priceRepair > 300000 && priceRepair <= 500000) {
+    priceService = (10 / 100) * priceRepair;
+  } else if (priceRepair > 500000 && priceRepair <= 1000000) {
+    priceService = (15 / 100) * priceRepair;
+  } else {
+    priceService = (20 / 100) * priceRepair;
+  }
   const priceTransport = 10000;
   const totalPrice = priceRepair + priceService + priceTransport;
   const navigation: any = useNavigation();
-  const [selectedMethod, setSelectedMethod] = useState<number|null>(null);
-  const [errorPayment,setErrorPayment]=useState<string|null>(null)
-  const {bookingService}=useBookingService()
-  const data={
-    dayRepair:infoBooking.date,
-    timeRepair:infoBooking.time,
+  const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
+  const [errorPayment, setErrorPayment] = useState<string | null>(null);
+  const {bookingService} = useBookingService();
+  const data = {
+    dayRepair: infoBooking.date,
+    timeRepair: infoBooking.time,
     priceTransport,
     priceService,
-    address:addressRepair,
-    desc:desc
-  }
+    address: addressRepair,
+    desc: desc,
+  };
   const handleMethodSelect = () => {
-    setSelectedMethod(1)
-    setErrorPayment("OK")
+    setSelectedMethod(1);
+    setErrorPayment('OK');
   };
   const handleConfirm = () => {
-    if (errorPayment==null) {
-      setErrorPayment("Vui lòng chọn phương thức thanh toán")
-    }else{
-      bookingService(data,infoBooking.infoServiceBooking._id,infoBooking.infoServiceBooking.user_id._id)
+    if (errorPayment == null) {
+      setErrorPayment('Vui lòng chọn phương thức thanh toán');
+    } else {
+      bookingService(
+        data,
+        infoBooking.infoServiceBooking._id,
+        infoBooking.infoServiceBooking.user_id._id,
+      );
     }
   };
-  const handleMomoSelect=()=>{
-    setSelectedMethod(2)
-    setErrorPayment("OK")
-  }
+  const handleMomoSelect = () => {
+    setSelectedMethod(2);
+    setErrorPayment('OK');
+  };
   return (
     <View style={styles.container}>
-     
       <View style={styles.infoContainer}>
-      <View style={styles.titleConfirm}>
-        <Text style={styles.title}>XÁC NHẬN THÔNG TIN</Text>
-      </View>
+        <View style={styles.titleConfirm}>
+          <Text style={styles.title}>XÁC NHẬN THÔNG TIN</Text>
+        </View>
         <View style={styles.infoService}>
           <Text style={styles.titleInfo}>Thông tin dịch vụ</Text>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Đơn sửa:</Text>
-            <Text numberOfLines={2} style={styles.infors}>{serviceBooking}</Text>
+            <Text numberOfLines={2} style={styles.infors}>
+              {serviceBooking}
+            </Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Thợ:</Text>
@@ -80,7 +104,9 @@ const ConfirmInforBooking = ({route}: any) => {
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Địa điểm:</Text>
-            <Text numberOfLines={2} style={styles.infors}>{addressRepair}</Text>
+            <Text numberOfLines={2} style={styles.infors}>
+              {addressRepair}
+            </Text>
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Tổng:</Text>
@@ -92,19 +118,23 @@ const ConfirmInforBooking = ({route}: any) => {
         </View>
         <View style={styles.infoService}>
           <Text style={styles.titleInfo}>Chọn phương thức thanh toán</Text>
-          <View style={{height:20}}>
-          {errorPayment!=="OK" && <Text style={{color:"red", fontWeight:"bold"}}>{errorPayment}</Text>}
+          <View style={{height: 20}}>
+            {errorPayment !== 'OK' && (
+              <Text style={{color: 'red', fontWeight: 'bold'}}>
+                {errorPayment}
+              </Text>
+            )}
           </View>
-          
+
           <View style={styles.method}>
-           
             <TouchableOpacity
               style={[
                 styles.buttonMethod,
                 selectedMethod === 1 && styles.selectedMethod,
               ]}
               onPress={handleMethodSelect}>
-              <Image style={styles.image1}
+              <Image
+                style={styles.image1}
                 source={require('../assets/ConfirmBooking/iconMomo.png')}
               />
               <Text style={styles.titleMethod}>TT tiền mặt</Text>
@@ -115,7 +145,8 @@ const ConfirmInforBooking = ({route}: any) => {
                 selectedMethod === 2 && styles.selectedMethod,
               ]}
               onPress={() => handleMomoSelect()}>
-              <Image  style={styles.image2}
+              <Image
+                style={styles.image2}
                 source={require('../assets/ConfirmBooking/iconPrice.png')}
               />
               <Text style={styles.titleMethod}>TT qua momo</Text>
@@ -134,9 +165,7 @@ const ConfirmInforBooking = ({route}: any) => {
                 <Text style={styles.books}>Hủy</Text>
               </View>
             </View>
-            <TouchableOpacity
-              style={styles.button1}
-              onPress={handleConfirm}>
+            <TouchableOpacity style={styles.button1} onPress={handleConfirm}>
               <View style={styles.book}>
                 <Text style={styles.books}>Đồng ý</Text>
               </View>
@@ -151,13 +180,13 @@ const ConfirmInforBooking = ({route}: any) => {
 export default ConfirmInforBooking;
 
 const styles = StyleSheet.create({
-  image1:{
-    width:20,
-    height:20
+  image1: {
+    width: 20,
+    height: 20,
   },
-  image2:{
-    width:20,
-    height:20
+  image2: {
+    width: 20,
+    height: 20,
   },
   buttonMethod: {
     flexDirection: 'row',
@@ -231,7 +260,7 @@ const styles = StyleSheet.create({
   //   color: '#FCA234',
   // },
   method: {
-    height:100,
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   textLgoin: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
   },
   errorText: {

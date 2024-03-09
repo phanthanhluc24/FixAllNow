@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ScrollView
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -20,7 +21,12 @@ import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import ButtonLogout from './bottomTab/ButtonLogout';
 import {TouchEventType} from 'react-native-gesture-handler/lib/typescript/TouchEventType';
 import useDeleteService from '../hooks/useDeleteService';
+
 const ProfileHeader = () => {
+  ///render các trạng thái đặt hàng
+  
+  ////////////////////////////////
+  //lấy ảnh đại diện từ file
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
@@ -43,6 +49,7 @@ const ProfileHeader = () => {
       }
     }
   };
+  //////////////////////////////////////////////
   const navigation: any = useNavigation();
   const {currentUser, isLoading, isError}: any = useGetCurrentUser();
   const [hasServices, setHasServices] = useState<boolean>(false);
@@ -54,14 +61,12 @@ const ProfileHeader = () => {
       setHasServices(false);
     }
   }, [serviceOfRepairman]);
+  // xóa dịch vụ
   const {destroyService}=useDeleteService()
   const handleDeleteService=(service_id:string)=>()=>{
     destroyService(service_id)
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Profile' }],
-    });
-  }
+    navigation.navigate('Profile', { reload: true });
+  }///////////////////////////////////
   const renderItem = (data: any) => (
     <TouchableOpacity
       style={styles.repairman}
@@ -168,6 +173,7 @@ const ProfileHeader = () => {
           </View>
         </View>
       </View>
+     
       <View style={styles.container}>
         <Text style={styles.nameListService}>Danh sách dịch vụ</Text>
         {hasServices ? (
@@ -189,6 +195,84 @@ const ProfileHeader = () => {
 };
 export default ProfileHeader;
 const styles = StyleSheet.create({
+  listHistory: {
+    height: 50,
+    backgroundColor:"#ffffff",
+  },
+  eventButton: {
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: '#FCA234',
+    height: 50,
+    width:140,
+    borderWidth:0.5
+  },
+  titleButton: {
+    color: '#394C6D',
+  },
+  selectedButton: {
+    backgroundColor: '#394C6D',
+  },
+  selectedText: {
+    color: 'white',
+  },
+  containers: {
+    marginHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: '#394C6D',
+    width: '90%',
+    height: 120,
+    marginTop: 10,
+  },
+  contents: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  hello: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FCA234',
+    width: '90%',
+  },
+  detaildemo: {
+    fontSize: 13,
+    color: '#FFFFFF',
+    width: '90%',
+  },
+  containerProfileBodyRepairmanFinder: {
+    flex: 1,
+  },
+  profileBodyRepairmanFinder: {
+    marginHorizontal: 30,
+    marginVertical: 15,
+  },
+  nameAccount: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#FCA234',
+    paddingVertical: 10,
+  },
+  nameSecurity: {
+    fontSize: 20,
+    color: '#394C6D',
+  },
+  nameAddress: {
+    fontSize: 20,
+    color: '#394C6D',
+  },
+  nameBank: {
+    fontSize: 20,
+    color: '#394C6D',
+  },
+  nameLanguage: {
+    marginHorizontal: 20,
+    fontSize: 15,
+    color: '#394C6D',
+  },
   noService: {
     fontSize: 15,
     color: 'white',
@@ -208,7 +292,7 @@ const styles = StyleSheet.create({
   nameListService: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FCA234',
+    color: '#394C6D',
     padding: 15,
   },
   detailEmail: {
@@ -290,7 +374,7 @@ const styles = StyleSheet.create({
   },
   profileHeader: {
     flex: 1,
-    backgroundColor: '#FCA234',
+    backgroundColor: '#fffff0',
   },
   infoProfile: {
     marginHorizontal: 20,
@@ -298,14 +382,16 @@ const styles = StyleSheet.create({
   avatarProfile: {
     width: 70,
     height: 70,
-    borderRadius: 50,
+    borderRadius: 100,
     borderWidth: 3,
-    borderColor: 'white',
+    borderColor: '#394C6D',
+    
   },
   avatarPro: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 30,
+    
   },
   deleteService: {
     marginHorizontal: 20,
@@ -319,7 +405,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#394C6D',
+    backgroundColor: '#fffff0',
   },
   rowFront: {
     alignItems: 'center',

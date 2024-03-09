@@ -31,6 +31,8 @@ const FormBookSchedule = ({route}: any) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
+  const currentDate = new Date();
+
   const toggleDatepicker = () => {
     setShowPicker(!showPicker);
   };
@@ -50,14 +52,24 @@ const FormBookSchedule = ({route}: any) => {
     setTime(currentTime);
   };
   const handleSubmitInfoBooking = async (values: {
-    selectedDate: string;
-    selectedTime: string;
+    selectedDate: Date;
+    selectedTime: any;
     address: string;
     demobug: string;
   }) => {
     setSubmitted(true);
     if (!selectedDate || !selectedTime || !values.address || !values.demobug) {
       setError('Vui lòng nhập đầy đủ thông tin!');
+    }
+    if (
+      selectedDate.getFullYear() < currentDate.getFullYear() ||
+      (selectedDate.getFullYear() === currentDate.getFullYear() &&
+        selectedDate.getMonth() < currentDate.getMonth()) ||
+      (selectedDate.getFullYear() === currentDate.getFullYear() &&
+        selectedDate.getMonth() === currentDate.getMonth() &&
+        selectedDate.getDate() < currentDate.getDate())
+    ) {
+      setError('Vui lòng chọn ngày từ ngày hiện tại trở đi!');
     } else {
       setError('');
       const infoBooking = {
@@ -204,7 +216,7 @@ const styles = StyleSheet.create({
   },
   imgFooter: {
     width: '50%',
-    marginTop:40
+    marginTop: 40,
   },
   bgButton: {
     backgroundColor: '#FCA234',

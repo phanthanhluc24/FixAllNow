@@ -10,6 +10,9 @@ import React, {useState} from 'react';
 import useGetRepairmansPopular from '../hooks/useGetRepairmansPopular';
 import {useNavigation} from '@react-navigation/native';
 import LoaderKit from 'react-native-loader-kit';
+import {Rating} from 'react-native-ratings';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 interface typeRepairman {
   _id: string;
   full_name: string;
@@ -26,6 +29,7 @@ const HomeRepairmanPopular = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const {repairmans, totalRepairman, isLoading, isError, fetchMore} =
     useGetRepairmansPopular(currentPage);
+    // console.log(repairmans);
     
   const handleLoadMore = () => {
     if (!isLoading) {
@@ -59,6 +63,21 @@ const HomeRepairmanPopular = () => {
   const handelChangePage = (page: number) => {
     setCurrentPage(page);
   };
+  //show star rating
+  const renderStars = (averageStar: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesome
+          key={i}
+          name={averageStar >= i ? 'star' : 'star-o'}
+          size={20}
+          color={averageStar >= i ? '#FFD700' : '#FFFFFF'}
+        />,
+      );
+    }
+    return stars;
+  };
   return (
     <View style={styles.containerRepairman}>
       <FlatList
@@ -78,7 +97,7 @@ const HomeRepairmanPopular = () => {
               <View style={styles.infoRepairman}>
                 <Text style={styles.nameRepairman}>{item.full_name} </Text>
                 <View style={styles.divInfo}>
-                  {item.averageStar < 1 ? (
+                  {/* {item.averageStar < 1 ? (
                     <>
                       <Text style={styles.averageStar}>
                         {item.averageStar}/5
@@ -98,7 +117,8 @@ const HomeRepairmanPopular = () => {
                         source={require('../assets/Homes/starIcon.png')}
                       />
                     </>
-                  )}
+                  )} */}
+                  {renderStars(item.averageStar)}
                 </View>
               </View>
             </View>
@@ -134,12 +154,25 @@ const HomeRepairmanPopular = () => {
 export default HomeRepairmanPopular;
 
 const styles = StyleSheet.create({
+  address:{
+    flexDirection:"row",
+    alignItems:"center",
+  },
   repairman: {
     marginTop: 10,
     backgroundColor: '#FCA234',
     width: '100%',
     height: 132,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
   },
   containerRepairman: {
     flex: 1,
@@ -164,7 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#394C6D',
     fontWeight: 'bold',
-    height: '50%',
+    height: '40%',
     justifyContent: 'center',
   },
   averageStar: {
@@ -199,6 +232,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#DDDDDD',
     borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
   },
   paginationButtonText: {
     fontSize: 16,

@@ -9,7 +9,7 @@ import Notification from '../../screens/feed/Repairman_Finder/Notification';
 import Profile from '../../screens/feed/Repairman_Finder/Profile';
 import HeaderTitleComponent from '../../screens/HeaderTitleComponent';
 import BottomTab from '../../screens/bottomTab/BottomTab';
-import HeaderNotification from '../../screens/HeaderNotification/';
+
 interface OptionsScreenProps {
   drawerIcon: any;
   backgroundColor?: string;
@@ -79,7 +79,7 @@ const DrawerNavigator = () => {
           component={Notification}
           options={optionsScreen({
             drawerIcon: require(`${URL_IMAGE}/iconnotification.png`),
-            headerTitle: () => <HeaderNotification/>,
+            headerTitle: () => <HeaderTitleComponent/>,
             backgroundColor: 'white',
           })}
         />

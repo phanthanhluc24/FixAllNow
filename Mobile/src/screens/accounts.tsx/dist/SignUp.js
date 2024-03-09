@@ -267,7 +267,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     textLgoin: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
         textTransform: 'uppercase'
     },

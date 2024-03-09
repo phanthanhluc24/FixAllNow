@@ -7,27 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import RepairmanFinderFollowProcessing from './RepairmanFinderFollowProcessing';
-import RepairmanFinderDeconfirmBooking from './RepairmanFinderDeconfirmBooking';
-import RepairmanFinderReviewAccomplishedRepair from './RepairmanFinderReviewAccomplishedRepair';
 import RepairmanFinderWaitingConfirmBook from './RepairmanFinderWaitingConfirmBook';
+import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetStatusBooking';
 const ProfileBodyRepairmanFinder = () => {
-  const navigation: any = useNavigation();
   const [selectedTab, setSelectedTab] = useState(0);
+  let transformedSelectedTab = selectedTab + 1;
+   const {statusBooking} = useRepairmanFinderGetStatusBooking(transformedSelectedTab);
   const renderComponent = () => {
-    switch (selectedTab) {
-      case 0:
-        return <RepairmanFinderWaitingConfirmBook />;
-      case 1:
-        return <RepairmanFinderDeconfirmBooking />;
-      case 2:
-        return <RepairmanFinderFollowProcessing />;
-      case 3:
-        return <RepairmanFinderReviewAccomplishedRepair />;
-      default:
-        return null;
-    }
+    return <RepairmanFinderWaitingConfirmBook statusBooking={statusBooking} />;
   };
   return (
     <View style={styles.containerProfileBodyRepairmanFinder}>
@@ -38,7 +25,7 @@ const ProfileBodyRepairmanFinder = () => {
                 styles.eventButton,
                 selectedTab === 0 ? styles.selectedButton : null,
               ]}
-              onPress={() => setSelectedTab(0)}>
+              onPress={() =>setSelectedTab(0)}>
               <Text
                 style={[
                   styles.titleButton,
@@ -58,7 +45,7 @@ const ProfileBodyRepairmanFinder = () => {
                   styles.titleButton,
                   selectedTab === 1 ? styles.selectedText : null,
                 ]}>
-                Đơn đã hủy
+                Đơn chấp nhận
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -72,7 +59,7 @@ const ProfileBodyRepairmanFinder = () => {
                   styles.titleButton,
                   selectedTab === 2 ? styles.selectedText : null,
                 ]}>
-                Đang thực hiện
+                Đơn đã hủy
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -92,7 +79,7 @@ const ProfileBodyRepairmanFinder = () => {
            
           </ScrollView>
         </View>
-      <View>{renderComponent()}</View>
+      <View style={{marginBottom:70}}>{renderComponent()}</View>
     </View>
   );
 };
