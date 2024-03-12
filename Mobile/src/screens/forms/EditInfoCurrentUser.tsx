@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Image,
+  ActivityIndicator,
+  Modal
 } from 'react-native';
 import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -18,6 +20,7 @@ import useEditInfoCurrentUser from '../../hooks/useEditInfoCurrentUser';
 import RNRestart from 'react-native-restart';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoCurrentUser = ({route}: any) => {
+  const [loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
   const {user} = route.params;
   const [number_phone, setNumberPhone] = useState(
@@ -51,12 +54,14 @@ const EditInfoCurrentUser = ({route}: any) => {
   const onSubmit =async () => {
     const formData = {
       full_name: full_name,
-      number_phone: number_phone,
+      number_phone: 0+number_phone,
     };
 
     try {
+      setLoading(true);
       const editSuccess = await useEditInfoCurrentUser(formData);
       if (editSuccess) {
+        setLoading(false);
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
           title: 'Thành công',
@@ -68,6 +73,7 @@ const EditInfoCurrentUser = ({route}: any) => {
       }
     } catch (error) {
       console.error('Lỗi khi edit thông tin người dùng:', error);
+      setLoading(false);
     }
   };
   const handleCancle = () => {
@@ -80,6 +86,21 @@ const EditInfoCurrentUser = ({route}: any) => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled">
+           <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => {
+            setLoading(false);
+          }}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator size={40} color="#FCA234" />
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.formEdit}>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Tên của bạn </Text>
@@ -101,7 +122,7 @@ const EditInfoCurrentUser = ({route}: any) => {
               rules={{
                 required: 'Tên không được bỏ trống',
                 validate: value =>
-                  hasLettersAndNoNumbers(value) || 'Tên không được chỉ chứa số',
+                  hasLettersAndNoNumbers(value) || 'Tên không hợp lệ',
               }}
               defaultValue={full_name}
             />
@@ -116,7 +137,7 @@ const EditInfoCurrentUser = ({route}: any) => {
               render={({field: {onChange, onBlur, value}}) => (
                 <View style={styles.inputInfo}>
                   <Text>(+84)</Text>
-                  <TextInput
+                  <TextInput 
                     onBlur={onBlur}
                     onChangeText={text => {
                       onChange(text);
@@ -131,8 +152,12 @@ const EditInfoCurrentUser = ({route}: any) => {
               rules={{
                 required: 'Số điện thoại không được bỏ trống',
                 minLength: {
-                  value: 10,
-                  message: 'Số điện thoại phải có đủ 10 chữ số gồm chữ số 0 đầu tiên',
+                  value: 9,
+                  message: 'Số điện thoại không được nhỏ hơn 9',
+                },
+                maxLength:{
+                  value: 9,
+                  message: 'Số điện thoại không được lớn hơn 9',
                 },
                 validate: value => hasNumbersOnly(value) || 'Số điện thoại chỉ được chứa số'
               }}
@@ -145,11 +170,8 @@ const EditInfoCurrentUser = ({route}: any) => {
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Email của bạn</Text>
+            <View style={styles.formEmail}>
             <Text style={styles.email}>{user?.email}</Text>
-            <View style={styles.selectedImage}>
-              <Image
-                source={{uri: user?.image}}
-                style={styles.imageStyle}></Image>
             </View>
           </View>
         </View>
@@ -177,10 +199,32 @@ const EditInfoCurrentUser = ({route}: any) => {
 };
 export default EditInfoCurrentUser;
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  formEmail:{
+    backgroundColor:"white",
+    height:50,
+    borderColor: '#FCA234',
+    borderRadius: 10,
+    borderWidth:1,
+    marginTop:5,
+    justifyContent:"center",
+
+  },
   email: {
     fontSize: 15,
     padding: 10,
-    color: 'white',
+    color: 'black',
   },
   imageViews: {
     width: 40,
@@ -221,7 +265,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 15,
     marginBottom: 10,
   },
   button1: {
@@ -260,13 +303,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   eventSubmit: {
-    flex: 1,
+    flex: 26,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   formEdit: {
-    flex: 9,
+    flex: 3,
     marginVertical: 20,
   },
   container: {

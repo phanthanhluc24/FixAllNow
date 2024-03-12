@@ -23,12 +23,14 @@ const ButtonLogout = () => {
     logout(token)
       .then(res => {
         if (res.status === 201) {
+         
           Toast.show({
             type: ALERT_TYPE.SUCCESS,
             title: 'Thành công',
             textBody: 'Đăng xuất thành công!',
           })
           navigation.navigate('SignIn');
+         
         }
       })
       .catch(error => {

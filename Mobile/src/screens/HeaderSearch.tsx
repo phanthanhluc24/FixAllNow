@@ -63,6 +63,7 @@ const HeaderSearch = ({onSearch}: any) => {
       <View style={styles.SearchInputs}>
         <View style={styles.searchInput}>
           <TextInput
+          style={{width:"80%"}}
             value={searchValue}
             onChangeText={handleSearchChange}
             placeholder="Tìm kiếm dịch vụ"
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 50,
-    borderColor: 'gray',
+    borderColor: '#FCA234',
     borderRadius: 10,
     borderWidth: 1,
     width: '100%',
@@ -97,10 +98,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   messageIcon: {
-    width: 60,
-    height: 60,
+    width: 52,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:"#FCA234",
+    borderBottomRightRadius:10,
+    borderTopRightRadius:10,
+    
   },
   images: {
     width: 50,

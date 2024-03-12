@@ -14,7 +14,7 @@ var HomeServicePopular = function () {
                 react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
     if (services.length === 0) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Services not available!");
+        return react_1["default"].createElement(react_native_1.Text, null, "Kh\u00F4ng co\u0301 di\u0323ch vu\u0323 na\u0300o!");
     }
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
@@ -71,7 +71,7 @@ var styles = react_native_1.StyleSheet.create({
         height: 100,
         borderRadius: 50,
         borderWidth: 3,
-        borderColor: "#ffffff"
+        borderColor: "#FCA234"
     },
     nameRepairman: {
         fontSize: 18,

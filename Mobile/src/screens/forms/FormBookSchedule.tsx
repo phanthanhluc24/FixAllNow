@@ -13,6 +13,8 @@ import {
   GestureResponderEvent,
   Pressable,
   Alert,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Formik} from 'formik';
@@ -21,6 +23,7 @@ import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const FormBookSchedule = ({route}: any) => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const {serviceInfo} = route.params;
@@ -52,14 +55,20 @@ const FormBookSchedule = ({route}: any) => {
     setTime(currentTime);
   };
   const handleSubmitInfoBooking = async (values: {
+    
     selectedDate: Date;
     selectedTime: any;
     address: string;
     demobug: string;
-  }) => {
+  }
+  
+  ) => {
+    setLoading(true);
     setSubmitted(true);
     if (!selectedDate || !selectedTime || !values.address || !values.demobug) {
       setError('Vui lòng nhập đầy đủ thông tin!');
+      setLoading(false);
+      return;
     }
     if (
       selectedDate.getFullYear() < currentDate.getFullYear() ||
@@ -70,8 +79,46 @@ const FormBookSchedule = ({route}: any) => {
         selectedDate.getDate() < currentDate.getDate())
     ) {
       setError('Vui lòng chọn ngày từ ngày hiện tại trở đi!');
-    } else {
+      setLoading(false);
+      return;
+    }
+    if (
+      selectedDate.getFullYear() === currentDate.getFullYear() &&
+      selectedDate.getMonth() === currentDate.getMonth() &&
+      selectedDate.getDate() === currentDate.getDate() &&
+      selectedTime.getTime() < currentDate.getTime()
+    ) {
+      setError('Vui lòng chọn giờ từ giờ hiện tại trở đi!');
+      setLoading(false);
+      return;
+    }
+    if (/^\d+$/.test(values.address)) {
+      // Là toàn bộ số
+      setError('Địa chỉ không hợp lệ!');
+      setLoading(false);
+      return;
+    }
+    if (/^\d+$/.test(values.address)) {
+      // Là toàn bộ khoảng trắng
+      setError('Địa chỉ không hợp lệ!');
+      setLoading(false);
+      return;
+  }
+  if (/^\d+$/.test(values.demobug)) {
+    // Là toàn bộ số
+    setError('Mô tả tình trạng không hợp lệ!');
+    setLoading(false);
+    return;
+  }
+  if (values.demobug.trim().length === 0) {
+    setError('Mô tả tình trạng không hợp lệ!');
+    setLoading(false);
+    return;
+  }
+
+    else {
       setError('');
+      setLoading(true);
       const infoBooking = {
         infoServiceBooking: serviceInfo,
         date: selectedDate.toLocaleDateString('vi-VN'),
@@ -96,6 +143,22 @@ const FormBookSchedule = ({route}: any) => {
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.editInfoCurrentUserContainer}>
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={loading}
+              onRequestClose={() => {
+                setLoading(false);
+              }}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <View
+                    style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator size={40} color="#FCA234" />
+                  </View>
+                </View>
+              </View>
+            </Modal>
             <View style={styles.form}>
               <View style={styles.styleTitle}>
                 <Text style={styles.titleForm}>
@@ -109,9 +172,11 @@ const FormBookSchedule = ({route}: any) => {
                     <Text style={styles.messageError}>{error}</Text>
                   )}
                 </View>
-                <Pressable style={styles.inputDate}>
+                <TouchableOpacity
+                  style={styles.inputDate}
+                  onPress={toggleDatepicker}>
                   <TextInput
-                    style={{color: '#000000'}}
+                    style={{color: '#000000', width: '80%'}}
                     enterKeyHint={'next'}
                     value={date.toLocaleDateString('vi-VN')}
                     placeholder="Chọn ngày hẹn"
@@ -131,12 +196,13 @@ const FormBookSchedule = ({route}: any) => {
                     name="date-range"
                     size={30}
                     color="#FCA234"
-                    onPress={toggleDatepicker}
                   />
-                </Pressable>
-                <Pressable style={styles.inputDate}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.inputDate}
+                  onPress={toggleTimepicker}>
                   <TextInput
-                    style={{color: '#000000'}}
+                    style={{color: '#000000', width: '80%'}}
                     enterKeyHint={'next'}
                     value={time.toLocaleTimeString('vi-VN')}
                     placeholder="Chọn giờ hẹn"
@@ -156,9 +222,8 @@ const FormBookSchedule = ({route}: any) => {
                     name="clockcircle"
                     size={30}
                     color="#FCA234"
-                    onPress={toggleTimepicker}
                   />
-                </Pressable>
+                </TouchableOpacity>
                 <View>
                   <TextInput
                     style={styles.inputDate}
@@ -189,7 +254,7 @@ const FormBookSchedule = ({route}: any) => {
                 />
                 <TouchableOpacity
                   style={styles.bgButton}
-                  onPress={() => handleSubmit()}>
+                  onPress={handleSubmit}>
                   <Text style={styles.nameBook}>Đặt lịch</Text>
                 </TouchableOpacity>
               </View>
@@ -202,6 +267,18 @@ const FormBookSchedule = ({route}: any) => {
 };
 export default FormBookSchedule;
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
   messageError: {
     color: 'red',
     fontWeight: 'bold',
@@ -264,5 +341,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 15,
     color: '#000000',
+    width: '100%',
   },
 });

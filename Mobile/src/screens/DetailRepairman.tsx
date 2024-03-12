@@ -18,12 +18,17 @@ interface typeService {
   image: string;
   desc: string;
 }
-const DetailRepairman = ({route}: any) => {
+const DetailRepairman = ({route}:any) => {
   const data = [{ key: 'DetailHeaderRepairman' }];
+  const { id, title } = route.params;
+  console.log(id);
+  
   const renderHeader= ()=>{
+  
+   
     return (
       <View>
-        <DetailHeaderRepairman />
+        <DetailHeaderRepairman repairman_id={id}/>
       </View>
     );
   }

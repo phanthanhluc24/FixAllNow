@@ -7,12 +7,18 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import RepairmanConfirmBooking from './RepairmanConfirmBooking';
+import LoaderKit from 'react-native-loader-kit';
 import useRepairmanConfirmStatusBooking from '../hooks/useRepairmanConfirmStatusBooking';
 const HistoryStore = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   let transformedSelectedTab = selectedTab + 1;
   const {statusBooking, isLoading }:any = useRepairmanConfirmStatusBooking(transformedSelectedTab);
   const renderComponent = () => {
+    if(statusBooking.length === 0){
+      <View style={{marginTop:100}}>
+        <Text>Chưa có data nào!</Text>
+      </View>
+    }
   return <RepairmanConfirmBooking statusBooking={statusBooking} isLoading={isLoading} />;
   };
   return (
@@ -63,7 +69,21 @@ const HistoryStore = () => {
           
         </View>
       </View>
-      <View style={{marginBottom:70}}>{renderComponent()}</View>
+      <View style={{marginBottom: 70 , alignItems:"center"}}>
+        {isLoading ? (
+          <View style={{alignItems: 'center', justifyContent:"center"}}>
+          <Text>
+            <LoaderKit
+              style={styles.loadingText}
+              name={'BallPulse'}
+              color={'#FCA234'}
+            />
+          </Text>
+        </View>
+        ) : (
+          renderComponent()
+        ) }
+      </View>
     </View>
   );
 };
@@ -71,6 +91,20 @@ const HistoryStore = () => {
 export default HistoryStore;
 
 const styles = StyleSheet.create({
+  noDataText: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 200,
+    color:"#FCA234",
+  },
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+    marginTop:100
+  },
   container: {
     flex: 1,
   },

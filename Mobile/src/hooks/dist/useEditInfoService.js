@@ -73,6 +73,7 @@ var useEditInfoService = function (formData) { return __awaiter(void 0, void 0, 
                 return [2 /*return*/, response];
             case 3:
                 error_1 = _a.sent();
+                console.log(error_1.status.message);
                 throw error_1;
             case 4:
                 ;

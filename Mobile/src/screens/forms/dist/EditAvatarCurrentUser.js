@@ -44,9 +44,10 @@ var native_1 = require("@react-navigation/native");
 var useUploadAvatarUser_1 = require("../../hooks/useUploadAvatarUser");
 var EditAvatarCurrentUser = function (_a) {
     var route = _a.route;
+    var _b = react_1.useState(false), loading = _b[0], setLoading = _b[1];
     var navigation = native_1.useNavigation();
     var image = route.params.image;
-    var _b = react_1.useState(image), singleFile = _b[0], setSingleFile = _b[1];
+    var _c = react_1.useState(image), singleFile = _c[0], setSingleFile = _c[1];
     react_1.useEffect(function () {
         setSingleFile(image);
     }, [image]);
@@ -84,16 +85,19 @@ var EditAvatarCurrentUser = function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+                    setLoading(true);
                     data.image = singleFile;
                     return [4 /*yield*/, sendData(data)];
                 case 1:
                     responseData = _a.sent();
                     if (responseData) {
+                        setLoading(false);
                         navigation.navigate('Profile', { reload: true });
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
+                    setLoading(false);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -103,6 +107,13 @@ var EditAvatarCurrentUser = function (_a) {
         navigation.navigate('Profile');
     };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
+        react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                setLoading(false);
+            } },
+            react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                    react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                        react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
         react_1["default"].createElement(react_native_1.View, { style: { flex: 9 } },
             react_1["default"].createElement(react_native_1.View, { style: styles.part },
                 react_1["default"].createElement(react_native_1.View, null,
@@ -128,6 +139,18 @@ var EditAvatarCurrentUser = function (_a) {
 };
 exports["default"] = EditAvatarCurrentUser;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
     selectedImage: {
         alignItems: 'center',
         justifyContent: 'center',

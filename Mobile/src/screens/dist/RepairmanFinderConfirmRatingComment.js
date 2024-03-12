@@ -2,12 +2,34 @@
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
+var native_1 = require("@react-navigation/native");
 var moment_1 = require("moment");
 require("moment-duration-format");
-var native_1 = require("@react-navigation/native");
-var RepairmanConfirmBooking = function (_a) {
-    var statusBooking = _a.statusBooking, isLoading = _a.isLoading;
+var useGetBookingNotYetRated_1 = require("../hooks/useGetBookingNotYetRated");
+var RepairmanFinderConfirmRatingComment = function () {
     var navigation = native_1.useNavigation();
+    var navigateToRateCommentPage = function (item) { return function () {
+        console.log(item);
+        navigation.navigate('RatedComment', { service_id: item });
+    }; };
+    var _a = useGetBookingNotYetRated_1["default"](), bookingNotYetrating = _a.bookingNotYetrating, isLoading = _a.isLoading, isError = _a.isError;
+    if (isLoading) {
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
+            react_1["default"].createElement(react_native_1.Text, null,
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
+    }
+    if (bookingNotYetrating.length === 0) {
+        return (react_1["default"].createElement(react_native_1.View, { style: {
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 40
+            } },
+            react_1["default"].createElement(react_native_1.Text, { style: { color: '#FCA234', fontWeight: 'bold' } }, "Ch\u01B0a co\u0301 \u0111\u01A1n na\u0300o?")));
+    }
+    if (isError) {
+        return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
+    }
     var formatTimeAgo = function (createdAt) {
         var duration = moment_1["default"].duration(moment_1["default"]().diff(moment_1["default"](createdAt)));
         var days = duration.days();
@@ -23,36 +45,36 @@ var RepairmanConfirmBooking = function (_a) {
             return minutes + " ph\u00FAt tr\u01B0\u1EDBc";
         }
     };
-    return (react_1["default"].createElement(react_native_1.View, { style: styles.container }, statusBooking.length > 0 ? (react_1["default"].createElement(react_native_1.FlatList, { data: statusBooking, keyExtractor: function (statusBooking) { return statusBooking._id; }, renderItem: function (_a) {
-            var item = _a.item;
-            return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.cartService, onPress: function () {
-                    return navigation.navigate('DetailRepairmanConfirmBooking', {
-                        booking_id: item._id
-                    });
-                } },
-                react_1["default"].createElement(react_native_1.View, { style: styles.headerCart },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.nameShop }),
+    return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
+        react_1["default"].createElement(react_native_1.FlatList, { data: bookingNotYetrating, keyExtractor: function (bookingNotYetrating) { return bookingNotYetrating._id; }, renderItem: function (_a) {
+                var item = _a.item;
+                return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.cartService, onPress: navigateToRateCommentPage(item.service_id._id) },
                     react_1["default"].createElement(react_native_1.View, null,
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, null,
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.waitPayment }, item.status)))),
-                react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.image },
-                        react_1["default"].createElement(react_native_1.Image, { source: { uri: item.service_id.image }, style: styles.img })),
-                    react_1["default"].createElement(react_native_1.View, { style: styles.info },
-                        react_1["default"].createElement(react_native_1.View, { style: styles.infos },
-                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.nameRepairman }, item.service_id.service_name),
-                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 4, style: styles.descBooking }, item.desc),
-                            react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
-                                react_1["default"].createElement(react_native_1.View, null,
-                                    react_1["default"].createElement(react_native_1.View, { style: styles.timeBook },
-                                        react_1["default"].createElement(react_native_1.Text, { style: styles.dateTime }, formatTimeAgo(item.createdAt))))))))));
-        } })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: "center", justifyContent: "center", marginTop: 40 } },
-        react_1["default"].createElement(react_native_1.Text, { style: { color: "#FCA234", fontWeight: "bold" } }, "Ch\u01B0a co\u0301 \u0111\u01A1n na\u0300o?")))));
+                        react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.image },
+                                react_1["default"].createElement(react_native_1.Image, { source: { uri: item.service_id.image }, style: styles.img })),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.info },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.infos },
+                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.nameRepairman }, item.service_id.service_name),
+                                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 1, style: styles.description }, item.desc),
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.infoService },
+                                        react_1["default"].createElement(react_native_1.View, null,
+                                            react_1["default"].createElement(react_native_1.View, { style: styles.timeBook },
+                                                react_1["default"].createElement(react_native_1.Text, { style: styles.dateTime }, formatTimeAgo(item.createdAt))))))))),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment })));
+            } })));
 };
-exports["default"] = RepairmanConfirmBooking;
+exports["default"] = RepairmanFinderConfirmRatingComment;
 var styles = react_native_1.StyleSheet.create({
+    loadingText: {
+        fontSize: 20,
+        alignItems: 'center',
+        marginTop: 10,
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
+    },
     timeBook: {
-        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%'
@@ -117,7 +139,7 @@ var styles = react_native_1.StyleSheet.create({
     content: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 15
+        paddingHorizontal: 15
     },
     img: {
         width: 60,
@@ -130,10 +152,6 @@ var styles = react_native_1.StyleSheet.create({
         fontSize: 18,
         color: '#394C6D',
         fontWeight: 'bold'
-    },
-    descBooking: {
-        fontSize: 15,
-        color: '#394C6D'
     },
     vnd: {
         fontSize: 15,
@@ -163,13 +181,6 @@ var styles = react_native_1.StyleSheet.create({
     infos: {
         marginHorizontal: 10
     },
-    loadingText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
-        textAlign: 'center',
-        marginTop: 10
-    },
     waitPayment: {
         color: '#394C6D',
         fontWeight: 'bold'
@@ -191,6 +202,12 @@ var styles = react_native_1.StyleSheet.create({
         height: '100%'
     },
     cartService: {
+        padding: 10,
+        paddingVertical: 20,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 12,
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -198,12 +215,7 @@ var styles = react_native_1.StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
-        padding: 10,
-        backgroundColor: '#FFFFFF',
-        marginTop: 10,
-        marginHorizontal: 12,
-        borderRadius: 10
+        elevation: 5
     },
     headerCart: {
         flexDirection: 'row',

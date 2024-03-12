@@ -8,6 +8,8 @@ import {
   Alert,
   Platform,
   Image,
+  ActivityIndicator,
+  Modal
 } from 'react-native';
 import React, {useState, Fragment, useEffect} from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,6 +19,7 @@ import DocumentPicker, {
 import {useNavigation} from '@react-navigation/native';
 import useUploadAvatarUser from '../../hooks/useUploadAvatarUser';
 const EditAvatarCurrentUser = ({route}: any) => {
+  const [loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
   const {image} = route.params;
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
@@ -43,12 +46,15 @@ const EditAvatarCurrentUser = ({route}: any) => {
   const {sendData} = useUploadAvatarUser();
   const handleSubmit = async (data: any) => {
     try {
+      setLoading(true);
       data.image = singleFile;
       const responseData = await sendData(data);
       if (responseData) {
+        setLoading(false);
         navigation.navigate('Profile', { reload: true });
       }
     } catch (error) {
+      setLoading(false);
     }
   };
   const handleCancle=()=>{
@@ -56,6 +62,21 @@ const EditAvatarCurrentUser = ({route}: any) => {
   }
   return (
     <View style={styles.container}>
+       <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => {
+            setLoading(false);
+          }}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator size={40} color="#FCA234" />
+              </View>
+            </View>
+          </View>
+        </Modal>
       <View style={{flex: 9}}>
         <View style={styles.part}>
           <View>
@@ -108,6 +129,18 @@ const EditAvatarCurrentUser = ({route}: any) => {
 export default EditAvatarCurrentUser;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
   selectedImage: {
     alignItems: 'center',
     justifyContent: 'center',

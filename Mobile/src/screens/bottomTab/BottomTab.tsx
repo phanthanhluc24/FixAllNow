@@ -16,29 +16,38 @@ const BottomTab = () => {
         tabBarIcon: ({focused, size}) => {
           let rn = route.name;
           let imageSource;
-          if (rn === 'Home'){
+          let title = '';
+          if (rn === 'Home') {
             imageSource = require(`${URL_IMAGE}/iconhome.png`);
-          } else if (rn === 'Shop'){
+            title = 'Trang chủ';
+          } else if (rn === 'Shop') {
             imageSource = require(`${URL_IMAGE}/iconshop.png`);
-          } else if (rn === 'Scan'){
+            title = 'Cửa hàng';
+          } else if (rn === 'Scan') {
             imageSource = require(`${URL_IMAGE}/AI.png`);
-          } else if (rn === 'Notification'){
+            title = 'Hỏi đáp';
+          } else if (rn === 'Notification') {
             imageSource = require(`${URL_IMAGE}/iconnotification.png`);
-          } else if (rn === 'Profile'){
+            title = 'Thông báo';
+          } else if (rn === 'Profile') {
             imageSource = require(`${URL_IMAGE}/iconprofile.png`);
+            title = 'Hồ sơ';
           }
           return (
-            <View style={focused ? styles.focusedStyle : null}>
+            <View style={focused ? styles.focusedStyle : styles.tabItem}>
               <Image
                 source={imageSource}
                 style={[
+                  styles.tabIcon,
                   {
-                    width: 35,
-                    height: 35,
-                    tintColor: focused ? '#FCA234' : '#394C6D',
+                    tintColor: focused ? '#ffffff' : '#394C6D',
                   },
                 ]}
               />
+              <Text
+                style={focused ? styles.focusedLabelStyle : styles.labelStyle}>
+                {title}
+              </Text>
             </View>
           );
         },
@@ -49,8 +58,7 @@ const BottomTab = () => {
         tabBarStyle: {
           height: 62,
         },
-      })
-      }>
+      })}>
       <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
       <Tab.Screen name="Shop" component={Shop} options={{headerShown: false}} />
       <Tab.Screen name="Scan" component={Scan} options={{headerShown: false}} />
@@ -68,21 +76,35 @@ const BottomTab = () => {
   );
 };
 export default BottomTab;
+
 const styles = StyleSheet.create({
   tabIcon: {
-    borderRadius: 10,
-    borderWidth: 2,
-    width: '100%',
-    height: '100%',
+    width: 35,
+    height: 35,
   },
-  focusedStyle: {
-    backgroundColor: 'rgba(252, 162, 52, 0.46)',
-    borderRadius: 12,
-    flexDirection: 'row',
+  tabItem: {
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+  },
+  focusedStyle: {
+    backgroundColor: '#394C6D',
+    borderRadius: 5,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 62,
     width: '100%',
+  },
+  labelStyle: {
+    fontSize: 12,
+    color: '#394C6D',
+    textAlign: 'center',
+  },
+  focusedLabelStyle: {
+    fontSize: 14,
+    color: '#ffffff',
+    textAlign: 'center',
+    fontWeight:"bold"
   },
 });

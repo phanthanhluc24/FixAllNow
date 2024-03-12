@@ -19,6 +19,7 @@ import React, {useRef, useState} from 'react';
 import {Formik} from 'formik';
 import useResetNewPassword from '../../hooks/useResetNewPassword';
 import {NewPasswordSchema} from './ValidationNewPassword';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const NewPassword = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const passwordRef: any = useRef();
@@ -39,11 +40,15 @@ const NewPassword = () => {
         if (res.status !== 201) {
           setErrorMessage(res.message);
         } else {
+          Toast.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'Thành công',
+            textBody: 'Lấy lại mật khẩu thành công!',
+          });
           navigation.navigate('SignIn');
         }
       })
-      .catch(error => {
-      });
+      .catch(error => {});
   };
   return (
     <Formik
@@ -61,30 +66,33 @@ const NewPassword = () => {
                   <Text style={styles.title}>MẬT KHẨU MỚI</Text>
                 </View>
                 <View style={styles.spaceForm}>
-                  <View style={{height:20}}>
-                {errorMessage ? (
-                  <Text style={styles.errorMessage}>{errorMessage}</Text>
-                ) : null}
-                </View>
+                  <View style={{height:30}}>
+                    {errorMessage ? (
+                      <Text style={styles.errorMessage}>{errorMessage}</Text>
+                    ) : null}
+                  </View>
                   <Text style={styles.titles}>Mật khẩu mới</Text>
-                  <View style={styles.spaceContainer}>
-                    <TextInput
-                      style={styles.inputCode}
-                      onChangeText={handleChange('newpassword')}
-                      enterKeyHint={'next'}
-                      secureTextEntry={true}
-                      onSubmitEditing={() => passwordRef.current?.focus()}
-                      onBlur={handleBlur('newpassword')}
-                      value={values.newpassword}
-                    />
+                  <View style={styles.spaceContainers}>
+                    <View style={styles.spaceContainer}>
+                      <TextInput
+                        style={styles.inputCode}
+                        onChangeText={handleChange('newpassword')}
+                        enterKeyHint={'next'}
+                        secureTextEntry={true}
+                        onSubmitEditing={() => passwordRef.current?.focus()}
+                        onBlur={handleBlur('newpassword')}
+                        value={values.newpassword}
+                      />
+                    </View>
                     {errors.newpassword && touched.newpassword ? (
                       <Text style={styles.errorText}>
-                        * {errors.newpassword}
+                        {errors.newpassword}
                       </Text>
                     ) : null}
                   </View>
-                  <Text style={styles.titles}>Xác thực mật khẩu mới</Text>
-                  <View style={styles.spaceContainer}>
+                  <Text style={styles.titles}>Xác thực mật khẩu</Text>
+                  <View style={styles.spaceContainers}>
+                    <View style={styles.spaceContainer}>
                     <TextInput
                       style={styles.inputCode}
                       secureTextEntry={true}
@@ -92,9 +100,10 @@ const NewPassword = () => {
                       onBlur={handleBlur('confirmpassword')}
                       value={values.confirmpassword}
                     />
+                    </View>
                     {errors.confirmpassword && touched.confirmpassword ? (
                       <Text style={styles.errorText}>
-                        * {errors.confirmpassword}
+                        {errors.confirmpassword}
                       </Text>
                     ) : null}
                   </View>
@@ -126,18 +135,28 @@ const NewPassword = () => {
 export default NewPassword;
 
 const styles = StyleSheet.create({
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
   errorMessage: {
     color: 'red',
-   fontWeight:"bold",
+    fontWeight: 'bold',
     marginTop: 8,
-    marginHorizontal:40,
-    height:40
-  },  
+    marginHorizontal: 40,
+    height: 40,
+    paddingBottom:20
+  },
   errorText: {
     fontWeight: 'bold',
     color: 'red',
     margin: 0,
     padding: 0,
+    marginHorizontal:35
   },
   confirmContainer: {
     flex: 1,
@@ -168,8 +187,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   titles: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#394C6D',
+    fontWeight: 'bold',
     marginHorizontal: 40,
   },
   titleCode: {
@@ -187,7 +207,9 @@ const styles = StyleSheet.create({
   },
   spaceContainer: {
     alignItems: 'center',
-    height:90
+  },
+  spaceContainers: {
+    height: 90,
   },
   timeInput: {
     fontSize: 15,
@@ -222,7 +244,7 @@ const styles = StyleSheet.create({
   },
   spaceForm: {
     marginTop: 10,
-    height:300
+    height: 300,
   },
   demoImg: {
     marginTop: '130%',

@@ -11,6 +11,8 @@ import {
   ScrollView,
   Image,
   ImageBackground,
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -26,12 +28,15 @@ const FormAddNewService = () => {
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
+  const [loading, setLoading] = useState(false);
+  const [errorImage, setErrorImage] = useState('');
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
       setSingleFile(res);
+      setErrorImage('');
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {
@@ -50,36 +55,47 @@ const FormAddNewService = () => {
   const hasLettersAndNoNumbers = (value: string) => {
     return /[a-zA-Z]/.test(value) && !/\d/.test(value);
   };
+  const hasNoIcons = (value: string) => {
+    return !/[^\p{L}\p{N}\s]/u.test(value);
+  };
   const onSubmit = async (data: any) => {
-    
     try {
+      setLoading(true);
       const errorFields = [];
       if (!data.service_name.trim()) errorFields.push('service_name');
       if (!data.price) errorFields.push('price');
       if (!data.desc.trim()) errorFields.push('desc');
-
       if (errorFields.length > 0) {
         setError(errorFields.map(field => ({type: 'manual', name: field})));
+        setLoading(false);
         return;
       }
-
-      data.image = singleFile;
+      if (!singleFile) {
+        setErrorImage('Ảnh không được để trống');
+        setLoading(false);
+        return;
+      } else {
+        data.image = singleFile;
+      }
       const responseData = await sendData(data);
       if (responseData) {
+        setLoading(false);
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
           title: 'Thành công',
-          textBody: "Dịch vụ đã thêm thành công!",
+          textBody: 'Dịch vụ đã thêm thành công!',
         });
-        navigation.navigate('Profile',{reload:true});
+        navigation.navigate('Profile', {reload: true});
       }
     } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
     }
   };
-  const handleCancle=()=>{
-    navigation.navigate('Profile')
-  }
-  const isNumeric = (value:any) => {
+  const handleCancle = () => {
+    navigation.navigate('Profile');
+  };
+  const isNumeric = (value: any) => {
     return /^\d+$/.test(value);
   };
   return (
@@ -89,6 +105,21 @@ const FormAddNewService = () => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled">
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => {
+            setLoading(false);
+          }}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator size={40} color="#FCA234" />
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.formEdit}>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Tên dịch vụ </Text>
@@ -103,9 +134,12 @@ const FormAddNewService = () => {
                 />
               )}
               name="service_name"
-              rules={{required: '* Tên không được bỏ trống',
-              validate: value =>
-              hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số',}}
+              rules={{
+                required: '* Tên không được bỏ trống',
+                validate: value =>
+                  (hasLettersAndNoNumbers(value) && hasNoIcons(value)) ||
+                  '* Tên không được chỉ chứa số và kí hiệu riêng',
+              }}
               defaultValue=""
             />
             {errors.service_name && (
@@ -126,7 +160,7 @@ const FormAddNewService = () => {
                     }
                   }}
                   value={value}
-              keyboardType="numeric"
+                  keyboardType="numeric"
                 />
               )}
               name="price"
@@ -150,9 +184,12 @@ const FormAddNewService = () => {
                 />
               )}
               name="desc"
-              rules={{required: '* Mô tả không được bỏ trống',
-              validate: value =>
-              hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số',}}
+              rules={{
+                required: '* Mô tả không được bỏ trống',
+                validate: value =>
+                  hasLettersAndNoNumbers(value) ||
+                  '* Mô tả không được chỉ chứa số',
+              }}
               defaultValue=""
             />
             {errors.desc && (
@@ -161,6 +198,11 @@ const FormAddNewService = () => {
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
+            <View style={styles.messageError}>
+              {errorImage ? (
+                <Text style={{color: 'red'}}>{errorImage}</Text>
+              ) : null}
+            </View>
 
             {!!singleFile || (
               <View style={styles.selectedImage}>
@@ -210,7 +252,6 @@ const FormAddNewService = () => {
               </TouchableOpacity>
             </View>
           </View>
-
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -220,6 +261,23 @@ const FormAddNewService = () => {
 export default FormAddNewService;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  messageError: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
   buttonChoose: {
     width: '100%',
   },

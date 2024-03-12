@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {url} from './apiRequest/url';
 const useGetServiceOfRepairman = (id:string) => {
   const [serviceOfRepairman, setServiceOfRepairman] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [isLoadings, setIsLoading] = useState(true);
+  const [isErrors, setIsError] = useState(false);
   useEffect(() => {
     const fetchServiceOfRepairman = async () => {
       try {
@@ -25,6 +25,6 @@ const useGetServiceOfRepairman = (id:string) => {
     };
     fetchServiceOfRepairman();
   }, [id]);
-  return {serviceOfRepairman, isLoading, isError};
+  return {serviceOfRepairman, isLoadings, isErrors};
 };
 export default useGetServiceOfRepairman;

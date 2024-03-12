@@ -26,6 +26,7 @@ var ResultSearch_1 = require("../../screens/ResultSearch");
 var HistoryRepairmanBookSchedule_1 = require("../../screens/HistoryRepairmanBookSchedule");
 var DetailRepairmanConfirmBooking_1 = require("../../screens/DetailRepairmanConfirmBooking");
 var DetailViewBookSchedule_1 = require("../../screens/DetailViewBookSchedule");
+var DetailNotification_1 = require("../../screens/DetailNotification");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
     var Stack = stack_1.createStackNavigator();
@@ -109,6 +110,10 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "ResultSearch", component: ResultSearch_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: "Kết quả tìm kiếm"
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "DetailNotification", component: DetailNotification_1["default"], options: function () { return ({
+                    headerShown: true,
+                    headerTitle: "Chi tiết thông báo"
                 }); } }))));
 };
 exports["default"] = Main;

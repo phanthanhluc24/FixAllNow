@@ -48,6 +48,7 @@ var SignIn = function (_a) {
     var passwordRef = react_1.useRef();
     var _b = useSignin_1["default"]({ navigation: navigation }), handleSignin = _b.handleSignin, errorServer = _b.errorServer;
     var _c = react_1.useState(""), deviceToken = _c[0], setDeviceToken = _c[1];
+    var _d = react_1.useState(false), loading = _d[0], setLoading = _d[1];
     react_1.useEffect(function () {
         notificationHelper_1.requestUserPermission();
         getFcmToken();
@@ -56,12 +57,28 @@ var SignIn = function (_a) {
         var token;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, async_storage_1["default"].getItem("fcmToken")];
+                case 0:
+                    setLoading(true);
+                    return [4 /*yield*/, async_storage_1["default"].getItem("fcmToken")];
                 case 1:
                     token = _a.sent();
                     if (token) {
                         setDeviceToken(token);
+                        setLoading(false);
                     }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    var handleSignInPress = function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    setLoading(true);
+                    return [4 /*yield*/, handleSignin()];
+                case 1:
+                    _a.sent();
+                    setLoading(false);
                     return [2 /*return*/];
             }
         });
@@ -74,27 +91,31 @@ var SignIn = function (_a) {
                     deviceToken: deviceToken
                 };
                 handleSignin(account);
-                // console.log(account);
             }, 100);
         } }, function (_a) {
         var errors = _a.errors, touched = _a.touched, handleChange = _a.handleChange, handleBlur = _a.handleBlur, values = _a.values, handleSubmit = _a.handleSubmit;
         return (react_1["default"].createElement(react_native_1.TouchableWithoutFeedback, { onPress: react_native_1.Keyboard.dismiss },
             react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.signInContainer },
                 react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 } },
+                    react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                            setLoading(false);
+                        } },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                                react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                                    react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
                     react_1["default"].createElement(react_native_1.View, { style: styles.signinHeader },
                         react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/SignIn/header.png'), style: styles.imgHeader })),
                     react_1["default"].createElement(react_native_1.View, { style: styles.signinBody },
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleSignin },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "\u0110\u0103ng nh\u00E2\u0323p")),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.errorMessage }, errorServer != null && (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                            "* ",
-                            errorServer))),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.errorMessage }, errorServer != null && (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errorServer))),
                         react_1["default"].createElement(react_native_1.View, { style: styles.fromInput },
                             react_1["default"].createElement(react_native_1.View, null,
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titleEmail }, "Email"),
                                 react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputEmail, enterKeyHint: 'next', onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email }),
                                 errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errors.email)) : null)),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.fromInput },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.fromInputs },
                             react_1["default"].createElement(react_native_1.View, { style: styles.space },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.titlePassword }, "M\u00E2\u0323t Kh\u00E2\u0309u"),
                                 react_1["default"].createElement(react_native_1.TextInput, { ref: passwordRef, style: styles.inputPassword, enterKeyHint: 'done', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.clear(); }, onChangeText: handleChange('password'), onBlur: handleBlur('password'), value: values.password }),
@@ -103,7 +124,9 @@ var SignIn = function (_a) {
                                 react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('ForgotPassword'); } },
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.titlefg }, "Qu\u00EAn m\u00E2\u0323t kh\u00E2\u0309u?")),
                                 react_1["default"].createElement(react_native_1.View, { style: styles.confirmcreate },
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.titlefgs }, "Ch\u01B0a co\u0301 ta\u0300i khoa\u0309n!"),
+                                    react_1["default"].createElement(react_native_1.Text, { style: styles.titlefgs },
+                                        "Ch\u01B0a co\u0301 ta\u0300i khoa\u0309n!",
+                                        ' '),
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.createacc, onPress: function () { return navigation.navigate('SelectRole'); } }, "\u0110\u0103ng ky\u0301"))),
                             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonLogin, onPress: function (e) { return handleSubmit(); } },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textLgoin }, "\u0110\u0103ng nh\u00E2\u0323p")))),
@@ -113,6 +136,18 @@ var SignIn = function (_a) {
 };
 exports["default"] = SignIn;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
     signInContainer: {
         flex: 1,
         backgroundColor: '#FCA234'
@@ -151,6 +186,11 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 15,
         height: 110
     },
+    fromInputs: {
+        marginHorizontal: 40,
+        marginTop: 5,
+        height: 110
+    },
     errorMessage: {
         marginHorizontal: 40,
         marginTop: 20
@@ -168,7 +208,8 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     space: {
-        marginTop: 1
+        marginTop: 1,
+        height: 70
     },
     titlePassword: {
         color: 'white',
@@ -183,7 +224,7 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     confirmInfo: {
-        marginTop: 20,
+        marginTop: 60,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -213,9 +254,9 @@ var styles = react_native_1.StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        marginTop: '80%',
+        marginTop: '70%',
         zIndex: 3,
-        height: 60
+        height: 50
     },
     form: {
         position: 'absolute'

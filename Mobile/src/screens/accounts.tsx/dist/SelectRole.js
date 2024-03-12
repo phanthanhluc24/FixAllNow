@@ -39,7 +39,7 @@ var SelectRole = function () {
                 react_1["default"].createElement(react_native_1.Image, { source: require('../../assets/role/logo.png'), style: styles.logo }))),
         react_1["default"].createElement(react_native_1.Text, { style: styles.title_1 }, "\u0110\u0102NG K\u00DD"),
         react_1["default"].createElement(react_native_1.Text, { style: styles.title_2 }, "B\u1EA1n mu\u1ED1n tr\u1EDF th\u00E0nh"),
-        error != null && (react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error)),
+        react_1["default"].createElement(react_native_1.View, { style: { height: 30 } }, error != null && (react_1["default"].createElement(react_native_1.Text, { style: styles.error }, error))),
         react_1["default"].createElement(react_native_1.View, { style: styles.radioContainer },
             react_1["default"].createElement(RadioButton, { label: "Th\u1EE3 s\u1EEDa ch\u1EEFa", onPress: function () { handleRadioPress('Thợ sửa chữa'); setError(null); }, isSelected: selectedRole === 'Thợ sửa chữa' }),
             react_1["default"].createElement(RadioButton, { label: "T\u00ECm th\u1EE3", onPress: function () { handleRadioPress('Tìm thợ'); setError(null); }, isSelected: selectedRole === 'Tìm thợ' })),
@@ -95,7 +95,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     radioContainer: {
         flexDirection: 'column',
-        marginTop: 30,
+        marginTop: 0,
         marginLeft: 40
     },
     radioButton: {

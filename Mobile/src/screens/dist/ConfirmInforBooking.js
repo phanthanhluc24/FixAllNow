@@ -6,6 +6,7 @@ var native_1 = require("@react-navigation/native");
 var useBookingService_1 = require("../hooks/useBookingService");
 var ConfirmInforBooking = function (_a) {
     var route = _a.route;
+    var _b = react_1.useState(false), loading = _b[0], setLoading = _b[1];
     var infoBooking = route.params.infoBooking;
     var serviceBooking = infoBooking.infoServiceBooking.service_name;
     var repairman = infoBooking.infoServiceBooking.user_id.full_name;
@@ -31,9 +32,9 @@ var ConfirmInforBooking = function (_a) {
     var priceTransport = 10000;
     var totalPrice = priceRepair + priceService + priceTransport;
     var navigation = native_1.useNavigation();
-    var _b = react_1.useState(null), selectedMethod = _b[0], setSelectedMethod = _b[1];
-    var _c = react_1.useState(null), errorPayment = _c[0], setErrorPayment = _c[1];
-    var bookingService = useBookingService_1["default"]().bookingService;
+    var _c = react_1.useState(null), selectedMethod = _c[0], setSelectedMethod = _c[1];
+    var _d = react_1.useState(null), errorPayment = _d[0], setErrorPayment = _d[1];
+    var _e = useBookingService_1["default"](), bookingService = _e.bookingService, isLoading = _e.isLoading;
     var data = {
         dayRepair: infoBooking.date,
         timeRepair: infoBooking.time,
@@ -49,6 +50,7 @@ var ConfirmInforBooking = function (_a) {
     var handleConfirm = function () {
         if (errorPayment == null) {
             setErrorPayment('Vui lòng chọn phương thức thanh toán');
+            setLoading(false);
         }
         else {
             bookingService(data, infoBooking.infoServiceBooking._id, infoBooking.infoServiceBooking.user_id._id);
@@ -58,7 +60,18 @@ var ConfirmInforBooking = function (_a) {
         setSelectedMethod(2);
         setErrorPayment('OK');
     };
+    var handleCancel = function () {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Root' }]
+        });
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
+        react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: isLoading },
+            react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                    react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                        react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoContainer },
             react_1["default"].createElement(react_native_1.View, { style: styles.titleConfirm },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "XA\u0301C NH\u00C2\u0323N TH\u00D4NG TIN")),
@@ -103,14 +116,14 @@ var ConfirmInforBooking = function (_a) {
                             styles.buttonMethod,
                             selectedMethod === 2 && styles.selectedMethod,
                         ], onPress: function () { return handleMomoSelect(); } },
-                        react_1["default"].createElement(react_native_1.Image, { style: styles.image2, source: require('../assets/ConfirmBooking/iconPrice.png') }),
+                        react_1["default"].createElement(react_native_1.Image, { style: styles.image2, source: require('../assets/ConfirmBooking/stripe.png') }),
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleMethod }, "TT qua momo")))),
             react_1["default"].createElement(react_native_1.View, { style: styles.reConfirm },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.quesConfirm }, "Ba\u0323n co\u0301 \u0111\u00F4\u0300ng y\u0301 xa\u0301c th\u01B0\u0323c kh\u00F4ng?"))),
         react_1["default"].createElement(react_native_1.View, { style: styles.event },
             react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.button1 },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleCancel },
                         react_1["default"].createElement(react_native_1.View, { style: styles.bookNow },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.books }, "Hu\u0309y"))),
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.button1, onPress: handleConfirm },
@@ -119,6 +132,18 @@ var ConfirmInforBooking = function (_a) {
 };
 exports["default"] = ConfirmInforBooking;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
     image1: {
         width: 20,
         height: 20

@@ -100,7 +100,7 @@ var HeaderSearch = function (_a) {
     return (react_1["default"].createElement(react_native_1.View, { style: styles.SearchBarContainer },
         react_1["default"].createElement(react_native_1.View, { style: styles.SearchInputs },
             react_1["default"].createElement(react_native_1.View, { style: styles.searchInput },
-                react_1["default"].createElement(react_native_1.TextInput, { value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
+                react_1["default"].createElement(react_native_1.TextInput, { style: { width: "80%" }, value: searchValue, onChangeText: handleSearchChange, placeholder: "Ti\u0300m ki\u00EA\u0301m di\u0323ch vu\u0323" }),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.messageIcon, onPress: handleSearch },
                     react_1["default"].createElement(Feather_1["default"], { name: "search", color: "black", size: 28 }))))));
 };
@@ -112,7 +112,7 @@ var styles = react_native_1.StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         height: 50,
-        borderColor: 'gray',
+        borderColor: '#FCA234',
         borderRadius: 10,
         borderWidth: 1,
         width: '100%',
@@ -126,10 +126,13 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'space-between'
     },
     messageIcon: {
-        width: 60,
-        height: 60,
+        width: 52,
+        height: 50,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: "#FCA234",
+        borderBottomRightRadius: 10,
+        borderTopRightRadius: 10
     },
     images: {
         width: 50,

@@ -9,7 +9,9 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
-  Image
+  Image,
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -23,6 +25,7 @@ import { useNavigation } from '@react-navigation/native';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoService = ({route}: any) => {
   const {service}:any=route.params;
+  const [loading, setLoading] = useState(false);
   const navigation:any= useNavigation();
   const [nameService, setNameService] = useState(service.service_name);
   const [priceService, setPriceService] = useState(service?.price.toString());
@@ -87,9 +90,12 @@ const EditInfoService = ({route}: any) => {
       image: singleFile,
     };
     try {
+      setLoading(true);
       const editSuccess = await useEditInfoService(formData);
-    
+    console.log(editSuccess);
+  
     if (editSuccess) {
+      setLoading(false);
       Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: 'Thành công',
@@ -101,6 +107,7 @@ const EditInfoService = ({route}: any) => {
     }
   } catch (error) {
     console.error('Lỗi khi edit thông tin người dùng:', error);
+    setLoading(false);
   }
   };
   const handleCancle = () => {
@@ -113,6 +120,21 @@ const EditInfoService = ({route}: any) => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled">
+           <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => {
+            setLoading(false);
+          }}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator size={40} color="#FCA234" />
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.formEdit}>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Tên dịch vụ </Text>
@@ -131,9 +153,9 @@ const EditInfoService = ({route}: any) => {
                 />
               )}
               name="service_name"
-              rules={{required: '* Tên không được bỏ trống',
+              rules={{required: '* Tên dịch vụ không được bỏ trống',
               validate: value =>
-              hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số',
+              hasLettersAndNoNumbers(value) || '* Tên dịch vụ không hợp lệ',
           }}
               defaultValue={nameService}
             />
@@ -142,7 +164,7 @@ const EditInfoService = ({route}: any) => {
         )}
           </View>
           <View style={styles.part}>
-            <Text style={styles.infoEdit}>Gía dịch vụ</Text>
+            <Text style={styles.infoEdit}>Giá dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
@@ -166,27 +188,27 @@ const EditInfoService = ({route}: any) => {
           <Text style={{color: 'red'}}>{errors.price.message}</Text>
         )}
           </View>
-          <View style={styles.part}>
+          <View style={styles.parts}>
             <Text style={styles.infoEdit}>Mô tả dịch vụ</Text>
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                 multiline={true}
-                  style={styles.inputInfo}
+                  style={styles.inputInfos}
                   onBlur={onBlur}
                   onChangeText={text => {
                     onChange(text);
-                    handleInputChange('desc', text); 
+                    handleInputChange('desc', text);
                   }}
                   value={value}
                   defaultValue={descService}
                 />
               )}
               name="desc"
-              rules={{required: '* Mô tả không được bỏ trống',
+              rules={{required: '* Mô tả không được bỏ trống', 
               validate: value =>
-              hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số',
+              hasLettersAndNoNumbers(value)||'* Mô tả không hợp lệ',
             }}
               defaultValue={descService}
             />
@@ -194,7 +216,7 @@ const EditInfoService = ({route}: any) => {
           <Text style={{color: 'red'}}>{errors.desc.message}</Text>
         )}
           </View>
-          <View style={styles.part}>
+          <View style={styles.partss}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
            
               <View style={styles.selectedImage}>
@@ -209,7 +231,6 @@ const EditInfoService = ({route}: any) => {
                   </TouchableOpacity>
                 </View>
               </View>
-           
           </View>
         </View>
         <View style={styles.eventSubmit}>
@@ -240,6 +261,18 @@ const EditInfoService = ({route}: any) => {
 export default EditInfoService;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
   imageViews: {
     width: 40,
     height: 40,
@@ -311,12 +344,21 @@ const styles = StyleSheet.create({
   
   part: {
     marginVertical: 5,
-    height:100
+    height:90
+  },
+  parts: {
+    marginVertical: 5,
+    height:140
+  },
+  partss: {
+    marginVertical: 5,
+    height:120
   },
   infoEdit: {
     color: '#FCA234',
     fontSize: 15,
     fontWeight: 'bold',
+    
   },
   eventSubmit: {
     flex: 1,
@@ -342,6 +384,16 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     color: '#000000',
     height:50
+  },
+  inputInfos: {
+    backgroundColor: 'white',
+    borderColor: '#FCA234',
+    borderRadius: 10,
+    marginTop: 5,
+    borderWidth: 1,
+    paddingLeft: 15,
+    color: '#000000',
+    height:100
   },
   mainBody: {
     flex: 1,

@@ -5,17 +5,21 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  ScrollView
+  ScrollView,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
+
 import React, {useState, useEffect} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
-import DocumentPicker,{
+import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import LoaderKit from 'react-native-loader-kit';
 import {useNavigation} from '@react-navigation/native';
 import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import ButtonLogout from './bottomTab/ButtonLogout';
@@ -23,8 +27,9 @@ import {TouchEventType} from 'react-native-gesture-handler/lib/typescript/TouchE
 import useDeleteService from '../hooks/useDeleteService';
 
 const ProfileHeader = () => {
+  const [loading, setLoading] = useState(false);
   ///render các trạng thái đặt hàng
-  
+
   ////////////////////////////////
   //lấy ảnh đại diện từ file
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
@@ -53,7 +58,9 @@ const ProfileHeader = () => {
   const navigation: any = useNavigation();
   const {currentUser, isLoading, isError}: any = useGetCurrentUser();
   const [hasServices, setHasServices] = useState<boolean>(false);
-  const {serviceOfRepairman} = useGetServiceOfRepairman(currentUser?._id);
+  const {serviceOfRepairman, isLoadings, isErrors} = useGetServiceOfRepairman(
+    currentUser?._id,
+  );
   useEffect(() => {
     if (serviceOfRepairman.length > 0) {
       setHasServices(true);
@@ -62,11 +69,13 @@ const ProfileHeader = () => {
     }
   }, [serviceOfRepairman]);
   // xóa dịch vụ
-  const {destroyService}=useDeleteService()
-  const handleDeleteService=(service_id:string)=>()=>{
-    destroyService(service_id)
-    navigation.navigate('Profile', { reload: true });
-  }///////////////////////////////////
+  const {destroyService} = useDeleteService();
+  const handleDeleteService = (service_id: string) => () => {
+    setLoading(true);
+    destroyService(service_id);
+    setLoading(false);
+    navigation.navigate('Profile', {reload: true});
+  }; ///////////////////////////////////
   const renderItem = (data: any) => (
     <TouchableOpacity
       style={styles.repairman}
@@ -102,7 +111,9 @@ const ProfileHeader = () => {
 
   const renderHiddenItem = (data: any) => (
     <View style={styles.rowBack}>
-      <TouchableOpacity style={styles.deleteService} onPress={handleDeleteService(data.item._id)}>
+      <TouchableOpacity
+        style={styles.deleteService}
+        onPress={handleDeleteService(data.item._id)}>
         <AntDesign name="delete" color="#FFFFFF" size={25} />
       </TouchableOpacity>
       <TouchableOpacity
@@ -117,6 +128,21 @@ const ProfileHeader = () => {
 
   return (
     <View style={styles.profileHeader}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={loading}
+        onRequestClose={() => {
+          setLoading(false);
+        }}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <ActivityIndicator size={40} color="#FCA234" />
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.infoProfile}>
         <TouchableOpacity style={styles.avatarPro}>
           <Image
@@ -173,10 +199,19 @@ const ProfileHeader = () => {
           </View>
         </View>
       </View>
-     
       <View style={styles.container}>
         <Text style={styles.nameListService}>Danh sách dịch vụ</Text>
-        {hasServices ? (
+        {isLoading ? (
+          <View style={{alignItems: 'center'}}>
+            <Text>
+              <LoaderKit
+                style={styles.loadingText}
+                name={'BallPulse'}
+                color={'#FCA234'}
+              />
+            </Text>
+          </View>
+        ) : hasServices ? (
           <SwipeListView
             data={serviceOfRepairman}
             renderItem={renderItem}
@@ -195,9 +230,29 @@ const ProfileHeader = () => {
 };
 export default ProfileHeader;
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+    marginTop: 100,
+  },
   listHistory: {
     height: 50,
-    backgroundColor:"#ffffff",
+    backgroundColor: '#ffffff',
   },
   eventButton: {
     paddingHorizontal: 20,
@@ -206,8 +261,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: '#FCA234',
     height: 50,
-    width:140,
-    borderWidth:0.5
+    width: 140,
+    borderWidth: 0.5,
   },
   titleButton: {
     color: '#394C6D',
@@ -275,7 +330,7 @@ const styles = StyleSheet.create({
   },
   noService: {
     fontSize: 15,
-    color: 'white',
+    color: '#394C6D',
   },
   imageViews: {
     width: 30,
@@ -349,7 +404,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#394C6D',
   },
   info: {
-    alignItems: 'center',
     marginHorizontal: 20,
     width: '70%',
   },
@@ -374,7 +428,6 @@ const styles = StyleSheet.create({
   },
   profileHeader: {
     flex: 1,
-    backgroundColor: '#fffff0',
   },
   infoProfile: {
     marginHorizontal: 20,
@@ -385,13 +438,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 3,
     borderColor: '#394C6D',
-    
   },
   avatarPro: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 30,
-    
   },
   deleteService: {
     marginHorizontal: 20,
@@ -405,7 +456,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fffff0',
   },
   rowFront: {
     alignItems: 'center',
@@ -424,17 +474,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     borderWidth: 1,
     borderColor: '#FCA234',
-    marginTop:3,
-    borderRadius:10
+    marginTop: 3,
+    borderRadius: 10,
   },
   repairman: {
     backgroundColor: '#FCA234',
     flex: 1,
     height: 132,
     marginHorizontal: 15,
-    borderBottomWidth: 1,
-    marginTop:3,
-    borderRadius:10
+    marginTop: 3,
+    borderRadius: 10,
   },
   containerRepairman: {
     flex: 1,

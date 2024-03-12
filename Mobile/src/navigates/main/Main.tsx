@@ -32,7 +32,7 @@ import HistoryRepairmanBookSchedule from '../../screens/HistoryRepairmanBookSche
 import DetailRepairmanConfirmBooking from '../../screens/DetailRepairmanConfirmBooking';
 import AuthNavigation from './AuthNavigation';
 import DetailViewBookSchedule from '../../screens/DetailViewBookSchedule';
-
+import DetailNotification from '../../screens/DetailNotification';
 const queryClient = new QueryClient();
 const Main = () => {
   const Stack = createStackNavigator();
@@ -208,7 +208,14 @@ const Main = () => {
             headerTitle: "Kết quả tìm kiếm",
           })}
         />
-        
+        <Stack.Screen
+          name="DetailNotification"
+          component={DetailNotification}
+          options={() => ({
+            headerShown: true,
+            headerTitle: "Chi tiết thông báo",
+          })}
+        />
        
       </Stack.Navigator>
     </QueryClientProvider>

@@ -145,7 +145,7 @@ const SignUp = () => {
             </View>
             <View style={styles.confirmInfo}>
               <View style={styles.confirmcreate}>
-                <Text style={styles.titlefg}>Bạn đã có tài khoản chưa?</Text>
+                <Text style={styles.titlefg}>Bạn đã có tài khoản chưa?{' '}</Text>
                 <Text
                   style={styles.createAcc}
                   onPress={() => navigation.navigate('SignIn')}>

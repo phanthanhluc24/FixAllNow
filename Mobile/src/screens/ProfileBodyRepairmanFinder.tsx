@@ -9,12 +9,23 @@ import {
 import React, {useState} from 'react';
 import RepairmanFinderWaitingConfirmBook from './RepairmanFinderWaitingConfirmBook';
 import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetStatusBooking';
+import RepairmanFinderConfirmRatingComment from './RepairmanFinderConfirmRatingComment';
 const ProfileBodyRepairmanFinder = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   let transformedSelectedTab = selectedTab + 1;
    const {statusBooking} = useRepairmanFinderGetStatusBooking(transformedSelectedTab);
   const renderComponent = () => {
-    return <RepairmanFinderWaitingConfirmBook statusBooking={statusBooking} />;
+    switch (transformedSelectedTab) {
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+        return (
+          <RepairmanFinderWaitingConfirmBook statusBooking={statusBooking} />
+        );
+      default:
+        return <RepairmanFinderConfirmRatingComment/>;
+    }
   };
   return (
     <View style={styles.containerProfileBodyRepairmanFinder}>
@@ -26,7 +37,7 @@ const ProfileBodyRepairmanFinder = () => {
                 selectedTab === 0 ? styles.selectedButton : null,
               ]}
               onPress={() =>setSelectedTab(0)}>
-              <Text
+              <Text numberOfLines={2}
                 style={[
                   styles.titleButton,
                   selectedTab === 0 ? styles.selectedText : null,
@@ -40,12 +51,12 @@ const ProfileBodyRepairmanFinder = () => {
                 selectedTab === 1 ? styles.selectedButton : null,
               ]}
               onPress={() => setSelectedTab(1)}>
-              <Text
+              <Text numberOfLines={2}
                 style={[
                   styles.titleButton,
                   selectedTab === 1 ? styles.selectedText : null,
                 ]}>
-                Đơn chấp nhận
+                Đã chấp nhận
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -54,7 +65,7 @@ const ProfileBodyRepairmanFinder = () => {
                 selectedTab === 2 ? styles.selectedButton : null,
               ]}
               onPress={() => setSelectedTab(2)}>
-              <Text
+              <Text numberOfLines={2}
                 style={[
                   styles.titleButton,
                   selectedTab === 2 ? styles.selectedText : null,
@@ -68,7 +79,7 @@ const ProfileBodyRepairmanFinder = () => {
                 selectedTab === 3 ? styles.selectedButton : null,
               ]}
               onPress={() => setSelectedTab(3)}>
-              <Text
+              <Text numberOfLines={2}
                 style={[
                   styles.titleButton,
                   selectedTab === 3 ? styles.selectedText : null,
@@ -76,7 +87,20 @@ const ProfileBodyRepairmanFinder = () => {
                 Đã hoàn thành
               </Text>
             </TouchableOpacity>
-           
+            <TouchableOpacity
+            style={[
+              styles.eventButton,
+              selectedTab === 4 ? styles.selectedButton : null,
+            ]}
+            onPress={() => setSelectedTab(4)}>
+            <Text numberOfLines={2}
+              style={[
+                styles.titleButton,
+                selectedTab === 4 ? styles.selectedText : null,
+              ]}>
+              Chưa đánh giá
+            </Text>
+          </TouchableOpacity>
           </ScrollView>
         </View>
       <View style={{marginBottom:70}}>{renderComponent()}</View>
@@ -88,24 +112,32 @@ export default ProfileBodyRepairmanFinder;
 const styles = StyleSheet.create({
   listHistory: {
     height: 50,
+    // flexDirection:"row",
+    // width:"100%",
+    // alignItems:"center",
+    // justifyContent:"space-around"
   },
   eventButton: {
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: '#FCA234',
+    borderBottomColor: '#394C6D',
     height: 50,
-    width:140
+    
   },
   titleButton: {
     color: '#394C6D',
+    fontWeight:"bold",
   },
   selectedButton: {
-    backgroundColor: '#394C6D',
+    backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: '#FCA234',
   },
   selectedText: {
-    color: 'white',
+    color: '#FCA234',
+    fontWeight:"bold"
   },
   container: {
     marginHorizontal: 20,
@@ -134,6 +166,7 @@ const styles = StyleSheet.create({
   },
   containerProfileBodyRepairmanFinder: {
     flex: 1,
+    width:"100%"
   },
   profileBodyRepairmanFinder: {
     marginHorizontal: 30,
