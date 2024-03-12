@@ -42,8 +42,8 @@ var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
 var useGetServiceOfRepairman = function (id) {
     var _a = react_1.useState([]), serviceOfRepairman = _a[0], setServiceOfRepairman = _a[1];
-    var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
-    var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
+    var _b = react_1.useState(true), isLoadings = _b[0], setIsLoading = _b[1];
+    var _c = react_1.useState(false), isErrors = _c[0], setIsError = _c[1];
     react_1.useEffect(function () {
         var fetchServiceOfRepairman = function () { return __awaiter(void 0, void 0, void 0, function () {
             var accessToken, response, error_1;
@@ -74,6 +74,6 @@ var useGetServiceOfRepairman = function (id) {
         }); };
         fetchServiceOfRepairman();
     }, [id]);
-    return { serviceOfRepairman: serviceOfRepairman, isLoading: isLoading, isError: isError };
+    return { serviceOfRepairman: serviceOfRepairman, isLoadings: isLoadings, isErrors: isErrors };
 };
 exports["default"] = useGetServiceOfRepairman;

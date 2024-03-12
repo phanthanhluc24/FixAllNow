@@ -78,10 +78,8 @@ var ForgotPassword = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errorServer),
                             react_1["default"].createElement(react_native_1.View, { style: styles.heightInput },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email, enterKeyHint: 'done', placeholder: 'Vui lo\u0300ng nh\u00E2\u0323p email' }),
-                                errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                                    "* ",
-                                    errors.email)) : null),
+                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('email'), onBlur: handleBlur('email'), value: values.email, enterKeyHint: 'done', placeholder: "Vui lo\u0300ng nh\u00E2\u0323p email" })),
+                            errors.email && touched.email ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errors.email)) : null,
                             react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function (e) { return handleSubmit(); }, style: styles.buttonConfirm },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C"))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
@@ -96,7 +94,8 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold',
         color: 'red',
         margin: 0,
-        padding: 0
+        padding: 0,
+        marginHorizontal: 20
     },
     confirmContainer: {
         flex: 1,
@@ -147,15 +146,19 @@ var styles = react_native_1.StyleSheet.create({
         borderRadius: 10,
         marginTop: 5,
         borderWidth: 1,
-        width: '80%',
+        width: '100%',
         paddingLeft: 15
     },
     spaceContainer: {
-        marginLeft: 55,
         marginTop: 40
     },
     heightInput: {
-        height: 70
+        flexDirection: 'row',
+        height: 70,
+        width: '90%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 20
     },
     timeInput: {
         fontSize: 15,
@@ -170,7 +173,7 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 60
     },
     buttonConfirm: {
-        width: '50%',
+        width: '75%',
         backgroundColor: '#394C6D',
         borderRadius: 10,
         height: 60,

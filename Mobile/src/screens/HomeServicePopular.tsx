@@ -36,7 +36,7 @@ const HomeServicePopular = () => {
     );
   }
   if (services.length === 0) {
-    return <Text>Services not available!</Text>;
+    return <Text>Không có dịch vụ nào!</Text>;
   }
   if (isError) {
     return <Text>Error loading categories</Text>;
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius:50,
     borderWidth:3,
-    borderColor:"#ffffff",
+    borderColor:"#FCA234",
   },
   nameRepairman: {
     fontSize: 18,

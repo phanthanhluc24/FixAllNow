@@ -44,10 +44,11 @@ var useEditInfoCurrentUser_1 = require("../../hooks/useEditInfoCurrentUser");
 var react_native_alert_notification_1 = require("react-native-alert-notification");
 var EditInfoCurrentUser = function (_a) {
     var route = _a.route;
+    var _b = react_1.useState(false), loading = _b[0], setLoading = _b[1];
     var navigation = native_1.useNavigation();
     var user = route.params.user;
-    var _b = react_1.useState(user === null || user === void 0 ? void 0 : user.number_phone.toString()), number_phone = _b[0], setNumberPhone = _b[1];
-    var _c = react_1.useState(user === null || user === void 0 ? void 0 : user.full_name), full_name = _c[0], setFullName = _c[1];
+    var _c = react_1.useState(user === null || user === void 0 ? void 0 : user.number_phone.toString()), number_phone = _c[0], setNumberPhone = _c[1];
+    var _d = react_1.useState(user === null || user === void 0 ? void 0 : user.full_name), full_name = _d[0], setFullName = _d[1];
     var handleInputChange = function (fieldName, value) {
         switch (fieldName) {
             case 'full_name':
@@ -60,7 +61,7 @@ var EditInfoCurrentUser = function (_a) {
                 break;
         }
     };
-    var _d = react_hook_form_1.useForm(), control = _d.control, handleSubmit = _d.handleSubmit, errors = _d.formState.errors;
+    var _e = react_hook_form_1.useForm(), control = _e.control, handleSubmit = _e.handleSubmit, errors = _e.formState.errors;
     var hasLettersAndNoNumbers = function (value) {
         return /[a-zA-Z]/.test(value) && !/\d/.test(value);
     };
@@ -74,15 +75,17 @@ var EditInfoCurrentUser = function (_a) {
                 case 0:
                     formData = {
                         full_name: full_name,
-                        number_phone: number_phone
+                        number_phone: 0 + number_phone
                     };
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    setLoading(true);
                     return [4 /*yield*/, useEditInfoCurrentUser_1["default"](formData)];
                 case 2:
                     editSuccess = _a.sent();
                     if (editSuccess) {
+                        setLoading(false);
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
                             title: 'Thành công',
@@ -97,6 +100,7 @@ var EditInfoCurrentUser = function (_a) {
                 case 3:
                     error_1 = _a.sent();
                     console.error('Lỗi khi edit thông tin người dùng:', error_1);
+                    setLoading(false);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -107,6 +111,13 @@ var EditInfoCurrentUser = function (_a) {
     };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
+            react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                    setLoading(false);
+                } },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                        react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                            react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.formEdit },
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "T\u00EAn cu\u0309a ba\u0323n "),
@@ -119,7 +130,7 @@ var EditInfoCurrentUser = function (_a) {
                         }, name: "full_name", rules: {
                             required: 'Tên không được bỏ trống',
                             validate: function (value) {
-                                return hasLettersAndNoNumbers(value) || 'Tên không được chỉ chứa số';
+                                return hasLettersAndNoNumbers(value) || 'Tên không hợp lệ';
                             }
                         }, defaultValue: full_name }),
                     errors.full_name && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.full_name.message))),
@@ -136,17 +147,20 @@ var EditInfoCurrentUser = function (_a) {
                         }, name: "number_phone", rules: {
                             required: 'Số điện thoại không được bỏ trống',
                             minLength: {
-                                value: 10,
-                                message: 'Số điện thoại phải có đủ 10 chữ số gồm chữ số 0 đầu tiên'
+                                value: 9,
+                                message: 'Số điện thoại không được nhỏ hơn 9'
+                            },
+                            maxLength: {
+                                value: 9,
+                                message: 'Số điện thoại không được lớn hơn 9'
                             },
                             validate: function (value) { return hasNumbersOnly(value) || 'Số điện thoại chỉ được chứa số'; }
                         }, defaultValue: number_phone }),
                     errors.number_phone && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.number_phone.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Email cu\u0309a ba\u0323n"),
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.email }, user === null || user === void 0 ? void 0 : user.email),
-                    react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
-                        react_1["default"].createElement(react_native_1.Image, { source: { uri: user === null || user === void 0 ? void 0 : user.image }, style: styles.imageStyle })))),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.formEmail },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.email }, user === null || user === void 0 ? void 0 : user.email)))),
             react_1["default"].createElement(react_native_1.View, { style: styles.eventSubmit },
                 react_1["default"].createElement(react_native_1.View, { style: styles.buttonChoose },
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonNow },
@@ -159,10 +173,31 @@ var EditInfoCurrentUser = function (_a) {
 };
 exports["default"] = EditInfoCurrentUser;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
+    formEmail: {
+        backgroundColor: "white",
+        height: 50,
+        borderColor: '#FCA234',
+        borderRadius: 10,
+        borderWidth: 1,
+        marginTop: 5,
+        justifyContent: "center"
+    },
     email: {
         fontSize: 15,
         padding: 10,
-        color: 'white'
+        color: 'black'
     },
     imageViews: {
         width: 40,
@@ -203,7 +238,6 @@ var styles = react_native_1.StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 15,
         marginBottom: 10
     },
     button1: {
@@ -242,13 +276,13 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     eventSubmit: {
-        flex: 1,
+        flex: 26,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     formEdit: {
-        flex: 9,
+        flex: 3,
         marginVertical: 20
     },
     container: {

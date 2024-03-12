@@ -5,13 +5,24 @@ var react_1 = require("react");
 var useGetDetailRepairman_1 = require("../hooks/useGetDetailRepairman");
 var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var native_1 = require("@react-navigation/native");
-var DetailCommentRepairman_1 = require("./DetailCommentRepairman");
 var react_native_loader_kit_1 = require("react-native-loader-kit");
-var DetailHeaderRepairman = function () {
+var useGetRateComment_1 = require("../hooks/useGetRateComment");
+var FontAwesome_1 = require("react-native-vector-icons/FontAwesome");
+var moment_1 = require("moment");
+require("moment-duration-format");
+var DetailHeaderRepairman = function (_a) {
+    var repairman_id = _a.repairman_id;
+    var rateComment = useGetRateComment_1["default"](repairman_id).rateComment;
     var route = native_1.useRoute();
     var id = route.params.id;
     var repairman = useGetDetailRepairman_1["default"](id).repairman;
-    var _a = useGetServiceOfRepairman_1["default"](id), serviceOfRepairman = _a.serviceOfRepairman, isLoading = _a.isLoading, isError = _a.isError;
+    var _b = useGetServiceOfRepairman_1["default"](id), serviceOfRepairman = _b.serviceOfRepairman, isLoading = _b.isLoading, isError = _b.isError;
+    var _c = react_1.useState(false), showMoreComments = _c[0], setShowMoreComments = _c[1];
+    var _d = react_1.useState(3), commentsToShow = _d[0], setCommentsToShow = _d[1];
+    var toggleShowMoreComments = function () {
+        setShowMoreComments(true);
+        setCommentsToShow(commentsToShow + 3);
+    };
     var navigation = native_1.useNavigation();
     if (isLoading) {
         return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: 'center' } },
@@ -21,6 +32,13 @@ var DetailHeaderRepairman = function () {
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
     }
+    var renderStars = function (star) {
+        var stars = [];
+        for (var i = 1; i <= 5; i++) {
+            stars.push(react_1["default"].createElement(FontAwesome_1["default"], { key: i, name: star >= i ? 'star' : 'star-o', size: 20, color: star >= i ? '#FFD700' : '#394C6D' }));
+        }
+        return stars;
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.containerHeaderRepairman },
         react_1["default"].createElement(react_native_1.View, { style: styles.info },
             react_1["default"].createElement(react_native_1.Image, { style: styles.imgRp, source: { uri: repairman === null || repairman === void 0 ? void 0 : repairman.image } })),
@@ -30,9 +48,7 @@ var DetailHeaderRepairman = function () {
             react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.full_name)),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "S\u0110T: "),
-            react_1["default"].createElement(react_native_1.Text, { style: styles.content },
-                "0", repairman === null || repairman === void 0 ? void 0 :
-                repairman.number_phone)),
+            react_1["default"].createElement(react_native_1.Text, { style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.number_phone)),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailInfo },
             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "\u0110\u1ECBa ch\u1EC9:"),
             react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.content }, repairman === null || repairman === void 0 ? void 0 : repairman.address)),
@@ -57,13 +73,142 @@ var DetailHeaderRepairman = function () {
                                 react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
                 } })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Ch\u01B0a c\u00F3 d\u1ECBch v\u1EE5 n\u00E0o!)"))))),
-        react_1["default"].createElement(DetailCommentRepairman_1["default"], null)));
+        react_1["default"].createElement(react_native_1.View, { style: { marginBottom: 10 } },
+            react_1["default"].createElement(react_native_1.View, { style: styles.rateComment },
+                react_1["default"].createElement(react_native_1.View, { style: styles.containerTitle },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.rating },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.titlessss },
+                            "\u0110a\u0301nh gia\u0301:(",
+                            rateComment ? rateComment.length : 0,
+                            ")")),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.title },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.suggest }, "Ha\u0303y xem ho\u0323 no\u0301i gi\u0300 v\u00EA\u0300 t\u00F4i ba\u0323n nhe\u0301!")),
+                    rateComment && rateComment.length > 0 && (react_1["default"].createElement(react_1["default"].Fragment, null,
+                        rateComment
+                            .slice(0, commentsToShow)
+                            .map(function (comment, index) {
+                            var formatTimeAgo = function (createdAt) {
+                                var duration = moment_1["default"].duration(moment_1["default"]().diff(moment_1["default"](createdAt)));
+                                var days = duration.days();
+                                var hours = duration.hours();
+                                var minutes = duration.minutes();
+                                if (days > 0) {
+                                    return days + " ng\u00E0y tr\u01B0\u1EDBc";
+                                }
+                                else if (hours > 0) {
+                                    return hours + " gi\u1EDD tr\u01B0\u1EDBc";
+                                }
+                                else {
+                                    return minutes + " ph\u00FAt tr\u01B0\u1EDBc";
+                                }
+                            };
+                            var timeAgo = formatTimeAgo(comment.createdAt);
+                            return (react_1["default"].createElement(react_native_1.TouchableOpacity, { key: index, style: styles.containerRatedComment },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.comment },
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.avatar },
+                                        react_1["default"].createElement(react_native_1.Image, { style: styles.avatarComment, source: { uri: comment === null || comment === void 0 ? void 0 : comment.commenter_id.image } })),
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameCommenter }, comment.commenter_id.full_name),
+                                        react_1["default"].createElement(react_native_1.View, { style: styles.star }, renderStars(comment.star)),
+                                        react_1["default"].createElement(react_native_1.Text, { style: styles.time }, timeAgo))),
+                                react_1["default"].createElement(react_native_1.View, null,
+                                    react_1["default"].createElement(react_native_1.Text, { style: styles.comments }, comment.content))));
+                        }),
+                        !showMoreComments && rateComment.length > commentsToShow && (react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: toggleShowMoreComments, style: { alignItems: "center", justifyContent: "center" } },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "Xem th\u00EAm"))))))))));
 };
 exports["default"] = DetailHeaderRepairman;
 var styles = react_native_1.StyleSheet.create({
+    time: {
+        color: 'blue'
+    },
+    titlesss: {
+        fontSize: 18,
+        color: '#FCA234',
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: '#FCA234',
+        padding: 3
+    },
+    containerRatedComment: {
+        marginVertical: 10,
+        flex: 9
+    },
+    bottom: {
+        flex: 1,
+        marginHorizontal: 20
+    },
+    comment: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    writeComment: {
+        width: '100%',
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#394C6D',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    avatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        borderWidth: 3,
+        borderColor: 'black',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    avatarComment: {
+        width: 46,
+        height: 46,
+        borderRadius: 100
+    },
+    comments: {
+        fontSize: 16,
+        color: '#394C6D',
+        marginVertical: 10
+    },
+    nameCommenter: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#394C6D'
+    },
+    noComment: {
+        fontSize: 15,
+        color: '#FCA234',
+        fontWeight: 'bold'
+    },
+    star: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 2
+    },
+    rateComment: {
+        marginTop: 20
+    },
+    rating: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    suggest: {
+        color: '#FCA234'
+    },
+    containerTitle: {
+        marginHorizontal: 20
+    },
+    titlessss: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#394C6D'
+    },
     noService: {
         fontSize: 15,
-        color: 'black'
+        color: '#FCA234',
+        fontWeight: 'bold'
     },
     loadingText: {
         fontSize: 20,
@@ -92,37 +237,32 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold',
         color: '#394C6D',
         paddingHorizontal: 20,
-        marginVertical: 10
+        marginVertical: 10,
+        alignItems: 'center'
     },
     detailInfo: {
         flexDirection: 'row',
         paddingHorizontal: 40,
         alignItems: 'center',
         paddingTop: 10,
-        width: "100%"
+        width: '100%'
     },
     titles: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#394C6D',
-        width: "40%"
+        width: '40%'
     },
     titless: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#394C6D'
     },
-    titlesss: {
-        fontSize: 18,
-        color: '#FCA234',
-        borderWidth: 2,
-        borderRadius: 5,
-        borderColor: '#FCA234',
-        padding: 3
-    },
     content: {
         fontSize: 18,
-        width: "60%"
+        width: '60%',
+        color: '#394C6D',
+        marginHorizontal: 10
     },
     containerService: {
         marginTop: 20
@@ -162,7 +302,10 @@ var styles = react_native_1.StyleSheet.create({
     },
     img: {
         width: 100,
-        height: 100
+        height: 100,
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: '#394C6D'
     },
     infos: {
         width: '60%',

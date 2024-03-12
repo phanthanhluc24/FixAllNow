@@ -36,35 +36,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var url_1 = require("./apiRequest/url");
+var react_1 = require("react");
 var axios_1 = require("axios");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
-var useRatingComment = function () {
-    var sendData = function (data, service_id) { return __awaiter(void 0, void 0, void 0, function () {
+var url_1 = require("./apiRequest/url");
+var useGetBookingNotYetRated = function () {
+    var _a = react_1.useState([]), bookingNotYetrating = _a[0], setBookingNotYetrating = _a[1];
+    var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
+    var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
+    var fetchBookingNotYetrating = function () { return __awaiter(void 0, void 0, void 0, function () {
         var accessToken, response, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 3, 4, 5]);
                     return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
                 case 1:
                     accessToken = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].post(url_1.url + "/comment/" + service_id, data, {
-                            headers: {
-                                Authorization: "Bearer " + accessToken
-                            }
+                    return [4 /*yield*/, axios_1["default"].get(url_1.url + "/comment/checkToComment", {
+                            headers: { Authorization: "Bearer " + accessToken }
                         })];
                 case 2:
                     response = _a.sent();
-                    console.log(response.data.message);
-                    return [2 /*return*/, response];
+                    console.log(response.data.data);
+                    setBookingNotYetrating(response.data.data);
+                    return [3 /*break*/, 5];
                 case 3:
                     error_1 = _a.sent();
-                    throw error_1;
-                case 4: return [2 /*return*/];
+                    setIsError(true);
+                    return [3 /*break*/, 5];
+                case 4:
+                    setIsLoading(false);
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
             }
         });
     }); };
-    return { sendData: sendData };
+    react_1.useEffect(function () {
+        fetchBookingNotYetrating();
+    }, []);
+    return { bookingNotYetrating: bookingNotYetrating, isLoading: isLoading, isError: isError };
 };
-exports["default"] = useRatingComment;
+exports["default"] = useGetBookingNotYetRated;

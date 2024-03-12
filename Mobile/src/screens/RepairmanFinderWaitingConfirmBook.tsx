@@ -7,64 +7,101 @@ import {
   FlatList,
 } from 'react-native';
 import React from 'react';
-import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
+import moment from 'moment';
+import 'moment-duration-format';
 import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetStatusBooking';
-const RepairmanFinderWaitingConfirmBook = ({statusBooking,data}: any) => {
+const RepairmanFinderWaitingConfirmBook = ({
+  statusBooking,
+  isLoading,
+  isError,
+  data,
+}: any) => {
   const navigation: any = useNavigation();
-  const navigateToDetailPage=(item:any)=>()=>{
-    navigation.navigate('DetailViewBookSchedule',{booking_id:item})
-  }
+  const navigateToDetailPage = (item: any) => () => {
+    navigation.navigate('DetailViewBookSchedule', {booking_id: item});
+  };
+  const formatTimeAgo = (createdAt: string) => {
+    const duration = moment.duration(moment().diff(moment(createdAt)));
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+
+    if (days > 0) {
+      return `${days} ngày trước`;
+    } else if (hours > 0) {
+      return `${hours} giờ trước`;
+    } else {
+      return `${minutes} phút trước`;
+    }
+  };
   return (
     <View style={styles.container}>
-      <FlatList
-        data={statusBooking}
-        keyExtractor={statusBooking => statusBooking._id}
-        renderItem={({item}) => (
-          <TouchableOpacity style={styles.cartService}  onPress={navigateToDetailPage(item._id)}>
-            <View style={styles.headerCart}>
-              <View style={styles.nameShop}></View>
-              <View>
-                <TouchableOpacity>
-                  <Text style={styles.waitPayment}>{item.status}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View>
-              <View style={styles.content}>
-                <View style={styles.image}>
-                  <Image
-                    source={{uri: item.service_id.image}}
-                    style={styles.img}
-                  />
+      {statusBooking && statusBooking.length > 0 && (
+        <FlatList
+          data={statusBooking}
+          keyExtractor={statusBooking => statusBooking._id}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              style={styles.cartService}
+              onPress={navigateToDetailPage(item._id)}>
+              <View style={styles.headerCart}>
+                <View style={styles.nameShop}></View>
+                <View>
+                  <TouchableOpacity>
+                    <Text style={styles.waitPayment}>{item.status}</Text>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.info}>
-                  <View style={styles.infos}>
-                    <Text numberOfLines={1} style={styles.nameRepairman}>
-                      {item.service_id.service_name}
-                    </Text>
-                    <Text numberOfLines={1} style={styles.description}>
-                      {item.desc}
-                    </Text>
-                    <View style={styles.infoService}>
-                      <View>
+              </View>
+              <View>
+                <View style={styles.content}>
+                  <View style={styles.image}>
+                    <Image
+                      source={{uri: item.service_id.image}}
+                      style={styles.img}
+                    />
+                  </View>
+                  <View style={styles.info}>
+                    <View style={styles.infos}>
+                      <Text numberOfLines={1} style={styles.nameRepairman}>
+                        {item.service_id.service_name}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.description}>
+                        {item.desc}
+                      </Text>
+                      <View style={styles.infoService}>
                         <View>
-                          <Text style={styles.dateTime}>
-                            {moment(item.updatedAt).format('DD/MM/YYYY HH:mm')}
-                          </Text>
+                          <View style={styles.timeBook}>
+                            <Text style={styles.dateTime}>
+                            {formatTimeAgo(item.createdAt)}
+                            </Text>
+                            
+                          </View>
                         </View>
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </View>
-            <View style={styles.totalPayment}>
-            
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+              <View style={styles.totalPayment}></View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+      {
+        statusBooking && statusBooking.length <= 0 &&(
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 40,
+            }}>
+            <Text style={{color: '#FCA234', fontWeight: 'bold'}}>
+              Chưa có đơn nào?
+            </Text>
+          </View>
+        )
+      }
     </View>
   );
 };
@@ -72,6 +109,27 @@ const RepairmanFinderWaitingConfirmBook = ({statusBooking,data}: any) => {
 export default RepairmanFinderWaitingConfirmBook;
 
 const styles = StyleSheet.create({
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
+  // loadingText: {
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   color: 'gray',
+  //   textAlign: 'center',
+  //   marginTop: 10,
+  // },
+  timeBook: {
+   
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   dateTime: {
     color: 'blue',
   },
@@ -175,13 +233,7 @@ const styles = StyleSheet.create({
   infos: {
     marginHorizontal: 10,
   },
-  loadingText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
-    marginTop: 10,
-  },
+
   waitPayment: {
     color: '#394C6D',
     fontWeight: 'bold',

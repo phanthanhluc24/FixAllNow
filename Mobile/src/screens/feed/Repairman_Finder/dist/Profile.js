@@ -83,7 +83,7 @@ exports["default"] = Profile;
 var styles = react_native_1.StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#394C6D'
+        backgroundColor: 'white'
     },
     containers: {
         flex: 1,

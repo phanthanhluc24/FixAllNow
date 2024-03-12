@@ -97,27 +97,6 @@ const HomeRepairmanPopular = () => {
               <View style={styles.infoRepairman}>
                 <Text style={styles.nameRepairman}>{item.full_name} </Text>
                 <View style={styles.divInfo}>
-                  {/* {item.averageStar < 1 ? (
-                    <>
-                      <Text style={styles.averageStar}>
-                        {item.averageStar}/5
-                      </Text>
-                      <Image
-                        style={styles.iconStar}
-                        source={require('../assets/Homes/emptyStar.png')}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Text style={styles.averageStar}>
-                        {item.averageStar}/5
-                      </Text>
-                      <Image
-                        style={styles.iconStar}
-                        source={require('../assets/Homes/starIcon.png')}
-                      />
-                    </>
-                  )} */}
                   {renderStars(item.averageStar)}
                 </View>
               </View>

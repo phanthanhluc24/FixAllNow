@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  ActivityIndicator,
+  Modal
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
@@ -14,6 +16,9 @@ import useBookingDetail from '../hooks/useBookingDetail';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import useRepairmanChangeStatusBooking from '../hooks/useRepairmanChangeStatusBooking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import LoaderKit from 'react-native-loader-kit';
+
 interface BookingDetail {
   _id: string;
   status: string;
@@ -34,9 +39,12 @@ interface BookingDetail {
   updatedAt: string;
 }
 const DetailRepairmanConfirmBooking = () => {
+  const [loading, setLoading] = useState(false);
+  const navigation:any = useNavigation();
   const route = useRoute();
   const {booking_id}: any = route.params;
   const [token, setToken] = useState<any>('');
+  
   useEffect(() => {
     const getAccessToken = async () => {
       const accessToken = await AsyncStorage.getItem('accessToken');
@@ -44,7 +52,8 @@ const DetailRepairmanConfirmBooking = () => {
     };
     getAccessToken();
   }, []);
-  const detailBookings = useBookingDetail(booking_id);
+  const detailBookings:any = useBookingDetail(booking_id);
+  const {isLoading} = useBookingDetail(booking_id);
   const detailBooking: BookingDetail = detailBookings.detailBookings;
   console.log(detailBooking);
   const totalPayment =
@@ -53,13 +62,50 @@ const DetailRepairmanConfirmBooking = () => {
     detailBooking?.fee_transport;
 
   const handleChangeStatusBooking = (booking_id: string, option: number) => {
-    // console.log(booking_id, option);
-
-    useRepairmanChangeStatusBooking(booking_id, option, token);
-    // console.log(changeStatusBooking);
+    setLoading(true);
+    useRepairmanChangeStatusBooking(booking_id, option, token,
+      () => {
+        setLoading(false);
+        navigation.reset({
+          index: 0,
+          routes: [{ name:'HistoryStore'}],
+        });
+      });
   };
+  if (isLoading) {
+    return (
+      <View style={{alignItems: 'center', marginTop:0}}>
+        <Text>
+          <LoaderKit
+            style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          />
+        </Text>
+      </View>
+    );
+  }
+  if (detailBookings.length === 0) {
+    return <Text style={{marginTop:50, color:"black"}}>Services not available!</Text>;
+  }
+  
   return (
     <View style={styles.container}>
+       <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => {
+            setLoading(false);
+          }}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator size={40} color="#FCA234" />
+              </View>
+            </View>
+          </View>
+        </Modal>
       <ScrollView style={styles.cartService}>
         <View style={{borderBottomWidth: 2, borderBottomColor: '#394C6D'}}>
           <View>
@@ -104,6 +150,23 @@ const DetailRepairmanConfirmBooking = () => {
                 </Text>
               </View>
             </View>
+            <View>
+            <View style={styles.infoUser}>
+                <View style={styles.styleInfo}>
+                  <Text style={styles.infoUserssss}>Giờ sửa chữa:</Text>
+                  <Text numberOfLines={2} style={styles.infoUsersss}>
+                    {detailBooking?.time_repair}
+                  </Text>
+                </View>
+                <View style={styles.styleInfo}>
+                  <Text style={styles.infoUserssss}>Ngày sửa chữa:</Text>
+                  <Text numberOfLines={2} style={styles.infoUsersss}>
+                    {detailBooking?.day_repair}
+                  </Text>
+                </View>
+              
+              </View>
+                </View>
           </View>
         </View>
         <View style={styles.infoPayment}>
@@ -136,10 +199,11 @@ const DetailRepairmanConfirmBooking = () => {
           </View>
         </View>
         <View style={styles.totalPayment}>
-          <View>
-            <Text style={styles.dateTime}>
-              {moment(detailBooking?.updatedAt).format('DD/MM/YYYY HH:mm')}
-            </Text>
+          <View style={{width: '40%'}}>
+            <View style={styles.timeBook}>
+              <Text style={styles.dateTime}>{detailBookings?.time_repair}</Text>
+              <Text style={styles.dateTime}>{detailBookings?.day_repair}</Text>
+            </View>
           </View>
           <View style={styles.paymentContainer}>
             <View style={styles.payment}>
@@ -161,7 +225,7 @@ const DetailRepairmanConfirmBooking = () => {
                 {detailBooking?.payment === 'No' ? (
                   <Text>Chưa thanh toán</Text>
                 ) : (
-                  <Text>Chưa thanh toán</Text>
+                  <Text>Đã thanh toán</Text>
                 )}
               </Text>
             </View>
@@ -211,6 +275,43 @@ const DetailRepairmanConfirmBooking = () => {
 export default DetailRepairmanConfirmBooking;
 
 const styles = StyleSheet.create({
+  infoUsersss: {
+    fontSize: 16,
+    color: 'blue',
+    width: '60%',
+  },
+  infoUserssss: {
+    fontSize: 16,
+    color: '#394C6D',
+    fontWeight: 'bold',
+    width: '40%',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
+  timeBook: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '90%',
+  },
   content: {
     shadowColor: '#000',
     shadowOffset: {
@@ -380,13 +481,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     width: '70%',
   },
-  loadingText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
-    marginTop: 10,
-  },
+  
   waitPayment: {
     color: '#394C6D',
   },

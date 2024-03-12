@@ -27,7 +27,6 @@ messaging().setBackgroundMessageHandler(async message => {
   });
 });
 messaging().onMessage(async message => {
-  const role = await AsyncStorage.getItem('roleCurrentUser');
   Toast.show({
     type: ALERT_TYPE.INFO,
     title: `${message.notification.title}`,

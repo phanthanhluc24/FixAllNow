@@ -42,6 +42,7 @@ var react_1 = require("react");
 var formik_1 = require("formik");
 var useResetNewPassword_1 = require("../../hooks/useResetNewPassword");
 var ValidationNewPassword_1 = require("./ValidationNewPassword");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
 var NewPassword = function () {
     var _a = react_1.useState(''), errorMessage = _a[0], setErrorMessage = _a[1];
     var passwordRef = react_1.useRef();
@@ -64,10 +65,14 @@ var NewPassword = function () {
                                 setErrorMessage(res.message);
                             }
                             else {
+                                react_native_alert_notification_1.Toast.show({
+                                    type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                                    title: 'Thành công',
+                                    textBody: 'Lấy lại mật khẩu thành công!'
+                                });
                                 navigation.navigate('SignIn');
                             }
-                        })["catch"](function (error) {
-                        })];
+                        })["catch"](function (error) { })];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -83,19 +88,17 @@ var NewPassword = function () {
                         react_1["default"].createElement(react_native_1.View, { style: styles.titleContainer },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "M\u00C2\u0323T KH\u00C2\u0309U M\u01A0\u0301I")),
                         react_1["default"].createElement(react_native_1.View, { style: styles.spaceForm },
-                            react_1["default"].createElement(react_native_1.View, { style: { height: 20 } }, errorMessage ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, errorMessage)) : null),
+                            react_1["default"].createElement(react_native_1.View, { style: { height: 30 } }, errorMessage ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, errorMessage)) : null),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "M\u00E2\u0323t kh\u00E2\u0309u m\u01A1\u0301i"),
-                            react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('newpassword'), enterKeyHint: 'next', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onBlur: handleBlur('newpassword'), value: values.newpassword }),
-                                errors.newpassword && touched.newpassword ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                                    "* ",
-                                    errors.newpassword)) : null),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Xa\u0301c th\u01B0\u0323c m\u00E2\u0323t kh\u00E2\u0309u m\u01A1\u0301i"),
-                            react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
-                                react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, secureTextEntry: true, onChangeText: handleChange('confirmpassword'), onBlur: handleBlur('confirmpassword'), value: values.confirmpassword }),
-                                errors.confirmpassword && touched.confirmpassword ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText },
-                                    "* ",
-                                    errors.confirmpassword)) : null),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainers },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
+                                    react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, onChangeText: handleChange('newpassword'), enterKeyHint: 'next', secureTextEntry: true, onSubmitEditing: function () { var _a; return (_a = passwordRef.current) === null || _a === void 0 ? void 0 : _a.focus(); }, onBlur: handleBlur('newpassword'), value: values.newpassword })),
+                                errors.newpassword && touched.newpassword ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errors.newpassword)) : null),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.titles }, "Xa\u0301c th\u01B0\u0323c m\u00E2\u0323t kh\u00E2\u0309u"),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainers },
+                                react_1["default"].createElement(react_native_1.View, { style: styles.spaceContainer },
+                                    react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputCode, secureTextEntry: true, onChangeText: handleChange('confirmpassword'), onBlur: handleBlur('confirmpassword'), value: values.confirmpassword })),
+                                errors.confirmpassword && touched.confirmpassword ? (react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, errors.confirmpassword)) : null),
                             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonConfirm, onPress: function (e) { return handleSubmit(); } },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.textConfirm }, "XA\u0301C TH\u01AF\u0323C"))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
@@ -105,18 +108,28 @@ var NewPassword = function () {
 };
 exports["default"] = NewPassword;
 var styles = react_native_1.StyleSheet.create({
+    loadingText: {
+        fontSize: 20,
+        alignItems: 'center',
+        marginTop: 10,
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
+    },
     errorMessage: {
         color: 'red',
-        fontWeight: "bold",
+        fontWeight: 'bold',
         marginTop: 8,
         marginHorizontal: 40,
-        height: 40
+        height: 40,
+        paddingBottom: 20
     },
     errorText: {
         fontWeight: 'bold',
         color: 'red',
         margin: 0,
-        padding: 0
+        padding: 0,
+        marginHorizontal: 35
     },
     confirmContainer: {
         flex: 1,
@@ -147,8 +160,9 @@ var styles = react_native_1.StyleSheet.create({
         fontWeight: 'bold'
     },
     titles: {
-        fontSize: 22,
+        fontSize: 20,
         color: '#394C6D',
+        fontWeight: 'bold',
         marginHorizontal: 40
     },
     titleCode: {
@@ -165,7 +179,9 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     spaceContainer: {
-        alignItems: 'center',
+        alignItems: 'center'
+    },
+    spaceContainers: {
         height: 90
     },
     timeInput: {

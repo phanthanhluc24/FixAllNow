@@ -6,12 +6,16 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import useGetDetailRepairman from '../hooks/useGetDetailRepairman';
 import useGetServiceOfRepairman from '../hooks/useGetServiceOfRepairman';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DetailCommentRepairman from './DetailCommentRepairman';
 import LoaderKit from 'react-native-loader-kit';
+import useGetRateComment from '../hooks/useGetRateComment';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
+import 'moment-duration-format';
 interface typeService {
   _id: string;
   status: string;
@@ -21,11 +25,29 @@ interface typeService {
   image: string;
   desc: string;
 }
-const DetailHeaderRepairman = () => {
+interface typeRateComment {
+  _id: string;
+  content: String;
+  star: number;
+  updatedAt: string;
+  commenter_id: {
+    _id: string;
+    image: string;
+    full_name: string;
+  };
+}
+const DetailHeaderRepairman = ({repairman_id}: any) => {
+  const {rateComment} = useGetRateComment(repairman_id);
   const route = useRoute();
   const {id}: any = route.params;
   const {repairman} = useGetDetailRepairman(id);
   const {serviceOfRepairman, isLoading, isError} = useGetServiceOfRepairman(id);
+  const [showMoreComments, setShowMoreComments] = useState(false);
+  const [commentsToShow, setCommentsToShow] = useState(3);
+  const toggleShowMoreComments = () => {
+    setShowMoreComments(true);
+    setCommentsToShow(commentsToShow + 3);
+  };
   const navigation: any = useNavigation();
   if (isLoading) {
     return (
@@ -43,6 +65,20 @@ const DetailHeaderRepairman = () => {
   if (isError) {
     return <Text>Error loading repairman</Text>;
   }
+  const renderStars = (star: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesome
+          key={i}
+          name={star >= i ? 'star' : 'star-o'}
+          size={20}
+          color={star >= i ? '#FFD700' : '#394C6D'}
+        />,
+      );
+    }
+    return stars;
+  };
   return (
     <View style={styles.containerHeaderRepairman}>
       <View style={styles.info}>
@@ -51,11 +87,13 @@ const DetailHeaderRepairman = () => {
       <Text style={styles.title}>Thông tin cá nhân</Text>
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>Họ và tên: </Text>
-        <Text numberOfLines={2} style={styles.content}>{repairman?.full_name}</Text>
+        <Text numberOfLines={2} style={styles.content}>
+          {repairman?.full_name}
+        </Text>
       </View>
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>SĐT: </Text>
-        <Text style={styles.content}>0{repairman?.number_phone}</Text>
+        <Text style={styles.content}>{repairman?.number_phone}</Text>
       </View>
       <View style={styles.detailInfo}>
         <Text style={styles.titles}>Địa chỉ:</Text>
@@ -108,7 +146,80 @@ const DetailHeaderRepairman = () => {
           )}
         </View>
       </View>
-      <DetailCommentRepairman />
+      <View style={{marginBottom: 10}}>
+        <View style={styles.rateComment}>
+          <View style={styles.containerTitle}>
+            <View style={styles.rating}>
+              <Text style={styles.titlessss}>
+                Đánh giá:({rateComment ? rateComment.length : 0})
+              </Text>
+            </View>
+            <View style={styles.title}>
+              <Text style={styles.suggest}>
+                Hãy xem họ nói gì về tôi bạn nhé!
+              </Text>
+            </View>
+            {rateComment && rateComment.length > 0 && (
+              <>
+                {rateComment
+                  .slice(0, commentsToShow)
+                  .map((comment: typeRateComment, index) => 
+                    {
+                      
+                      const formatTimeAgo = (createdAt:any) => {
+                        const duration = moment.duration(moment().diff(moment(createdAt)));
+                        const days = duration.days();
+                        const hours = duration.hours();
+                        const minutes = duration.minutes();
+                      
+                        if (days > 0) {
+                          return `${days} ngày trước`;
+                        } else if (hours > 0) {
+                          return `${hours} giờ trước`;
+                        } else {
+                          return `${minutes} phút trước`;
+                        }
+                      };
+                      const timeAgo = formatTimeAgo(comment.createdAt);
+                      return (
+                  
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.containerRatedComment}>
+                      <View style={styles.comment}>
+                        <View style={styles.avatar}>
+                          <Image
+                            style={styles.avatarComment}
+                            source={{uri: comment?.commenter_id.image}}
+                          />
+                        </View>
+                        <View style={styles.content}>
+                          <Text style={styles.nameCommenter}>
+                            {comment.commenter_id.full_name}
+                          </Text>
+                          <View style={styles.star}>
+                            {renderStars(comment.star)}
+                          </View>
+                          <Text style={styles.time}>
+                            {timeAgo}
+                          </Text>
+                        </View>
+                      </View>
+                      <View>
+                        <Text style={styles.comments}>{comment.content}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )})}
+                {!showMoreComments && rateComment.length > commentsToShow && (
+                  <TouchableOpacity onPress={toggleShowMoreComments} style={{alignItems:"center", justifyContent:"center"}}>
+                    <Text style={styles.noService}>Xem thêm</Text>
+                  </TouchableOpacity>
+                )}
+              </>
+            )}
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
@@ -116,9 +227,97 @@ const DetailHeaderRepairman = () => {
 export default DetailHeaderRepairman;
 
 const styles = StyleSheet.create({
+  time: {
+    color: 'blue',
+  },
+  titlesss: {
+    fontSize: 18,
+    color: '#FCA234',
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#FCA234',
+    padding: 3,
+  },
+  containerRatedComment: {
+    marginVertical: 10,
+    flex: 9,
+  },
+  bottom: {
+    flex: 1,
+    marginHorizontal: 20,
+  },
+  comment: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  writeComment: {
+    width: '100%',
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#394C6D',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    borderWidth: 3,
+    borderColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarComment: {
+    width: 46,
+    height: 46,
+    borderRadius: 100,
+  },
+
+  comments: {
+    fontSize: 16,
+    color: '#394C6D',
+    marginVertical: 10,
+  },
+  nameCommenter: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#394C6D',
+  },
+  noComment: {
+    fontSize: 15,
+    color: '#FCA234',
+    fontWeight: 'bold',
+  },
+  star: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  rateComment: {
+    marginTop: 20,
+  },
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  suggest: {
+    color: '#FCA234',
+  },
+  containerTitle: {
+    marginHorizontal: 20,
+  },
+  titlessss: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#394C6D',
+  },
   noService: {
     fontSize: 15,
-    color: 'black',
+    color: '#FCA234',
+    fontWeight: 'bold',
   },
   loadingText: {
     fontSize: 20,
@@ -148,36 +347,31 @@ const styles = StyleSheet.create({
     color: '#394C6D',
     paddingHorizontal: 20,
     marginVertical: 10,
+    alignItems: 'center',
   },
   detailInfo: {
     flexDirection: 'row',
     paddingHorizontal: 40,
     alignItems: 'center',
     paddingTop: 10,
-    width:"100%"
+    width: '100%',
   },
   titles: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#394C6D',
-    width:"40%"
+    width: '40%',
   },
   titless: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#394C6D',
   },
-  titlesss: {
-    fontSize: 18,
-    color: '#FCA234',
-    borderWidth: 2,
-    borderRadius: 5,
-    borderColor: '#FCA234',
-    padding: 3,
-  },
   content: {
     fontSize: 18,
-    width:"60%"
+    width: '60%',
+    color: '#394C6D',
+    marginHorizontal: 10,
   },
   containerService: {
     marginTop: 20,
@@ -219,6 +413,9 @@ const styles = StyleSheet.create({
   img: {
     width: 100,
     height: 100,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: '#394C6D',
   },
   infos: {
     width: '60%',

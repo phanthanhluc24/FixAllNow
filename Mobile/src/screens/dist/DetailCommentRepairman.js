@@ -5,42 +5,57 @@ var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
 var useGetRateComment_1 = require("../hooks/useGetRateComment");
 var react_native_loader_kit_1 = require("react-native-loader-kit");
-var DetailCommentRepairman = function () {
+var FontAwesome_1 = require("react-native-vector-icons/FontAwesome");
+var DetailCommentRepairman = function (_a) {
+    var repairman_id = _a.repairman_id;
     var navigation = native_1.useNavigation();
-    var _a = useGetRateComment_1["default"](), rateComment = _a.rateComment, isLoading = _a.isLoading, isError = _a.isError;
+    var _b = useGetRateComment_1["default"](repairman_id), rateComment = _b.rateComment, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading) {
         return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
             react_1["default"].createElement(react_native_1.Text, null,
                 react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
-    if (rateComment.length === 0) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Services not available!");
-    }
-    if (isError) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
-    }
-    return (react_1["default"].createElement(react_native_1.View, { style: { marginBottom: 10 } },
-        react_1["default"].createElement(react_native_1.View, { style: styles.rateComment },
-            react_1["default"].createElement(react_native_1.View, { style: styles.containerTitle },
-                react_1["default"].createElement(react_native_1.View, { style: styles.rating },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.titless }, "\u0110a\u0301nh gia\u0301:(30)"),
-                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('RatedComment'); } },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.titlesss }, "\u0110a\u0301nh gia\u0301 ngay!"))),
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () { return navigation.navigate('RatedComment'); } },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.suggest }, "Ha\u0303y xem ho\u0323 no\u0301i gi\u0300 v\u00EA\u0300 t\u00F4i ba\u0323n nhe\u0301!")),
-                react_1["default"].createElement(react_native_1.FlatList, { data: rateComment, keyExtractor: function (rateComment) { return rateComment._id; }, renderItem: function (_a) {
-                        var item = _a.item;
-                        return (react_1["default"].createElement(react_native_1.View, { style: styles.containerRatedComment },
-                            react_1["default"].createElement(react_native_1.View, { style: styles.comment },
-                                react_1["default"].createElement(react_native_1.View, { style: styles.avatar },
-                                    react_1["default"].createElement(react_native_1.Image, { style: styles.avatarComment, source: require('../assets/Homes/avatars.png') })),
-                                react_1["default"].createElement(react_native_1.View, { style: styles.content },
-                                    react_1["default"].createElement(react_native_1.Text, { style: styles.comments }, "Th\u1EE3 r\u1EA5t t\u1EADn t\u00E2m Th\u1EE3 r\u1EA5t t\u1EADn t\u00E2m Th\u1EE3 r\u1EA5t t\u1EADn t\u00E2m Th\u1EE3 r\u1EA5t t\u1EADn t\u00E2m Th\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2mTh\u1EE3 r\u1EA5t t\u1EADn t\u00E2m"),
-                                    react_1["default"].createElement(react_native_1.Image, { source: require('../assets/Homes/star.png') })))));
-                    } })))));
+    var renderStars = function (star) {
+        var stars = [];
+        for (var i = 1; i <= 5; i++) {
+            stars.push(react_1["default"].createElement(FontAwesome_1["default"], { key: i, name: star >= i ? 'star' : 'star-o', size: 20, color: star >= i ? '#FFD700' : '#394C6D' }));
+        }
+        return stars;
+    };
+    return (react_1["default"].createElement(react_1["default"].Fragment, null,
+        react_1["default"].createElement(react_native_1.FlatList, { data: rateComment, keyExtractor: function (rateComment) { return rateComment._id; }, renderItem: function (_a) {
+                var item = _a.item;
+                return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.containerRatedComment },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.comment },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.avatar },
+                            react_1["default"].createElement(react_native_1.Image, { style: styles.avatarComment, source: { uri: item === null || item === void 0 ? void 0 : item.commenter_id.image } })),
+                        react_1["default"].createElement(react_native_1.View, { style: styles.content },
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameCommenter }, item.commenter_id.full_name),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.star }, renderStars(item.star)))),
+                    react_1["default"].createElement(react_native_1.View, null,
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.comments }, item.content))));
+            } })));
 };
 exports["default"] = DetailCommentRepairman;
 var styles = react_native_1.StyleSheet.create({
+    title: {
+        marginVertical: 10
+    },
+    nameCommenter: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#394C6D'
+    },
+    noComment: {
+        fontSize: 15,
+        color: '#FCA234',
+        fontWeight: "bold"
+    },
+    star: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 2
+    },
     loadingText: {
         fontSize: 20,
         alignItems: 'center',
@@ -77,6 +92,7 @@ var styles = react_native_1.StyleSheet.create({
         padding: 3
     },
     containerRatedComment: {
+        marginVertical: 10,
         flex: 9
     },
     bottom: {
@@ -99,8 +115,8 @@ var styles = react_native_1.StyleSheet.create({
         alignItems: 'center'
     },
     avatar: {
-        width: 54,
-        height: 54,
+        width: 50,
+        height: 50,
         borderRadius: 100,
         borderWidth: 3,
         borderColor: 'black',
@@ -108,8 +124,9 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'center'
     },
     avatarComment: {
-        width: 50,
-        height: 50
+        width: 46,
+        height: 46,
+        borderRadius: 100
     },
     content: {
         width: '80%'

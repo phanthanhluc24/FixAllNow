@@ -72,6 +72,12 @@ var useGetNotificationBooking = function () {
         });
     }); };
     react_1.useEffect(function () {
+        var intervalId = setInterval(function () {
+            fetchNotifications();
+        }, 180000);
+        return function () { return clearInterval(intervalId); };
+    }, []);
+    react_1.useEffect(function () {
         fetchNotifications();
     }, []);
     return { notifications: notifications, isLoading: isLoading, isError: isError };

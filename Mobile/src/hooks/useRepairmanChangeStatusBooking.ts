@@ -5,7 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const useRepairmanChangeStatusBooking = (
   booking_id: string,
   option: number,
-  token:string
+  token:string,
+  onStatusChanged: () => void
 ) => {
   const fetchChangeStatusBooking = async () => {
     const response = await axios.put(
@@ -15,6 +16,7 @@ const useRepairmanChangeStatusBooking = (
       },
     );
     console.log(response.data.message);
+    onStatusChanged();
   };
   fetchChangeStatusBooking();
 };

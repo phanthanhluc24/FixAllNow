@@ -45,16 +45,17 @@ var AntDesign_1 = require("react-native-vector-icons/AntDesign");
 var MaterialIcons_1 = require("react-native-vector-icons/MaterialIcons");
 var FormBookSchedule = function (_a) {
     var route = _a.route;
-    var _b = react_1.useState(''), error = _b[0], setError = _b[1];
-    var _c = react_1.useState(false), submitted = _c[0], setSubmitted = _c[1];
+    var _b = react_1.useState(false), loading = _b[0], setLoading = _b[1];
+    var _c = react_1.useState(''), error = _c[0], setError = _c[1];
+    var _d = react_1.useState(false), submitted = _d[0], setSubmitted = _d[1];
     var serviceInfo = route.params.serviceInfo;
     var navigation = native_1.useNavigation();
-    var _d = react_1.useState(new Date()), date = _d[0], setDate = _d[1];
-    var _e = react_1.useState(new Date()), time = _e[0], setTime = _e[1];
-    var _f = react_1.useState(false), showPicker = _f[0], setShowPicker = _f[1];
-    var _g = react_1.useState(false), showTimePicker = _g[0], setShowTimePicker = _g[1];
-    var _h = react_1.useState(new Date()), selectedDate = _h[0], setSelectedDate = _h[1];
-    var _j = react_1.useState(new Date()), selectedTime = _j[0], setSelectedTime = _j[1];
+    var _e = react_1.useState(new Date()), date = _e[0], setDate = _e[1];
+    var _f = react_1.useState(new Date()), time = _f[0], setTime = _f[1];
+    var _g = react_1.useState(false), showPicker = _g[0], setShowPicker = _g[1];
+    var _h = react_1.useState(false), showTimePicker = _h[0], setShowTimePicker = _h[1];
+    var _j = react_1.useState(new Date()), selectedDate = _j[0], setSelectedDate = _j[1];
+    var _k = react_1.useState(new Date()), selectedTime = _k[0], setSelectedTime = _k[1];
     var currentDate = new Date();
     var toggleDatepicker = function () {
         setShowPicker(!showPicker);
@@ -79,9 +80,12 @@ var FormBookSchedule = function (_a) {
     var handleSubmitInfoBooking = function (values) { return __awaiter(void 0, void 0, void 0, function () {
         var infoBooking;
         return __generator(this, function (_a) {
+            setLoading(true);
             setSubmitted(true);
             if (!selectedDate || !selectedTime || !values.address || !values.demobug) {
                 setError('Vui lòng nhập đầy đủ thông tin!');
+                setLoading(false);
+                return [2 /*return*/];
             }
             if (selectedDate.getFullYear() < currentDate.getFullYear() ||
                 (selectedDate.getFullYear() === currentDate.getFullYear() &&
@@ -90,9 +94,43 @@ var FormBookSchedule = function (_a) {
                     selectedDate.getMonth() === currentDate.getMonth() &&
                     selectedDate.getDate() < currentDate.getDate())) {
                 setError('Vui lòng chọn ngày từ ngày hiện tại trở đi!');
+                setLoading(false);
+                return [2 /*return*/];
+            }
+            if (selectedDate.getFullYear() === currentDate.getFullYear() &&
+                selectedDate.getMonth() === currentDate.getMonth() &&
+                selectedDate.getDate() === currentDate.getDate() &&
+                selectedTime.getTime() < currentDate.getTime()) {
+                setError('Vui lòng chọn giờ từ giờ hiện tại trở đi!');
+                setLoading(false);
+                return [2 /*return*/];
+            }
+            if (/^\d+$/.test(values.address)) {
+                // Là toàn bộ số
+                setError('Địa chỉ không hợp lệ!');
+                setLoading(false);
+                return [2 /*return*/];
+            }
+            if (/^\d+$/.test(values.address)) {
+                // Là toàn bộ khoảng trắng
+                setError('Địa chỉ không hợp lệ!');
+                setLoading(false);
+                return [2 /*return*/];
+            }
+            if (/^\d+$/.test(values.demobug)) {
+                // Là toàn bộ số
+                setError('Mô tả tình trạng không hợp lệ!');
+                setLoading(false);
+                return [2 /*return*/];
+            }
+            if (values.demobug.trim().length === 0) {
+                setError('Mô tả tình trạng không hợp lệ!');
+                setLoading(false);
+                return [2 /*return*/];
             }
             else {
                 setError('');
+                setLoading(true);
                 infoBooking = {
                     infoServiceBooking: serviceInfo,
                     date: selectedDate.toLocaleDateString('vi-VN'),
@@ -114,31 +152,50 @@ var FormBookSchedule = function (_a) {
         var errors = _a.errors, touched = _a.touched, handleChange = _a.handleChange, handleBlur = _a.handleBlur, values = _a.values, handleSubmit = _a.handleSubmit;
         return (react_1["default"].createElement(react_native_1.TouchableWithoutFeedback, { onPress: react_native_1.Keyboard.dismiss },
             react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.editInfoCurrentUserContainer },
+                react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                        setLoading(false);
+                    } },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                        react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                            react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                                react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.form },
                     react_1["default"].createElement(react_native_1.View, { style: styles.styleTitle },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.titleForm }, "VUI LO\u0300NG NH\u00C2\u0323P TH\u00D4NG TIN B\u00CAN D\u01AF\u01A0\u0301I")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.boxInput },
                         react_1["default"].createElement(react_native_1.View, { style: { height: 25 } }, submitted && error !== '' && (react_1["default"].createElement(react_native_1.Text, { style: styles.messageError }, error))),
-                        react_1["default"].createElement(react_native_1.Pressable, { style: styles.inputDate },
-                            react_1["default"].createElement(react_native_1.TextInput, { style: { color: '#000000' }, enterKeyHint: 'next', value: date.toLocaleDateString('vi-VN'), placeholder: "Cho\u0323n nga\u0300y he\u0323n", placeholderTextColor: '#000000', editable: false }),
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.inputDate, onPress: toggleDatepicker },
+                            react_1["default"].createElement(react_native_1.TextInput, { style: { color: '#000000', width: '80%' }, enterKeyHint: 'next', value: date.toLocaleDateString('vi-VN'), placeholder: "Cho\u0323n nga\u0300y he\u0323n", placeholderTextColor: '#000000', editable: false }),
                             showPicker && (react_1["default"].createElement(datetimepicker_1["default"], { mode: "date", display: "spinner", value: selectedDate, onChange: onChange })),
-                            react_1["default"].createElement(MaterialIcons_1["default"], { style: styles.clock, name: "date-range", size: 30, color: "#FCA234", onPress: toggleDatepicker })),
-                        react_1["default"].createElement(react_native_1.Pressable, { style: styles.inputDate },
-                            react_1["default"].createElement(react_native_1.TextInput, { style: { color: '#000000' }, enterKeyHint: 'next', value: time.toLocaleTimeString('vi-VN'), placeholder: "Cho\u0323n gi\u01A1\u0300 he\u0323n", placeholderTextColor: '#000000', editable: false }),
+                            react_1["default"].createElement(MaterialIcons_1["default"], { style: styles.clock, name: "date-range", size: 30, color: "#FCA234" })),
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.inputDate, onPress: toggleTimepicker },
+                            react_1["default"].createElement(react_native_1.TextInput, { style: { color: '#000000', width: '80%' }, enterKeyHint: 'next', value: time.toLocaleTimeString('vi-VN'), placeholder: "Cho\u0323n gi\u01A1\u0300 he\u0323n", placeholderTextColor: '#000000', editable: false }),
                             showTimePicker && (react_1["default"].createElement(datetimepicker_1["default"], { mode: "time", display: "spinner", value: selectedTime, onChange: onChangeTime })),
-                            react_1["default"].createElement(AntDesign_1["default"], { style: styles.clock, name: "clockcircle", size: 30, color: "#FCA234", onPress: toggleTimepicker })),
+                            react_1["default"].createElement(AntDesign_1["default"], { style: styles.clock, name: "clockcircle", size: 30, color: "#FCA234" })),
                         react_1["default"].createElement(react_native_1.View, null,
                             react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', onChangeText: handleChange('address'), onBlur: handleBlur('address'), value: values.address, placeholder: "* \u0110i\u0323a chi\u0309" })),
                         react_1["default"].createElement(react_native_1.View, null,
                             react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputDate, enterKeyHint: 'next', numberOfLines: 4, multiline: true, onChangeText: handleChange('demobug'), onBlur: handleBlur('demobug'), value: values.demobug, placeholder: "* M\u00F4 ta\u0309 v\u00E2\u0301n \u0111\u00EA\u0300 h\u01B0 ho\u0309ng thi\u00EA\u0301t bi\u0323" }))),
                     react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                         react_1["default"].createElement(react_native_1.Image, { style: styles.imgFooter, source: require('../../assets/Form/book.png') }),
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton, onPress: function () { return handleSubmit(); } },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton, onPress: handleSubmit },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.nameBook }, "\u0110\u0103\u0323t li\u0323ch")))))));
     }));
 };
 exports["default"] = FormBookSchedule;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
     messageError: {
         color: 'red',
         fontWeight: 'bold'
@@ -200,6 +257,7 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 5,
         borderWidth: 1,
         paddingLeft: 15,
-        color: '#000000'
+        color: '#000000',
+        width: '100%'
     }
 });

@@ -12,6 +12,8 @@ import {
   Platform,
   GestureResponderEvent,
   Alert,
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {Formik} from 'formik';
@@ -19,23 +21,30 @@ import {SignupSchema} from './Validation';
 import useSignin from '../../hooks/useSignin';
 import { requestUserPermission } from '../../utils/notificationHelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import messaging from "@react-native-firebase/messaging"
-import Toast from "react-native-toast-message"
+
 
 const SignIn = ({navigation}: any) => {
   const passwordRef: any = useRef();
   const {handleSignin, errorServer} = useSignin({navigation});
   const [deviceToken,setDeviceToken]=useState("")
+  const [loading, setLoading] = useState(false);
   useEffect(()=>{
     requestUserPermission()
     getFcmToken()
   },[])
   const getFcmToken=async()=>{
+    setLoading(true);
     const token=await AsyncStorage.getItem("fcmToken")
     if (token) {
       setDeviceToken(token)
+      setLoading(false);
     }
   }
+  const handleSignInPress = async () => {
+    setLoading(true);
+    await handleSignin();
+    setLoading(false);
+  };
   return (
     <Formik
       initialValues={{email: '', password: ''}}
@@ -48,7 +57,7 @@ const SignIn = ({navigation}: any) => {
             deviceToken:deviceToken
           };
           handleSignin(account);
-          // console.log(account);
+         
         }, 100);
       }}>
       {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
@@ -57,6 +66,21 @@ const SignIn = ({navigation}: any) => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.signInContainer}>
             <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => {
+            setLoading(false);
+          }}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator size={40} color="#FCA234" />
+              </View>
+            </View>
+          </View>
+        </Modal>
               <View style={styles.signinHeader}>
                 <Image
                   source={require('../../assets/SignIn/header.png')}
@@ -69,7 +93,7 @@ const SignIn = ({navigation}: any) => {
                 </View>
                 <View style={styles.errorMessage}>
                   {errorServer != null && (
-                    <Text style={styles.errorText}>* {errorServer}</Text>
+                    <Text style={styles.errorText}>{errorServer}</Text>
                   )}
                 </View>
                 <View style={styles.fromInput}>
@@ -88,7 +112,7 @@ const SignIn = ({navigation}: any) => {
                     ) : null}
                   </View>
                 </View>
-                <View style={styles.fromInput}>
+                <View style={styles.fromInputs}>
                   <View style={styles.space}>
                     <Text style={styles.titlePassword}>Mật Khẩu</Text>
                     <TextInput
@@ -112,11 +136,11 @@ const SignIn = ({navigation}: any) => {
                     </TouchableOpacity>
 
                     <View style={styles.confirmcreate}>
-                      <Text style={styles.titlefgs}>Chưa có tài khoản!</Text>
+                      <Text style={styles.titlefgs}>Chưa có tài khoản!{' '}</Text>
                       <Text
                         style={styles.createacc}
                         onPress={() => navigation.navigate('SelectRole')}>
-                        Đăng ký
+                          Đăng ký
                       </Text>
                     </View>
                   </View>
@@ -145,6 +169,18 @@ const SignIn = ({navigation}: any) => {
 export default SignIn;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
   signInContainer: {
     flex: 1,
     backgroundColor: '#FCA234',
@@ -183,6 +219,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     height:110
   },
+  fromInputs: {
+    marginHorizontal: 40,
+    marginTop: 5,
+    height:110
+  },
   errorMessage:{
     marginHorizontal: 40,
     marginTop: 20,
@@ -201,6 +242,7 @@ const styles = StyleSheet.create({
   },
   space: {
     marginTop: 1,
+    height:70
   },
   titlePassword: {
     color: 'white',
@@ -215,7 +257,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   confirmInfo: {
-    marginTop: 20,
+    marginTop: 60,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -245,9 +287,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    marginTop: '80%',
+    marginTop: '70%',
     zIndex: 3,
-    height: 60,
+    height: 50,
   },
   form: {
     position: 'absolute',

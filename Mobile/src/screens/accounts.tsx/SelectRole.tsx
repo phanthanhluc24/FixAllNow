@@ -49,9 +49,11 @@ const SelectRole = () => {
       </View>
       <Text style={styles.title_1}>ĐĂNG KÝ</Text>
       <Text style={styles.title_2}>Bạn muốn trở thành</Text>
+      <View style={{height:30}}>
       {error!=null &&(
         <Text style={styles.error}>{error}</Text>
       )}
+       </View>
       {/* Thêm hai radio buttons */}
       <View style={styles.radioContainer}>
         <RadioButton
@@ -65,6 +67,8 @@ const SelectRole = () => {
           isSelected={selectedRole === 'Tìm thợ'}
         />
       </View>
+     
+     
       {/* Thêm nút bấm */}
       <View style={styles.buttonDiv}>
         <TouchableOpacity style={styles.button} onPress={handleContinuePress}>
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
   },
   radioContainer: {
     flexDirection: 'column',
-    marginTop: 30,
+    marginTop: 0,
     marginLeft: 40,
   },
   radioButton: {

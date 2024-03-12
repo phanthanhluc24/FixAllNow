@@ -5,27 +5,22 @@ import {
   View,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
+import LoaderKit from 'react-native-loader-kit';
 import React, {useState} from 'react';
 import RepairmanFinderWaitingConfirmBook from './RepairmanFinderWaitingConfirmBook';
 import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetStatusBooking';
-import useGetBookingNoRated from '../hooks/useGetBookingNoRated';
+import RepairmanFinderConfirmRatingComment from './RepairmanFinderConfirmRatingComment';
 const HistoryRepairmanBookSchedule = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   let transformedSelectedTab = selectedTab + 1;
 
-  if (transformedSelectedTab != 5) {
-    var {statusBooking} = useRepairmanFinderGetStatusBooking(
-      transformedSelectedTab,
-    );
-  }
-
-  const {bookingNorating}: any = useGetBookingNoRated();
-  console.log(bookingNorating);
-
+  const {statusBooking ,isLoading, isError} = useRepairmanFinderGetStatusBooking(
+    transformedSelectedTab,
+  );
   const renderComponent = () => {
     switch (transformedSelectedTab) {
-      case 5:
       case 1:
       case 2:
       case 3:
@@ -34,7 +29,7 @@ const HistoryRepairmanBookSchedule = () => {
           <RepairmanFinderWaitingConfirmBook statusBooking={statusBooking} />
         );
       default:
-        return <View>Unexpected tab value: {transformedSelectedTab}</View>; // Handle unexpected cases
+        return <RepairmanFinderConfirmRatingComment/>;
     }
   };
   return (
@@ -113,24 +108,58 @@ const HistoryRepairmanBookSchedule = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      <View style={{marginBottom: 70}}>{renderComponent()}</View>
+      <View style={{marginBottom: 70 , alignItems:"center"}}>
+        {isLoading ? (
+          <View style={{alignItems: 'center', justifyContent:"center"}}>
+          <Text>
+            <LoaderKit
+              style={styles.loadingText}
+              name={'BallPulse'}
+              color={'#FCA234'}
+            />
+          </Text>
+        </View>
+        ) : statusBooking ? (
+          renderComponent()
+        ) : (
+          <View style={{flex:1}}>
+          <Text style={styles.noDataText}>Không có dữ liệu được tìm thấy.</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
 export default HistoryRepairmanBookSchedule;
 const styles = StyleSheet.create({
+  noDataText: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 200,
+    color:"#FCA234",
+  },
+  loadingText: {
+    fontSize: 20,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+    marginTop:100
+  },
   container: {
     flex: 1,
   },
   selectedButton: {
-    backgroundColor: '#394C6D',
+    backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: '#FCA234',
   },
   eventButton: {
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: '#FCA234',
+    borderBottomColor: '#394C6D',
     height: 50,
     width: 140,
   },

@@ -44,15 +44,17 @@ var AntDesign_1 = require("react-native-vector-icons/AntDesign");
 var MaterialIcons_1 = require("react-native-vector-icons/MaterialIcons");
 var useGetCurrentUser_1 = require("../hooks/useGetCurrentUser");
 var react_native_document_picker_1 = require("react-native-document-picker");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
 var native_1 = require("@react-navigation/native");
 var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var ButtonLogout_1 = require("./bottomTab/ButtonLogout");
 var useDeleteService_1 = require("../hooks/useDeleteService");
 var ProfileHeader = function () {
+    var _a = react_1.useState(false), loading = _a[0], setLoading = _a[1];
     ///render các trạng thái đặt hàng
     ////////////////////////////////
     //lấy ảnh đại diện từ file
-    var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
+    var _b = react_1.useState(null), singleFile = _b[0], setSingleFile = _b[1];
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
         return __generator(this, function (_a) {
@@ -84,9 +86,9 @@ var ProfileHeader = function () {
     }); };
     //////////////////////////////////////////////
     var navigation = native_1.useNavigation();
-    var _b = useGetCurrentUser_1["default"](), currentUser = _b.currentUser, isLoading = _b.isLoading, isError = _b.isError;
-    var _c = react_1.useState(false), hasServices = _c[0], setHasServices = _c[1];
-    var serviceOfRepairman = useGetServiceOfRepairman_1["default"](currentUser === null || currentUser === void 0 ? void 0 : currentUser._id).serviceOfRepairman;
+    var _c = useGetCurrentUser_1["default"](), currentUser = _c.currentUser, isLoading = _c.isLoading, isError = _c.isError;
+    var _d = react_1.useState(false), hasServices = _d[0], setHasServices = _d[1];
+    var _e = useGetServiceOfRepairman_1["default"](currentUser === null || currentUser === void 0 ? void 0 : currentUser._id), serviceOfRepairman = _e.serviceOfRepairman, isLoadings = _e.isLoadings, isErrors = _e.isErrors;
     react_1.useEffect(function () {
         if (serviceOfRepairman.length > 0) {
             setHasServices(true);
@@ -98,7 +100,9 @@ var ProfileHeader = function () {
     // xóa dịch vụ
     var destroyService = useDeleteService_1["default"]().destroyService;
     var handleDeleteService = function (service_id) { return function () {
+        setLoading(true);
         destroyService(service_id);
+        setLoading(false);
         navigation.navigate('Profile', { reload: true });
     }; }; ///////////////////////////////////
     var renderItem = function (data) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
@@ -125,6 +129,13 @@ var ProfileHeader = function () {
             } },
             react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 25, color: "#FFFFFF" })))); };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.profileHeader },
+        react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                setLoading(false);
+            } },
+            react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                    react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                        react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro },
                 react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } }),
@@ -161,14 +172,36 @@ var ProfileHeader = function () {
                         currentUser.number_phone)))),
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.nameListService }, "Danh sa\u0301ch di\u0323ch vu\u0323"),
-            hasServices ? (react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+            isLoading ? (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
+                react_1["default"].createElement(react_native_1.Text, null,
+                    react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' })))) : hasServices ? (react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Ba\u0323n ch\u01B0a \u0111\u0103ng d\u1ECBch v\u1EE5 n\u00E0o!)"))))));
 };
 exports["default"] = ProfileHeader;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
+    loadingText: {
+        fontSize: 20,
+        alignItems: 'center',
+        marginHorizontal: 20,
+        width: 50,
+        height: 50,
+        marginTop: 100
+    },
     listHistory: {
         height: 50,
-        backgroundColor: "#ffffff"
+        backgroundColor: '#ffffff'
     },
     eventButton: {
         paddingHorizontal: 20,
@@ -246,7 +279,7 @@ var styles = react_native_1.StyleSheet.create({
     },
     noService: {
         fontSize: 15,
-        color: 'white'
+        color: '#394C6D'
     },
     imageViews: {
         width: 30,
@@ -320,7 +353,6 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: '#394C6D'
     },
     info: {
-        alignItems: 'center',
         marginHorizontal: 20,
         width: '70%'
     },
@@ -344,8 +376,7 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 15
     },
     profileHeader: {
-        flex: 1,
-        backgroundColor: '#fffff0'
+        flex: 1
     },
     infoProfile: {
         marginHorizontal: 20
@@ -373,8 +404,7 @@ var styles = react_native_1.StyleSheet.create({
         backgroundColor: '#394C6D'
     },
     container: {
-        flex: 1,
-        backgroundColor: '#fffff0'
+        flex: 1
     },
     rowFront: {
         alignItems: 'center',
@@ -401,7 +431,6 @@ var styles = react_native_1.StyleSheet.create({
         flex: 1,
         height: 132,
         marginHorizontal: 15,
-        borderBottomWidth: 1,
         marginTop: 3,
         borderRadius: 10
     },

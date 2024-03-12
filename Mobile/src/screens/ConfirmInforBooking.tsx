@@ -5,12 +5,17 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import useBookingService from '../hooks/useBookingService';
+
 const ConfirmInforBooking = ({route}: any) => {
+ 
+  const [loading, setLoading] = useState(false);
   const {infoBooking} = route.params;
   const serviceBooking = infoBooking.infoServiceBooking.service_name;
   const repairman = infoBooking.infoServiceBooking.user_id.full_name;
@@ -35,7 +40,7 @@ const ConfirmInforBooking = ({route}: any) => {
   const navigation: any = useNavigation();
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
   const [errorPayment, setErrorPayment] = useState<string | null>(null);
-  const {bookingService} = useBookingService();
+  const {bookingService,isLoading} = useBookingService();
   const data = {
     dayRepair: infoBooking.date,
     timeRepair: infoBooking.time,
@@ -51,8 +56,10 @@ const ConfirmInforBooking = ({route}: any) => {
   const handleConfirm = () => {
     if (errorPayment == null) {
       setErrorPayment('Vui lòng chọn phương thức thanh toán');
+      setLoading(false)
     } else {
       bookingService(
+        
         data,
         infoBooking.infoServiceBooking._id,
         infoBooking.infoServiceBooking.user_id._id,
@@ -63,8 +70,26 @@ const ConfirmInforBooking = ({route}: any) => {
     setSelectedMethod(2);
     setErrorPayment('OK');
   };
+  const handleCancel=()=>{
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Root' }],
+    });
+  }
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isLoading}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <ActivityIndicator size={40} color="#FCA234" />
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.infoContainer}>
         <View style={styles.titleConfirm}>
           <Text style={styles.title}>XÁC NHẬN THÔNG TIN</Text>
@@ -147,7 +172,7 @@ const ConfirmInforBooking = ({route}: any) => {
               onPress={() => handleMomoSelect()}>
               <Image
                 style={styles.image2}
-                source={require('../assets/ConfirmBooking/iconPrice.png')}
+                source={require('../assets/ConfirmBooking/stripe.png')}
               />
               <Text style={styles.titleMethod}>TT qua momo</Text>
             </TouchableOpacity>
@@ -157,14 +182,15 @@ const ConfirmInforBooking = ({route}: any) => {
           <Text style={styles.quesConfirm}>Bạn có đồng ý xác thực không?</Text>
         </View>
       </View>
+      {/* {isLoading!=false && <Text><ActivityIndicator size={40} color="#FCA234" /></Text>} */}
       <View style={styles.event}>
         <View style={styles.buttonChoose}>
           <View style={styles.buttonNow}>
-            <View style={styles.button1}>
+            <TouchableOpacity style={styles.button1} onPress={handleCancel}>
               <View style={styles.bookNow}>
                 <Text style={styles.books}>Hủy</Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button1} onPress={handleConfirm}>
               <View style={styles.book}>
                 <Text style={styles.books}>Đồng ý</Text>
@@ -180,6 +206,18 @@ const ConfirmInforBooking = ({route}: any) => {
 export default ConfirmInforBooking;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
   image1: {
     width: 20,
     height: 20,

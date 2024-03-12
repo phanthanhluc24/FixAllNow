@@ -1,1 +1,1 @@
-export const url='http://54.252.141.203:5000';
+export const url='https://7013-117-3-122-11.ngrok-free.app';

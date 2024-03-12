@@ -7,8 +7,13 @@ var useGetNotificationBooking_1 = require("../../../hooks/useGetNotificationBook
 var react_native_loader_kit_1 = require("react-native-loader-kit");
 var moment_1 = require("moment");
 require("moment-duration-format");
+var native_1 = require("@react-navigation/native");
 var Notification = function () {
+    var navigation = native_1.useNavigation();
     var _a = react_1.useState({}), clicked = _a[0], setClicked = _a[1];
+    var navigateToDetailPage = function (item) { return function () {
+        navigation.navigate('DetailNotification', { booking_id: item });
+    }; };
     var _b = useGetNotificationBooking_1["default"](), notifications = _b.notifications, isLoading = _b.isLoading, isError = _b.isError;
     console.log(notifications);
     if (isLoading) {
@@ -21,25 +26,38 @@ var Notification = function () {
     if (isError) {
         return react_1["default"].createElement(react_native_1.Text, null, "Error loading categories");
     }
-    // const handlePress = () => {
-    //   setClicked(true);
-    // };
+    var formatTimeAgo = function (createdAt) {
+        var duration = moment_1["default"].duration(moment_1["default"]().diff(moment_1["default"](createdAt)));
+        var days = duration.days();
+        var hours = duration.hours();
+        var minutes = duration.minutes();
+        if (days > 0) {
+            return days + " ng\u00E0y tr\u01B0\u1EDBc";
+        }
+        else if (hours > 0) {
+            return hours + " gi\u1EDD tr\u01B0\u1EDBc";
+        }
+        else {
+            return minutes + " ph\u00FAt tr\u01B0\u1EDBc";
+        }
+    };
+    var renderItem = function (_a) {
+        var item = _a.item;
+        var timeAgo = formatTimeAgo(item.createdAt);
+        return (react_1["default"].createElement(react_native_2.TouchableOpacity, { style: [
+                styles.layout,
+                { backgroundColor: clicked ? '#ffffff' : '#FFC278' },
+            ], onPress: navigateToDetailPage(item === null || item === void 0 ? void 0 : item.booking_id) },
+            react_1["default"].createElement(react_native_1.View, { style: styles.notificationContainer },
+                react_1["default"].createElement(react_native_1.View, { style: styles.avatarShop },
+                    react_1["default"].createElement(react_native_1.Image, { style: styles.avatar, source: { uri: item === null || item === void 0 ? void 0 : item.service_id.image } })),
+                react_1["default"].createElement(react_native_1.View, { style: styles.contentNotification },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.title }, (item === null || item === void 0 ? void 0 : item.titleRepairmanFinder) || (item === null || item === void 0 ? void 0 : item.titleRepairman)),
+                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 3 }, (item === null || item === void 0 ? void 0 : item.bodyRepairmanFinder) || (item === null || item === void 0 ? void 0 : item.bodyRepairman)),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.time }, timeAgo)))));
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
-        react_1["default"].createElement(react_native_1.FlatList, { data: notifications, keyExtractor: function (notification) { return notification._id; }, renderItem: function (_a) {
-                var item = _a.item;
-                return (react_1["default"].createElement(react_native_2.TouchableOpacity, { style: [
-                        styles.layout,
-                        { backgroundColor: clicked ? '#ffffff' : '#FFC278' },
-                    ] },
-                    react_1["default"].createElement(react_native_1.View, { style: styles.notificationContainer },
-                        react_1["default"].createElement(react_native_1.View, { style: styles.avatarShop },
-                            react_1["default"].createElement(react_native_1.Image, { style: styles.avatar, source: { uri: item === null || item === void 0 ? void 0 : item.service_id.image } })),
-                        react_1["default"].createElement(react_native_1.View, { style: styles.contentNotification },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.title }, (item === null || item === void 0 ? void 0 : item.titleRepairmanFinder) || (item === null || item === void 0 ? void 0 : item.titleRepairman)),
-                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 3 }, (item === null || item === void 0 ? void 0 : item.bodyRepairmanFinder) || (item === null || item === void 0 ? void 0 : item.bodyRepairman)),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.time }, moment_1["default"]
-                                .duration(moment_1["default"]().diff(moment_1["default"](item.updatedAt))).format(' D [ngày] h [giờ]'))))));
-            } })));
+        react_1["default"].createElement(react_native_1.FlatList, { data: notifications, keyExtractor: function (notification, index) { return index.toString(); }, renderItem: renderItem })));
 };
 exports["default"] = Notification;
 var styles = react_native_1.StyleSheet.create({
@@ -67,18 +85,20 @@ var styles = react_native_1.StyleSheet.create({
         borderColor: "#394C6D"
     },
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: "white"
     },
     layout: {
+        paddingHorizontal: 20,
         paddingVertical: 2,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 5
+            height: 9
         },
-        shadowOpacity: 0.34,
-        shadowRadius: 6.27,
-        elevation: 10
+        shadowOpacity: 0.50,
+        shadowRadius: 12.35,
+        elevation: 19
     },
     notificationContainer: {
         flexDirection: 'row',
@@ -92,7 +112,7 @@ var styles = react_native_1.StyleSheet.create({
         justifyContent: 'center'
     },
     contentNotification: {
-        width: '75%',
+        width: '85%',
         padding: 10
     },
     openView: {

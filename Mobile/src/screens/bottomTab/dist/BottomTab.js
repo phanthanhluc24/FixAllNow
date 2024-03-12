@@ -18,29 +18,35 @@ var BottomTab = function () {
                     var focused = _a.focused, size = _a.size;
                     var rn = route.name;
                     var imageSource;
+                    var title = '';
                     if (rn === 'Home') {
                         imageSource = require(URL_IMAGE + "/iconhome.png");
+                        title = 'Trang chủ';
                     }
                     else if (rn === 'Shop') {
                         imageSource = require(URL_IMAGE + "/iconshop.png");
+                        title = 'Cửa hàng';
                     }
                     else if (rn === 'Scan') {
                         imageSource = require(URL_IMAGE + "/AI.png");
+                        title = 'Hỏi đáp';
                     }
                     else if (rn === 'Notification') {
                         imageSource = require(URL_IMAGE + "/iconnotification.png");
+                        title = 'Thông báo';
                     }
                     else if (rn === 'Profile') {
                         imageSource = require(URL_IMAGE + "/iconprofile.png");
+                        title = 'Hồ sơ';
                     }
-                    return (react_1["default"].createElement(react_native_1.View, { style: focused ? styles.focusedStyle : null },
+                    return (react_1["default"].createElement(react_native_1.View, { style: focused ? styles.focusedStyle : styles.tabItem },
                         react_1["default"].createElement(react_native_1.Image, { source: imageSource, style: [
+                                styles.tabIcon,
                                 {
-                                    width: 35,
-                                    height: 35,
-                                    tintColor: focused ? '#FCA234' : '#394C6D'
+                                    tintColor: focused ? '#ffffff' : '#394C6D'
                                 },
-                            ] })));
+                            ] }),
+                        react_1["default"].createElement(react_native_1.Text, { style: focused ? styles.focusedLabelStyle : styles.labelStyle }, title)));
                 },
                 tabBarHideOnKeyboard: true,
                 tabBarLabel: function () {
@@ -60,19 +66,32 @@ var BottomTab = function () {
 exports["default"] = BottomTab;
 var styles = react_native_1.StyleSheet.create({
     tabIcon: {
-        borderRadius: 10,
-        borderWidth: 2,
-        width: '100%',
-        height: '100%'
+        width: 35,
+        height: 35
+    },
+    tabItem: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     focusedStyle: {
-        backgroundColor: 'rgba(252, 162, 52, 0.46)',
-        borderRadius: 12,
-        flexDirection: 'row',
+        backgroundColor: '#394C6D',
+        borderRadius: 5,
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: 10,
         height: 62,
         width: '100%'
+    },
+    labelStyle: {
+        fontSize: 12,
+        color: '#394C6D',
+        textAlign: 'center'
+    },
+    focusedLabelStyle: {
+        fontSize: 14,
+        color: '#ffffff',
+        textAlign: 'center',
+        fontWeight: "bold"
     }
 });
