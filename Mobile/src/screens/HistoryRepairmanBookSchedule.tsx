@@ -10,22 +10,21 @@ import React, {useState} from 'react';
 import RepairmanFinderWaitingConfirmBook from './RepairmanFinderWaitingConfirmBook';
 import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetStatusBooking';
 import useGetBookingNoRated from '../hooks/useGetBookingNoRated';
+import SignIn from './accounts.tsx/SignIn';
+import HistoryStore from './HistoryStore';
 const HistoryRepairmanBookSchedule = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   let transformedSelectedTab = selectedTab + 1;
 
-  if (transformedSelectedTab != 5) {
-    var {statusBooking} = useRepairmanFinderGetStatusBooking(
+
+    const {statusBooking} = useRepairmanFinderGetStatusBooking(
       transformedSelectedTab,
     );
-  }
+
 
   const {bookingNorating}: any = useGetBookingNoRated();
-  console.log(bookingNorating);
-
   const renderComponent = () => {
     switch (transformedSelectedTab) {
-      case 5:
       case 1:
       case 2:
       case 3:
@@ -34,7 +33,7 @@ const HistoryRepairmanBookSchedule = () => {
           <RepairmanFinderWaitingConfirmBook statusBooking={statusBooking} />
         );
       default:
-        return <View>Unexpected tab value: {transformedSelectedTab}</View>; // Handle unexpected cases
+        return <HistoryStore/>
     }
   };
   return (

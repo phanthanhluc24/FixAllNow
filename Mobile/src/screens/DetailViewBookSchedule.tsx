@@ -55,12 +55,14 @@ const DetailViewBookSchedule = () => {
     //   // console.log("Tran quốc Hữu");
     //   navigation.navigate("RatedComment",{reload: true})
     // }
-    if (detailBookings?.status!=="Đã hủy đơn") {
-      console.log(true);
-    }else{
-      console.log(false);
-      
-    }
+    // if ((detailBookings?.status || "Đã hủy đơn") === "Đã hủy đơn") {
+    //   console.log(true);
+    // } else {
+    //   console.log(false);
+    // }
+    console.log(detailBookings?.status=="Đã hủy đơn");
+    console.log(detailBookings);
+    
     return (
       <View style={styles.container}>
         <ScrollView style={styles.cartService}>
@@ -157,9 +159,9 @@ const DetailViewBookSchedule = () => {
           </View>
         
         </ScrollView>
-        {detailBookings && (
+        
         <View style={styles.buttonEven}>
-          {detailBookings?.status === 'Đã hủy đơn' && (
+          {detailBookings && detailBookings?.status === 'Đã hủy đơn' && (
             <View style={styles.totalPayment}>
               <View style={{width: '40%'}}>
                 <View style={styles.background}>
@@ -176,7 +178,23 @@ const DetailViewBookSchedule = () => {
           }
         </View>
 
-        ) }
+        <View style={styles.buttonEven}>
+          {detailBookings && detailBookings?.status === 'Đã sửa thành công' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '40%'}}>
+                <View style={styles.background}>
+                  <Text
+                    style={styles.nameConfirm}
+                    >
+                    Đặt lại
+                  </Text>
+                </View>
+              </View>
+             
+            </View>
+          )
+          }
+        </View>
       </View>
     );
 }

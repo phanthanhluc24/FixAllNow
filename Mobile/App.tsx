@@ -13,11 +13,11 @@ import { set } from 'react-hook-form';
 const queryClient= new QueryClient();
 const App = () => {
   return (
-    <AlertNotificationRoot>
-      <NavigationContainer>
-        <AppWrapper />
-      </NavigationContainer>
-    </AlertNotificationRoot>
+      <AlertNotificationRoot>
+        <NavigationContainer>
+          <AppWrapper />
+        </NavigationContainer>
+      </AlertNotificationRoot>
   );
 };
 const AppWrapper = () => {
