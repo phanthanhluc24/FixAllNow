@@ -164,7 +164,9 @@ var SignUp = function () {
                         inputErrors.password && react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, "* M\u00E2\u0323t kh\u00E2\u0309u kh\u00F4ng bo\u0309 tr\u00F4\u0301ng")),
                     react_1["default"].createElement(react_native_1.View, { style: styles.confirmInfo },
                         react_1["default"].createElement(react_native_1.View, { style: styles.confirmcreate },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.titlefg }, "Ba\u0323n \u0111a\u0303 co\u0301 ta\u0300i khoa\u0309n ch\u01B0a?"),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.titlefg },
+                                "Ba\u0323n \u0111a\u0303 co\u0301 ta\u0300i khoa\u0309n ch\u01B0a?",
+                                ' '),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.createAcc, onPress: function () { return navigation.navigate('SignIn'); } }, "\u0110\u0103ng nh\u00E2\u0323p"))),
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.buttonLogin, onPress: handleSubmit },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.textLgoin }, "\u0110\u0103ng ky\u0301")))))));

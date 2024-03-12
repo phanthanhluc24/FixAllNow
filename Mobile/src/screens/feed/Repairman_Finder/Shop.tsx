@@ -21,9 +21,6 @@ export default function Shop() {
       const {error}=await initPaymentSheet({
         merchantDisplayName:`notJust.dev`,
         paymentIntentClientSecret:res.paymentIntent,
-        // defaultBillingDetails:{
-        //   name:"Luc",
-        // }
       })
       if (error) {
         console.log(error.message);

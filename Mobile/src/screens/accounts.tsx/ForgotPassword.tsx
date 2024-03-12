@@ -15,18 +15,18 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import React, {useRef,useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Formik} from 'formik';
 import {ForgotPasswordSchema} from './ValidationForgetPassword';
 import useVerificationEmail from '../../hooks/useVerificationEmail';
 const ForgotPassword = () => {
-  const [errorServer,setErrorServer]=useState(null)
+  const [errorServer, setErrorServer] = useState(null);
   const passwordRef: any = useRef();
   const navigation: any = useNavigation();
   const handleSubmitVerification = async (values: {email: any}) => {
     await useVerificationEmail(values.email).then((res: any) => {
       if (res.status != 201) {
-        setErrorServer(res.message)
+        setErrorServer(res.message);
       } else {
         navigation.navigate('ConfirmCode', {
           code: res.code,
@@ -37,12 +37,17 @@ const ForgotPassword = () => {
     });
   };
   return (
-    <Formik initialValues={{email: ''}} onSubmit={handleSubmitVerification} validationSchema={ForgotPasswordSchema}>
+    <Formik
+      initialValues={{email: ''}}
+      onSubmit={handleSubmitVerification}
+      validationSchema={ForgotPasswordSchema}>
       {({errors, touched, handleChange, handleBlur, handleSubmit, values}) => (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.confirmContainer}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
+          <ScrollView
+            contentContainerStyle={{flexGrow: 1}}
+            keyboardShouldPersistTaps="handled">
             <View style={styles.body}>
               <View style={styles.container}>
                 <View style={styles.titleContainer}>
@@ -51,20 +56,20 @@ const ForgotPassword = () => {
                 <View style={styles.spaceContainer}>
                   <Text style={styles.errorText}>{errorServer}</Text>
                   <View style={styles.heightInput}>
-                  <TextInput
-                    style={styles.inputCode}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    enterKeyHint={'done'}
-                    placeholder='Vui lòng nhập email'
-                  />
-                  {errors.email && touched.email ? (
-                    <Text style={styles.errorText}>* {errors.email}</Text>
-                  ) : null}
+                    <TextInput
+                      style={styles.inputCode}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      enterKeyHint={'done'}
+                      placeholder="Vui lòng nhập email"
+                    />
                   </View>
+                  {errors.email && touched.email ? (
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                  ) : null}
                   <TouchableOpacity
-                    onPress={(e:GestureResponderEvent)=>handleSubmit()}
+                    onPress={(e: GestureResponderEvent) => handleSubmit()}
                     style={styles.buttonConfirm}>
                     <Text style={styles.textConfirm}>XÁC THỰC</Text>
                   </TouchableOpacity>
@@ -99,6 +104,7 @@ const styles = StyleSheet.create({
     color: 'red',
     margin: 0,
     padding: 0,
+    marginHorizontal: 20,
   },
   confirmContainer: {
     flex: 1,
@@ -149,16 +155,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     borderWidth: 1,
-    width: '80%',
-    paddingLeft:15,
+    width: '100%',
+    paddingLeft: 15,
   },
   spaceContainer: {
-    marginLeft:55,
     marginTop: 40,
-    
   },
-  heightInput:{
-    height:70
+  heightInput: {
+    flexDirection: 'row',
+    height: 70,
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
   },
   timeInput: {
     fontSize: 15,
@@ -173,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   buttonConfirm: {
-    width: '50%',
+    width:'75%',
     backgroundColor: '#394C6D',
     borderRadius: 10,
     height: 60,

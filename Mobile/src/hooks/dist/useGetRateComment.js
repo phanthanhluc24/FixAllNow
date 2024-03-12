@@ -40,7 +40,8 @@ var react_1 = require("react");
 var axios_1 = require("axios");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
-var useGetRateComment = function () {
+var useGetRateComment = function (repairman_id) {
+    // const id=repairman_id
     var _a = react_1.useState([]), rateComment = _a[0], setRateComment = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
@@ -53,11 +54,12 @@ var useGetRateComment = function () {
                     return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
                 case 1:
                     accessToken = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get(url_1.url + "/service", {
+                    return [4 /*yield*/, axios_1["default"].get(url_1.url + "/comment/" + repairman_id, {
                             headers: { Authorization: "Bearer " + accessToken }
                         })];
                 case 2:
                     response = _a.sent();
+                    console.log(response.data.data);
                     setRateComment(response.data.data);
                     return [3 /*break*/, 5];
                 case 3:
@@ -71,6 +73,12 @@ var useGetRateComment = function () {
             }
         });
     }); };
+    react_1.useEffect(function () {
+        var intervalId = setInterval(function () {
+            fetchRateComment();
+        }, 180000);
+        return function () { return clearInterval(intervalId); };
+    }, [repairman_id]);
     react_1.useEffect(function () {
         fetchRateComment();
     }, []);

@@ -1,14 +1,30 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import useGetRateComment from '../hooks/useGetRateComment';
 import LoaderKit from 'react-native-loader-kit';
-interface typeRateComment{
-  _id:string
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useRoute } from '@react-navigation/native';
+interface typeRateComment {
+  _id: string;
+  content: String;
+  star: number;
+  commenter_id: {
+    _id: string;
+    image: string;
+    full_name: string;
+  };
 }
-const DetailCommentRepairman = () => {
+const DetailCommentRepairman = ({repairman_id}: any) => {
   const navigation: any = useNavigation();
-  const {rateComment, isLoading, isError} = useGetRateComment();
+  const {rateComment, isLoading, isError} = useGetRateComment(repairman_id);
   if (isLoading) {
     return (
       <View style={{alignItems: 'center'}}>
@@ -22,60 +38,75 @@ const DetailCommentRepairman = () => {
       </View>
     );
   }
-  if (rateComment.length === 0) {
-    return <Text>Services not available!</Text>;
-  }
-  if (isError) {
-    return <Text>Error loading categories</Text>;
-  }
+
+  const renderStars = (star: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesome
+          key={i}
+          name={star >= i ? 'star' : 'star-o'}
+          size={20}
+          color={star >= i ? '#FFD700' : '#394C6D'}
+        />,
+      );
+    }
+    return stars;
+  };
+
   return (
-    <View style={{marginBottom: 10}}>
-      <View style={styles.rateComment}>
-        <View style={styles.containerTitle}>
-          <View style={styles.rating}>
-            <Text style={styles.titless}>Đánh giá:(30)</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('RatedComment')}>
-              <Text style={styles.titlesss}>Đánh giá ngay!</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('RatedComment')}>
-            <Text style={styles.suggest}>
-              Hãy xem họ nói gì về tôi bạn nhé!
-            </Text>
-          </TouchableOpacity>
-          <FlatList
+    <>
+           <FlatList
             data={rateComment as typeRateComment[]}
             keyExtractor={rateComment => rateComment._id}
             renderItem={({item}) => (
-              <View style={styles.containerRatedComment}>
+              <TouchableOpacity style={styles.containerRatedComment}>
                 <View style={styles.comment}>
                   <View style={styles.avatar}>
                     <Image
                       style={styles.avatarComment}
-                      source={require('../assets/Homes/avatars.png')}
+                      source={{uri: item?.commenter_id.image}}
                     />
                   </View>
                   <View style={styles.content}>
-                    <Text style={styles.comments}>
-                      Thợ rất tận tâm Thợ rất tận tâm Thợ rất tận tâm Thợ rất
-                      tận tâm Thợ rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ
-                      rất tận tâmThợ rất tận tâmThợ rất tận tâmThợ rất tận
-                      tâmThợ rất tận tâm
+                    <Text style={styles.nameCommenter}>
+                      {item.commenter_id.full_name}
                     </Text>
-                    <Image source={require('../assets/Homes/star.png')} />
+                    <View style={styles.star}>{renderStars(item.star)}</View>
                   </View>
                 </View>
-              </View>
+                <View>
+                  <Text style={styles.comments}>{item.content}</Text>
+                 
+                </View>
+              </TouchableOpacity>
             )}
           />
-        </View>
-      </View>
-    </View>
+        {/* </View>
+      </View> */}
+    </>
   );
 };
 export default DetailCommentRepairman;
 const styles = StyleSheet.create({
+  title:{
+    marginVertical:10
+  },
+  nameCommenter: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#394C6D',
+  },
+  noComment: {
+    fontSize: 15,
+    color: '#FCA234',
+    fontWeight:"bold"
+  },
+  star: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+  },
   loadingText: {
     fontSize: 20,
     alignItems: 'center',
@@ -112,6 +143,7 @@ const styles = StyleSheet.create({
     padding: 3,
   },
   containerRatedComment: {
+    marginVertical: 10,
     flex: 9,
   },
   bottom: {
@@ -134,8 +166,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: 54,
-    height: 54,
+    width: 50,
+    height: 50,
     borderRadius: 100,
     borderWidth: 3,
     borderColor: 'black',
@@ -143,8 +175,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatarComment: {
-    width: 50,
-    height: 50,
+    width: 46,
+    height: 46,
+    borderRadius: 100,
   },
   content: {
     width: '80%',

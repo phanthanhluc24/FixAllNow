@@ -40,11 +40,11 @@ var react_1 = require("react");
 var axios_1 = require("axios");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
-var useGetBookingNoRated = function () {
-    var _a = react_1.useState([]), bookingNorating = _a[0], setBookingNorating = _a[1];
+var useGetBookingNotYetRated = function () {
+    var _a = react_1.useState([]), bookingNotYetrating = _a[0], setBookingNotYetrating = _a[1];
     var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
     var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
-    var fetchBookingNorating = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var fetchBookingNotYetrating = function () { return __awaiter(void 0, void 0, void 0, function () {
         var accessToken, response, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -58,7 +58,7 @@ var useGetBookingNoRated = function () {
                         })];
                 case 2:
                     response = _a.sent();
-                    setBookingNorating(response.data.data);
+                    setBookingNotYetrating(response.data.data);
                     return [3 /*break*/, 5];
                 case 3:
                     error_1 = _a.sent();
@@ -72,8 +72,8 @@ var useGetBookingNoRated = function () {
         });
     }); };
     react_1.useEffect(function () {
-        fetchBookingNorating();
+        fetchBookingNotYetrating();
     }, []);
-    return { bookingNorating: bookingNorating, isLoading: isLoading, isError: isError };
+    return { bookingNotYetrating: bookingNotYetrating, isLoading: isLoading, isError: isError };
 };
-exports["default"] = useGetBookingNoRated;
+exports["default"] = useGetBookingNotYetRated;

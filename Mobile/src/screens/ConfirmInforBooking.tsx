@@ -5,12 +5,21 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import useBookingService from '../hooks/useBookingService';
+import { StripeProvider } from '@stripe/stripe-react-native';
+import { useStripe } from "@stripe/stripe-react-native";
+import { url } from '../hooks/apiRequest/url';
 const ConfirmInforBooking = ({route}: any) => {
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const STRIPE="pk_test_51Osxt0P3QsmcFffhQjfeuh4vZIeAQFzM7R4Lpk2lGRRZIKcB9J1MOBiGl2UWMb3HAaEqww6p4P8g63LnexqIpEiU00CjHmli5n"
+ 
+  const [loading, setLoading] = useState(false);
   const {infoBooking} = route.params;
   const serviceBooking = infoBooking.infoServiceBooking.service_name;
   const repairman = infoBooking.infoServiceBooking.user_id.full_name;
@@ -32,10 +41,11 @@ const ConfirmInforBooking = ({route}: any) => {
   }
   const priceTransport = 10000;
   const totalPrice = priceRepair + priceService + priceTransport;
+  const [payment,setPayment]=useState("")
   const navigation: any = useNavigation();
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
   const [errorPayment, setErrorPayment] = useState<string | null>(null);
-  const {bookingService} = useBookingService();
+  const {bookingService,isLoading} = useBookingService();
   const data = {
     dayRepair: infoBooking.date,
     timeRepair: infoBooking.time,
@@ -43,28 +53,83 @@ const ConfirmInforBooking = ({route}: any) => {
     priceService,
     address: addressRepair,
     desc: desc,
+    payment:payment
   };
   const handleMethodSelect = () => {
     setSelectedMethod(1);
+    setPayment("Thanh toán khi sửa xong")
+    setErrorPayment('OK');
+  };
+  const handleStripeSelect = () => {
+    setSelectedMethod(2);
+    setPayment("Đã thanh toán online qua Stripe")
     setErrorPayment('OK');
   };
   const handleConfirm = () => {
     if (errorPayment == null) {
       setErrorPayment('Vui lòng chọn phương thức thanh toán');
+      setLoading(false)
     } else {
+        bookingService(
+          
+          data,
+          infoBooking.infoServiceBooking._id,
+          infoBooking.infoServiceBooking.user_id._id,
+        );
+    }
+  };
+  const handleConfirmStripe=async ()=>{
+    const response=await fetch(`${url}/stripe/intents`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({amount:totalPrice})
+    })
+    .then((res)=>res.json())
+    .then(async (res) =>{
+      console.log(res);
+      const {error}=await initPaymentSheet({
+        merchantDisplayName:`notJust.dev`,
+        paymentIntentClientSecret:res.paymentIntent,
+      })
+      if (error) {
+        console.log(error.message);
+      }
+
+      await presentPaymentSheet()
       bookingService(
+          
         data,
         infoBooking.infoServiceBooking._id,
         infoBooking.infoServiceBooking.user_id._id,
       );
-    }
-  };
-  const handleMomoSelect = () => {
-    setSelectedMethod(2);
-    setErrorPayment('OK');
-  };
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+
+  }
+  const handleCancel=()=>{
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Root' }],
+    });
+  }
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isLoading}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <ActivityIndicator size={40} color="#FCA234" />
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.infoContainer}>
         <View style={styles.titleConfirm}>
           <Text style={styles.title}>XÁC NHẬN THÔNG TIN</Text>
@@ -137,19 +202,19 @@ const ConfirmInforBooking = ({route}: any) => {
                 style={styles.image1}
                 source={require('../assets/ConfirmBooking/iconMomo.png')}
               />
-              <Text style={styles.titleMethod}>TT tiền mặt</Text>
+              <Text style={styles.titleMethod}>Tiền mặt</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
                 styles.buttonMethod,
                 selectedMethod === 2 && styles.selectedMethod,
               ]}
-              onPress={() => handleMomoSelect()}>
+              onPress={() => handleStripeSelect()}>
               <Image
                 style={styles.image2}
-                source={require('../assets/ConfirmBooking/iconPrice.png')}
+                source={require('../assets/ConfirmBooking/stripe.png')}
               />
-              <Text style={styles.titleMethod}>TT qua momo</Text>
+              <Text style={styles.titleMethod}>Stripe Online</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -157,19 +222,30 @@ const ConfirmInforBooking = ({route}: any) => {
           <Text style={styles.quesConfirm}>Bạn có đồng ý xác thực không?</Text>
         </View>
       </View>
+      {/* {isLoading!=false && <Text><ActivityIndicator size={40} color="#FCA234" /></Text>} */}
       <View style={styles.event}>
         <View style={styles.buttonChoose}>
           <View style={styles.buttonNow}>
-            <View style={styles.button1}>
+            <TouchableOpacity style={styles.button1} onPress={handleCancel}>
               <View style={styles.bookNow}>
                 <Text style={styles.books}>Hủy</Text>
               </View>
-            </View>
-            <TouchableOpacity style={styles.button1} onPress={handleConfirm}>
-              <View style={styles.book}>
-                <Text style={styles.books}>Đồng ý</Text>
-              </View>
             </TouchableOpacity>
+            {selectedMethod==1 ?(
+              <TouchableOpacity style={styles.button1} onPress={handleConfirm}>
+                <View style={styles.book}>
+                  <Text style={styles.books}>Đồng ý</Text>
+                </View>
+              </TouchableOpacity>
+            ):(
+              <StripeProvider publishableKey={STRIPE}>
+                  <TouchableOpacity style={styles.button1} onPress={handleConfirmStripe}>
+                  <View style={styles.book}>
+                    <Text style={styles.books}>Đồng ý</Text>
+                  </View>
+                </TouchableOpacity>
+              </StripeProvider>
+            )}
           </View>
         </View>
       </View>
@@ -180,6 +256,18 @@ const ConfirmInforBooking = ({route}: any) => {
 export default ConfirmInforBooking;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
   image1: {
     width: 20,
     height: 20,
@@ -221,7 +309,7 @@ const styles = StyleSheet.create({
   bookNow: {
     width: '80%',
     height: 50,
-    backgroundColor: '#394C6D',
+    backgroundColor: '#FCA234',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -229,7 +317,7 @@ const styles = StyleSheet.create({
   book: {
     width: '80%',
     height: 50,
-    backgroundColor: '#FCA234',
+    backgroundColor: '#394C6D',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -319,10 +407,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   infoContainer: {
-    flex: 9,
+    flex: 8,
   },
   event: {
-    flex: 1,
+    flex: 2,
   },
   infoService: {
     marginHorizontal: 20,

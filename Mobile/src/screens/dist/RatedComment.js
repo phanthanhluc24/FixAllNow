@@ -41,40 +41,80 @@ var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
 var StarRating_1 = require("./StarRating");
 var useRatingComment_1 = require("../hooks/useRatingComment");
+var react_native_alert_notification_1 = require("react-native-alert-notification");
+var native_2 = require("@react-navigation/native");
 var RatedComment = function () {
+    var _a = react_1.useState(false), loading = _a[0], setLoading = _a[1];
+    var route = native_2.useRoute();
+    var service_id = route.params.service_id;
     var navigation = native_1.useNavigation();
-    var _a = react_1.useState(''), comment = _a[0], setComment = _a[1];
-    var _b = react_1.useState(0), rating = _b[0], setRating = _b[1];
-    var handleRatingPress = function (ratingValue) {
-        setRating(ratingValue);
+    var _b = react_1.useState(''), content = _b[0], setContent = _b[1];
+    var _c = react_1.useState(0), star = _c[0], setStar = _c[1];
+    var _d = react_1.useState(''), error = _d[0], setError = _d[1];
+    var handleStarPress = function (starValue) {
+        setStar(starValue);
     };
-    var handleCommentChange = function (text) {
-        setComment(text);
+    var handleContentChange = function (text) {
+        setContent(text);
     };
     var sendData = useRatingComment_1["default"]().sendData;
     var handleSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-        var responseData;
+        var body, responseData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log('Comment:', comment);
-                    console.log('Rating:', rating);
-                    data.comment = comment;
-                    data.rating = rating;
-                    return [4 /*yield*/, sendData(data)];
+                    setLoading(true);
+                    if (content === '') {
+                        setError('Vui lòng nhập nội dung đánh giá!');
+                        setLoading(false);
+                        return [2 /*return*/];
+                    }
+                    if (star === 0) {
+                        setError('Vui lòng chọn mức độ đánh giá!');
+                        setLoading(false);
+                        return [2 /*return*/];
+                    }
+                    data.content = content;
+                    data.star = star;
+                    body = {
+                        content: data.content,
+                        star: data.star.toString()
+                    };
+                    return [4 /*yield*/, sendData(body, service_id)];
                 case 1:
                     responseData = _a.sent();
+                    if (responseData) {
+                        setLoading(false);
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                            title: 'Thành công',
+                            textBody: 'Đã đánh giá thành công!'
+                        });
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Root' }]
+                        });
+                    }
                     return [2 /*return*/];
             }
         });
     }); };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
+            react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                    setLoading(false);
+                } },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                        react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                            react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.containerRatedComment },
-                react_1["default"].createElement(react_native_1.View, { style: styles.comment },
-                    react_1["default"].createElement(react_native_1.TextInput, { multiline: true, style: styles.input, placeholderTextColor: '#394C69', placeholder: "Ha\u0303y \u0111a\u0301nh gia\u0301 theo ca\u0309m nh\u00E2\u0323n cu\u0309a ba\u0323n!", value: comment, onChangeText: handleCommentChange })),
+                react_1["default"].createElement(react_native_1.View, { style: { marginVertical: 40 } },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.messageErrors }, error !== '' && react_1["default"].createElement(react_native_1.Text, { style: styles.errorMessage }, error)),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.comment },
+                        react_1["default"].createElement(react_native_1.TextInput, { multiline: true, style: styles.input, placeholderTextColor: '#394C69', placeholder: "Ha\u0303y \u0111a\u0301nh gia\u0301 theo ca\u0309m nh\u00E2\u0323n cu\u0309a ba\u0323n!", value: content, onChangeText: handleContentChange }))),
                 react_1["default"].createElement(react_native_1.Text, { style: styles.level }, "M\u01B0\u0301c \u0111\u00F4\u0323 ha\u0300i lo\u0300ng:"),
-                react_1["default"].createElement(StarRating_1["default"], { rating: 0, onRatingPress: handleRatingPress })),
+                react_1["default"].createElement(StarRating_1["default"], { star: 0, onRatingPress: handleStarPress })),
             react_1["default"].createElement(react_native_1.View, { style: styles.bottom },
                 react_1["default"].createElement(react_native_1.View, { style: styles.footer },
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.bgButton, onPress: handleSubmit },
@@ -83,6 +123,26 @@ var RatedComment = function () {
 };
 exports["default"] = RatedComment;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
+    messageErrors: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginVertical: 20
+    },
+    errorMessage: {
+        color: 'red'
+    },
     nameBook: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -127,16 +187,15 @@ var styles = react_native_1.StyleSheet.create({
         marginHorizontal: 20
     },
     comment: {
-        marginVertical: 20,
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     input: {
-        paddingLeft: 15,
-        height: 150,
+        alignItems: 'center',
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#394C6D',
+        paddingVertical: 10,
         width: '100%',
         paddingHorizontal: 10,
         backgroundColor: 'white'

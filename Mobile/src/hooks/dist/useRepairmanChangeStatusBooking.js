@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var url_1 = require("./apiRequest/url");
 var axios_1 = require("axios");
-var useRepairmanChangeStatusBooking = function (booking_id, option, token) {
+var useRepairmanChangeStatusBooking = function (booking_id, option, token, onStatusChanged) {
     var fetchChangeStatusBooking = function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
@@ -49,6 +49,7 @@ var useRepairmanChangeStatusBooking = function (booking_id, option, token) {
                 case 1:
                     response = _a.sent();
                     console.log(response.data.message);
+                    onStatusChanged();
                     return [2 /*return*/];
             }
         });

@@ -6,6 +6,7 @@ import useGetNotificationBooking from '../../../hooks/useGetNotificationBooking'
 import LoaderKit from 'react-native-loader-kit';
 import moment from 'moment';
 import 'moment-duration-format';
+import {useNavigation} from '@react-navigation/native'; 
 interface typeService {
   _id: string;
   booking_id: string;
@@ -24,7 +25,11 @@ interface typeService {
 
 }
 const Notification = () => {
+  const navigation= useNavigation();
   const [clicked, setClicked] = useState({});
+  const navigateToDetailPage = (item: any) => () => {
+    navigation.navigate('DetailNotification', {booking_id: item});
+  };
   const {notifications, isLoading, isError} = useGetNotificationBooking();
   console.log(notifications);
 
@@ -45,39 +50,51 @@ const Notification = () => {
   if (isError) {
     return <Text>Error loading categories</Text>;
   }
-  // const handlePress = () => {
-  //   setClicked(true);
-  // };
+  const formatTimeAgo = (createdAt: string) => {
+    const duration = moment.duration(moment().diff(moment(createdAt)));
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
 
+    if (days > 0) {
+      return `${days} ngày trước`;
+    } else if (hours > 0) {
+      return `${hours} giờ trước`;
+    } else {
+      return `${minutes} phút trước`;
+    }
+  };
+  const renderItem = ({ item }) => {
+    const timeAgo = formatTimeAgo(item.createdAt);
+    return (
+      <TouchableOpacity
+      style={[
+        styles.layout,
+        {backgroundColor: clicked ? '#ffffff' : '#FFC278'},
+      ]} onPress={navigateToDetailPage(item?.booking_id)}>
+      <View style={styles.notificationContainer}>
+        <View style={styles.avatarShop}>
+          <Image
+            style={styles.avatar}
+            source={{uri:item?.service_id.image}}
+          />
+        </View>
+        <View style={styles.contentNotification}>
+          <Text style={styles.title}>{item?.titleRepairmanFinder || item?.titleRepairman}</Text>
+          <Text numberOfLines={3}>{item?.bodyRepairmanFinder || item?.bodyRepairman}</Text>
+          <Text style={styles.time}>
+          {timeAgo}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+    )}
   return (
     <View style={styles.container}>
       <FlatList
         data={notifications as typeService[]}
-        keyExtractor={notification => notification._id}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={[
-              styles.layout,
-              {backgroundColor: clicked ? '#ffffff' : '#FFC278'},
-            ]}>
-            <View style={styles.notificationContainer}>
-              <View style={styles.avatarShop}>
-                <Image
-                  style={styles.avatar}
-                  source={{uri:item?.service_id.image}}
-                />
-              </View>
-              <View style={styles.contentNotification}>
-                <Text style={styles.title}>{item?.titleRepairmanFinder || item?.titleRepairman}</Text>
-                <Text numberOfLines={3}>{item?.bodyRepairmanFinder || item?.bodyRepairman}</Text>
-                <Text style={styles.time}>
-                {moment
-                    .duration(moment().diff(moment(item.updatedAt))).format(' D [ngày] h [giờ]')}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        )}
+        keyExtractor={(notification, index) => index.toString()}
+        renderItem={renderItem}
       />
     </View>
   );
@@ -111,18 +128,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor:"white"
   },
   layout: {
+    paddingHorizontal:20,
+    
     paddingVertical: 2,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 9,
     },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    
-    elevation: 10,
+    shadowOpacity: 0.50,
+    shadowRadius: 12.35,
+    elevation: 19,
   },
   notificationContainer: {
     flexDirection: 'row',
@@ -136,7 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   contentNotification: {
-    width: '75%',
+    width: '85%',
     padding: 10,
   },
   openView: {

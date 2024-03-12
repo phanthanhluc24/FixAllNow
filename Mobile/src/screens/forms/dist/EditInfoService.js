@@ -47,12 +47,13 @@ var react_native_alert_notification_1 = require("react-native-alert-notification
 var EditInfoService = function (_a) {
     var route = _a.route;
     var service = route.params.service;
+    var _b = react_1.useState(false), loading = _b[0], setLoading = _b[1];
     var navigation = native_1.useNavigation();
-    var _b = react_1.useState(service.service_name), nameService = _b[0], setNameService = _b[1];
-    var _c = react_1.useState(service === null || service === void 0 ? void 0 : service.price.toString()), priceService = _c[0], setPriceService = _c[1];
-    var _d = react_1.useState(service === null || service === void 0 ? void 0 : service.desc), descService = _d[0], setDescService = _d[1];
-    var _e = react_1.useState(null), singleFile = _e[0], setSingleFile = _e[1];
-    var _f = react_1.useState(service.image), displayDemo = _f[0], setDisplayDemo = _f[1];
+    var _c = react_1.useState(service.service_name), nameService = _c[0], setNameService = _c[1];
+    var _d = react_1.useState(service === null || service === void 0 ? void 0 : service.price.toString()), priceService = _d[0], setPriceService = _d[1];
+    var _e = react_1.useState(service === null || service === void 0 ? void 0 : service.desc), descService = _e[0], setDescService = _e[1];
+    var _f = react_1.useState(null), singleFile = _f[0], setSingleFile = _f[1];
+    var _g = react_1.useState(service.image), displayDemo = _g[0], setDisplayDemo = _g[1];
     var handleInputChange = function (fieldName, value) {
         switch (fieldName) {
             case 'service_name':
@@ -100,7 +101,7 @@ var EditInfoService = function (_a) {
             }
         });
     }); };
-    var _g = react_hook_form_1.useForm(), control = _g.control, handleSubmit = _g.handleSubmit, errors = _g.formState.errors;
+    var _h = react_hook_form_1.useForm(), control = _h.control, handleSubmit = _h.handleSubmit, errors = _h.formState.errors;
     var hasNumbersOnly = function (value) {
         return /^\d+$/.test(value);
     };
@@ -125,10 +126,13 @@ var EditInfoService = function (_a) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    setLoading(true);
                     return [4 /*yield*/, useEditInfoService_1["default"](formData)];
                 case 2:
                     editSuccess = _a.sent();
+                    console.log(editSuccess);
                     if (editSuccess) {
+                        setLoading(false);
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
                             title: 'Thành công',
@@ -143,6 +147,7 @@ var EditInfoService = function (_a) {
                 case 3:
                     error_1 = _a.sent();
                     console.error('Lỗi khi edit thông tin người dùng:', error_1);
+                    setLoading(false);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -153,6 +158,13 @@ var EditInfoService = function (_a) {
     };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
+            react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                    setLoading(false);
+                } },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                        react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                            react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.formEdit },
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "T\u00EAn di\u0323ch vu\u0323 "),
@@ -162,13 +174,13 @@ var EditInfoService = function (_a) {
                                     onChange(text);
                                     handleInputChange('service_name', text);
                                 }, value: value, defaultValue: nameService }));
-                        }, name: "service_name", rules: { required: '* Tên không được bỏ trống', validate: function (value) {
-                                return hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số';
+                        }, name: "service_name", rules: { required: '* Tên dịch vụ không được bỏ trống', validate: function (value) {
+                                return hasLettersAndNoNumbers(value) || '* Tên dịch vụ không hợp lệ';
                             }
                         }, defaultValue: nameService }),
                     errors.service_name && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.service_name.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gi\u0301a di\u0323ch vu\u0323"),
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gia\u0301 di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
                             return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
@@ -177,20 +189,20 @@ var EditInfoService = function (_a) {
                                 }, value: value, defaultValue: priceService }));
                         }, name: "price", rules: { required: '* Giá không được bỏ trống ', validate: function (value) { return isValidPrice(value) || '* Giá chỉ được chứa số'; } }, defaultValue: priceService }),
                     errors.price && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.price.message))),
-                react_1["default"].createElement(react_native_1.View, { style: styles.part },
+                react_1["default"].createElement(react_native_1.View, { style: styles.parts },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "M\u00F4 ta\u0309 di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
-                            return (react_1["default"].createElement(react_native_1.TextInput, { multiline: true, style: styles.inputInfo, onBlur: onBlur, onChangeText: function (text) {
+                            return (react_1["default"].createElement(react_native_1.TextInput, { multiline: true, style: styles.inputInfos, onBlur: onBlur, onChangeText: function (text) {
                                     onChange(text);
                                     handleInputChange('desc', text);
                                 }, value: value, defaultValue: descService }));
                         }, name: "desc", rules: { required: '* Mô tả không được bỏ trống', validate: function (value) {
-                                return hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số';
+                                return hasLettersAndNoNumbers(value) || '* Mô tả không hợp lệ';
                             }
                         }, defaultValue: descService }),
                     errors.desc && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.desc.message))),
-                react_1["default"].createElement(react_native_1.View, { style: styles.part },
+                react_1["default"].createElement(react_native_1.View, { style: styles.partss },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
                     react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: displayDemo }, style: styles.imageStyle }),
@@ -210,6 +222,18 @@ var EditInfoService = function (_a) {
 };
 exports["default"] = EditInfoService;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
     imageViews: {
         width: 40,
         height: 40,
@@ -280,7 +304,15 @@ var styles = react_native_1.StyleSheet.create({
     },
     part: {
         marginVertical: 5,
-        height: 100
+        height: 90
+    },
+    parts: {
+        marginVertical: 5,
+        height: 140
+    },
+    partss: {
+        marginVertical: 5,
+        height: 120
     },
     infoEdit: {
         color: '#FCA234',
@@ -311,6 +343,16 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15,
         color: '#000000',
         height: 50
+    },
+    inputInfos: {
+        backgroundColor: 'white',
+        borderColor: '#FCA234',
+        borderRadius: 10,
+        marginTop: 5,
+        borderWidth: 1,
+        paddingLeft: 15,
+        color: '#000000',
+        height: 100
     },
     mainBody: {
         flex: 1,

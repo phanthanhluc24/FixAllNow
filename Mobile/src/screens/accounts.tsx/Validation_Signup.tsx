@@ -7,18 +7,18 @@ export const Signup_Schema = Yup.object().shape({
     full_name:Yup.string()
     .min(5,'Tên phải có ít nhất 5 ký tự!')
     .max(30, 'Tên phải có tối đa 30 ký tự!')
-    .required('* Họ tên không bỏ trống'),
-    email:Yup.string().email('Email không hợp lệ').required('* Email không được rỗng'),
+    .required('Họ tên không để trống'),
+    email:Yup.string().email('Email không hợp lệ').required('Email không được để trống'),
     number_phone:Yup.string()
     .min(10, 'Điện thoại phải có ít nhất 10 ký tự!')
     .max(10,'Điện thoại phải có tối đa 10 ký tự!')
-    .required('* Số điện thoại không bỏ trống'),
+    .required('Số điện thoại không để trống'),
     password:Yup.string()
     .min(8,'Mật khẩu cần dài ít nhất 8 ký tự!')
     .max(20,'Mật khẩu phải có tối đa 20 ký tự!')
-    .required('* Mật khẩu không bỏ rỗng'),
+    .required('Mật khẩu không để rỗng'),
     address:Yup.string()
     .min(10,'Địa chỉ phải có ít nhất 10 ký tự!')
     .max(100,'Địa chỉ phải có tối đa 100 ký tự!')
-    .required('* Địa chỉ không bỏ trỗng'),
+    .required('Địa chỉ không để trỗng'),
 })

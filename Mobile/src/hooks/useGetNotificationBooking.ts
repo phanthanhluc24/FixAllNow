@@ -19,6 +19,12 @@ const useGetNotificationBooking = () => {
       setIsLoading(false);
     }
   };
+  useEffect(()=>{
+    const intervalId = setInterval(()=>{
+      fetchNotifications();
+    },180000);
+    return ()=>clearInterval(intervalId)
+  },[])
   useEffect(() => {
     fetchNotifications();
   }, []);

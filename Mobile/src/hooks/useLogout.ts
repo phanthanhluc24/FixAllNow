@@ -2,6 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
 import {url} from './apiRequest/url';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const useLogout = () => {
   const logout = async (accessToken: string) => {
     try {
@@ -12,6 +13,7 @@ const useLogout = () => {
           headers: {Authorization: `Bearer ${accessToken}`},
         },
       );
+      
       return response.data;
     } catch (error) {
       throw error;

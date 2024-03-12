@@ -38,16 +38,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var moment_1 = require("moment");
 var native_1 = require("@react-navigation/native");
 var useBookingDetail_1 = require("../hooks/useBookingDetail");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var native_2 = require("@react-navigation/native");
+var react_native_loader_kit_1 = require("react-native-loader-kit");
 var DetailViewBookSchedule = function () {
     var route = native_1.useRoute();
     var booking_id = route.params.booking_id;
     var navigation = native_2.useNavigation();
-    var _a = react_1.useState(""), token = _a[0], setToken = _a[1];
+    var _a = react_1.useState(''), token = _a[0], setToken = _a[1];
     react_1.useEffect(function () {
         var getAccessToken = function () { return __awaiter(void 0, void 0, void 0, function () {
             var accessToken;
@@ -64,20 +64,12 @@ var DetailViewBookSchedule = function () {
         getAccessToken();
     }, []);
     var _b = useBookingDetail_1["default"](booking_id), detailBookings = _b.detailBookings, isError = _b.isError, isLoading = _b.isLoading;
-    var totalPayment = 0;
-    // const handleChangeStatusBooking = (booking_id: string, option: number) => {
-    //  useRepairmanChangeStatusBooking(booking_id, option,token);
-    // };
-    // const handleRatingCommentRepairman =()=>{
-    //   // console.log("Tran quốc Hữu");
-    //   navigation.navigate("RatedComment",{reload: true})
-    // }
-    if ((detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.status) !== "Đã hủy đơn") {
-        console.log(true);
+    if (isLoading) {
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
+            react_1["default"].createElement(react_native_1.Text, null,
+                react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
-    else {
-        console.log(false);
-    }
+    var totalPayment = (detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.service_id.price) + (detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.fee_service) + (detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.fee_transport);
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { style: styles.cartService },
             react_1["default"].createElement(react_native_1.View, { style: { borderBottomWidth: 2, borderBottomColor: '#394C6D' } },
@@ -100,7 +92,15 @@ var DetailViewBookSchedule = function () {
                             react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserss }, detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.user_id.email)),
                         react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.infoUsers }, "\u0110i\u0323a chi\u0309:"),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserss, numberOfLines: 3 }, detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.address))))),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserss, numberOfLines: 3 }, detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.address))),
+                    react_1["default"].createElement(react_native_1.View, null,
+                        react_1["default"].createElement(react_native_1.View, { style: styles.infoUser },
+                            react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserssss }, "Gi\u01A1\u0300 s\u01B0\u0309a ch\u01B0\u0303a:"),
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUsersss }, detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.time_repair)),
+                            react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserssss }, "Nga\u0300y s\u01B0\u0309a ch\u01B0\u0303a:"),
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUsersss }, detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.day_repair)))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.infoPayment },
                 react_1["default"].createElement(react_native_1.View, { style: styles.stylePrice },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.titlePrice }, "Gia\u0301 di\u0323ch vu\u0323:"),
@@ -118,21 +118,41 @@ var DetailViewBookSchedule = function () {
                         react_1["default"].createElement(react_native_1.Text, { style: styles.price }, detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.fee_transport.toLocaleString('vi-VN')),
                         react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VN\u0110")))),
             react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
-                react_1["default"].createElement(react_native_1.View, null,
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.dateTime }, moment_1["default"](detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.updatedAt).format('DD/MM/YYYY HH:mm'))),
+                react_1["default"].createElement(react_native_1.View, { style: { width: "50%" } }),
                 react_1["default"].createElement(react_native_1.View, { style: styles.paymentContainer },
                     react_1["default"].createElement(react_native_1.View, { style: styles.payment },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.price }, "T\u00F4\u0309ng:"),
                         react_1["default"].createElement(react_native_1.View, { style: styles.prices },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.price }, totalPayment.toLocaleString('vi-VN')),
                             react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VN\u0110")))))),
-        detailBookings && (react_1["default"].createElement(react_native_1.View, { style: styles.buttonEven }, (detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.status) === 'Đã hủy đơn' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
+        react_1["default"].createElement(react_native_1.View, { style: styles.buttonEven }, detailBookings && (detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.status) === 'Đã hủy đơn' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
+            react_1["default"].createElement(react_native_1.View, { style: { width: '100%' } },
+                react_1["default"].createElement(react_native_1.View, { style: styles.background },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "\u0110\u0103\u0323t la\u0323i")))))),
+        react_1["default"].createElement(react_native_1.View, { style: styles.buttonEven }, detailBookings && (detailBookings === null || detailBookings === void 0 ? void 0 : detailBookings.status) === 'Đã sửa thành công' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
             react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
                 react_1["default"].createElement(react_native_1.View, { style: styles.background },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "\u0110\u0103\u0323t la\u0323i")))))))));
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "\u0110\u0103\u0323t la\u0323i"))))))));
 };
 exports["default"] = DetailViewBookSchedule;
 var styles = react_native_1.StyleSheet.create({
+    infoUserssss: {
+        fontSize: 16,
+        color: '#394C6D',
+        fontWeight: 'bold',
+        width: '40%'
+    },
+    infoUsersss: {
+        fontSize: 16,
+        color: 'blue',
+        width: '60%'
+    },
+    timeBook: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '90%'
+    },
     content: {
         shadowColor: '#000',
         shadowOffset: {
@@ -183,7 +203,7 @@ var styles = react_native_1.StyleSheet.create({
     buttonEven: {
         alignItems: 'center',
         justifyContent: 'space-between',
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2
@@ -208,7 +228,7 @@ var styles = react_native_1.StyleSheet.create({
     background: {
         backgroundColor: '#394C6D',
         borderRadius: 5,
-        width: '90%',
+        width: '100%',
         height: 40,
         marginVertical: 10,
         alignItems: 'center',
@@ -246,7 +266,7 @@ var styles = react_native_1.StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: 10
+        paddingBottom: 20
     },
     img: {
         width: '100%',
@@ -292,10 +312,11 @@ var styles = react_native_1.StyleSheet.create({
     },
     loadingText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'gray',
-        textAlign: 'center',
-        marginTop: 10
+        alignItems: 'center',
+        marginTop: 10,
+        marginHorizontal: 20,
+        width: 50,
+        height: 50
     },
     waitPayment: {
         color: '#394C6D'

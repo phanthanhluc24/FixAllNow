@@ -26,7 +26,8 @@ const useEditInfoService = async(formData: any) => {
     }
     return response;
 }catch(error:any){
- 
+    console.log(error.status.message);
+    
   throw error;
 };
 }

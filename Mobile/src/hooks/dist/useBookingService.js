@@ -36,12 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var react_1 = require("react");
 var async_storage_1 = require("@react-native-async-storage/async-storage");
 var axios_1 = require("axios");
 var url_1 = require("./apiRequest/url");
 var react_native_alert_notification_1 = require("react-native-alert-notification");
 var native_1 = require("@react-navigation/native");
 var useBookingService = function () {
+    var _a = react_1.useState(false), isLoading = _a[0], setIsLoading = _a[1];
     var navigation = native_1.useNavigation();
     var bookingService = function (data, service_id, category_id) { return __awaiter(void 0, void 0, void 0, function () {
         var accessToken, response, error_1;
@@ -60,6 +62,7 @@ var useBookingService = function () {
                         })];
                 case 3:
                     response = _a.sent();
+                    setIsLoading(true);
                     if (response.data.status === 200) {
                         navigation.navigate("Root", { reload: true });
                         react_native_alert_notification_1.Toast.show({
@@ -68,19 +71,21 @@ var useBookingService = function () {
                             textBody: 'Bạn đặt lịch sửa thành công! Vui lòng chờ xác nhận'
                         });
                     }
+                    else {
+                        react_native_alert_notification_1.Toast.show({
+                            type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
+                            title: 'Thất bại',
+                            textBody: 'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn'
+                        });
+                    }
                     return [3 /*break*/, 5];
                 case 4:
                     error_1 = _a.sent();
-                    react_native_alert_notification_1.Toast.show({
-                        type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
-                        title: 'Thất bại',
-                        textBody: 'Bạn đặt lịch sửa chữa không thành công'
-                    });
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
         });
     }); };
-    return { bookingService: bookingService };
+    return { bookingService: bookingService, isLoading: isLoading };
 };
 exports["default"] = useBookingService;

@@ -47,6 +47,8 @@ var react_native_alert_notification_1 = require("react-native-alert-notification
 var FormAddNewService = function () {
     var navigation = native_1.useNavigation();
     var _a = react_1.useState(null), singleFile = _a[0], setSingleFile = _a[1];
+    var _b = react_1.useState(false), loading = _b[0], setLoading = _b[1];
+    var _c = react_1.useState(''), errorImage = _c[0], setErrorImage = _c[1];
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
         return __generator(this, function (_a) {
@@ -59,6 +61,7 @@ var FormAddNewService = function () {
                 case 1:
                     res = (_a.sent())[0];
                     setSingleFile(res);
+                    setErrorImage('');
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
@@ -73,10 +76,13 @@ var FormAddNewService = function () {
             }
         });
     }); };
-    var _b = react_hook_form_1.useForm(), control = _b.control, handleSubmit = _b.handleSubmit, errors = _b.formState.errors, setError = _b.setError;
+    var _d = react_hook_form_1.useForm(), control = _d.control, handleSubmit = _d.handleSubmit, errors = _d.formState.errors, setError = _d.setError;
     var sendData = useAddNewService_1["default"]().sendData;
     var hasLettersAndNoNumbers = function (value) {
         return /[a-zA-Z]/.test(value) && !/\d/.test(value);
+    };
+    var hasNoIcons = function (value) {
+        return !/[^\p{L}\p{N}\s]/u.test(value);
     };
     var onSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
         var errorFields, responseData, error_1;
@@ -84,6 +90,7 @@ var FormAddNewService = function () {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
+                    setLoading(true);
                     errorFields = [];
                     if (!data.service_name.trim())
                         errorFields.push('service_name');
@@ -93,23 +100,34 @@ var FormAddNewService = function () {
                         errorFields.push('desc');
                     if (errorFields.length > 0) {
                         setError(errorFields.map(function (field) { return ({ type: 'manual', name: field }); }));
+                        setLoading(false);
                         return [2 /*return*/];
                     }
-                    data.image = singleFile;
+                    if (!singleFile) {
+                        setErrorImage('Ảnh không được để trống');
+                        setLoading(false);
+                        return [2 /*return*/];
+                    }
+                    else {
+                        data.image = singleFile;
+                    }
                     return [4 /*yield*/, sendData(data)];
                 case 1:
                     responseData = _a.sent();
                     if (responseData) {
+                        setLoading(false);
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
                             title: 'Thành công',
-                            textBody: "Dịch vụ đã thêm thành công!"
+                            textBody: 'Dịch vụ đã thêm thành công!'
                         });
                         navigation.navigate('Profile', { reload: true });
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
+                    console.error('Error:', error_1);
+                    setLoading(false);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -123,15 +141,26 @@ var FormAddNewService = function () {
     };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
+            react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
+                    setLoading(false);
+                } },
+                react_1["default"].createElement(react_native_1.View, { style: styles.modalContainer },
+                    react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
+                        react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
+                            react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.formEdit },
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "T\u00EAn di\u0323ch vu\u0323 "),
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
                             return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "service_name", rules: { required: '* Tên không được bỏ trống', validate: function (value) {
-                                return hasLettersAndNoNumbers(value) || '* Tên không được chỉ chứa số';
-                            } }, defaultValue: "" }),
+                        }, name: "service_name", rules: {
+                            required: '* Tên không được bỏ trống',
+                            validate: function (value) {
+                                return (hasLettersAndNoNumbers(value) && hasNoIcons(value)) ||
+                                    '* Tên không được chỉ chứa số và kí hiệu riêng';
+                            }
+                        }, defaultValue: "" }),
                     errors.service_name && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.service_name.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "Gia\u0301 di\u0323ch vu\u0323"),
@@ -149,12 +178,17 @@ var FormAddNewService = function () {
                     react_1["default"].createElement(react_hook_form_1.Controller, { control: control, render: function (_a) {
                             var _b = _a.field, onChange = _b.onChange, onBlur = _b.onBlur, value = _b.value;
                             return (react_1["default"].createElement(react_native_1.TextInput, { style: styles.inputInfo, onBlur: onBlur, onChangeText: onChange, value: value }));
-                        }, name: "desc", rules: { required: '* Mô tả không được bỏ trống', validate: function (value) {
-                                return hasLettersAndNoNumbers(value) || '* Mô tả không được chỉ chứa số';
-                            } }, defaultValue: "" }),
+                        }, name: "desc", rules: {
+                            required: '* Mô tả không được bỏ trống',
+                            validate: function (value) {
+                                return hasLettersAndNoNumbers(value) ||
+                                    '* Mô tả không được chỉ chứa số';
+                            }
+                        }, defaultValue: "" }),
                     errors.desc && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.desc.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.part },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "A\u0309nh bi\u0300a di\u0323ch vu\u0323"),
+                    react_1["default"].createElement(react_native_1.View, { style: styles.messageError }, errorImage ? (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errorImage)) : null),
                     !!singleFile || (react_1["default"].createElement(react_native_1.View, { style: styles.selectedImage },
                         react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: selectFile, activeOpacity: 0.5 },
                             react_1["default"].createElement(react_native_1.View, { style: styles.imageView },
@@ -177,6 +211,23 @@ var FormAddNewService = function () {
 };
 exports["default"] = FormAddNewService;
 var styles = react_native_1.StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        elevation: 5
+    },
+    messageError: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 10
+    },
     buttonChoose: {
         width: '100%'
     },

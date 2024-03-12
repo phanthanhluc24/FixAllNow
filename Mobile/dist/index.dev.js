@@ -45,17 +45,10 @@ var sound = new _reactNativeSound["default"](require('../Mobile/src/assets/mussi
   });
 });
 (0, _messaging["default"])().onMessage(function _callee2(message) {
-  var role;
   return regeneratorRuntime.async(function _callee2$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
-          return regeneratorRuntime.awrap(_asyncStorage["default"].getItem('roleCurrentUser'));
-
-        case 2:
-          role = _context2.sent;
-
           _reactNativeAlertNotification.Toast.show({
             type: _reactNativeAlertNotification.ALERT_TYPE.INFO,
             title: "".concat(message.notification.title),
@@ -70,7 +63,7 @@ var sound = new _reactNativeSound["default"](require('../Mobile/src/assets/mussi
             }
           });
 
-        case 5:
+        case 2:
         case "end":
           return _context2.stop();
       }

@@ -68,7 +68,7 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#394C6D',
+    backgroundColor: 'white',
   },
   containers: {
     flex: 1,
