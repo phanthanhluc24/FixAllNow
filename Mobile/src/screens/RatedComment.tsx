@@ -21,7 +21,7 @@ import {useRoute} from '@react-navigation/native';
 const RatedComment = () => {
   const [loading, setLoading] = useState(false);
   const route = useRoute();
-  const {service_id}: any = route.params;
+  const {service_id,booking_id}: any = route.params;
   const navigation: any = useNavigation();
   const [content, setContent] = useState('');
   const [star, setStar] = useState(0);
@@ -52,7 +52,7 @@ const RatedComment = () => {
       content: data.content,
       star: data.star.toString(),
     };
-    const responseData = await sendData(body, service_id);
+    const responseData = await sendData(body, service_id,booking_id);
     if (responseData) {
       setLoading(false);
       Toast.show({
