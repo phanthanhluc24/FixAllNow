@@ -15,13 +15,12 @@ import useRepairmanFinderGetStatusBooking from '../hooks/useRepairmanFinderGetSt
 import useGetBookingNotYetRated from '../hooks/useGetBookingNotYetRated';
 const RepairmanFinderConfirmRatingComment = () => {
   const navigation: any = useNavigation();
-  const navigateToRateCommentPage = (item: any) => () => {
-    console.log(item);
-
-    navigation.navigate('RatedComment', {service_id: item});
+  const navigateToRateCommentPage = (service_id:any,booking_id:any) => () => {
+    navigation.navigate('RatedComment', {service_id: service_id,booking_id:booking_id});
   };
   const {bookingNotYetrating, isLoading, isError}: any =
     useGetBookingNotYetRated();
+    
   if (isLoading) {
     return (
       <View style={{alignItems: 'center'}}>
@@ -74,7 +73,7 @@ const RepairmanFinderConfirmRatingComment = () => {
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.cartService}
-            onPress={navigateToRateCommentPage(item.service_id._id)}>
+            onPress={navigateToRateCommentPage(item.service_id._id,item._id)}>
             <View>
               <View style={styles.content}>
                 <View style={styles.image}>
