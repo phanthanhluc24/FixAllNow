@@ -26,6 +26,8 @@ interface BookingDetail {
   fee_transport: number;
   fee_service: number;
   payment: string;
+  day_repair:any;
+  time_repair:any;
   user_id: {
     full_name: string;
     email: string;

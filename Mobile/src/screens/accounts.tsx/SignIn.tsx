@@ -145,7 +145,7 @@ const SignIn = ({navigation}: any) => {
                     </View>
                   </View>
 
-                  <TouchableOpacity
+                  <TouchableOpacity testID="1232"
                     style={styles.buttonLogin}
                     onPress={(e: GestureResponderEvent) => handleSubmit()}>
                     <Text style={styles.textLgoin}>Đăng nhập</Text>
@@ -286,10 +286,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    marginTop: '70%',
-    zIndex: 3,
     height: 50,
+    marginTop:20
   },
   form: {
     position: 'absolute',
