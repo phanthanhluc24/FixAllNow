@@ -31,9 +31,16 @@ const EditAvatarCurrentUser = ({route}: any) => {
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.images, DocumentPicker.types.video],
       });
-      setSingleFile(res);
+      if (res.type === 'image') {
+       
+        setSingleFile(res);
+      } 
+      else if (res.type === 'video') {
+        console.log("Bạn đã chọn một video. Vui lòng chọn một hình ảnh.");
+      }
+  
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {

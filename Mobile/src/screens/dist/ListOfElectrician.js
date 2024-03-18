@@ -4,6 +4,7 @@ var react_native_1 = require("react-native");
 var react_1 = require("react");
 var native_1 = require("@react-navigation/native");
 var react_native_loader_kit_1 = require("react-native-loader-kit");
+var FontAwesome_1 = require("react-native-vector-icons/FontAwesome");
 var useGetListRepairmanOfCategorySpecific_1 = require("../hooks/useGetListRepairmanOfCategorySpecific");
 var ListOfElectrician = function (_a) {
     var route = _a.route;
@@ -21,6 +22,14 @@ var ListOfElectrician = function (_a) {
     if (listRepairmanOfCategory.length <= 0) {
         return react_1["default"].createElement(react_native_1.Text, null, "Ch\u01B0a co\u0301 danh mu\u0323c na\u0300o!");
     }
+    //show star rating
+    var renderStars = function (averageStar) {
+        var stars = [];
+        for (var i = 1; i <= 5; i++) {
+            stars.push(react_1["default"].createElement(FontAwesome_1["default"], { key: i, name: averageStar >= i ? 'star' : 'star-o', size: 20, color: averageStar >= i ? '#FFD700' : '#FFFFFF' }));
+        }
+        return stars;
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.repairmanPopular },
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
             react_1["default"].createElement(react_native_1.Text, { style: styles.title }, "Th\u01A1\u0323 n\u00F4\u0309i b\u00E2\u0323t"),
@@ -40,15 +49,7 @@ var ListOfElectrician = function (_a) {
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman },
                                         item.full_name,
                                         " "),
-                                    react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, item.averageStar < 1 ? (react_1["default"].createElement(react_1["default"].Fragment, null,
-                                        react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
-                                            item.averageStar,
-                                            "/5"),
-                                        react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/emptyStar.png') }))) : (react_1["default"].createElement(react_1["default"].Fragment, null,
-                                        react_1["default"].createElement(react_native_1.Text, { style: styles.averageStar },
-                                            item.averageStar,
-                                            "/5"),
-                                        react_1["default"].createElement(react_native_1.Image, { style: styles.iconStar, source: require('../assets/Homes/starIcon.png') }))))))));
+                                    react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, renderStars(item.averageStar))))));
                     } })))));
 };
 exports["default"] = ListOfElectrician;
@@ -115,7 +116,9 @@ var styles = react_native_1.StyleSheet.create({
     img: {
         width: 100,
         height: 100,
-        borderRadius: 50
+        borderRadius: 50,
+        borderWidth: 3,
+        borderColor: "#394C6D"
     },
     nameRepairman: {
         fontSize: 18,

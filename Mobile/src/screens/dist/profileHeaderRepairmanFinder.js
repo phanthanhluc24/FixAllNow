@@ -39,6 +39,7 @@ exports.__esModule = true;
 var react_native_1 = require("react-native");
 var react_1 = require("react");
 var Entypo_1 = require("react-native-vector-icons/Entypo");
+var AntDesign_1 = require("react-native-vector-icons/AntDesign");
 var MaterialIcons_1 = require("react-native-vector-icons/MaterialIcons");
 var useGetCurrentUser_1 = require("../hooks/useGetCurrentUser");
 var native_1 = require("@react-navigation/native");
@@ -49,7 +50,7 @@ var react_native_document_picker_1 = require("react-native-document-picker");
 var ProfileHeaderRepairmanFinder = function () {
     var navigation = native_1.useNavigation();
     var logout = useLogout_1["default"]().logout;
-    var _a = react_1.useState(""), token = _a[0], setToken = _a[1];
+    var _a = react_1.useState(''), token = _a[0], setToken = _a[1];
     react_1.useEffect(function () {
         var getToken = function () { return __awaiter(void 0, void 0, void 0, function () {
             var accessToken;
@@ -96,7 +97,17 @@ var ProfileHeaderRepairmanFinder = function () {
             }
         });
     }); };
+    var onNavigation = function () {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Root' }]
+        });
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.profileHeader },
+        react_1["default"].createElement(react_native_1.View, { style: styles.back },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconBack, onPress: onNavigation },
+                react_1["default"].createElement(AntDesign_1["default"], { name: "arrowleft", color: "#000000", size: 25 })),
+            react_1["default"].createElement(react_native_1.View, { style: styles.spaceRight })),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro },
                 react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } }),
@@ -109,7 +120,11 @@ var ProfileHeaderRepairmanFinder = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.info },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.nameProfile }, currentUser === null || currentUser === void 0 ? void 0 : currentUser.full_name)),
                     react_1["default"].createElement(react_native_1.View, { style: styles.buttonEvent },
-                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () { return navigation.navigate('EditInfoCurrentUser', { user: currentUser }); } },
+                        react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconEdit, onPress: function () {
+                                return navigation.navigate('EditInfoCurrentUser', {
+                                    user: currentUser
+                                });
+                            } },
                             react_1["default"].createElement(Entypo_1["default"], { name: "edit", size: 24, color: "white" })),
                         react_1["default"].createElement(ButtonLogout_1["default"], null))))),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoQuality },
@@ -130,6 +145,18 @@ var ProfileHeaderRepairmanFinder = function () {
 };
 exports["default"] = ProfileHeaderRepairmanFinder;
 var styles = react_native_1.StyleSheet.create({
+    iconBack: {
+        width: '20%'
+    },
+    spaceRight: {
+        width: '80%'
+    },
+    back: {
+        marginHorizontal: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     imageViews: {
         width: 30,
         height: 30,
@@ -143,9 +170,9 @@ var styles = react_native_1.StyleSheet.create({
         marginLeft: 50
     },
     buttonEvent: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        width: "100%",
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
         marginRight: 25
     },
     detailEmail: {
@@ -190,10 +217,10 @@ var styles = react_native_1.StyleSheet.create({
         width: 100,
         height: 40,
         marginVertical: 5,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 10,
-        backgroundColor: "#394C6D"
+        backgroundColor: '#394C6D'
     },
     info: {
         alignItems: 'center'
@@ -218,17 +245,17 @@ var styles = react_native_1.StyleSheet.create({
     },
     profileHeader: {
         flex: 1,
-        backgroundColor: '#fffff0'
+        backgroundColor: '#ffffff'
     },
     infoProfile: {
-        marginHorizontal: 20
+        marginHorizontal: 10
     },
     avatarProfile: {
         width: 70,
         height: 70,
         borderRadius: 50,
         borderWidth: 3,
-        borderColor: "#394C6D"
+        borderColor: '#394C6D'
     },
     avatarPro: {
         alignItems: 'center',

@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-community/datetimepicker": "^7.6.2",
+    "@react-native-community/geolocation": "^3.2.0",
     "@react-native-firebase/app": "^18.9.0",
     "@react-native-firebase/messaging": "^18.9.0",
     "@react-native-picker/picker": "^2.6.1",
@@ -35,13 +36,14 @@
     "react-hook-form": "^7.50.1",
     "react-native": "0.73.1",
     "react-native-alert-notification": "^0.4.0",
+    
     "react-native-datepicker": "^1.7.2",
     "react-native-document-picker": "^9.1.1",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-elements": "^3.4.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.14.1",
-    "react-native-image-picker": "^7.1.0",
+    "react-native-image-picker": "^7.1.1",
     "react-native-loader-kit": "^2.0.8",
     "react-native-maps": "^1.10.3",
     "react-native-notification": "^2.0.0",

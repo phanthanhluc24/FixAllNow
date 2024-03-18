@@ -58,11 +58,16 @@ var EditAvatarCurrentUser = function (_a) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, react_native_document_picker_1["default"].pick({
-                            type: [react_native_document_picker_1["default"].types.allFiles]
+                            type: [react_native_document_picker_1["default"].types.images, react_native_document_picker_1["default"].types.video]
                         })];
                 case 1:
                     res = (_a.sent())[0];
-                    setSingleFile(res);
+                    if (res.type === 'image') {
+                        setSingleFile(res);
+                    }
+                    else if (res.type === 'video') {
+                        console.log("Bạn đã chọn một video. Vui lòng chọn một hình ảnh.");
+                    }
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();

@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import LoaderKit from 'react-native-loader-kit';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import useGetListRepairmanOfCategorySpecific from '../hooks/useGetListRepairmanOfCategorySpecific';
 interface typeRepairman {
   _id: string;
@@ -45,6 +46,21 @@ const ListOfElectrician = ({route}: any) => {
   if (listRepairmanOfCategory.length <= 0) {
     return <Text>Chưa có danh mục nào!</Text>;
   }
+  //show star rating
+  const renderStars = (averageStar: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesome
+          key={i}
+          name={averageStar >= i ? 'star' : 'star-o'}
+          size={20}
+          color={averageStar >= i ? '#FFD700' : '#FFFFFF'}
+        />,
+      );
+    }
+    return stars;
+  };
   return (
     <View style={styles.repairmanPopular}>
       <View style={styles.container}>
@@ -69,27 +85,7 @@ const ListOfElectrician = ({route}: any) => {
                   <View style={styles.infoRepairman}>
                     <Text style={styles.nameRepairman}>{item.full_name} </Text>
                     <View style={styles.divInfo}>
-                      {item.averageStar < 1 ? (
-                        <>
-                          <Text style={styles.averageStar}>
-                            {item.averageStar}/5
-                          </Text>
-                          <Image
-                            style={styles.iconStar}
-                            source={require('../assets/Homes/emptyStar.png')}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Text style={styles.averageStar}>
-                            {item.averageStar}/5
-                          </Text>
-                          <Image
-                            style={styles.iconStar}
-                            source={require('../assets/Homes/starIcon.png')}
-                          />
-                        </>
-                      )}
+                    {renderStars(item.averageStar)}
                     </View>
                   </View>
                 </View>
@@ -170,6 +166,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+    borderWidth:3,
+    borderColor:"#394C6D"
   },
   nameRepairman: {
     fontSize: 18,

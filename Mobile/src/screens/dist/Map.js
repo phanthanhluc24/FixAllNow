@@ -139,26 +139,23 @@ var MapBookingScreen = function (_a) {
     }); };
     ////lấy vị trí hiện tại 101B lê hữu trác đà nẵng 100 ngô quyền đà nẵng
     var getReverseGeocoding = function (latitude, longitude) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, display_name, error_2;
+        var apiKey_1, response, display_name, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("huu lấy tên địa chỉ", latitude, longitude);
-                    _a.label = 1;
+                    _a.trys.push([0, 2, , 3]);
+                    apiKey_1 = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
+                    return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/reverse.php?key=" + apiKey_1 + "&lat=" + latitude + "&lon=" + longitude + "&format=json")];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=" + latitude + "&lon=" + longitude + "&format=json")];
-                case 2:
                     response = _a.sent();
-                    display_name = response.data.data.display_name;
-                    console.log('display', display_name);
+                    display_name = response.data.display_name;
+                    // console.log('display', display_name);
                     return [2 /*return*/, display_name];
-                case 3:
+                case 2:
                     error_2 = _a.sent();
-                    console.log("adress", error_2.message);
                     // console.error('Lỗi khi lấy địa chỉ từ tọa độ:', error);
                     return [2 /*return*/, null];
-                case 4: return [2 /*return*/];
+                case 3: return [2 /*return*/];
             }
         });
     }); };
@@ -170,12 +167,10 @@ var MapBookingScreen = function (_a) {
                     switch (_b.label) {
                         case 0:
                             _a = position.coords, latitude = _a.latitude, longitude = _a.longitude;
-                            console.log('Latitude hiện tại:', latitude);
-                            console.log('Longitude hiện tại:', longitude);
                             return [4 /*yield*/, getReverseGeocoding(latitude, longitude)];
                         case 1:
                             address = _b.sent();
-                            console.log('Địa chỉ hiện tại:', address);
+                            // console.log('Địa chỉ hiện tại:', address);
                             setCurrentLocation({ latitude: latitude, longitude: longitude, address: address });
                             return [2 /*return*/];
                     }
@@ -279,7 +274,7 @@ var MapBookingScreen = function (_a) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("https://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + destinationLocation.latitude + "," + destinationLocation.longitude + "&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM")];
+                    return [4 /*yield*/, axios_1["default"].get("https://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + destinationLocation.latitude + "," + destinationLocation.longitude + "&key=YOUR_API_KEY")];
                 case 2:
                     response = _a.sent();
                     routes = response.data.routes;

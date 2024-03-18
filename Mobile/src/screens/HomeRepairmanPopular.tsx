@@ -95,7 +95,7 @@ const HomeRepairmanPopular = () => {
             <View style={styles.content}>
               <Image source={{uri: item.avatar}} style={styles.img} />
               <View style={styles.infoRepairman}>
-                <Text style={styles.nameRepairman}>{item.full_name} </Text>
+                <Text numberOfLines={2} style={styles.nameRepairman}>{item.full_name} </Text>
                 <View style={styles.divInfo}>
                   {renderStars(item.averageStar)}
                 </View>
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   },
   infoRepairman: {
     marginHorizontal: 20,
+    width:"100%"
   },
 
   img: {

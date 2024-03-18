@@ -41,7 +41,7 @@ var HomeCategories = function () {
                                     react_1["default"].createElement(react_native_1.Text, { numberOfLines: 3, style: styles.detaildemo }, item.desc)),
                                 react_1["default"].createElement(react_native_1.View, { style: { width: '30%' } },
                                     react_1["default"].createElement(react_native_1.Image, { style: styles.logoSetting, source: require('../assets/Homes/logo_setting.png') })))))));
-            }, ref: carouselRef, sliderWidth: width, itemWidth: width - 30, loop: true, autoplayInterval: 3000, enableSnap: true, onSnapToItem: function (index) { return setCurrentIndex(index); }, autoplay: true }),
+            }, ref: carouselRef, sliderWidth: width, itemWidth: width - 30, loop: true, autoplayInterval: 5000, enableSnap: true, onSnapToItem: function (index) { return setCurrentIndex(index); }, autoplay: true }),
         react_1["default"].createElement(react_native_1.View, { style: styles.detailCategory },
             react_1["default"].createElement(react_native_1.FlatList, { data: categories, keyExtractor: function (categories) { return categories._id; }, numColumns: 3, renderItem: function (_a) {
                     var item = _a.item;

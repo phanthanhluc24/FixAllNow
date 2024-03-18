@@ -6,7 +6,7 @@ var useAutoplay = function (length, currentIndex, setCurrentIndex) {
         var autoplayTimer = setInterval(function () {
             var nextIndex = (currentIndex + 1) % length;
             setCurrentIndex(nextIndex);
-        }, 1200000);
+        }, 5000);
         return function () { return clearInterval(autoplayTimer); };
     }, [currentIndex, length, setCurrentIndex]);
 };

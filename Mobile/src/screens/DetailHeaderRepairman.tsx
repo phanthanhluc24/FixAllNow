@@ -28,6 +28,7 @@ interface typeService {
 interface typeRateComment {
   _id: string;
   content: String;
+  createAt:any;
   star: number;
   updatedAt: string;
   commenter_id: {
@@ -45,8 +46,16 @@ const DetailHeaderRepairman = ({repairman_id}: any) => {
   const [showMoreComments, setShowMoreComments] = useState(false);
   const [commentsToShow, setCommentsToShow] = useState(3);
   const toggleShowMoreComments = () => {
-    setShowMoreComments(true);
-    setCommentsToShow(commentsToShow + 3);
+    const remainingComments = rateComment.length - commentsToShow;
+    if (remainingComments > 0 && remainingComments <= 3) {
+      setCommentsToShow(commentsToShow + remainingComments);
+    } 
+    else if (remainingComments > 0) {
+      setCommentsToShow(commentsToShow + 3);
+    } 
+    else {
+      setShowMoreComments(false);
+    }
   };
   const navigation: any = useNavigation();
   if (isLoading) {
@@ -211,7 +220,7 @@ const DetailHeaderRepairman = ({repairman_id}: any) => {
                     </TouchableOpacity>
                   )})}
                 {!showMoreComments && rateComment.length > commentsToShow && (
-                  <TouchableOpacity onPress={toggleShowMoreComments} style={{alignItems:"center", justifyContent:"center"}}>
+                  <TouchableOpacity onPress={toggleShowMoreComments} style={{alignItems:"center", justifyContent:"center", marginBottom:20}}>
                     <Text style={styles.noService}>Xem thêm</Text>
                   </TouchableOpacity>
                 )}

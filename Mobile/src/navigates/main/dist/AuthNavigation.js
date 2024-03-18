@@ -7,6 +7,7 @@ var stack_1 = require("@react-navigation/stack");
 var Landing_1 = require("../../screens/Landing");
 var Welcome_1 = require("../../screens/Welcome");
 var SignIn_1 = require("../../screens/accounts.tsx/SignIn");
+var ForgotPassword_1 = require("../../screens/accounts.tsx/ForgotPassword");
 var queryClient = new react_query_1.QueryClient();
 var AuthNavigation = function () {
     var navigation = native_1.useNavigation();
@@ -30,6 +31,7 @@ var AuthNavigation = function () {
         react_1["default"].createElement(Stack.Navigator, null,
             react_1["default"].createElement(Stack.Screen, { name: "Welcome", component: Welcome_1["default"], options: { headerShown: false } }),
             react_1["default"].createElement(Stack.Screen, { name: "Landing", component: Landing_1["default"], options: { headerShown: false } }),
-            react_1["default"].createElement(Stack.Screen, { name: "SignIn", component: SignIn_1["default"], options: { headerShown: false } }))));
+            react_1["default"].createElement(Stack.Screen, { name: "SignIn", component: SignIn_1["default"], options: { headerShown: false } }),
+            react_1["default"].createElement(Stack.Screen, { name: "ForgotPassword", component: ForgotPassword_1["default"], options: { headerShown: false } }))));
 };
 exports["default"] = AuthNavigation;

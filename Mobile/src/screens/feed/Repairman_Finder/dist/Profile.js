@@ -77,7 +77,7 @@ var Profile = function () {
         react_1["default"].createElement(ProfileBodyRepairmanFinder_1["default"], null))); };
     return (react_1["default"].createElement(react_1["default"].Fragment, null, roleCurrentUser !== null && roleCurrentUser === 'USR' ? (react_1["default"].createElement(react_native_1.View, { style: styles.containers },
         react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderProfileBodyRepairmanfinder, ListHeaderComponent: renderProfileHeaderRepairmanfinder }))) : (react_1["default"].createElement(react_native_1.View, { style: styles.container },
-        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderProfileServiceRepairman, ListHeaderComponent: renderProfileHeaderRepairman })))));
+        react_1["default"].createElement(react_native_1.FlatList, { data: data, keyExtractor: function (item) { return item.key; }, renderItem: renderProfileHeaderRepairman })))));
 };
 exports["default"] = Profile;
 var styles = react_native_1.StyleSheet.create({

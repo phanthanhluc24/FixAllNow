@@ -1,64 +1,42 @@
-import {
-  StyleSheet,
+import {  StyleSheet,
   Text,
   View,
   Button,
   Image,
   TextInput,
   TouchableOpacity,
-  PermissionsAndroid,
-  Modal,
-} from 'react-native';
+  PermissionsAndroid } from 'react-native'
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import MapView, {Marker, Polyline} from 'react-native-maps';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
-import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Geolocation from '@react-native-community/geolocation';
-import moment from 'moment';
-// import { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
-
-import { useNavigation } from '@react-navigation/native';
+const apiKey = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
 interface LocationData {
   latitude: number | null;
   longitude: number | null;
   address: string;
 }
-interface BookingInfo {
-  infoServiceBooking: any; 
-  address: string | null;
-  bugService: string;
-  date: string;
-  time: string;
-  locationData: LocationData; 
-}
-
-const apiKey = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
-const MapBookingScreen = ({route}: any) => {
-  const {serviceInfo} = route.params;
-  // console.log(serviceInfo);
-  const navigation:any= useNavigation();
-  const userInfo = serviceInfo;
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedDestination, setSelectedDestination] = useState('');
-  const [currentDateTime, setCurrentDateTime] = useState({
-    date: '',
-    time: '',
-  });
-  const [inputValue, setInputValue] = useState('');
+const RepairmanViewAddressRepair = ({route}: any) => {
+  const {detailBooking} = route.params;
+  console.log("hellohelo", detailBooking);
+  
+  const repairmanFinderAddress = detailBooking;
   const {currentUser}: any = useGetCurrentUser();
+  console.log(currentUser);
+  
   const [location, setLocation] = useState<LocationData | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number, address: string | null, description: string | null } | null>(null);
   const [destination, setDestination] = useState('');
   const [destinationLocation, setDestinationLocation] = useState<LocationData | null>(null);
   const [polylineCoords, setPolylineCoords] = useState([]);
   const [shouldShowMapView, setShouldShowMapView] = useState(false);
-  // lấy địa chỉ của repairman
+
   const fetchLocation = async () => {
     try {
-      const address = userInfo.user_id.address;
+      const address = repairmanFinderAddress.address;
+      console.log(address);
+      
       // console.log('address', address);
       const response = await axios.get(
         `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${address}&format=json`,
@@ -78,88 +56,13 @@ const MapBookingScreen = ({route}: any) => {
     fetchLocation();
   }, []);
 
-  // Hàm yêu cầu quyền truy cập vị trí từ người dùng
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Ứng dụng cần truy cập vị trí',
-          message:
-            'Cho phép ứng dụng truy cập vị trí để sử dụng tính năng này.',
-          buttonPositive: 'Đồng ý',
-          buttonNeutral: 'Hỏi lại tôi sau',
-          buttonNegative: 'Hủy',
-        },
-      );
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        Toast.show({
-          type: ALERT_TYPE.SUCCESS,
-          title: 'Thành công',
-          textBody: 'Quyền truy cập vị trí đã được cấp phép!',
-        });
-        getCurrentLocation();
-      } else {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Cảnh báo',
-          textBody: 'Quyền truy cập vị trí bị từ chối!',
-        });
-      }
-    } catch (err) {
-      // console.warn(err);
-    }
-  };
-  ////lấy vị trí hiện tại 101B lê hữu trác đà nẵng 100 ngô quyền đà nẵng
-  const getReverseGeocoding = async (latitude :number, longitude:number) => {
-    console.log("huu lấy tên địa chỉ", latitude, longitude);
-    
-    try {
-      const response = await axios.get(
-        `https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=${latitude}&lon=${longitude}&format=json`,
-      );
-      const {display_name} = response.data.data;
-      console.log('display', display_name);
-
-      return display_name;
-    } catch (error:any) {
-      console.log("adress",error.message);
-      
-      // console.error('Lỗi khi lấy địa chỉ từ tọa độ:', error);
-      return null;
-    }
-  };
-  const getCurrentLocation = async () => {
-    Geolocation.getCurrentPosition(
-      async (position:any) => {
-        const {latitude, longitude}:any = position.coords;
-        console.log('Latitude hiện tại:', latitude);
-        console.log('Longitude hiện tại:', longitude);
-        const address = await getReverseGeocoding(latitude, longitude);
-        console.log('Địa chỉ hiện tại:', address);
-        setCurrentLocation({latitude, longitude, address});
-      },
-      (error:any) => console.error('Lỗi khi lấy vị trí hiện tại:', error),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-  };
-  useEffect(() => {
-    requestLocationPermission();
-    Geolocation.getCurrentPosition(info=> {
-      setCurrentLocation(info.coords);
-    });
-  }, []);
-  // console.log('currentLocation: ', currentLocation);
-  const handleGetCurrentLocation = () => {
-    getCurrentLocation();
-  };
-
-  //Lấy địa chỉ của người tìm thợ
   const fetchDestinationLocation = async () => {
     try {
+      const addressRepairman = currentUser.address;
+      console.log(addressRepairman);
+      
       const response = await axios.get(
-        `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${destination}&format=json`,
+        `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${addressRepairman}&format=json`,
       );
       const data = response.data[0];
       setDestinationLocation({
@@ -172,35 +75,15 @@ const MapBookingScreen = ({route}: any) => {
       // console.error('Error:', error);
     }
   };
-
-  //hàm xử lý search
-  const handleDestinationChange = (text:any) => {
-    setDestination(text);
-    // Gọi hàm cập nhật polyline khi có sự thay đổi
-    updatePolyline();
-  };
-  // nút bấm tìm kiếm
-
-  const handleSearch = () => {
-    if (!destination.trim()) {
-      Toast.show({
-        type: ALERT_TYPE.WARNING,
-        title: 'Cảnh báo',
-        textBody: 'Vui lòng nhập địa chỉ cụ thể!',
-      });
-    } else {
-      fetchDestinationLocation();
-      updatePolyline();
-    }
-  };
-
+  useEffect(() => {
+    fetchDestinationLocation();
+  }, []);
   useEffect(() => {
     if (location && destinationLocation) {
       fetchDirection(); // fetch địa điểm sau khi cả hai điểm đã được xác định
       updatePolyline();
     }
   }, [location, destinationLocation]);
-  // xử lý gọi địa chỉ của cả repairman và repairman finder
   const fetchDirection = async () => {
     try {
       const response = await axios.get(
@@ -235,7 +118,6 @@ const MapBookingScreen = ({route}: any) => {
       }
     }
   };
-  //dùng decodePolyline để phân tích tuyến đường
   const decodePolyline = (encoded: string): { latitude: number; longitude: number }[] => {
     let index = 0;
     let len = encoded.length;
@@ -268,49 +150,6 @@ const MapBookingScreen = ({route}: any) => {
     }
     return polylineCoords;
   };
-  // modal xác nhận booking
-  const getCurrentDateTime = () => {
-    const currentDate = moment().format('DD/MM/YYYY');
-    const currentTime = moment().format('hh:mm:ss A');
-    setCurrentDateTime({date: currentDate, time: currentTime});
-  };
-  const handleConfirmBooking = () => {
-    if (!destination) {
-      Toast.show({
-        type: ALERT_TYPE.WARNING,
-        title: 'Cảnh báo',
-        textBody: 'Vui lòng nhập địa chỉ cần sửa!',
-      });
-    } else {
-      getCurrentDateTime();
-      setSelectedDestination(destination);
-      setModalVisible(true);
-    }
-  };
-  const [error, setError]= useState(false)
-  const handleInputChange = (text:any) => {
-    setInputValue(text);
-  };
-  // hàm truyền dữ liệu đã xác nhận qua component Confirm 1 lần nữa
-  const handleConfirmAndNavigate = () => {
-    if (!inputValue.trim()) {
-      // Nếu ô input không được điền, hiển thị thông báo lỗi
-     setError('Vui lòng nhập thông tin mô tả đầy đủ')
-    }
-    else{
-    setModalVisible(false);
-    const {date, time} = currentDateTime;
-    const infoBooking = {
-      infoServiceBooking: serviceInfo,
-      address: destinationLocation?.address,
-      bugService:inputValue,
-      date,
-      time,
-    };
-    // console.log("infoBooking map",infoBooking);
-    navigation.navigate('ConfirmInforBooking', {infoBooking: infoBooking});
-  }
-  };
   return (
     <View style={styles.container}>
       {shouldShowMapView && (
@@ -323,21 +162,6 @@ const MapBookingScreen = ({route}: any) => {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
           }}>
-          {/* vị trí hiện tại trên bản đồ */}
-          {currentLocation  && (
-            <Marker
-              coordinate={{
-                latitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
-              }}
-              title="Vị trí hiện tại của bạn"
-              description={currentLocation.address}>
-              <View style={styles.imageMarkerContainers}>
-                <View style={styles.address}></View>
-              </View>
-            </Marker>
-          )}
-
           {/* vị trí thợ */}
           {location && (
             <Marker
@@ -345,12 +169,12 @@ const MapBookingScreen = ({route}: any) => {
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
-              title="Địa chỉ thợ sửa"
+              title="Địa chỉ bạn sẽ đến sửa"
               description={location.address}>
               <View style={styles.imageMarkerContainer}>
                 <View style={styles.imageMarkerBorder}>
                   <Image
-                    source={{uri: userInfo.user_id.image}}
+                    source={{uri: repairmanFinderAddress.user_id.image}}
                     style={styles.imageMarker}
                   />
                 </View>
@@ -386,92 +210,11 @@ const MapBookingScreen = ({route}: any) => {
           )}
         </MapView>
       )}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nhập địa chỉ thợ sẽ đến?"
-          value={destination}
-          onChangeText={handleDestinationChange}
-          onSubmitEditing={handleSearch}
-        />
-        <TouchableOpacity style={styles.messageIcon} onPress={handleSearch}>
-          <Feather name="search" color="#394C6D" size={25} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputContainers}>
-        <TouchableOpacity
-          onPress={handleGetCurrentLocation}
-          style={styles.event}>
-          <Text>Chọn vị trí hiện tại</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleGetCurrentLocation}>
-          <Image
-            style={styles.iconMap}
-            source={require('../assets/Homes/iconMap.png')}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputContainerss}>
-        <TouchableOpacity style={styles.events} onPress={handleConfirmBooking}>
-          <Text style={styles.nameConfirm}>Xác nhận đặt lịch</Text>
-        </TouchableOpacity>
-      </View>
-      {/* Modal hiển thị địa chỉ */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.titleInfo}>
-              Giờ hiện tại:{'  '}
-              {currentDateTime.time}{' '}
-            </Text>
-
-            <Text style={styles.titleInfo}>
-              Ngày hiện tại:{'  '}
-              {currentDateTime.date}
-            </Text>
-
-            <Text style={styles.titleInfo}>
-              Địa chỉ đã chọn:{'  '}
-              {destinationLocation && destinationLocation.address}
-            </Text>
-            <TextInput
-              multiline={true}
-              style={styles.inputs}
-              placeholder="Mô tả thiết bị hư hỏng?"
-              value={inputValue}
-              onChangeText={handleInputChange}
-            />
-            <View style={{height:30}}>
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            </View>
-            
-            <TouchableOpacity style={styles.iconConfirm}>
-              <AntDesign
-                name="closecircleo"
-                color="#394C6D"
-                size={40}
-                onPress={() => setModalVisible(false)}
-              />
-              <AntDesign
-                name="checkcircleo"
-                color="green"
-                size={40}
-                onPress={handleConfirmAndNavigate}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
-  );
-};
-export default MapBookingScreen;
+  )
+}
+export default RepairmanViewAddressRepair
+
 const styles = StyleSheet.create({
   errorText:{
     color:"red"
@@ -649,4 +392,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})

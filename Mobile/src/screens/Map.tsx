@@ -113,19 +113,16 @@ const MapBookingScreen = ({route}: any) => {
   };
   ////lấy vị trí hiện tại 101B lê hữu trác đà nẵng 100 ngô quyền đà nẵng
   const getReverseGeocoding = async (latitude :number, longitude:number) => {
-    console.log("huu lấy tên địa chỉ", latitude, longitude);
-    
     try {
+      const apiKey = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
       const response = await axios.get(
-        `https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=${latitude}&lon=${longitude}&format=json`,
+        `https://us1.locationiq.com/v1/reverse.php?key=${apiKey}&lat=${latitude}&lon=${longitude}&format=json`,
       );
-      const {display_name} = response.data.data;
-      console.log('display', display_name);
+      const {display_name} = response.data;
+      // console.log('display', display_name);
 
       return display_name;
-    } catch (error:any) {
-      console.log("adress",error.message);
-      
+    } catch (error) {
       // console.error('Lỗi khi lấy địa chỉ từ tọa độ:', error);
       return null;
     }
@@ -133,11 +130,9 @@ const MapBookingScreen = ({route}: any) => {
   const getCurrentLocation = async () => {
     Geolocation.getCurrentPosition(
       async (position:any) => {
-        const {latitude, longitude}:any = position.coords;
-        console.log('Latitude hiện tại:', latitude);
-        console.log('Longitude hiện tại:', longitude);
+        const {latitude, longitude} = position.coords;
         const address = await getReverseGeocoding(latitude, longitude);
-        console.log('Địa chỉ hiện tại:', address);
+        // console.log('Địa chỉ hiện tại:', address);
         setCurrentLocation({latitude, longitude, address});
       },
       (error:any) => console.error('Lỗi khi lấy vị trí hiện tại:', error),
@@ -222,7 +217,7 @@ const MapBookingScreen = ({route}: any) => {
     if (location && destinationLocation) {
       try {
         const response = await axios.get(
-          `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM`,
+          `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=YOUR_API_KEY`,
         );
         const routes = response.data.routes;
         if (routes.length > 0) {

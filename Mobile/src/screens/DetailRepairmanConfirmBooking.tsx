@@ -18,7 +18,7 @@ import useRepairmanChangeStatusBooking from '../hooks/useRepairmanChangeStatusBo
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import LoaderKit from 'react-native-loader-kit';
-
+import RepairmanViewAddressRepair from './RepairmanViewAddressRepair';
 interface BookingDetail {
   _id: string;
   status: string;
@@ -37,6 +37,8 @@ interface BookingDetail {
   };
   desc: string;
   updatedAt: string;
+  time_repair:any;
+  day_repair:any
 }
 const DetailRepairmanConfirmBooking = () => {
   const [loading, setLoading] = useState(false);
@@ -55,7 +57,6 @@ const DetailRepairmanConfirmBooking = () => {
   const detailBookings:any = useBookingDetail(booking_id);
   const {isLoading} = useBookingDetail(booking_id);
   const detailBooking: BookingDetail = detailBookings.detailBookings;
-  console.log(detailBooking);
   const totalPayment =
     detailBooking?.service_id.price +
     detailBooking?.fee_service +
@@ -89,6 +90,11 @@ const DetailRepairmanConfirmBooking = () => {
     return <Text style={{marginTop:50, color:"black"}}>Services not available!</Text>;
   }
   
+  const handleViewAddressRepair=(detailBooking: BookingDetail)=>{
+    console.log(detailBooking);
+    
+    navigation.navigate("RepairmanViewAddressRepair",{detailBooking})
+  }
   return (
     <View style={styles.container}>
        <Modal
@@ -257,6 +263,15 @@ const DetailRepairmanConfirmBooking = () => {
         )}
         {detailBooking?.status === 'Đã nhận đơn sửa' && (
           <View style={styles.totalPayment}>
+             <View style={{width: '40%'}}>
+              <TouchableOpacity
+                style={styles.background}
+                onPress={() =>
+                  handleViewAddressRepair(detailBooking)
+                }>
+                <Text style={styles.nameConfirm}>Xem địa chỉ</Text>
+              </TouchableOpacity>
+            </View>
             <View style={{width: '40%'}}>
               <TouchableOpacity
                 style={styles.background}
