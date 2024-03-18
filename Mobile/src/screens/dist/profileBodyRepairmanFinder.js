@@ -71,7 +71,7 @@ var styles = react_native_1.StyleSheet.create({
         height: 50
     },
     eventButton: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
         justifyContent: 'center',
         alignItems: 'center',
         borderBottomWidth: 2,

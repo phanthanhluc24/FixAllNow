@@ -11,9 +11,6 @@ import {
   ScrollView,
   Platform,
   GestureResponderEvent,
-  Alert,
-  Modal,
-  ActivityIndicator
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Formik } from 'formik';
@@ -21,30 +18,38 @@ import { SignupSchema } from './Validation';
 import useSignin from '../../hooks/useSignin';
 import { requestUserPermission } from '../../utils/notificationHelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
-
-const SignIn = ({ navigation }: any) => {
+import {useIsFocused} from '@react-navigation/native';
+const SignIn = ({navigation}: any) => {
   const passwordRef: any = useRef();
-  const { handleSignin, errorServer } = useSignin();
-  const [deviceToken, setDeviceToken] = useState("")
-  // const [loading, setLoading] = useState(false);
-  useEffect(() => {
+  const {handleSignin, errorServer} = useSignin({navigation});
+  const [tokenChecked, setTokenChecked] = useState(false);
+  const isFocused = useIsFocused();
+  const [deviceToken,setDeviceToken]=useState("")
+  useEffect(()=>{
     requestUserPermission()
     getFcmToken()
   }, [])
   const getFcmToken = async () => {
-    // setLoading(true);
     const token = await AsyncStorage.getItem("fcmToken")
     if (token) {
       setDeviceToken(token)
-      // setLoading(false);
     }
   }
-  // const handleSignInPress = async () => {
-  //   // setLoading(true);
-  //   await handleSignin();963
-  //   // setLoading(false);
-  // };
+  useEffect(() => {
+    const checkLogin = async () => {
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      if (accessToken) {
+        navigation.navigate('Root');
+      } else {
+        setTokenChecked(true);
+      }
+    };
+    checkLogin();
+  }, [isFocused]);
+  if (!tokenChecked) {
+    return null;
+  }
+
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
@@ -57,7 +62,6 @@ const SignIn = ({ navigation }: any) => {
             deviceToken: deviceToken
           };
           handleSignin(account);
-
         }, 100);
       }}>
       {({ errors, touched, handleChange, handleBlur, values, handleSubmit }) => (
@@ -65,22 +69,7 @@ const SignIn = ({ navigation }: any) => {
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.signInContainer}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-              {/* <Modal
-                animationType="fade"
-                transparent={true}
-                // visible={loading}
-                onRequestClose={() => {
-                  // setLoading(false);
-                }}>
-                <View style={styles.modalContainer}>
-                  <View style={styles.modalContent}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                      <ActivityIndicator size={40} color="#FCA234" />
-                    </View>
-                  </View>
-                </View>
-              </Modal> */}
+            <ScrollView contentContainerStyle={{flexGrow: 1}}>
               <View style={styles.signinHeader}>
                 <Image
                   source={require('../../assets/SignIn/header.png')}
@@ -93,7 +82,7 @@ const SignIn = ({ navigation }: any) => {
                 </View>
                 <View style={styles.errorMessage}>
                   {errorServer != null && (
-                    <Text style={styles.errorText}>{errorServer}</Text>
+                    <Text style={styles.errorText}>* {errorServer}</Text>
                   )}
                 </View>
                 <View style={styles.fromInput}>
@@ -112,7 +101,7 @@ const SignIn = ({ navigation }: any) => {
                     ) : null}
                   </View>
                 </View>
-                <View style={styles.fromInputs}>
+                <View style={styles.fromInput}>
                   <View style={styles.space}>
                     <Text style={styles.titlePassword}>Mật Khẩu</Text>
                     <TextInput
@@ -129,6 +118,8 @@ const SignIn = ({ navigation }: any) => {
                       <Text style={styles.errorText}>{errors.password}</Text>
                     ) : null}
                   </View>
+                </View>
+                <View style={styles.fromInput}>
                   <View style={styles.confirmInfo}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('ForgotPassword')}>
@@ -136,7 +127,7 @@ const SignIn = ({ navigation }: any) => {
                     </TouchableOpacity>
 
                     <View style={styles.confirmcreate}>
-                      <Text style={styles.titlefgs}>Chưa có tài khoản!{' '}</Text>
+                      <Text style={styles.titlefgs}>Chưa có tài khoản! </Text>
                       <Text
                         style={styles.createacc}
                         onPress={() => navigation.navigate('SelectRole')}>
@@ -144,7 +135,6 @@ const SignIn = ({ navigation }: any) => {
                       </Text>
                     </View>
                   </View>
-
                   <TouchableOpacity
                     style={styles.buttonLogin}
                     onPress={(e: GestureResponderEvent) => handleSubmit()}>
@@ -169,18 +159,6 @@ const SignIn = ({ navigation }: any) => {
 export default SignIn;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    elevation: 5,
-  },
   signInContainer: {
     flex: 1,
     backgroundColor: '#FCA234',
@@ -257,7 +235,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   confirmInfo: {
-    marginTop: 60,
+    marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -286,17 +264,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    marginTop: '70%',
-    zIndex: 3,
-    height: 50,
+    marginTop: 30,
+    height: 60,
   },
   form: {
     position: 'absolute',
   },
   textLgoin: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   errorText: {

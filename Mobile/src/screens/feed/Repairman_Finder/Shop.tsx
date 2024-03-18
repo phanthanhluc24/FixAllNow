@@ -1,5 +1,4 @@
-import { useStripe } from "@stripe/stripe-react-native";
-import { useEffect, useState } from "react";
+
 import { Alert, Button, Image, Pressable, StyleSheet, Text } from "react-native";
 import { View } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';

@@ -95,7 +95,7 @@ const HomeCategories = () => {
         sliderWidth={width}
         itemWidth={width - 30}
         loop
-        autoplayInterval={3000}
+        autoplayInterval={5000}
         enableSnap
         onSnapToItem={index => setCurrentIndex(index)}
         autoplay={true}

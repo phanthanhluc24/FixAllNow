@@ -51,9 +51,10 @@ var useUploadAvatarUser = function () {
                     accessToken = _a.sent();
                     formData = new FormData();
                     formData.append('image', data.image);
+                    console.log('formdata:', formData.getParts());
                     return [4 /*yield*/, axios_1["default"].post(url_1.url + "/user/uploadImage", formData, {
                             headers: {
-                                "Content-Type": "multipart/form-data",
+                                'Content-Type': 'multipart/form-data',
                                 Authorization: "Bearer " + accessToken
                             }
                         })];

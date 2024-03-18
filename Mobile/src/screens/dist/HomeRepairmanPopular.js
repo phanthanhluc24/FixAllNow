@@ -53,7 +53,7 @@ var HomeRepairmanPopular = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.content },
                         react_1["default"].createElement(react_native_1.Image, { source: { uri: item.avatar }, style: styles.img }),
                         react_1["default"].createElement(react_native_1.View, { style: styles.infoRepairman },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.nameRepairman },
+                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.nameRepairman },
                                 item.full_name,
                                 " "),
                             react_1["default"].createElement(react_native_1.View, { style: styles.divInfo }, renderStars(item.averageStar))))));
@@ -97,7 +97,8 @@ var styles = react_native_1.StyleSheet.create({
         padding: 15
     },
     infoRepairman: {
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        width: "100%"
     },
     img: {
         width: 100,

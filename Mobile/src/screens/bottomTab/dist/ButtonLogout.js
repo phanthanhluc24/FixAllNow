@@ -65,17 +65,26 @@ var ButtonLogout = function () {
     var navigation = native_1.useNavigation();
     var handleLogout = function () {
         logout(token)
-            .then(function (res) {
-            if (res.status === 201) {
-                react_native_alert_notification_1.Toast.show({
-                    type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
-                    title: 'Thành công',
-                    textBody: 'Đăng xuất thành công!'
-                });
-                navigation.navigate('SignIn');
-            }
-        })["catch"](function (error) {
-        });
+            .then(function (res) { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log('logging out');
+                        return [4 /*yield*/, async_storage_1["default"].setItem('accessToken', '')];
+                    case 1:
+                        _a.sent();
+                        if (res.status === 201) {
+                            react_native_alert_notification_1.Toast.show({
+                                type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
+                                title: 'Thành công',
+                                textBody: 'Đăng xuất thành công!'
+                            });
+                            navigation.navigate('SignIn');
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        }); })["catch"](function (error) { });
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.TouchableOpacity, { style: styles.iconEdit, onPress: handleLogout },
         react_1["default"].createElement(MaterialCommunityIcons_1["default"], { name: "logout", size: 24, color: "#ffffff" })));
@@ -86,9 +95,9 @@ var styles = react_native_1.StyleSheet.create({
         width: 100,
         height: 40,
         marginVertical: 5,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 10,
-        backgroundColor: "#394C6D"
+        backgroundColor: '#394C6D'
     }
 });

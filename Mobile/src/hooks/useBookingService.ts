@@ -1,12 +1,12 @@
 import {Alert, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect,useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {url} from './apiRequest/url';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 const useBookingService = () => {
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const navigation: any = useNavigation();
   const bookingService = async (
     data: any,
@@ -15,6 +15,7 @@ const useBookingService = () => {
   ) => {
     const accessToken = await AsyncStorage.getItem('accessToken');
     try {
+      setIsLoading(true);
       const response = await axios.post(
         url + `/booking/notification/${service_id}/${category_id}`,
         data,
@@ -24,27 +25,25 @@ const useBookingService = () => {
           },
         },
       );
-      setIsLoading(true)
+      console.log(response.data.status);
       if (response.data.status === 200) {
-        navigation.navigate("Root", {reload:true})
+        navigation.navigate('Root', {reload: true});
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
           title: 'Thành công',
           textBody: 'Bạn đặt lịch sửa thành công! Vui lòng chờ xác nhận',
         });
-      }
-      else{
+      } else {
         Toast.show({
           type: ALERT_TYPE.WARNING,
           title: 'Thất bại',
-          textBody: 'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn',
+          textBody:
+            'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn hoặc 1 số vấn đề khác',
         });
+        setIsLoading(false);
       }
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   };
-  return {bookingService,isLoading};
+  return {bookingService, isLoading};
 };
-
 export default useBookingService;

@@ -33,10 +33,15 @@ const FormAddNewService = () => {
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.images, DocumentPicker.types.video]
       });
-      setSingleFile(res);
-      setErrorImage('');
+      if (res.type === 'image') {
+        setSingleFile(res);
+        setErrorImage('');
+      } 
+      else if (res.type === 'video') {
+        console.log("Bạn đã chọn một video. Vui lòng chọn một hình ảnh.");
+      }
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {
@@ -155,7 +160,7 @@ const FormAddNewService = () => {
                   style={styles.inputInfo}
                   onBlur={onBlur}
                   onChangeText={text => {
-                    if (isNumeric(text)) {
+                    if (isNumeric(text) || text === '') {
                       onChange(text);
                     }
                   }}

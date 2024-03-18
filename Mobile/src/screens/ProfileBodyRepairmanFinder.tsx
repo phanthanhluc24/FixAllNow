@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     // justifyContent:"space-around"
   },
   eventButton: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 2,

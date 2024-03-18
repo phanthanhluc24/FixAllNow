@@ -50,6 +50,12 @@ var useGetServiceOfRepairman_1 = require("../hooks/useGetServiceOfRepairman");
 var ButtonLogout_1 = require("./bottomTab/ButtonLogout");
 var useDeleteService_1 = require("../hooks/useDeleteService");
 var ProfileHeader = function () {
+    var onNavigation = function () {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Root' }]
+        });
+    };
     var _a = react_1.useState(false), loading = _a[0], setLoading = _a[1];
     ///render các trạng thái đặt hàng
     ////////////////////////////////
@@ -85,10 +91,23 @@ var ProfileHeader = function () {
         });
     }); };
     //////////////////////////////////////////////
+    var _c = react_1.useState(false), isMenuVisible = _c[0], setIsMenuVisible = _c[1];
+    var toggleMenu = function () {
+        setIsMenuVisible(!isMenuVisible);
+    };
+    var handleEventAddNewService = function () {
+        navigation.navigate('FormAddNewService');
+    };
+    var handleEventHistoryStore = function () {
+        navigation.navigate('HistoryStore');
+    };
+    var handleEventHistoryBookSchedule = function () {
+        navigation.navigate('HistoryRepairmanBookSchedule');
+    };
     var navigation = native_1.useNavigation();
-    var _c = useGetCurrentUser_1["default"](), currentUser = _c.currentUser, isLoading = _c.isLoading, isError = _c.isError;
-    var _d = react_1.useState(false), hasServices = _d[0], setHasServices = _d[1];
-    var _e = useGetServiceOfRepairman_1["default"](currentUser === null || currentUser === void 0 ? void 0 : currentUser._id), serviceOfRepairman = _e.serviceOfRepairman, isLoadings = _e.isLoadings, isErrors = _e.isErrors;
+    var _d = useGetCurrentUser_1["default"](), currentUser = _d.currentUser, isLoading = _d.isLoading, isError = _d.isError;
+    var _e = react_1.useState(false), hasServices = _e[0], setHasServices = _e[1];
+    var _f = useGetServiceOfRepairman_1["default"](currentUser === null || currentUser === void 0 ? void 0 : currentUser._id), serviceOfRepairman = _f.serviceOfRepairman, isLoadings = _f.isLoadings, isErrors = _f.isErrors;
     react_1.useEffect(function () {
         if (serviceOfRepairman.length > 0) {
             setHasServices(true);
@@ -136,6 +155,10 @@ var ProfileHeader = function () {
                 react_1["default"].createElement(react_native_1.View, { style: styles.modalContent },
                     react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
                         react_1["default"].createElement(react_native_1.ActivityIndicator, { size: 40, color: "#FCA234" }))))),
+        react_1["default"].createElement(react_native_1.View, { style: styles.back },
+            react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconBack, onPress: onNavigation },
+                react_1["default"].createElement(AntDesign_1["default"], { name: "arrowleft", color: "#000000", size: 25 })),
+            react_1["default"].createElement(react_native_1.View, { style: styles.spaceRight })),
         react_1["default"].createElement(react_native_1.View, { style: styles.infoProfile },
             react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.avatarPro },
                 react_1["default"].createElement(react_native_1.Image, { style: styles.avatarProfile, source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image } }),
@@ -171,7 +194,17 @@ var ProfileHeader = function () {
                         "(+84)", currentUser === null || currentUser === void 0 ? void 0 :
                         currentUser.number_phone)))),
         react_1["default"].createElement(react_native_1.View, { style: styles.container },
-            react_1["default"].createElement(react_native_1.Text, { style: styles.nameListService }, "Danh sa\u0301ch di\u0323ch vu\u0323"),
+            react_1["default"].createElement(react_native_1.View, { style: styles.aboutStore },
+                react_1["default"].createElement(react_native_1.Text, { style: styles.nameListService }, "Danh sa\u0301ch di\u0323ch vu\u0323"),
+                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: toggleMenu, style: styles.iconContainer },
+                    react_1["default"].createElement(AntDesign_1["default"], { name: "menu-fold", size: 25, color: "black" }))),
+            react_1["default"].createElement(react_native_1.View, null, isMenuVisible && (react_1["default"].createElement(react_native_1.View, { style: { backgroundColor: 'white', paddingHorizontal: 20 } },
+                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventAddNewService, style: styles.viewHistorys },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Th\u00EAm m\u01A1\u0301i di\u0323ch vu\u0323")),
+                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventHistoryStore, style: styles.viewHistorys },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Li\u0323ch s\u01B0\u0309 c\u01B0\u0309a ha\u0300ng")),
+                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventHistoryBookSchedule, style: styles.viewHistorys },
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Li\u0323ch s\u01B0\u0309 \u0111\u0103\u0323t li\u0323ch"))))),
             isLoading ? (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
                 react_1["default"].createElement(react_native_1.Text, null,
                     react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' })))) : hasServices ? (react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
@@ -179,6 +212,68 @@ var ProfileHeader = function () {
 };
 exports["default"] = ProfileHeader;
 var styles = react_native_1.StyleSheet.create({
+    nameViewHistory: {
+        marginHorizontal: 10,
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#FCA234'
+    },
+    viewHistorys: {
+        backgroundColor: '#394C6D',
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        marginTop: 10,
+        // marginBottom:10,
+        // marginHorizontal:20
+        marginBottom: 10,
+        width: '100%'
+    },
+    openModal: {
+        color: '#394C6D'
+    },
+    iconContainer: {
+        marginRight: 20
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalView: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: '80%',
+        alignItems: 'center'
+    },
+    modalText: {
+        fontSize: 18,
+        marginBottom: 10
+    },
+    option: {
+        fontSize: 16,
+        marginBottom: 10
+    },
+    aboutStore: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    iconBack: {
+        width: '20%'
+    },
+    spaceRight: {
+        width: '80%'
+    },
+    back: {
+        marginHorizontal: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -379,7 +474,7 @@ var styles = react_native_1.StyleSheet.create({
         flex: 1
     },
     infoProfile: {
-        marginHorizontal: 20
+        marginHorizontal: 10
     },
     avatarProfile: {
         width: 70,
@@ -391,7 +486,7 @@ var styles = react_native_1.StyleSheet.create({
     avatarPro: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 30
+        marginTop: 10
     },
     deleteService: {
         marginHorizontal: 20
@@ -424,7 +519,8 @@ var styles = react_native_1.StyleSheet.create({
         borderWidth: 1,
         borderColor: '#FCA234',
         marginTop: 3,
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 10
     },
     repairman: {
         backgroundColor: '#FCA234',
@@ -432,7 +528,8 @@ var styles = react_native_1.StyleSheet.create({
         height: 132,
         marginHorizontal: 15,
         marginTop: 3,
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 10
     },
     containerRepairman: {
         flex: 1

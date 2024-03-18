@@ -20,8 +20,16 @@ var DetailHeaderRepairman = function (_a) {
     var _c = react_1.useState(false), showMoreComments = _c[0], setShowMoreComments = _c[1];
     var _d = react_1.useState(3), commentsToShow = _d[0], setCommentsToShow = _d[1];
     var toggleShowMoreComments = function () {
-        setShowMoreComments(true);
-        setCommentsToShow(commentsToShow + 3);
+        var remainingComments = rateComment.length - commentsToShow;
+        if (remainingComments > 0 && remainingComments <= 3) {
+            setCommentsToShow(commentsToShow + remainingComments);
+        }
+        else if (remainingComments > 0) {
+            setCommentsToShow(commentsToShow + 3);
+        }
+        else {
+            setShowMoreComments(false);
+        }
     };
     var navigation = native_1.useNavigation();
     if (isLoading) {
@@ -114,7 +122,7 @@ var DetailHeaderRepairman = function (_a) {
                                 react_1["default"].createElement(react_native_1.View, null,
                                     react_1["default"].createElement(react_native_1.Text, { style: styles.comments }, comment.content))));
                         }),
-                        !showMoreComments && rateComment.length > commentsToShow && (react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: toggleShowMoreComments, style: { alignItems: "center", justifyContent: "center" } },
+                        !showMoreComments && rateComment.length > commentsToShow && (react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: toggleShowMoreComments, style: { alignItems: "center", justifyContent: "center", marginBottom: 20 } },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "Xem th\u00EAm"))))))))));
 };
 exports["default"] = DetailHeaderRepairman;

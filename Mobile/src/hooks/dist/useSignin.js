@@ -43,6 +43,7 @@ var react_1 = require("react");
 var react_native_alert_notification_1 = require("react-native-alert-notification");
 var useSignin = function (_a) {
     var navigation = _a.navigation;
+    // const navigation:any= useNavigation()
     var _b = react_1.useState(null), errorServer = _b[0], setErrorServer = _b[1];
     var handleSignin = function (data) { return __awaiter(void 0, void 0, void 0, function () {
         var res, accessToken, error_1;
@@ -74,6 +75,7 @@ var useSignin = function (_a) {
                 case 4: return [3 /*break*/, 6];
                 case 5:
                     error_1 = _a.sent();
+                    console.log('error:', error_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }

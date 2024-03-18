@@ -56,8 +56,8 @@ const Profile = () => {
           <FlatList
             data={data}
             keyExtractor={item => item.key}
-            renderItem={renderProfileServiceRepairman}
-            ListHeaderComponent={renderProfileHeaderRepairman}
+            renderItem={renderProfileHeaderRepairman}
+            // ListHeaderComponent={renderProfileHeaderRepairman}
           />
         </View>
       )}

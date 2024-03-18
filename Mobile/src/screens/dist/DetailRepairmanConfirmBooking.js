@@ -68,7 +68,6 @@ var DetailRepairmanConfirmBooking = function () {
     var detailBookings = useBookingDetail_1["default"](booking_id);
     var isLoading = useBookingDetail_1["default"](booking_id).isLoading;
     var detailBooking = detailBookings.detailBookings;
-    console.log(detailBooking);
     var totalPayment = (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.service_id.price) + (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.fee_service) + (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.fee_transport);
     var handleChangeStatusBooking = function (booking_id, option) {
         setLoading(true);
@@ -88,6 +87,10 @@ var DetailRepairmanConfirmBooking = function () {
     if (detailBookings.length === 0) {
         return react_1["default"].createElement(react_native_1.Text, { style: { marginTop: 50, color: "black" } }, "Services not available!");
     }
+    var handleViewAddressRepair = function (detailBooking) {
+        console.log(detailBooking);
+        navigation.navigate("RepairmanViewAddressRepair", { detailBooking: detailBooking });
+    };
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container },
         react_1["default"].createElement(react_native_1.Modal, { animationType: "fade", transparent: true, visible: loading, onRequestClose: function () {
                 setLoading(false);
@@ -171,6 +174,11 @@ var DetailRepairmanConfirmBooking = function () {
                         } },
                         react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Hu\u0309y y\u00EAu c\u00E2\u0300u"))))),
             (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.status) === 'Đã nhận đơn sửa' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
+                react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.background, onPress: function () {
+                            return handleViewAddressRepair(detailBooking);
+                        } },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Xem \u0111i\u0323a chi\u0309"))),
                 react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.background, onPress: function () {
                             return handleChangeStatusBooking(detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking._id, 3);

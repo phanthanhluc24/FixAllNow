@@ -55,6 +55,7 @@ var useBookingService = function () {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
+                    setIsLoading(true);
                     return [4 /*yield*/, axios_1["default"].post(url_1.url + ("/booking/notification/" + service_id + "/" + category_id), data, {
                             headers: {
                                 Authorization: "Bearer " + accessToken
@@ -62,9 +63,9 @@ var useBookingService = function () {
                         })];
                 case 3:
                     response = _a.sent();
-                    setIsLoading(true);
+                    console.log(response.data.status);
                     if (response.data.status === 200) {
-                        navigation.navigate("Root", { reload: true });
+                        navigation.navigate('Root', { reload: true });
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
                             title: 'Thành công',
@@ -75,8 +76,9 @@ var useBookingService = function () {
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
                             title: 'Thất bại',
-                            textBody: 'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn'
+                            textBody: 'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn hoặc 1 số vấn đề khác'
                         });
+                        setIsLoading(false);
                     }
                     return [3 /*break*/, 5];
                 case 4:

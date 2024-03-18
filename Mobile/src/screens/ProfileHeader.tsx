@@ -9,10 +9,10 @@ import {
   ActivityIndicator,
   Modal,
 } from 'react-native';
-
 import React, {useState, useEffect} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
@@ -27,6 +27,12 @@ import {TouchEventType} from 'react-native-gesture-handler/lib/typescript/TouchE
 import useDeleteService from '../hooks/useDeleteService';
 
 const ProfileHeader = () => {
+  const onNavigation = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Root'}],
+    });
+  };
   const [loading, setLoading] = useState(false);
   ///render các trạng thái đặt hàng
 
@@ -55,6 +61,22 @@ const ProfileHeader = () => {
     }
   };
   //////////////////////////////////////////////
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
+
+  const handleEventAddNewService = () => {
+    navigation.navigate('FormAddNewService');
+  };
+
+  const handleEventHistoryStore = () => {
+    navigation.navigate('HistoryStore');
+  };
+  const handleEventHistoryBookSchedule = () => {
+    navigation.navigate('HistoryRepairmanBookSchedule');
+  };
   const navigation: any = useNavigation();
   const {currentUser, isLoading, isError}: any = useGetCurrentUser();
   const [hasServices, setHasServices] = useState<boolean>(false);
@@ -143,6 +165,13 @@ const ProfileHeader = () => {
           </View>
         </View>
       </Modal>
+
+      <View style={styles.back}>
+        <TouchableOpacity style={styles.iconBack} onPress={onNavigation}>
+          <AntDesign name="arrowleft" color="#000000" size={25} />
+        </TouchableOpacity>
+        <View style={styles.spaceRight}></View>
+      </View>
       <View style={styles.infoProfile}>
         <TouchableOpacity style={styles.avatarPro}>
           <Image
@@ -200,7 +229,33 @@ const ProfileHeader = () => {
         </View>
       </View>
       <View style={styles.container}>
-        <Text style={styles.nameListService}>Danh sách dịch vụ</Text>
+        <View style={styles.aboutStore}>
+          <Text style={styles.nameListService}>Danh sách dịch vụ</Text>
+          <TouchableOpacity onPress={toggleMenu} style={styles.iconContainer}>
+            <AntDesign name="menu-fold" size={25} color="black"/>
+          </TouchableOpacity>
+        </View>
+        <View>
+          {isMenuVisible && (
+            <View style={{backgroundColor: 'white', paddingHorizontal: 20}}>
+              <TouchableOpacity
+                onPress={handleEventAddNewService}
+                style={styles.viewHistorys}>
+                <Text style={styles.nameViewHistory}>Thêm mới dịch vụ</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleEventHistoryStore}
+                style={styles.viewHistorys}>
+                <Text style={styles.nameViewHistory}>Lịch sử cửa hàng</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleEventHistoryBookSchedule}
+                style={styles.viewHistorys}>
+                <Text style={styles.nameViewHistory}>Lịch sử đặt lịch</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
         {isLoading ? (
           <View style={{alignItems: 'center'}}>
             <Text>
@@ -230,6 +285,69 @@ const ProfileHeader = () => {
 };
 export default ProfileHeader;
 const styles = StyleSheet.create({
+  nameViewHistory: {
+    marginHorizontal: 10,
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#FCA234',
+  },
+  viewHistorys: {
+    backgroundColor: '#394C6D',
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginTop: 10,
+    // marginBottom:10,
+    // marginHorizontal:20
+    marginBottom: 10,
+    width: '100%',
+  },
+  openModal: {
+    color: '#394C6D',
+  },
+  iconContainer: {
+    marginRight: 20,
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  option: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  aboutStore: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  iconBack: {
+    width: '20%',
+  },
+  spaceRight: {
+    width: '80%',
+  },
+  back: {
+    marginHorizontal: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -430,7 +548,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoProfile: {
-    marginHorizontal: 20,
+    marginHorizontal: 10,
   },
   avatarProfile: {
     width: 70,
@@ -442,7 +560,7 @@ const styles = StyleSheet.create({
   avatarPro: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 10,
   },
   deleteService: {
     marginHorizontal: 20,
@@ -476,6 +594,7 @@ const styles = StyleSheet.create({
     borderColor: '#FCA234',
     marginTop: 3,
     borderRadius: 10,
+    marginBottom:10,
   },
   repairman: {
     backgroundColor: '#FCA234',
@@ -484,6 +603,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginTop: 3,
     borderRadius: 10,
+    marginBottom: 10,
   },
   containerRepairman: {
     flex: 1,
