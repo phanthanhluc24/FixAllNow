@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DrawerNavigator from './DrawerNavigator';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Landing from '../../screens/Landing';
 import Welcome from '../../screens/Welcome';
 import SignIn from '../../screens/accounts.tsx/SignIn';
@@ -33,6 +33,9 @@ import DetailRepairmanConfirmBooking from '../../screens/DetailRepairmanConfirmB
 import AuthNavigation from './AuthNavigation';
 import DetailViewBookSchedule from '../../screens/DetailViewBookSchedule';
 import DetailNotification from '../../screens/DetailNotification';
+import Conversation from '../../screens/chats/Conversation';
+import { Image } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import RepairmanViewAddressRepair from '../../screens/RepairmanViewAddressRepair';
 const queryClient = new QueryClient();
 const Main = () => {
@@ -58,43 +61,43 @@ const Main = () => {
         <Stack.Screen
           name="Root"
           component={DrawerNavigator}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="SelectRole"
           component={SelectRole}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="ConfirmCode"
           component={ConfirmCode}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="ConfirmTypeRepairman"
           component={ConfirmTypeRepairman}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="ForgotPassword"
           component={ForgotPassword}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="NewPassword"
           component={NewPassword}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
           name="ListOfElectrician"
           component={ListOfElectrician}
-          options={({route}: any) => ({
+          options={({ route }: any) => ({
             headerShown: true,
             headerTitle: `Danh Sách Thợ ${route.params?.title}`,
           })}
@@ -102,7 +105,7 @@ const Main = () => {
         <Stack.Screen
           name="DetailRepairman"
           component={DetailRepairman}
-          options={({route}: any) => ({
+          options={({ route }: any) => ({
             headerShown: true,
             headerTitle: `${route.params?.title}`,
           })}
@@ -235,6 +238,26 @@ const Main = () => {
             headerTitle: 'Xem địa chỉ sửa chữa',
           })}
         />
+        <Stack.Screen
+          name="Conversation"
+          component={Conversation}
+          options={({ route }: any) => ({
+            headerShown: true,
+            headerTitle: () => (
+              <View style={{ flexDirection: "row", justifyContent: "space-around", alignItems: "center" ,gap:40}}>
+                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                  <Image style={{ width: 40, height: 40, borderRadius: 50 }} source={{ uri: route.params.image }}></Image>
+                  <Text style={{ fontWeight: "bold" }}>{route.params.name}</Text>
+                </View>
+                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 16 }}>
+                  <Ionicons name='videocam' size={24} color={"#007AFF"} />
+                  <Ionicons name='call' size={24} color={"#007AFF"} />
+                </View>
+              </View>
+            ),
+          })}
+        />
+
       </Stack.Navigator>
     </QueryClientProvider>
   );

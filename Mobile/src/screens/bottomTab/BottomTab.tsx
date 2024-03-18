@@ -21,8 +21,8 @@ const BottomTab = () => {
             imageSource = require(`${URL_IMAGE}/iconhome.png`);
             title = 'Trang chủ';
           } else if (rn === 'Shop') {
-            imageSource = require(`${URL_IMAGE}/iconshop.png`);
-            title = 'Cửa hàng';
+            imageSource = require(`${URL_IMAGE}/message.png`);
+            title = 'Trò chuyện';
           } else if (rn === 'Scan') {
             imageSource = require(`${URL_IMAGE}/AI.png`);
             title = 'Hỏi đáp';

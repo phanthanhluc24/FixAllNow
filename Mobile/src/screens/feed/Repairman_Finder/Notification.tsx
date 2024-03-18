@@ -25,7 +25,7 @@ interface typeService {
 
 }
 const Notification = () => {
-  const navigation= useNavigation();
+  const navigation:any= useNavigation();
   const [clicked, setClicked] = useState({});
   const navigateToDetailPage = (item: any) => () => {
     navigation.navigate('DetailNotification', {booking_id: item});
@@ -64,7 +64,7 @@ const Notification = () => {
       return `${minutes} phút trước`;
     }
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }:any) => {
     const timeAgo = formatTimeAgo(item.createdAt);
     return (
       <TouchableOpacity

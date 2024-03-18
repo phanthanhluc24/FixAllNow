@@ -12,9 +12,9 @@ import {
   Platform,
   GestureResponderEvent,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {Formik} from 'formik';
-import {SignupSchema} from './Validation';
+import React, { useEffect, useRef, useState } from 'react';
+import { Formik } from 'formik';
+import { SignupSchema } from './Validation';
 import useSignin from '../../hooks/useSignin';
 import { requestUserPermission } from '../../utils/notificationHelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,17 +25,14 @@ const SignIn = ({navigation}: any) => {
   const [tokenChecked, setTokenChecked] = useState(false);
   const isFocused = useIsFocused();
   const [deviceToken,setDeviceToken]=useState("")
-  const [loading, setLoading] = useState(false);
   useEffect(()=>{
     requestUserPermission()
     getFcmToken()
-  },[])
-  const getFcmToken=async()=>{
-    setLoading(true);
-    const token=await AsyncStorage.getItem("fcmToken")
+  }, [])
+  const getFcmToken = async () => {
+    const token = await AsyncStorage.getItem("fcmToken")
     if (token) {
       setDeviceToken(token)
-      setLoading(false);
     }
   }
   useEffect(() => {
@@ -55,20 +52,19 @@ const SignIn = ({navigation}: any) => {
 
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      initialValues={{ email: '', password: '' }}
       validationSchema={SignupSchema}
       onSubmit={values => {
         setTimeout(() => {
           let account = {
             email: values.email,
             password: values.password,
-            deviceToken:deviceToken
+            deviceToken: deviceToken
           };
           handleSignin(account);
-          
         }, 100);
       }}>
-      {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
+      {({ errors, touched, handleChange, handleBlur, values, handleSubmit }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -199,7 +195,12 @@ const styles = StyleSheet.create({
   fromInput: {
     marginHorizontal: 40,
     marginTop: 15,
-    height: 110,
+    height: 110
+  },
+  fromInputs: {
+    marginHorizontal: 40,
+    marginTop: 5,
+    height: 110
   },
   errorMessage: {
     marginHorizontal: 40,
@@ -219,6 +220,7 @@ const styles = StyleSheet.create({
   },
   space: {
     marginTop: 1,
+    height: 70
   },
   titlePassword: {
     color: 'white',
