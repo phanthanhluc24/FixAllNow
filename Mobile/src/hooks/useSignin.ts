@@ -5,7 +5,7 @@ import {url} from './apiRequest/url';
 import {Alert, ToastAndroid} from 'react-native';
 import {useState} from "react"
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
-
+import { useNavigation } from '@react-navigation/native';
 interface Account {
   email: string;
   password: string;
@@ -15,7 +15,8 @@ interface ApiResponse {
   message: any;
   accessToken:string;
 }
-const useSignin = ({navigation}: any) => {
+const useSignin = () => {
+  const navigation:any=useNavigation()
   const [errorServer,setErrorServer]=useState(null)
   const handleSignin = async (data: Account) => {
     try {
@@ -28,10 +29,7 @@ const useSignin = ({navigation}: any) => {
           title: 'Thành công',
           textBody: 'Đăng nhập thành công!',
         })
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Root' }],
-        });
+        navigation.navigate('Root');
       } else{
         setErrorServer(res.data.message)
       }

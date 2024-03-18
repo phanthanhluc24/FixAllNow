@@ -15,72 +15,72 @@ import {
   Modal,
   ActivityIndicator
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {Formik} from 'formik';
-import {SignupSchema} from './Validation';
+import React, { useEffect, useRef, useState } from 'react';
+import { Formik } from 'formik';
+import { SignupSchema } from './Validation';
 import useSignin from '../../hooks/useSignin';
 import { requestUserPermission } from '../../utils/notificationHelper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
-
-const SignIn = ({navigation}: any) => {
+const SignIn = ({ navigation }: any) => {
   const passwordRef: any = useRef();
-  const {handleSignin, errorServer} = useSignin({navigation});
-  const [deviceToken,setDeviceToken]=useState("")
-  const [loading, setLoading] = useState(false);
-  useEffect(()=>{
+  const { handleSignin, errorServer } = useSignin();
+  const [deviceToken, setDeviceToken] = useState("")
+  // const [loading, setLoading] = useState(false);
+  useEffect(() => {
     requestUserPermission()
     getFcmToken()
-  },[])
-  const getFcmToken=async()=>{
-    setLoading(true);
-    const token=await AsyncStorage.getItem("fcmToken")
+  }, [])
+  const getFcmToken = async () => {
+    // setLoading(true);
+    const token = await AsyncStorage.getItem("fcmToken")
     if (token) {
       setDeviceToken(token)
-      setLoading(false);
+      // setLoading(false);
     }
   }
-  const handleSignInPress = async () => {
-    setLoading(true);
-    await handleSignin();
-    setLoading(false);
-  };
+  // const handleSignInPress = async () => {
+  //   // setLoading(true);
+  //   await handleSignin();963
+  //   // setLoading(false);
+  // };
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      initialValues={{ email: '', password: '' }}
       validationSchema={SignupSchema}
       onSubmit={values => {
         setTimeout(() => {
           let account = {
             email: values.email,
             password: values.password,
-            deviceToken:deviceToken
+            deviceToken: deviceToken
           };
           handleSignin(account);
-         
+
         }, 100);
       }}>
-      {({errors, touched, handleChange, handleBlur, values, handleSubmit}) => (
+      {({ errors, touched, handleChange, handleBlur, values, handleSubmit }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.signInContainer}>
-            <ScrollView contentContainerStyle={{flexGrow: 1}}>
-            <Modal
-          animationType="fade"
-          transparent={true}
-          visible={loading}
-          onRequestClose={() => {
-            setLoading(false);
-          }}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                <ActivityIndicator size={40} color="#FCA234" />
-              </View>
-            </View>
-          </View>
-        </Modal>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+              {/* <Modal
+                animationType="fade"
+                transparent={true}
+                // visible={loading}
+                onRequestClose={() => {
+                  // setLoading(false);
+                }}>
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                      <ActivityIndicator size={40} color="#FCA234" />
+                    </View>
+                  </View>
+                </View>
+              </Modal> */}
               <View style={styles.signinHeader}>
                 <Image
                   source={require('../../assets/SignIn/header.png')}
@@ -140,7 +140,7 @@ const SignIn = ({navigation}: any) => {
                       <Text
                         style={styles.createacc}
                         onPress={() => navigation.navigate('SelectRole')}>
-                          Đăng ký
+                        Đăng ký
                       </Text>
                     </View>
                   </View>
@@ -217,14 +217,14 @@ const styles = StyleSheet.create({
   fromInput: {
     marginHorizontal: 40,
     marginTop: 15,
-    height:110
+    height: 110
   },
   fromInputs: {
     marginHorizontal: 40,
     marginTop: 5,
-    height:110
+    height: 110
   },
-  errorMessage:{
+  errorMessage: {
     marginHorizontal: 40,
     marginTop: 20,
   },
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   },
   space: {
     marginTop: 1,
-    height:70
+    height: 70
   },
   titlePassword: {
     color: 'white',
