@@ -249,10 +249,6 @@ const Main = () => {
                   <Image style={{ width: 40, height: 40, borderRadius: 50 }} source={{ uri: route.params.image }}></Image>
                   <Text style={{ fontWeight: "bold" }}>{route.params.name}</Text>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 16 }}>
-                  <Ionicons name='videocam' size={24} color={"#007AFF"} />
-                  <Ionicons name='call' size={24} color={"#007AFF"} />
-                </View>
               </View>
             ),
           })}

@@ -50,7 +50,7 @@ var DrawerNavigator = function () {
                     backgroundColor: 'white'
                 }) }),
             react_1["default"].createElement(Drawer.Screen, { name: "Shop", component: Shop_1["default"], options: optionsScreen({
-                    drawerIcon: require(URL_IMAGE + "/iconshop.png"),
+                    drawerIcon: require(URL_IMAGE + "/message.png"),
                     headerTitle: function () { return react_1["default"].createElement(HeaderTitleComponent_1["default"], null); },
                     backgroundColor: 'white'
                 }) }),

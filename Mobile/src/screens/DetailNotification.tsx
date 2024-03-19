@@ -40,8 +40,6 @@ interface BookingDetail {
 const DetailNotification = () => {
   const [loading, setLoading] = useState(false);
   const {currentUser}: any = useGetCurrentUser();
-  console.log('huuu', currentUser);
-
   const route = useRoute();
   const {booking_id}: any = route.params;
   const navigation: any = useNavigation();
@@ -55,8 +53,6 @@ const DetailNotification = () => {
   }, []);
   const {detailBookings, isError, isLoading}: any =
     useBookingDetail(booking_id);
-  console.log('detailBooking', detailBookings?.status);
-
   if (isLoading) {
     return (
       <View style={{alignItems: 'center'}}>
@@ -193,41 +189,124 @@ const DetailNotification = () => {
       </ScrollView>
 
       <View style={styles.buttonEven}>
-        {currentUser && currentUser?.role === 'RPM' && (
-          <View style={styles.totalPayment}>
-            <TouchableOpacity
-              style={{width: '80%'}}
-              onPress={() => handleChangeStatusBooking(detailBookings?._id, 1)}>
-              <View style={styles.background}>
-                <Text style={styles.nameConfirm}>Xác nhận</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.iconChat}>
-              <AntDesign name="message1" color="#394C6D" size={25} />
-            </View>
-          </View>
-        )}
-        {detailBookings && detailBookings?.status === 'Đã hủy đơn' && (
-          <View style={styles.totalPayment}>
-            <View style={{width: '100%'}}>
-              <View style={styles.background}>
-                <Text style={styles.nameConfirm}>Đặt lại</Text>
+        {currentUser &&
+          currentUser?.role === 'RPM' &&
+          detailBookings &&
+          detailBookings?.status === 'Chờ xác nhận' && (
+            <View style={styles.totalPayment}>
+              <TouchableOpacity
+                style={{width: '80%'}}
+                onPress={() =>
+                  handleChangeStatusBooking(detailBookings?._id, 1)
+                }>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Xác nhận</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={styles.iconChat}>
+                <AntDesign name="message1" color="#394C6D" size={25} />
               </View>
             </View>
-          </View>
-        )}
-      </View>
-
-      <View style={styles.buttonEven}>
-        {detailBookings && detailBookings?.status === 'Đã sửa thành công' && (
-          <View style={styles.totalPayment}>
-            <View style={{width: '40%'}}>
-              <View style={styles.background}>
-                <Text style={styles.nameConfirm}>Đặt lại</Text>
+          )}
+        {currentUser &&
+          currentUser?.role === 'RPM' &&
+          detailBookings &&
+          detailBookings?.status === 'Đã hủy đơn' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Đã hủy đơn</Text>
+                </View>
               </View>
             </View>
-          </View>
-        )}
+          )}
+        {currentUser &&
+          currentUser?.role === 'RPM' &&
+          detailBookings &&
+          detailBookings?.status === 'Đã sửa hoàn thành' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Đã sửa hoàn thành</Text>
+                </View>
+              </View>
+            </View>
+          )}
+        {currentUser &&
+          currentUser?.role === 'RPM' &&
+          detailBookings &&
+          detailBookings?.status === 'Đã nhận đơn sửa' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Đã nhận đơn sửa</Text>
+                </View>
+              </View>
+            </View>
+          )}
+        {/* của người dùng đặt lịch */}
+        {currentUser &&
+          currentUser?.role === 'USR' &&
+          detailBookings &&
+          detailBookings?.status === 'Đã hủy đơn' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <TouchableOpacity
+                  style={styles.background}
+                  onPress={() =>
+                    navigation.navigate('DetailService', {
+                      id: detailBookings.service_id._id,
+                      title: detailBookings.service_id.service_name,
+                    })
+                  }>
+                  <Text style={styles.nameConfirm}>Đặt lại</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        {currentUser &&
+          currentUser?.role === 'USR' &&
+          detailBookings &&
+          detailBookings?.status === 'Đã sửa hoàn thành' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <TouchableOpacity
+                  style={styles.background}
+                  onPress={() =>
+                    navigation.navigate('DetailService', {
+                      id: detailBookings.service_id._id,
+                      title: detailBookings.service_id.service_name,
+                    })
+                  }>
+                  <Text style={styles.nameConfirm}>Đặt lại</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        {currentUser &&
+          currentUser?.role === 'USR' &&
+          detailBookings &&
+          detailBookings?.status === 'Đã nhận đơn sửa' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Đã nhận đơn sửa</Text>
+                </View>
+              </View>
+            </View>
+          )}
+        {currentUser &&
+          currentUser?.role === 'USR' &&
+          detailBookings &&
+          detailBookings?.status === 'Chờ xác nhận' && (
+            <View style={styles.totalPayment}>
+              <View style={{width: '100%'}}>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Chờ xác nhận</Text>
+                </View>
+              </View>
+            </View>
+          )}
       </View>
     </View>
   );

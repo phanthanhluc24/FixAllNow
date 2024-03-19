@@ -5,7 +5,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import DetailHeaderRepairman from './DetailHeaderRepairman';
@@ -18,21 +18,19 @@ interface typeService {
   image: string;
   desc: string;
 }
-const DetailRepairman = ({route}:any) => {
-  const data = [{ key: 'DetailHeaderRepairman' }];
-  const { id, title } = route.params;
+const DetailRepairman = ({route}: any) => {
+  const data = [{key: 'DetailHeaderRepairman'}];
+  const {id, title} = route.params;
   console.log(id);
-  
-  const renderHeader= ()=>{
-  
-   
+
+  const renderHeader = () => {
     return (
       <View>
-        <DetailHeaderRepairman repairman_id={id}/>
+        <DetailHeaderRepairman repairman_id={id} />
       </View>
     );
-  }
-  
+  };
+
   return (
     <View style={styles.containerServiceSpecific}>
       <FlatList
@@ -45,8 +43,7 @@ const DetailRepairman = ({route}:any) => {
 };
 export default DetailRepairman;
 const styles = StyleSheet.create({
-  containerServiceSpecific:{
-    flex:1
+  containerServiceSpecific: {
+    flex: 1,
   },
- 
 });

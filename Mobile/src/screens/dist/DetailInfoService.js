@@ -31,6 +31,7 @@ var DetailInfoService = function () {
                     service.price.toLocaleString('vi-VN'),
                     ' VND'),
                 react_1["default"].createElement(react_native_1.Text, { style: styles.description }, service === null || service === void 0 ? void 0 : service.desc)),
+            react_1["default"].createElement(DetailServiceButton_1["default"], { serviceInfo: service }),
             react_1["default"].createElement(react_native_1.View, { style: styles.oneLine }),
             react_1["default"].createElement(react_native_1.View, { style: styles.infoUser },
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () {
@@ -62,8 +63,7 @@ var DetailInfoService = function () {
                                         react_1["default"].createElement(react_native_1.Text, { style: styles.vnd }, " VND")),
                                     react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.description }, item.desc)))));
                     } })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Kh\u00F4ng c\u00F3 d\u1ECBch v\u1EE5 li\u00EAn quan!)")))))),
-        react_1["default"].createElement(DetailServiceButton_1["default"], { serviceInfo: service })));
+                    react_1["default"].createElement(react_native_1.Text, { style: styles.noService }, "(Kh\u00F4ng c\u00F3 d\u1ECBch v\u1EE5 li\u00EAn quan!)"))))))));
 };
 exports["default"] = DetailInfoService;
 var styles = react_native_1.StyleSheet.create({
