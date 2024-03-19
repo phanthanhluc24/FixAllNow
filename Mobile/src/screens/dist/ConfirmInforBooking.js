@@ -185,7 +185,7 @@ var ConfirmInforBooking = function (_a) {
                     react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110")),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "\u0110i\u0323a \u0111i\u00EA\u0309m:"),
-                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infors }, addressRepair)),
+                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 3, style: styles.infors }, addressRepair)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "T\u00F4\u0309ng:"),
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, totalPrice.toLocaleString('vi-VN')),
@@ -374,10 +374,10 @@ var styles = react_native_1.StyleSheet.create({
         marginVertical: 20
     },
     infoContainer: {
-        flex: 8
+        flex: 8.8
     },
     event: {
-        flex: 2
+        flex: 1.2
     },
     infoService: {
         marginHorizontal: 20

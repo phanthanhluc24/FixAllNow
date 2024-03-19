@@ -29,7 +29,7 @@ const ListOfElectrician = ({route}: any) => {
     useGetListRepairmanOfCategorySpecific(id);
   if (isLoading) {
     return (
-      <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
+      <View style={{alignItems: 'center', flex:1}}>
         <Text>
           <LoaderKit
             style={styles.loadingText}

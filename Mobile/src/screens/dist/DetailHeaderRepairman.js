@@ -16,7 +16,7 @@ var DetailHeaderRepairman = function (_a) {
     var route = native_1.useRoute();
     var id = route.params.id;
     var repairman = useGetDetailRepairman_1["default"](id).repairman;
-    var _b = useGetServiceOfRepairman_1["default"](id), serviceOfRepairman = _b.serviceOfRepairman, isLoading = _b.isLoading, isError = _b.isError;
+    var _b = useGetServiceOfRepairman_1["default"](id), serviceOfRepairman = _b.serviceOfRepairman, isLoadings = _b.isLoadings, isErrors = _b.isErrors;
     var _c = react_1.useState(false), showMoreComments = _c[0], setShowMoreComments = _c[1];
     var _d = react_1.useState(3), commentsToShow = _d[0], setCommentsToShow = _d[1];
     var toggleShowMoreComments = function () {
@@ -32,13 +32,13 @@ var DetailHeaderRepairman = function (_a) {
         }
     };
     var navigation = native_1.useNavigation();
-    if (isLoading) {
+    if (isLoadings) {
         return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: 'center' } },
             react_1["default"].createElement(react_native_1.Text, null,
                 react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }
-    if (isError) {
-        return react_1["default"].createElement(react_native_1.Text, null, "Error loading repairman");
+    if (isErrors) {
+        return react_1["default"].createElement(react_native_1.Text, null, "L\u00F4\u0303i khi l\u00E2\u0301y d\u01B0\u0303 li\u00EA\u0323u chu\u0301ng t\u00F4i \u0111ang x\u01B0\u0309 ly\u0301! Xin l\u00F4\u0303i quy\u0301 kha\u0301ch nhi\u00EA\u0300u!");
     }
     var renderStars = function (star) {
         var stars = [];

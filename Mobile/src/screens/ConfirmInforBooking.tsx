@@ -164,7 +164,7 @@ const ConfirmInforBooking = ({route}: any) => {
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Địa điểm:</Text>
-            <Text numberOfLines={2} style={styles.infors}>
+            <Text numberOfLines={3} style={styles.infors}>
               {addressRepair}
             </Text>
           </View>
@@ -404,10 +404,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   infoContainer: {
-    flex: 8,
+    flex: 8.8,
   },
   event: {
-    flex: 2,
+    flex: 1.2,
   },
   infoService: {
     marginHorizontal: 20,

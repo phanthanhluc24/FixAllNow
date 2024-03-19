@@ -69,7 +69,7 @@ const DrawerNavigator = () => {
           name="Shop"
           component={Shop}
           options={optionsScreen({
-            drawerIcon: require(`${URL_IMAGE}/iconshop.png`),
+            drawerIcon: require(`${URL_IMAGE}/message.png`),
             headerTitle: () => <HeaderTitleComponent />,
             backgroundColor: 'white',
           })}

@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var react_native_1 = require("react-native");
 var react_1 = require("react");
 var react_query_1 = require("@tanstack/react-query");
 var DrawerNavigator_1 = require("./DrawerNavigator");
@@ -30,6 +31,8 @@ var HistoryRepairmanBookSchedule_1 = require("../../screens/HistoryRepairmanBook
 var DetailRepairmanConfirmBooking_1 = require("../../screens/DetailRepairmanConfirmBooking");
 var DetailViewBookSchedule_1 = require("../../screens/DetailViewBookSchedule");
 var DetailNotification_1 = require("../../screens/DetailNotification");
+var Conversation_1 = require("../../screens/chats/Conversation");
+var react_native_2 = require("react-native");
 var RepairmanViewAddressRepair_1 = require("../../screens/RepairmanViewAddressRepair");
 var queryClient = new react_query_1.QueryClient();
 var Main = function () {
@@ -125,6 +128,16 @@ var Main = function () {
             react_1["default"].createElement(Stack.Screen, { name: "RepairmanViewAddressRepair", component: RepairmanViewAddressRepair_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: 'Xem địa chỉ sửa chữa'
-                }); } }))));
+                }); } }),
+            react_1["default"].createElement(Stack.Screen, { name: "Conversation", component: Conversation_1["default"], options: function (_a) {
+                    var route = _a.route;
+                    return ({
+                        headerShown: true,
+                        headerTitle: function () { return (react_1["default"].createElement(react_native_1.View, { style: { flexDirection: "row", justifyContent: "space-around", alignItems: "center", gap: 40 } },
+                            react_1["default"].createElement(react_native_1.View, { style: { flexDirection: "row", justifyContent: "center", alignItems: "center" } },
+                                react_1["default"].createElement(react_native_2.Image, { style: { width: 40, height: 40, borderRadius: 50 }, source: { uri: route.params.image } }),
+                                react_1["default"].createElement(react_native_1.Text, { style: { fontWeight: "bold" } }, route.params.name)))); }
+                    });
+                } }))));
 };
 exports["default"] = Main;
