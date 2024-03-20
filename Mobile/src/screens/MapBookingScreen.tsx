@@ -55,6 +55,9 @@ const MapBookingScreen = ({route}: any) => {
   const [destinationLocation, setDestinationLocation] = useState<LocationData | null>(null);
   const [polylineCoords, setPolylineCoords] = useState([]);
   const [shouldShowMapView, setShouldShowMapView] = useState(false);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
   // lấy địa chỉ của repairman
   const fetchLocation = async () => {
     try {
@@ -88,69 +91,71 @@ const MapBookingScreen = ({route}: any) => {
           message:
             'Cho phép ứng dụng truy cập vị trí để sử dụng tính năng này.',
           buttonPositive: 'Đồng ý',
-          buttonNeutral: 'Hỏi lại tôi sau',
-          buttonNegative: 'Hủy',
+          buttonNeutral: 'Hỏi lại tôi sau',
+          buttonNegative: 'Hủy',
         },
       );
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
-          title: 'Thành công',
+          title: 'Thành công',
           textBody: 'Quyền truy cập vị trí đã được cấp phép!',
         });
         getCurrentLocation();
       } else {
         Toast.show({
           type: ALERT_TYPE.WARNING,
-          title: 'Cảnh báo',
+          title: 'Cảnh báo',
           textBody: 'Quyền truy cập vị trí bị từ chối!',
         });
       }
     } catch (err) {
-      // console.warn(err);
+      console.warn(err);
     }
   };
-  ////lấy vị trí hiện tại 101B lê hữu trác đà nẵng 100 ngô quyền đà nẵng
-  const getReverseGeocoding = async (latitude :number, longitude:number) => {
-    console.log("huu lấy tên địa chỉ", latitude, longitude);
-    
+
+  const getReverseGeocoding = async (latitude:any, longitude:any) => {
+    console.log('huu lấy tên địa chỉ', latitude, longitude);
+
     try {
       const response = await axios.get(
         `https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=${latitude}&lon=${longitude}&format=json`,
       );
-      const {display_name} = response.data.data;
+      const { display_name } = response.data;
       console.log('display', display_name);
 
       return display_name;
-    } catch (error:any) {
-      console.log("adress",error.message);
-      
-      // console.error('Lỗi khi lấy địa chỉ từ tọa độ:', error);
+    } catch (error) {
+      console.log(error.message);
+
       return null;
     }
   };
+
   const getCurrentLocation = async () => {
     Geolocation.getCurrentPosition(
       async (position:any) => {
-        const {latitude, longitude}:any = position.coords;
+        const { latitude, longitude }:any = position.coords;
+        setLatitude(latitude)
+        setLongitude(longitude)
         console.log('Latitude hiện tại:', latitude);
         console.log('Longitude hiện tại:', longitude);
         const address = await getReverseGeocoding(latitude, longitude);
+        setAddress(address)
         console.log('Địa chỉ hiện tại:', address);
-        setCurrentLocation({latitude, longitude, address});
+        setCurrentLocation({ latitude, longitude, address });
       },
       (error:any) => console.error('Lỗi khi lấy vị trí hiện tại:', error),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      { enableHighAccuracy: false, timeout: 10000},
     );
   };
+
   useEffect(() => {
     requestLocationPermission();
-    Geolocation.getCurrentPosition(info=> {
-      setCurrentLocation(info.coords);
-    });
+    Geolocation.getCurrentPosition(latitude, longitude, address);
   }, []);
-  // console.log('currentLocation: ', currentLocation);
+
   const handleGetCurrentLocation = () => {
     getCurrentLocation();
   };

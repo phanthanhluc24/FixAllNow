@@ -64,14 +64,16 @@ const Conversation = ({ route }: any) => {
                 onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}
                 contentContainerStyle={styles.messagesList}
             >
-                {messages.map((item, index) => (
+                {messages.map((item, index) => {
+                    const fromUs = (item.senderId && item.senderId != idReceived) || (item.receivedId === idReceived)
+                    return (
                     <View
                         key={index}
-                        style={[styles.messageContainer, item.senderId != idReceived ? styles.userMessage : styles.otherMessage]}
+                        style={[styles.messageContainer, fromUs ? styles.userMessage : styles.otherMessage]}
                     >
                         <Text style={styles.messageText}>{item.message}</Text>
                     </View>
-                ))}
+                    )})}
                 <View ref={scrollViewRef} />
             </ScrollView>
             <View style={styles.inputContainer}>

@@ -36,7 +36,6 @@
     "react-hook-form": "^7.50.1",
     "react-native": "0.73.1",
     "react-native-alert-notification": "^0.4.0",
-    
     "react-native-datepicker": "^1.7.2",
     "react-native-document-picker": "^9.1.1",
     "react-native-element-dropdown": "^2.10.1",
