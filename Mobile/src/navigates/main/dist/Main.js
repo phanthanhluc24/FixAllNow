@@ -103,11 +103,11 @@ var Main = function () {
                 }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "HistoryStore", component: HistoryStore_1["default"], options: function () { return ({
                     headerShown: true,
-                    headerTitle: 'Lịch sử cửa hàng'
+                    headerTitle: 'Theo dõi cửa hàng'
                 }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "HistoryRepairmanBookSchedule", component: HistoryRepairmanBookSchedule_1["default"], options: function () { return ({
                     headerShown: true,
-                    headerTitle: 'Lịch sử đặt lịch'
+                    headerTitle: 'Theo dõi đơn đặt'
                 }); } }),
             react_1["default"].createElement(Stack.Screen, { name: "DetailRepairmanConfirmBooking", component: DetailRepairmanConfirmBooking_1["default"], options: function () { return ({
                     headerShown: true,

@@ -56,17 +56,12 @@ var FormAddNewService = function () {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, react_native_document_picker_1["default"].pick({
-                            type: [react_native_document_picker_1["default"].types.images, react_native_document_picker_1["default"].types.video]
+                            type: [react_native_document_picker_1["default"].types.allFiles]
                         })];
                 case 1:
                     res = (_a.sent())[0];
-                    if (res.type === 'image') {
-                        setSingleFile(res);
-                        setErrorImage('');
-                    }
-                    else if (res.type === 'video') {
-                        console.log("Bạn đã chọn một video. Vui lòng chọn một hình ảnh.");
-                    }
+                    setSingleFile(res);
+                    setErrorImage('');
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
@@ -126,7 +121,11 @@ var FormAddNewService = function () {
                             title: 'Thành công',
                             textBody: 'Dịch vụ đã thêm thành công!'
                         });
-                        navigation.navigate('Profile', { reload: true });
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Profile' }]
+                        });
+                        navigation.navigate('Profile');
                     }
                     return [3 /*break*/, 3];
                 case 2:
@@ -139,7 +138,10 @@ var FormAddNewService = function () {
         });
     }); };
     var handleCancle = function () {
-        navigation.navigate('Profile');
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Profile' }]
+        });
     };
     var isNumeric = function (value) {
         return /^\d+$/.test(value);

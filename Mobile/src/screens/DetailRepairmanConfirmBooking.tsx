@@ -27,8 +27,11 @@ interface BookingDetail {
   fee_service: number;
   payment: string;
   user_id: {
+    _id:string;
     full_name: string;
     email: string;
+    number_phone:number;
+    image:string
   };
   service_id: {
     image: string;
@@ -57,6 +60,7 @@ const DetailRepairmanConfirmBooking = () => {
   const detailBookings:any = useBookingDetail(booking_id);
   const {isLoading} = useBookingDetail(booking_id);
   const detailBooking: BookingDetail = detailBookings.detailBookings;
+  console.log(detailBooking);
   const totalPayment =
     detailBooking?.service_id.price +
     detailBooking?.fee_service +
@@ -139,34 +143,38 @@ const DetailRepairmanConfirmBooking = () => {
             <View style={styles.infoUser}>
               <View style={styles.styleInfo}>
                 <Text style={styles.infoUsers}>Họ và tên:</Text>
-                <Text numberOfLines={2} style={styles.infoUserss}>
+                <Text numberOfLines={2} style={styles.infoUserssss}>
                   {detailBooking?.user_id.full_name}
                 </Text>
               </View>
               <View style={styles.styleInfo}>
-                <Text style={styles.infoUsers}>Email:</Text>
-                <Text numberOfLines={2} style={styles.infoUserss}>
-                  {detailBooking?.user_id.email}
+                <Text style={styles.infoUsers}>SĐT:</Text>
+                <Text numberOfLines={2} style={styles.infoUserssss}>
+                  {detailBooking?.user_id.number_phone}
                 </Text>
               </View>
               <View style={styles.styleInfo}>
                 <Text style={styles.infoUsers}>Địa chỉ:</Text>
+                <TouchableOpacity   onPress={() =>
+                  handleViewAddressRepair(detailBooking)
+                }> 
                 <Text style={styles.infoUserss} numberOfLines={3}>
                   {detailBooking?.address}
                 </Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View>
             <View style={styles.infoUser}>
                 <View style={styles.styleInfo}>
                   <Text style={styles.infoUserssss}>Giờ sửa chữa:</Text>
-                  <Text numberOfLines={2} style={styles.infoUsersss}>
+                  <Text numberOfLines={2} style={styles.infoUserssss}>
                     {detailBooking?.time_repair}
                   </Text>
                 </View>
                 <View style={styles.styleInfo}>
                   <Text style={styles.infoUserssss}>Ngày sửa chữa:</Text>
-                  <Text numberOfLines={2} style={styles.infoUsersss}>
+                  <Text numberOfLines={2} style={styles.infoUserssss}>
                     {detailBooking?.day_repair}
                   </Text>
                 </View>
@@ -243,6 +251,15 @@ const DetailRepairmanConfirmBooking = () => {
           <View style={styles.totalPayment}>
             <View style={{width: '40%'}}>
               <TouchableOpacity
+                style={styles.backgrounds}
+                onPress={() =>
+                  handleChangeStatusBooking(detailBooking?._id, 2)
+                }>
+                <Text style={styles.nameConfirm}>Từ chối</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{width: '40%'}}>
+              <TouchableOpacity
                 style={styles.background}
                 onPress={() =>
                   handleChangeStatusBooking(detailBooking?._id, 1)
@@ -250,26 +267,16 @@ const DetailRepairmanConfirmBooking = () => {
                 <Text style={styles.nameConfirm}>Xác nhận</Text>
               </TouchableOpacity>
             </View>
-            <View style={{width: '40%'}}>
-              <TouchableOpacity
-                style={styles.backgrounds}
-                onPress={() =>
-                  handleChangeStatusBooking(detailBooking?._id, 2)
-                }>
-                <Text style={styles.nameConfirm}>Hủy yêu cầu</Text>
-              </TouchableOpacity>
-            </View>
+            
           </View>
         )}
         {detailBooking?.status === 'Đã nhận đơn sửa' && (
           <View style={styles.totalPayment}>
              <View style={{width: '40%'}}>
               <TouchableOpacity
-                style={styles.background}
-                onPress={() =>
-                  handleViewAddressRepair(detailBooking)
-                }>
-                <Text style={styles.nameConfirm}>Xem địa chỉ</Text>
+                style={styles.background} onPress={()=>navigation.navigate("Conversation",{image:detailBooking.user_id.image,name:detailBooking.user_id.full_name,idReceived:detailBooking.user_id._id})}
+               >
+                <Text style={styles.nameConfirm}>Nhắn tin</Text>
               </TouchableOpacity>
             </View>
             <View style={{width: '40%'}}>
@@ -295,12 +302,12 @@ const styles = StyleSheet.create({
     color: 'blue',
     width: '60%',
   },
-  infoUserssss: {
-    fontSize: 16,
-    color: '#394C6D',
-    fontWeight: 'bold',
-    width: '40%',
-  },
+  // infoUserssss: {
+  //   fontSize: 16,
+  //   color: '#394C6D',
+  //   fontWeight: 'bold',
+  //   width: '40%',
+  // },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -358,8 +365,15 @@ const styles = StyleSheet.create({
   },
   infoUserss: {
     fontSize: 16,
+    color: 'blue',
+    width: '25%',
+    textDecorationLine: 'underline'
+  },
+  infoUserssss: {
+    fontSize: 16,
     color: '#394C6D',
     width: '70%',
+   
   },
   desc: {
     fontSize: 15,

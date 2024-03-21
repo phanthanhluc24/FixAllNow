@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import {useRoute} from '@react-navigation/native';
 import useBookingDetail from '../hooks/useBookingDetail';
@@ -15,8 +16,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import useRepairmanChangeStatusBooking from '../hooks/useRepairmanChangeStatusBooking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import useGetUserChated from '../hooks/useGetUserChated';
 import LoaderKit from 'react-native-loader-kit';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
+import useRepairmanFinderCancelBooking from '../hooks/useRepairmanFinderCancelBooking';
 
 interface BookingDetail {
   _id: string;
@@ -38,6 +41,7 @@ interface BookingDetail {
   updatedAt: string;
 }
 const DetailNotification = () => {
+  const { userChat } = useGetUserChated()
   const [loading, setLoading] = useState(false);
   const {currentUser}: any = useGetCurrentUser();
   const route = useRoute();
@@ -53,6 +57,8 @@ const DetailNotification = () => {
   }, []);
   const {detailBookings, isError, isLoading}: any =
     useBookingDetail(booking_id);
+    console.log("details",detailBookings);
+    
   if (isLoading) {
     return (
       <View style={{alignItems: 'center'}}>
@@ -70,7 +76,7 @@ const DetailNotification = () => {
     detailBookings?.service_id.price +
     detailBookings?.fee_service +
     detailBookings?.fee_transport;
-  const handleChangeStatusBooking = (booking_id: string, option: number) => {
+  const handleChangeStatusBooking = (booking_id: string, option: number) =>{
     setLoading(true);
     useRepairmanChangeStatusBooking(booking_id, option, token, () => {
       setLoading(false);
@@ -80,6 +86,22 @@ const DetailNotification = () => {
       });
     });
   };
+  const handleCancelBooking =(booking_id:string)=>{
+    setLoading(true);
+    useRepairmanFinderCancelBooking(booking_id,token,()=>{
+      setLoading(false);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Root'}],
+      });
+    })
+  }
+  const handleExit =()=>{
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Root'}],
+    });
+  }
   return (
     <View style={styles.container}>
       <ScrollView style={styles.cartService}>
@@ -113,9 +135,9 @@ const DetailNotification = () => {
                 </Text>
               </View>
               <View style={styles.styleInfo}>
-                <Text style={styles.infoUsers}>Email:</Text>
-                <Text numberOfLines={2} style={styles.infoUserss}>
-                  {detailBookings?.user_id.email}
+                <Text style={styles.infoUsers}>SĐT:</Text>
+                <Text numberOfLines={1} style={styles.infoUserss}>
+                  {detailBookings?.user_id.number_phone}
                 </Text>
               </View>
               <View style={styles.styleInfo}>
@@ -195,7 +217,7 @@ const DetailNotification = () => {
           detailBookings?.status === 'Chờ xác nhận' && (
             <View style={styles.totalPayment}>
               <TouchableOpacity
-                style={{width: '80%'}}
+                style={{width: '45%'}}
                 onPress={() =>
                   handleChangeStatusBooking(detailBookings?._id, 1)
                 }>
@@ -203,9 +225,16 @@ const DetailNotification = () => {
                   <Text style={styles.nameConfirm}>Xác nhận</Text>
                 </View>
               </TouchableOpacity>
-              <View style={styles.iconChat}>
-                <AntDesign name="message1" color="#394C6D" size={25} />
-              </View>
+              <TouchableOpacity
+                style={{width: '45%'}}
+                onPress={() =>
+                  handleChangeStatusBooking(detailBookings?._id, 2)
+                }>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Hủy đơn đặt</Text>
+                </View>
+              </TouchableOpacity>
+             
             </View>
           )}
         {currentUser &&
@@ -213,11 +242,11 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã hủy đơn' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <TouchableOpacity style={{width: '100%'}} onPress={()=>handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã hủy đơn</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           )}
         {currentUser &&
@@ -225,11 +254,11 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã sửa hoàn thành' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <TouchableOpacity style={{width: '100%'}} onPress={()=>handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã sửa hoàn thành</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             </View>
           )}
         {currentUser &&
@@ -237,11 +266,14 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã nhận đơn sửa' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <TouchableOpacity style={{width: '80%'}} onPress={()=>handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã nhận đơn sửa</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconChat} onPress={()=>navigation.navigate("Conversation",{image:detailBookings.user_id.image,name:detailBookings.user_id.full_name,idReceived:detailBookings.user_id._id})}>
+              <Ionicons name="chatbox" size={30} color="#394C6D" />
+              </TouchableOpacity>
             </View>
           )}
         {/* của người dùng đặt lịch */}
@@ -288,11 +320,14 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã nhận đơn sửa' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <TouchableOpacity style={{width: '80%'}} onPress={()=>handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã nhận đơn sửa</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconChat} onPress={()=>navigation.navigate("Conversation",{image:detailBookings.user_id.image,name:detailBookings.user_id.full_name,idReceived:detailBookings.user_id._id})}>
+              <Ionicons name="chatbox" size={30} color="#394C6D" />
+              </TouchableOpacity>
             </View>
           )}
         {currentUser &&
@@ -300,20 +335,23 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Chờ xác nhận' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <TouchableOpacity style={{width: '45%'}} onPress={()=>handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Chờ xác nhận</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={{width: '45%'}} onPress={()=>handleCancelBooking(detailBookings?._id)}>
+                <View style={styles.background}>
+                  <Text style={styles.nameConfirm}>Hủy đặt</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           )}
       </View>
     </View>
   );
 };
-
 export default DetailNotification;
-
 const styles = StyleSheet.create({
   iconChat: {
     alignItems: 'center',

@@ -44,7 +44,7 @@ const ConfirmInforBooking = ({route}: any) => {
   const totalPrice = priceRepair + priceService + priceTransport;
   const [payment, setPayment] = useState('');
   const navigation: any = useNavigation();
-  const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<number | null>(2);
   const [errorPayment, setErrorPayment] = useState<string | null>(null);
   const {bookingService, isLoading} = useBookingService();
   const data = {
@@ -67,7 +67,7 @@ const ConfirmInforBooking = ({route}: any) => {
     setErrorPayment('OK');
   };
   const handleConfirm = () => {
-    if (errorPayment == null) {
+    if (selectedMethod === null) {
       setErrorPayment('Vui lòng chọn phương thức thanh toán');
       setLoading(false);
     } else {

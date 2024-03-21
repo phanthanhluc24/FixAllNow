@@ -25,7 +25,7 @@ const useBookingService = () => {
           },
         },
       );
-      console.log(response.data.status);
+      console.log(response.data.message);
       if (response.data.status === 200) {
         navigation.navigate('Root', {reload: true});
         Toast.show({
@@ -38,8 +38,9 @@ const useBookingService = () => {
           type: ALERT_TYPE.WARNING,
           title: 'Thất bại',
           textBody:
-            'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn hoặc 1 số vấn đề khác',
+            `${response.data.message}`,
         });
+        navigation.navigate('Root', {reload: true});
         setIsLoading(false);
       }
     } catch (error) {}

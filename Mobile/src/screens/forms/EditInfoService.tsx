@@ -11,7 +11,7 @@ import {
   ScrollView,
   Image,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, Fragment, useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
@@ -21,19 +21,19 @@ import DocumentPicker, {
 } from 'react-native-document-picker';
 import useEditInfoService from '../../hooks/useEditInfoService';
 import SignIn from '../accounts.tsx/SignIn';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 const EditInfoService = ({route}: any) => {
-  const {service}:any=route.params;
+  const {service}: any = route.params;
   const [loading, setLoading] = useState(false);
-  const navigation:any= useNavigation();
+  const navigation: any = useNavigation();
   const [nameService, setNameService] = useState(service.service_name);
   const [priceService, setPriceService] = useState(service?.price.toString());
   const [descService, setDescService] = useState(service?.desc);
   const [singleFile, setSingleFile] = useState<DocumentPickerResponse | null>(
     null,
   );
-  const [displayDemo,setDisplayDemo]=useState(service.image)
+  const [displayDemo, setDisplayDemo] = useState(service.image);
   const handleInputChange = (fieldName: string, value: string) => {
     switch (fieldName) {
       case 'service_name':
@@ -47,17 +47,17 @@ const EditInfoService = ({route}: any) => {
         break;
       default:
         break;
-    };
-  }
+    }
+  };
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      if(res){
-        setDisplayDemo(res.uri)
+      if (res) {
+        setDisplayDemo(res.uri);
         setSingleFile(res);
-      }else{
+      } else {
         setSingleFile(null);
       }
     } catch (err) {
@@ -81,9 +81,9 @@ const EditInfoService = ({route}: any) => {
   const isValidPrice = (value: string) => {
     return /^\d+$/.test(value);
   };
-  const onSubmit =async () => {
+  const onSubmit = async () => {
     const formData = {
-      service_id:service._id,
+      service_id: service._id,
       service_name: nameService,
       price: priceService,
       desc: descService,
@@ -92,26 +92,30 @@ const EditInfoService = ({route}: any) => {
     try {
       setLoading(true);
       const editSuccess = await useEditInfoService(formData);
-    console.log(editSuccess);
-  
-    if (editSuccess) {
+      console.log(editSuccess);
+
+      if (editSuccess) {
+        setLoading(false);
+        Toast.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Thành công',
+          textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
+        });
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Profile'}],
+        });
+        navigation.navigate('Profile')
+      } else {
+        console.error('Lỗi khi edit thông tin người dùng');
+      }
+    } catch (error) {
+      console.error('Lỗi khi edit thông tin người dùng:', error);
       setLoading(false);
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: 'Thành công',
-        textBody: 'Thông tin dịch vụ đã được chỉnh sửa!',
-      })
-      navigation.navigate('Profile', { reload: true });
-    } else {
-      console.error('Lỗi khi edit thông tin người dùng');
     }
-  } catch (error) {
-    console.error('Lỗi khi edit thông tin người dùng:', error);
-    setLoading(false);
-  }
   };
   const handleCancle = () => {
-    navigation.navigate("Profile")
+    navigation.navigate('Profile');
   };
   return (
     <KeyboardAvoidingView
@@ -120,7 +124,7 @@ const EditInfoService = ({route}: any) => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled">
-           <Modal
+        <Modal
           animationType="fade"
           transparent={true}
           visible={loading}
@@ -146,22 +150,23 @@ const EditInfoService = ({route}: any) => {
                   onBlur={onBlur}
                   onChangeText={text => {
                     onChange(text);
-                    handleInputChange('service_name', text); 
+                    handleInputChange('service_name', text);
                   }}
                   value={value}
                   defaultValue={nameService}
                 />
               )}
               name="service_name"
-              rules={{required: '* Tên dịch vụ không được bỏ trống',
-              validate: value =>
-              hasLettersAndNoNumbers(value) || '* Tên dịch vụ không hợp lệ',
-          }}
+              rules={{
+                required: '* Tên dịch vụ không được bỏ trống',
+                validate: value =>
+                  hasLettersAndNoNumbers(value) || '* Tên dịch vụ không hợp lệ',
+              }}
               defaultValue={nameService}
             />
-             {errors.service_name && (
-          <Text style={{color: 'red'}}>{errors.service_name.message}</Text>
-        )}
+            {errors.service_name && (
+              <Text style={{color: 'red'}}>{errors.service_name.message}</Text>
+            )}
           </View>
           <View style={styles.part}>
             <Text style={styles.infoEdit}>Giá dịch vụ</Text>
@@ -173,20 +178,23 @@ const EditInfoService = ({route}: any) => {
                   onBlur={onBlur}
                   onChangeText={text => {
                     onChange(text);
-                    handleInputChange('price', text); 
+                    handleInputChange('price', text);
                   }}
                   value={value}
                   defaultValue={priceService}
                 />
               )}
               name="price"
-              rules={{required: '* Giá không được bỏ trống ',
-              validate: value => isValidPrice(value) || '* Giá chỉ được chứa số'}}
+              rules={{
+                required: '* Giá không được bỏ trống ',
+                validate: value =>
+                  isValidPrice(value) || '* Giá chỉ được chứa số',
+              }}
               defaultValue={priceService}
             />
             {errors.price && (
-          <Text style={{color: 'red'}}>{errors.price.message}</Text>
-        )}
+              <Text style={{color: 'red'}}>{errors.price.message}</Text>
+            )}
           </View>
           <View style={styles.parts}>
             <Text style={styles.infoEdit}>Mô tả dịch vụ</Text>
@@ -194,7 +202,7 @@ const EditInfoService = ({route}: any) => {
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
-                multiline={true}
+                  multiline={true}
                   style={styles.inputInfos}
                   onBlur={onBlur}
                   onChangeText={text => {
@@ -206,40 +214,39 @@ const EditInfoService = ({route}: any) => {
                 />
               )}
               name="desc"
-              rules={{required: '* Mô tả không được bỏ trống', 
-              validate: value =>
-              hasLettersAndNoNumbers(value)||'* Mô tả không hợp lệ',
-            }}
+              rules={{
+                required: '* Mô tả không được bỏ trống',
+                validate: value =>
+                  hasLettersAndNoNumbers(value) || '* Mô tả không hợp lệ',
+              }}
               defaultValue={descService}
             />
             {errors.desc && (
-          <Text style={{color: 'red'}}>{errors.desc.message}</Text>
-        )}
+              <Text style={{color: 'red'}}>{errors.desc.message}</Text>
+            )}
           </View>
           <View style={styles.partss}>
             <Text style={styles.infoEdit}>Ảnh bìa dịch vụ</Text>
-           
-              <View style={styles.selectedImage}>
-                <Image
-                  source={{uri: displayDemo}}
-                  style={styles.imageStyle}></Image>
-                <View style={{position: 'absolute'}}>
-                  <TouchableOpacity onPress={selectFile}>
-                    <View style={styles.imageViews}>
-                      <Entypo name="camera" size={25} color="#394C6D" />
-                    </View>
-                  </TouchableOpacity>
-                </View>
+
+            <View style={styles.selectedImage}>
+              <Image
+                source={{uri: displayDemo}}
+                style={styles.imageStyle}></Image>
+              <View style={{position: 'absolute'}}>
+                <TouchableOpacity onPress={selectFile}>
+                  <View style={styles.imageViews}>
+                    <Entypo name="camera" size={25} color="#394C6D" />
+                  </View>
+                </TouchableOpacity>
               </View>
+            </View>
           </View>
         </View>
         <View style={styles.eventSubmit}>
-        <View style={styles.buttonChoose}>
+          <View style={styles.buttonChoose}>
             <View style={styles.buttonNow}>
               <View style={styles.button1}>
-                <TouchableOpacity
-                  style={styles.bookNow}
-                  onPress={handleCancle}>
+                <TouchableOpacity style={styles.bookNow} onPress={handleCancle}>
                   <Text style={styles.books}>Hủy</Text>
                 </TouchableOpacity>
               </View>
@@ -341,24 +348,23 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  
+
   part: {
     marginVertical: 5,
-    height:90
+    height: 90,
   },
   parts: {
     marginVertical: 5,
-    height:140
+    height: 140,
   },
   partss: {
     marginVertical: 5,
-    height:120
+    height: 120,
   },
   infoEdit: {
     color: '#FCA234',
     fontSize: 15,
     fontWeight: 'bold',
-    
   },
   eventSubmit: {
     flex: 1,
@@ -383,7 +389,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 15,
     color: '#000000',
-    height:50
+    height: 50,
   },
   inputInfos: {
     backgroundColor: 'white',
@@ -393,7 +399,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 15,
     color: '#000000',
-    height:100
+    height: 100,
   },
   mainBody: {
     flex: 1,

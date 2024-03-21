@@ -41,17 +41,18 @@ var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
 var react_1 = require("react");
 var react_native_alert_notification_1 = require("react-native-alert-notification");
-var useSignin = function (_a) {
-    var navigation = _a.navigation;
-    // const navigation:any= useNavigation()
-    var _b = react_1.useState(null), errorServer = _b[0], setErrorServer = _b[1];
+var native_1 = require("@react-navigation/native");
+var UrlFull = url_1.url + "/auth/login";
+var useSignin = function () {
+    var navigation = native_1.useNavigation();
+    var _a = react_1.useState(null), errorServer = _a[0], setErrorServer = _a[1];
     var handleSignin = function (data) { return __awaiter(void 0, void 0, void 0, function () {
         var res, accessToken, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    return [4 /*yield*/, axios_1["default"].post(url_1.url + "/auth/login", data)];
+                    return [4 /*yield*/, axios_1["default"].post(UrlFull, data)];
                 case 1:
                     res = _a.sent();
                     if (!(res.data.status === 201)) return [3 /*break*/, 3];
@@ -68,6 +69,7 @@ var useSignin = function (_a) {
                         index: 0,
                         routes: [{ name: 'Root' }]
                     });
+                    navigation.navigate('Root');
                     return [3 /*break*/, 4];
                 case 3:
                     setErrorServer(res.data.message);
@@ -81,6 +83,6 @@ var useSignin = function (_a) {
             }
         });
     }); };
-    return { handleSignin: handleSignin, errorServer: errorServer };
+    return { handleSignin: handleSignin, UrlFull: UrlFull, errorServer: errorServer };
 };
 exports["default"] = useSignin;

@@ -24,8 +24,8 @@ var BottomTab = function () {
                         title = 'Trang chủ';
                     }
                     else if (rn === 'Shop') {
-                        imageSource = require(URL_IMAGE + "/iconshop.png");
-                        title = 'Cửa hàng';
+                        imageSource = require(URL_IMAGE + "/messenger.png");
+                        title = 'Trò chuyện';
                     }
                     else if (rn === 'Scan') {
                         imageSource = require(URL_IMAGE + "/AI.png");

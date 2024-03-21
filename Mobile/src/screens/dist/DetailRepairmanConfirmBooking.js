@@ -68,6 +68,7 @@ var DetailRepairmanConfirmBooking = function () {
     var detailBookings = useBookingDetail_1["default"](booking_id);
     var isLoading = useBookingDetail_1["default"](booking_id).isLoading;
     var detailBooking = detailBookings.detailBookings;
+    console.log(detailBooking);
     var totalPayment = (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.service_id.price) + (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.fee_service) + (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.fee_transport);
     var handleChangeStatusBooking = function (booking_id, option) {
         setLoading(true);
@@ -114,21 +115,24 @@ var DetailRepairmanConfirmBooking = function () {
                     react_1["default"].createElement(react_native_1.View, { style: styles.infoUser },
                         react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.infoUsers }, "Ho\u0323 va\u0300 t\u00EAn:"),
-                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.user_id.full_name)),
+                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserssss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.user_id.full_name)),
                         react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.infoUsers }, "Email:"),
-                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.user_id.email)),
+                            react_1["default"].createElement(react_native_1.Text, { style: styles.infoUsers }, "S\u0110T:"),
+                            react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserssss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.user_id.number_phone)),
                         react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                             react_1["default"].createElement(react_native_1.Text, { style: styles.infoUsers }, "\u0110i\u0323a chi\u0309:"),
-                            react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserss, numberOfLines: 3 }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.address))),
+                            react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: function () {
+                                    return handleViewAddressRepair(detailBooking);
+                                } },
+                                react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserss, numberOfLines: 3 }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.address)))),
                     react_1["default"].createElement(react_native_1.View, null,
                         react_1["default"].createElement(react_native_1.View, { style: styles.infoUser },
                             react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserssss }, "Gi\u01A1\u0300 s\u01B0\u0309a ch\u01B0\u0303a:"),
-                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUsersss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.time_repair)),
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserssss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.time_repair)),
                             react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                                 react_1["default"].createElement(react_native_1.Text, { style: styles.infoUserssss }, "Nga\u0300y s\u01B0\u0309a ch\u01B0\u0303a:"),
-                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUsersss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.day_repair)))))),
+                                react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infoUserssss }, detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.day_repair)))))),
             react_1["default"].createElement(react_native_1.View, { style: styles.infoPayment },
                 react_1["default"].createElement(react_native_1.View, { style: styles.stylePrice },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.titlePrice }, "Gia\u0301 di\u0323ch vu\u0323:"),
@@ -164,21 +168,19 @@ var DetailRepairmanConfirmBooking = function () {
         react_1["default"].createElement(react_native_1.View, { style: styles.buttonEven },
             (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.status) === 'Chờ xác nhận' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
                 react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
-                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.background, onPress: function () {
-                            return handleChangeStatusBooking(detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking._id, 1);
-                        } },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Xa\u0301c nh\u00E2\u0323n"))),
-                react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.backgrounds, onPress: function () {
                             return handleChangeStatusBooking(detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking._id, 2);
                         } },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Hu\u0309y y\u00EAu c\u00E2\u0300u"))))),
-            (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.status) === 'Đã nhận đơn sửa' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "T\u01B0\u0300 ch\u00F4\u0301i"))),
                 react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.background, onPress: function () {
-                            return handleViewAddressRepair(detailBooking);
+                            return handleChangeStatusBooking(detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking._id, 1);
                         } },
-                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Xem \u0111i\u0323a chi\u0309"))),
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Xa\u0301c nh\u00E2\u0323n"))))),
+            (detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking.status) === 'Đã nhận đơn sửa' && (react_1["default"].createElement(react_native_1.View, { style: styles.totalPayment },
+                react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.background, onPress: function () { return navigation.navigate("Conversation", { image: detailBooking.user_id.image, name: detailBooking.user_id.full_name, idReceived: detailBooking.user_id._id }); } },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameConfirm }, "Nh\u0103\u0301n tin"))),
                 react_1["default"].createElement(react_native_1.View, { style: { width: '40%' } },
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.background, onPress: function () {
                             return handleChangeStatusBooking(detailBooking === null || detailBooking === void 0 ? void 0 : detailBooking._id, 3);
@@ -192,12 +194,12 @@ var styles = react_native_1.StyleSheet.create({
         color: 'blue',
         width: '60%'
     },
-    infoUserssss: {
-        fontSize: 16,
-        color: '#394C6D',
-        fontWeight: 'bold',
-        width: '40%'
-    },
+    // infoUserssss: {
+    //   fontSize: 16,
+    //   color: '#394C6D',
+    //   fontWeight: 'bold',
+    //   width: '40%',
+    // },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -254,6 +256,12 @@ var styles = react_native_1.StyleSheet.create({
         width: '30%'
     },
     infoUserss: {
+        fontSize: 16,
+        color: 'blue',
+        width: '25%',
+        textDecorationLine: 'underline'
+    },
+    infoUserssss: {
         fontSize: 16,
         color: '#394C6D',
         width: '70%'

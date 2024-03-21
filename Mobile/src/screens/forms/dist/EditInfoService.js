@@ -68,7 +68,6 @@ var EditInfoService = function (_a) {
             default:
                 break;
         }
-        ;
     };
     var selectFile = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, err_1;
@@ -138,7 +137,11 @@ var EditInfoService = function (_a) {
                             title: 'Thành công',
                             textBody: 'Thông tin dịch vụ đã được chỉnh sửa!'
                         });
-                        navigation.navigate('Profile', { reload: true });
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Profile' }]
+                        });
+                        navigation.navigate('Profile');
                     }
                     else {
                         console.error('Lỗi khi edit thông tin người dùng');
@@ -154,7 +157,7 @@ var EditInfoService = function (_a) {
         });
     }); };
     var handleCancle = function () {
-        navigation.navigate("Profile");
+        navigation.navigate('Profile');
     };
     return (react_1["default"].createElement(react_native_1.KeyboardAvoidingView, { behavior: react_native_1.Platform.OS === 'ios' ? 'padding' : 'height', style: styles.container },
         react_1["default"].createElement(react_native_1.ScrollView, { contentContainerStyle: { flexGrow: 1 }, keyboardShouldPersistTaps: "handled" },
@@ -174,7 +177,9 @@ var EditInfoService = function (_a) {
                                     onChange(text);
                                     handleInputChange('service_name', text);
                                 }, value: value, defaultValue: nameService }));
-                        }, name: "service_name", rules: { required: '* Tên dịch vụ không được bỏ trống', validate: function (value) {
+                        }, name: "service_name", rules: {
+                            required: '* Tên dịch vụ không được bỏ trống',
+                            validate: function (value) {
                                 return hasLettersAndNoNumbers(value) || '* Tên dịch vụ không hợp lệ';
                             }
                         }, defaultValue: nameService }),
@@ -187,7 +192,12 @@ var EditInfoService = function (_a) {
                                     onChange(text);
                                     handleInputChange('price', text);
                                 }, value: value, defaultValue: priceService }));
-                        }, name: "price", rules: { required: '* Giá không được bỏ trống ', validate: function (value) { return isValidPrice(value) || '* Giá chỉ được chứa số'; } }, defaultValue: priceService }),
+                        }, name: "price", rules: {
+                            required: '* Giá không được bỏ trống ',
+                            validate: function (value) {
+                                return isValidPrice(value) || '* Giá chỉ được chứa số';
+                            }
+                        }, defaultValue: priceService }),
                     errors.price && (react_1["default"].createElement(react_native_1.Text, { style: { color: 'red' } }, errors.price.message))),
                 react_1["default"].createElement(react_native_1.View, { style: styles.parts },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infoEdit }, "M\u00F4 ta\u0309 di\u0323ch vu\u0323"),
@@ -197,7 +207,9 @@ var EditInfoService = function (_a) {
                                     onChange(text);
                                     handleInputChange('desc', text);
                                 }, value: value, defaultValue: descService }));
-                        }, name: "desc", rules: { required: '* Mô tả không được bỏ trống', validate: function (value) {
+                        }, name: "desc", rules: {
+                            required: '* Mô tả không được bỏ trống',
+                            validate: function (value) {
                                 return hasLettersAndNoNumbers(value) || '* Mô tả không hợp lệ';
                             }
                         }, defaultValue: descService }),

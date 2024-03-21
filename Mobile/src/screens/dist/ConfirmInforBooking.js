@@ -74,7 +74,7 @@ var ConfirmInforBooking = function (_a) {
     var totalPrice = priceRepair + priceService + priceTransport;
     var _d = react_1.useState(''), payment = _d[0], setPayment = _d[1];
     var navigation = native_1.useNavigation();
-    var _e = react_1.useState(null), selectedMethod = _e[0], setSelectedMethod = _e[1];
+    var _e = react_1.useState(2), selectedMethod = _e[0], setSelectedMethod = _e[1];
     var _f = react_1.useState(null), errorPayment = _f[0], setErrorPayment = _f[1];
     var _g = useBookingService_1["default"](), bookingService = _g.bookingService, isLoading = _g.isLoading;
     var data = {
@@ -97,7 +97,7 @@ var ConfirmInforBooking = function (_a) {
         setErrorPayment('OK');
     };
     var handleConfirm = function () {
-        if (errorPayment == null) {
+        if (selectedMethod === null) {
             setErrorPayment('Vui lòng chọn phương thức thanh toán');
             setLoading(false);
         }

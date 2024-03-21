@@ -120,9 +120,17 @@ var ProfileHeader = function () {
     var destroyService = useDeleteService_1["default"]().destroyService;
     var handleDeleteService = function (service_id) { return function () {
         setLoading(true);
-        destroyService(service_id);
-        setLoading(false);
-        navigation.navigate('Profile', { reload: true });
+        destroyService(service_id)
+            .then(function () {
+            setLoading(false);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Profile' }]
+            });
+        })["catch"](function (error) {
+            setLoading(false);
+            console.error('Error deleting service:', error);
+        });
     }; }; ///////////////////////////////////
     var renderItem = function (data) { return (react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.repairman, onPress: function () {
             return navigation.navigate('DetailService', {
@@ -197,14 +205,20 @@ var ProfileHeader = function () {
             react_1["default"].createElement(react_native_1.View, { style: styles.aboutStore },
                 react_1["default"].createElement(react_native_1.Text, { style: styles.nameListService }, "Danh sa\u0301ch di\u0323ch vu\u0323"),
                 react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: toggleMenu, style: styles.iconContainer },
-                    react_1["default"].createElement(AntDesign_1["default"], { name: "menu-fold", size: 25, color: "black" }))),
-            react_1["default"].createElement(react_native_1.View, null, isMenuVisible && (react_1["default"].createElement(react_native_1.View, { style: { backgroundColor: 'white', paddingHorizontal: 20 } },
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventAddNewService, style: styles.viewHistorys },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Th\u00EAm m\u01A1\u0301i di\u0323ch vu\u0323")),
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventHistoryStore, style: styles.viewHistorys },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Li\u0323ch s\u01B0\u0309 c\u01B0\u0309a ha\u0300ng")),
-                react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventHistoryBookSchedule, style: styles.viewHistorys },
-                    react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Li\u0323ch s\u01B0\u0309 \u0111\u0103\u0323t li\u0323ch"))))),
+                    react_1["default"].createElement(AntDesign_1["default"], { name: "caretdown", size: 25, color: "#FCA234" }))),
+            react_1["default"].createElement(react_native_1.View, null, isMenuVisible && (react_1["default"].createElement(react_native_1.View, { style: {
+                    backgroundColor: 'white',
+                    paddingHorizontal: 20,
+                    flexDirection: 'row'
+                } },
+                react_1["default"].createElement(react_native_1.View, { style: { width: '50%' } }),
+                react_1["default"].createElement(react_native_1.View, { style: { width: '50%' } },
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventAddNewService, style: styles.viewHistorys },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Th\u00EAm m\u01A1\u0301i di\u0323ch vu\u0323")),
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventHistoryStore, style: styles.viewHistorys },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Theo do\u0303i c\u01B0\u0309a ha\u0300ng")),
+                    react_1["default"].createElement(react_native_1.TouchableOpacity, { onPress: handleEventHistoryBookSchedule, style: styles.viewHistorys },
+                        react_1["default"].createElement(react_native_1.Text, { style: styles.nameViewHistory }, "Theo do\u0303i \u0111\u01A1n \u0111\u0103\u0323t")))))),
             isLoading ? (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center' } },
                 react_1["default"].createElement(react_native_1.Text, null,
                     react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' })))) : hasServices ? (react_1["default"].createElement(react_native_swipe_list_view_1.SwipeListView, { data: serviceOfRepairman, renderItem: renderItem, renderHiddenItem: renderHiddenItem, leftOpenValue: 75, rightOpenValue: -75 })) : (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', justifyContent: 'center' } },
@@ -220,11 +234,11 @@ var styles = react_native_1.StyleSheet.create({
     },
     viewHistorys: {
         backgroundColor: '#394C6D',
+        flexDirection: 'row',
         height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
-        marginTop: 10,
         // marginBottom:10,
         // marginHorizontal:20
         marginBottom: 10,
@@ -234,7 +248,10 @@ var styles = react_native_1.StyleSheet.create({
         color: '#394C6D'
     },
     iconContainer: {
-        marginRight: 20
+        marginRight: 20,
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: '#FCA234'
     },
     centeredView: {
         flex: 1,

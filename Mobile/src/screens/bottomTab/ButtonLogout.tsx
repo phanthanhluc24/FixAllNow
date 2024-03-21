@@ -30,7 +30,11 @@ const ButtonLogout = () => {
             title: 'Thành công',
             textBody: 'Đăng xuất thành công!',
           });
-          navigation.navigate('SignIn');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'SignIn'}],
+          });
+          navigation.navigate('SignIn')
         }
       })
       .catch(error => {});

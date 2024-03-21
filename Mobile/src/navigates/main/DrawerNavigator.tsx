@@ -45,7 +45,7 @@ const DrawerNavigator = () => {
     <GestureHandlerRootView style={styles.DrawerContainer}>
       <Drawer.Navigator initialRouteName="Main">
         <Drawer.Screen
-          name="Main"
+          name="Trang chính"
           component={BottomTab}
           options={() => ({
             headerShown: true,
@@ -53,7 +53,7 @@ const DrawerNavigator = () => {
           })}
         />
         <Drawer.Screen
-          name="Home"
+          name="Trang chủ"
           component={Home}
           options={optionsScreen({
             drawerIcon: require(`${URL_IMAGE}/iconhome.png`),
@@ -66,7 +66,7 @@ const DrawerNavigator = () => {
         </Drawer.Screen>
        
         <Drawer.Screen
-          name="Shop"
+          name="Tin nhắn"
           component={Shop}
           options={optionsScreen({
             drawerIcon: require(`${URL_IMAGE}/message.png`),
@@ -75,7 +75,7 @@ const DrawerNavigator = () => {
           })}
         />
         <Drawer.Screen
-          name="Notification"
+          name="Thông báo"
           component={Notification}
           options={optionsScreen({
             drawerIcon: require(`${URL_IMAGE}/iconnotification.png`),
@@ -84,7 +84,7 @@ const DrawerNavigator = () => {
           })}
         />
         <Drawer.Screen
-          name="Profile"
+          name="Hồ sơ"
           component={Profile}
           options={optionsScreen({
             drawerIcon: require(`${URL_IMAGE}/iconprofile.png`),

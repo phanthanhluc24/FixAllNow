@@ -3,9 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { url } from "./apiRequest/url";
 import { useState, useEffect } from "react";
 const useBookingDetail = (booking_id:string) => {
-    const id= booking_id
-    console.log("Id booking",id);
-    
     const [detailBookings, setDetailBooking] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);

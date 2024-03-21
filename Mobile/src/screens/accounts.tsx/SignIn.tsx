@@ -31,6 +31,8 @@ const SignIn = ({navigation}: any) => {
   }, [])
   const getFcmToken = async () => {
     const token = await AsyncStorage.getItem("fcmToken")
+    console.log("book", token);
+    
     if (token) {
       setDeviceToken(token)
     }

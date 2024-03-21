@@ -67,7 +67,11 @@ const EditInfoCurrentUser = ({route}: any) => {
           title: 'Thành công',
           textBody: "Thông tin người dùng thay đổi thành công!",
         });
-        navigation.navigate('Profile', { reload: true });
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Profile'}],
+        });
+        navigation.navigate('Profile')
       } else {
         console.error('Lỗi khi edit thông tin người dùng');
       }

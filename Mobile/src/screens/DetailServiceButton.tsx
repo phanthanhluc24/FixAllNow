@@ -14,6 +14,10 @@ const DetailServiceButton: React.FC<{ serviceInfo: typeService|any}>= ({ service
     const navigation:any= useNavigation();
     const handleBookNow =()=>{
       navigation.navigate('MapBookingScreen',{serviceInfo})
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{name: 'MapBookingScreen'}],
+      // });
     }
     const handleBookSchedule = () => {
       navigation.navigate('FormBookSchedule', { serviceInfo });

@@ -6,6 +6,7 @@ import Notification from '../feed/Repairman_Finder/Notification';
 import Scan from '../feed/Repairman_Finder/Scan';
 import Profile from '../feed/Repairman_Finder/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const Tab = createBottomTabNavigator();
 const URL_IMAGE = '../../assets/BottomTab';
 const BottomTab = () => {
@@ -21,7 +22,7 @@ const BottomTab = () => {
             imageSource = require(`${URL_IMAGE}/iconhome.png`);
             title = 'Trang chủ';
           } else if (rn === 'Shop') {
-            imageSource = require(`${URL_IMAGE}/message.png`);
+            imageSource = require(`${URL_IMAGE}/messenger.png`);
             title = 'Trò chuyện';
           } else if (rn === 'Scan') {
             imageSource = require(`${URL_IMAGE}/AI.png`);

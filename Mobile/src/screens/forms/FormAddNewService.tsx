@@ -33,15 +33,10 @@ const FormAddNewService = () => {
   const selectFile = async () => {
     try {
       const [res] = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.video]
+        type: [DocumentPicker.types.allFiles],
       });
-      if (res.type === 'image') {
-        setSingleFile(res);
-        setErrorImage('');
-      } 
-      else if (res.type === 'video') {
-        console.log("Bạn đã chọn một video. Vui lòng chọn một hình ảnh.");
-      }
+      setSingleFile(res);
+      setErrorImage('');
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {
@@ -90,7 +85,11 @@ const FormAddNewService = () => {
           title: 'Thành công',
           textBody: 'Dịch vụ đã thêm thành công!',
         });
-        navigation.navigate('Profile', {reload: true});
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Profile'}],
+        });
+        navigation.navigate('Profile');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -98,7 +97,10 @@ const FormAddNewService = () => {
     }
   };
   const handleCancle = () => {
-    navigation.navigate('Profile');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Profile'}],
+    });
   };
   const isNumeric = (value: any) => {
     return /^\d+$/.test(value);

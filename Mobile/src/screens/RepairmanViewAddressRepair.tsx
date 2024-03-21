@@ -1,11 +1,13 @@
-import {  StyleSheet,
+import {
+  StyleSheet,
   Text,
   View,
   Button,
   Image,
   TextInput,
   TouchableOpacity,
-  PermissionsAndroid } from 'react-native'
+  PermissionsAndroid,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import MapView, {Marker, Polyline} from 'react-native-maps';
@@ -19,112 +21,89 @@ interface LocationData {
 }
 const RepairmanViewAddressRepair = ({route}: any) => {
   const {detailBooking} = route.params;
-  console.log("hellohelo", detailBooking);
-  
   const repairmanFinderAddress = detailBooking;
+  console.log('repairmanFinderAddress', repairmanFinderAddress);
+
   const {currentUser}: any = useGetCurrentUser();
-  console.log(currentUser);
-  
-  const [location, setLocation] = useState<LocationData | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number, address: string | null, description: string | null } | null>(null);
-  const [destination, setDestination] = useState('');
-  const [destinationLocation, setDestinationLocation] = useState<LocationData | null>(null);
-  const [polylineCoords, setPolylineCoords] = useState([]);
+  console.log('currentUser', currentUser);
+
+  const [location, setLocation] = useState<LocationData | null>({
+    latitude: null,
+    longitude: null,
+    address: '',
+  });
+  const [destinationLocation, setDestinationLocation] =
+    useState<LocationData | null>({
+      latitude: null,
+      longitude: null,
+      address: '',
+    });
   const [shouldShowMapView, setShouldShowMapView] = useState(false);
-
-  const fetchLocation = async () => {
-    try {
-      const address = repairmanFinderAddress.address;
-      console.log(address);
-      
-      // console.log('address', address);
-      const response = await axios.get(
-        `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${address}&format=json`,
-      );
-      const data = response.data[0];
-      setLocation({
-        latitude: parseFloat(data.lat),
-        longitude: parseFloat(data.lon),
-        address: data.display_name,
-      });
-      setShouldShowMapView(true);
-    } catch (error) {
-      // console.error('Error:', error);
-    }
-  };
+  const [polylineCoordinates, setPolylineCoordinates] = useState([]);
   useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const address = currentUser.address;
+        const response = await axios.get(`https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${address}&format=json`);
+        const data = response.data[0];
+        setLocation({
+          latitude: parseFloat(data.lat),
+          longitude: parseFloat(data.lon),
+          address: data.display_name,
+        });
+        setShouldShowMapView(true);
+      } catch (error) {
+        console.error('Error fetching location:', error);
+      }
+    };
     fetchLocation();
-  }, []);
+  }, [currentUser]);
 
-  const fetchDestinationLocation = async () => {
-    try {
-      const addressRepairman = currentUser.address;
-      console.log(addressRepairman);
-      
-      const response = await axios.get(
-        `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${addressRepairman}&format=json`,
-      );
-      const data = response.data[0];
-      setDestinationLocation({
-        latitude: parseFloat(data.lat),
-        longitude: parseFloat(data.lon),
-        address: data.display_name,
-      });
-      setShouldShowMapView(true);
-    } catch (error) {
-      // console.error('Error:', error);
-    }
-  };
   useEffect(() => {
+    const fetchDestinationLocation = async () => {
+      try {
+        const addressRepairman = repairmanFinderAddress.address;
+        const response = await axios.get(`https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${addressRepairman}&format=json`);
+        const data = response.data[0];
+        setDestinationLocation({
+          latitude: parseFloat(data.lat),
+          longitude: parseFloat(data.lon),
+          address: data.display_name,
+        });
+        setShouldShowMapView(true);
+      } catch (error) {
+        console.error('Error fetching destination location:', error);
+      }
+    };
     fetchDestinationLocation();
-  }, []);
+  }, [detailBooking]);
   useEffect(() => {
-    if (location && destinationLocation) {
-      fetchDirection(); // fetch địa điểm sau khi cả hai điểm đã được xác định
-      updatePolyline();
+    if (location.latitude && destinationLocation.latitude) {
+      fetchDirections(location, destinationLocation);
     }
   }, [location, destinationLocation]);
-  const fetchDirection = async () => {
+
+  const fetchDirections = async (origin, destination) => {
     try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM`,
-      );
-      const routes = response.data.routes;
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM`);
+      const { routes } = response.data;
       if (routes.length > 0) {
         const points = routes[0].overview_polyline.points;
-        const decodedPoints:any = decodePolyline(points);
-        setPolylineCoords(decodedPoints);
+        const polylineCoords = decodePolyline(points);
+        setPolylineCoordinates(polylineCoords);
       }
     } catch (error) {
-      // console.error('Error:', error);
+      console.error('Error fetching directions:', error);
     }
   };
 
-  //cập nhật lại đường polyline
-  const updatePolyline = async () => {
-    if (location && destinationLocation) {
-      try {
-        const response = await axios.get(
-          `https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude},${location.longitude}&destination=${destinationLocation.latitude},${destinationLocation.longitude}&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM`,
-        );
-        const routes = response.data.routes;
-        if (routes.length > 0) {
-          const points = routes[0].overview_polyline.points;
-          const decodedPoints:any = decodePolyline(points);
-          setPolylineCoords(decodedPoints);
-        }
-      } catch (error) {
-        // console.error('Error:', error);
-      }
-    }
-  };
-  const decodePolyline = (encoded: string): { latitude: number; longitude: number }[] => {
+  const decodePolyline = (encoded:any) => {
+    let points = [];
     let index = 0;
-    let len = encoded.length;
     let lat = 0;
     let lng = 0;
-    const polylineCoords = [];
-    while (index < len) {
+
+    while (index < encoded.length) {
       let b;
       let shift = 0;
       let result = 0;
@@ -133,7 +112,7 @@ const RepairmanViewAddressRepair = ({route}: any) => {
         result |= (b & 0x1f) << shift;
         shift += 5;
       } while (b >= 0x20);
-      const dlat = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
+      let dlat = ((result & 1) !== 0 ? ~(result >> 1) : (result >> 1));
       lat += dlat;
       shift = 0;
       result = 0;
@@ -142,14 +121,23 @@ const RepairmanViewAddressRepair = ({route}: any) => {
         result |= (b & 0x1f) << shift;
         shift += 5;
       } while (b >= 0x20);
-      const dlng = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
+      let dlng = ((result & 1) !== 0 ? ~(result >> 1) : (result >> 1));
       lng += dlng;
-      const latitude = lat / 1e5;
-      const longitude = lng / 1e5;
-      polylineCoords.push({latitude, longitude});
+
+      points.push({ latitude: lat / 1E5, longitude: lng / 1E5 });
     }
-    return polylineCoords;
+    return points;
   };
+  // useEffect(() => {
+  //   if (location.latitude && destinationLocation.latitude) {
+  //     // Tính toán và vẽ Polyline ở đây
+  //     const coordinates = [
+  //       { latitude: location.latitude, longitude: location.longitude },
+  //       { latitude: destinationLocation.latitude, longitude: destinationLocation.longitude },
+  //     ];
+  //     setPolylineCoordinates(coordinates);
+  //   }
+  // }, [location, destinationLocation]);
   return (
     <View style={styles.container}>
       {shouldShowMapView && (
@@ -166,31 +154,11 @@ const RepairmanViewAddressRepair = ({route}: any) => {
           {location && (
             <Marker
               coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
+                latitude: location?.latitude,
+                longitude: location?.longitude,
               }}
-              title="Địa chỉ bạn sẽ đến sửa"
+              title="Địa chỉ của bạn"
               description={location.address}>
-              <View style={styles.imageMarkerContainer}>
-                <View style={styles.imageMarkerBorder}>
-                  <Image
-                    source={{uri: repairmanFinderAddress.user_id.image}}
-                    style={styles.imageMarker}
-                  />
-                </View>
-              </View>
-            </Marker>
-          )}
-          {/* vị trí bạn nhập vào */}
-          {destinationLocation && (
-            <Marker
-              coordinate={{
-                latitude: destinationLocation.latitude,
-                longitude: destinationLocation.longitude,
-              }}
-              title="Địa chỉ hiện tại của bạn"
-              description={destinationLocation.address}
-              >
               <View style={styles.imageMarkerContainer}>
                 <View style={styles.imageMarkerBorder}>
                   <Image
@@ -201,9 +169,28 @@ const RepairmanViewAddressRepair = ({route}: any) => {
               </View>
             </Marker>
           )}
-          {polylineCoords.length > 0 && (
+          {/* vị trí bạn nhập vào */}
+          {destinationLocation && (
+            <Marker
+              coordinate={{
+                latitude: destinationLocation?.latitude,
+                longitude: destinationLocation?.longitude,
+              }}
+              title="Địa chỉ bạn sẽ đến sửa"
+              description={destinationLocation.address}>
+              <View style={styles.imageMarkerContainer}>
+                <View style={styles.imageMarkerBorder}>
+                  <Image
+                    source={{uri: repairmanFinderAddress.service_id.image}}
+                    style={styles.imageMarker}
+                  />
+                </View>
+              </View>
+            </Marker>
+          )}
+        {polylineCoordinates.length > 0 && (
             <Polyline
-              coordinates={polylineCoords}
+              coordinates={polylineCoordinates}
               strokeColor="green"
               strokeWidth={5}
             />
@@ -211,13 +198,13 @@ const RepairmanViewAddressRepair = ({route}: any) => {
         </MapView>
       )}
     </View>
-  )
-}
-export default RepairmanViewAddressRepair
+  );
+};
+export default RepairmanViewAddressRepair;
 
 const styles = StyleSheet.create({
-  errorText:{
-    color:"red"
+  errorText: {
+    color: 'red',
   },
   iconConfirm: {
     alignItems: 'center',
@@ -392,4 +379,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-})
+});

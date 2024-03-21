@@ -8,6 +8,10 @@ var DetailServiceButton = function (_a) {
     var navigation = native_1.useNavigation();
     var handleBookNow = function () {
         navigation.navigate('MapBookingScreen', { serviceInfo: serviceInfo });
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'MapBookingScreen'}],
+        // });
     };
     var handleBookSchedule = function () {
         navigation.navigate('FormBookSchedule', { serviceInfo: serviceInfo });
