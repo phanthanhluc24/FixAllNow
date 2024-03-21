@@ -42,19 +42,12 @@ export default function Shop() {
   };
   return (
     <>
-      {/* <Button title="Send Socket Io" onPress={chatWithNewMember}></Button> */}
-
       <View>
             <FlatList
                 data={userChat}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
             />
-            {/* {isLoading!==false && <Text style={styles.loadingText}>
-            <LoaderKit style={styles.loadingText}
-            name={'BallPulse'}
-            color={'#FCA234'}
-          /></Text>} */}
         </View>
     </>
   );

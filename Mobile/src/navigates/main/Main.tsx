@@ -244,14 +244,10 @@ const Main = () => {
           options={({ route }: any) => ({
             headerShown: true,
             headerTitle: () => (
-              <View style={{ flexDirection: "row", justifyContent: "space-around", alignItems: "center" ,gap:40}}>
-                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+              <View style={{ flexDirection: "row", justifyContent: "space-around", alignItems: "center"}}>
+                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",gap:5 }}>
                   <Image style={{ width: 40, height: 40, borderRadius: 50 }} source={{ uri: route.params.image }}></Image>
                   <Text style={{ fontWeight: "bold" }}>{route.params.name}</Text>
-                </View>
-                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 16 }}>
-                  <Ionicons name='videocam' size={24} color={"#007AFF"} />
-                  <Ionicons name='call' size={24} color={"#007AFF"} />
                 </View>
               </View>
             ),

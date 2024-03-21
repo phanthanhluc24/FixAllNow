@@ -7,6 +7,10 @@ import useGetMessageConversation from '../../hooks/useGetMessageConversation';
 import { FlatList } from 'react-native';
 import { url } from '../../hooks/apiRequest/url';
 import { io } from 'socket.io-client';
+import TimeAgo from 'react-native-timeago';
+import moment from 'moment';
+import 'moment/locale/vi';
+moment.locale('vi');
 const socket = io(url)
 interface Message {
     senderId: string,
@@ -72,6 +76,7 @@ const Conversation = ({ route }: any) => {
                         style={[styles.messageContainer, fromUs ? styles.userMessage : styles.otherMessage]}
                     >
                         <Text style={styles.messageText}>{item.message}</Text>
+                        <TimeAgo style={styles.timeMessage} time={item.createdAt} locale="vi"  interval={1000} />
                     </View>
                     )})}
                 <View ref={scrollViewRef} />
@@ -81,7 +86,7 @@ const Conversation = ({ route }: any) => {
                     style={styles.input}
                     value={message}
                     onChangeText={(text) => setMessage(text)}
-                    placeholder="Type your message..."
+                    placeholder="Nhập tin nhắn..."
                     placeholderTextColor="#666"
                     multiline
                 />
@@ -151,4 +156,9 @@ const styles = StyleSheet.create({
     sendIcon: {
         marginLeft: 10,
     },
+    timeMessage:{
+        fontSize:10,
+        color:"#FFFFFF"
+
+    }
 })
