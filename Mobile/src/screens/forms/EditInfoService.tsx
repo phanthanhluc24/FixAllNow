@@ -92,7 +92,6 @@ const EditInfoService = ({route}: any) => {
     try {
       setLoading(true);
       const editSuccess = await useEditInfoService(formData);
-      console.log(editSuccess);
 
       if (editSuccess) {
         setLoading(false);

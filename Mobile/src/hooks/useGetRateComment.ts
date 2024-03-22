@@ -14,7 +14,6 @@ const useGetRateComment = (repairman_id: any) => {
       const response = await axios.get(`${url}/comment/${repairman_id}`, {
         headers: {Authorization: `Bearer ${accessToken}`},
       });
-      console.log(response.data.data);
       setRateComment(response.data.data);
     } catch (error: any) {
       setIsError(true);

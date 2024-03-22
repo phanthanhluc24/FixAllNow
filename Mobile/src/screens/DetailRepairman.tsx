@@ -21,7 +21,6 @@ interface typeService {
 const DetailRepairman = ({route}: any) => {
   const data = [{key: 'DetailHeaderRepairman'}];
   const {id, title} = route.params;
-  console.log(id);
 
   const renderHeader = () => {
     return (

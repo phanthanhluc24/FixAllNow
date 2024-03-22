@@ -57,7 +57,6 @@ const DetailNotification = () => {
   }, []);
   const {detailBookings, isError, isLoading}: any =
     useBookingDetail(booking_id);
-    console.log("details",detailBookings);
     
   if (isLoading) {
     return (

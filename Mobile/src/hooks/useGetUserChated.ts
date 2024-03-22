@@ -5,6 +5,7 @@ import { url } from "./apiRequest/url"
 
 const useGetUserChated = () => {
     const [userChat,setUserChat]=useState([])
+    const [isLoading,setIsLoading]=useState(true)
     useEffect(() => {
         const fetchGetUserChat = async () => {
             const accessToken = await AsyncStorage.getItem("accessToken")
@@ -12,6 +13,7 @@ const useGetUserChated = () => {
                 headers: { Authorization: `Bearer ${accessToken}` },
             })
             setUserChat(response.data)
+            setIsLoading(false)
         }
         const interval = setInterval(() => {
             fetchGetUserChat();
@@ -20,7 +22,7 @@ const useGetUserChated = () => {
         // Clean up interval when component unmounts
         return () => clearInterval(interval);
     },[])
-    return {userChat}
+    return {userChat,isLoading,setIsLoading}
 }
 
 export default useGetUserChated

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { url } from "./apiRequest/url"
 
 const useGetMessageConversation = (id:any) => {
+  console.log("Id room",id);
+  
    const [messages, setMessages] = useState<any[]>([]);
    useEffect(()=>{
      const getMessageConversation=async()=>{

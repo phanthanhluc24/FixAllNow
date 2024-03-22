@@ -17,6 +17,15 @@ const sound = new Sound(
     }
   },
 );
+const soundMessage=new Sound(
+  require("../Mobile/src/assets/mussic/messenger.mp3"),
+  Sound.MAIN_BUNDLE,
+  error => {
+    if (error) {
+      console.log('Error loading sound file:', error);
+    }
+  },
+)
 messaging().setBackgroundMessageHandler(async message => {
   sound.play(success => {
     if (success) {
@@ -27,17 +36,27 @@ messaging().setBackgroundMessageHandler(async message => {
   });
 });
 messaging().onMessage(async message => {
-  Toast.show({
-    type: ALERT_TYPE.INFO,
-    title: `${message.notification.title}`,
-    textBody: `${message.notification.body}`,
-  });
-  sound.play(success => {
-    if (success) {
-      console.log('Sound played successfully');
-    } else {
-      console.log('Error playing sound');
-    }
-  });
+  if (message.notification.title=="Fix All Now") {
+    Toast.show({
+      type: ALERT_TYPE.INFO,
+      title: `${message.notification.title}`,
+      textBody: `${message.notification.body}`,
+    });
+    sound.play(success => {
+      if (success) {
+        console.log('Sound played successfully');
+      } else {
+        console.log('Error playing sound');
+      }
+    });
+  }else{
+    soundMessage.play(success => {
+      if (success) {
+        console.log('Sound played successfully');
+      } else {
+        console.log('Error playing sound');
+      }
+    });
+  }
 });
 AppRegistry.registerComponent(appName, () => App);

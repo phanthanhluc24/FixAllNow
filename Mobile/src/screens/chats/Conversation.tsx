@@ -7,13 +7,19 @@ import useGetMessageConversation from '../../hooks/useGetMessageConversation';
 import { FlatList } from 'react-native';
 import { url } from '../../hooks/apiRequest/url';
 import { io } from 'socket.io-client';
+import TimeAgo from 'react-native-timeago';
+import moment from 'moment';
+import 'moment/locale/vi';
+moment.locale('vi');
 const socket = io(url)
 interface Message {
     senderId: string,
     message: string
 }
 const Conversation = ({ route }: any) => {
-    const { idRoom, idReceived }: any = route.params
+    const { idRoom, idReceived}: any = route.params
+    console.log("chat with ",{idRoom,idReceived});
+    
     const [message, setMessage] = useState('');
     const { sendNewMessage } = useAddNewMessage()
     const { messages, setMessages } = useGetMessageConversation(idRoom)
@@ -64,14 +70,17 @@ const Conversation = ({ route }: any) => {
                 onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}
                 contentContainerStyle={styles.messagesList}
             >
-                {messages.map((item, index) => (
+                {messages.map((item, index) => {
+                    const fromUs = (item.senderId && item.senderId != idReceived) || (item.receivedId === idReceived)
+                    return (
                     <View
                         key={index}
-                        style={[styles.messageContainer, item.senderId != idReceived ? styles.userMessage : styles.otherMessage]}
+                        style={[styles.messageContainer, fromUs ? styles.userMessage : styles.otherMessage]}
                     >
                         <Text style={styles.messageText}>{item.message}</Text>
+                        <TimeAgo style={styles.timeMessage} time={item.createdAt} locale="vi"  interval={1000} />
                     </View>
-                ))}
+                    )})}
                 <View ref={scrollViewRef} />
             </ScrollView>
             <View style={styles.inputContainer}>
@@ -79,7 +88,7 @@ const Conversation = ({ route }: any) => {
                     style={styles.input}
                     value={message}
                     onChangeText={(text) => setMessage(text)}
-                    placeholder="Type your message..."
+                    placeholder="Nhập tin nhắn..."
                     placeholderTextColor="#666"
                     multiline
                 />
@@ -149,4 +158,9 @@ const styles = StyleSheet.create({
     sendIcon: {
         marginLeft: 10,
     },
+    timeMessage:{
+        fontSize:10,
+        color:"#FFFFFF"
+
+    }
 })

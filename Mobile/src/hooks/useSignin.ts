@@ -37,7 +37,7 @@ const useSignin = () => {
         setErrorServer(res.data.message)
       }
     } catch (error: any) {
-      console.log('error:', error);
+      console.log('error:', error.message);
     }
   };
   return {handleSignin,UrlFull, errorServer};

@@ -22,10 +22,9 @@ interface LocationData {
 const RepairmanViewAddressRepair = ({route}: any) => {
   const {detailBooking} = route.params;
   const repairmanFinderAddress = detailBooking;
-  console.log('repairmanFinderAddress', repairmanFinderAddress);
 
   const {currentUser}: any = useGetCurrentUser();
-  console.log('currentUser', currentUser);
+
 
   const [location, setLocation] = useState<LocationData | null>({
     latitude: null,

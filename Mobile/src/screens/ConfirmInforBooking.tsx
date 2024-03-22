@@ -88,7 +88,6 @@ const ConfirmInforBooking = ({route}: any) => {
     })
       .then(res => res.json())
       .then(async res => {
-        console.log(res);
         const {error} = await initPaymentSheet({
           merchantDisplayName: `notJust.dev`,
           paymentIntentClientSecret: res.paymentIntent,

@@ -63,6 +63,9 @@ const MapBookingScreen = ({route}: any) => {
     useState<LocationData | null>(null);
   const [polylineCoords, setPolylineCoords] = useState([]);
   const [shouldShowMapView, setShouldShowMapView] = useState(false);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
   // lấy địa chỉ của repairman
   const fetchLocation = async () => {
     try {
@@ -125,7 +128,6 @@ const MapBookingScreen = ({route}: any) => {
         `https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=${latitude}&lon=${longitude}&format=json`,
       );
       const {display_name} = response.data;
-      console.log('display', display_name);
       return display_name;
     } catch (error:any) {
       console.log(error.message);
@@ -185,7 +187,6 @@ const MapBookingScreen = ({route}: any) => {
         longitude: parseFloat(data.lon),
         address: data.display_name,
       });
-      console.log('huu oi la huu', data);
       setShouldShowMapView(true);
     } catch (error) {}
   };
@@ -303,7 +304,6 @@ const MapBookingScreen = ({route}: any) => {
       const selectedAddress = isCurrentLocationSelected
       ? currentLocation?.address || ''
       : destinationLocation?.address || '';
-      console.log("hhhhhhhhhhhhhhhhh",selectedAddress);
       setSelectedDestination(selectedAddress); // Lưu địa chỉ đã chọn vào state selectedLocation
       getCurrentDateTime();
       setModalVisible(true);
@@ -328,7 +328,6 @@ const MapBookingScreen = ({route}: any) => {
         date,
         time,
       };
-      // console.log("infoBooking map",infoBooking);
       navigation.navigate('ConfirmInforBooking', {infoBooking: infoBooking});
     }
   };

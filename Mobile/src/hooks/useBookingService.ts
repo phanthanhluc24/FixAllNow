@@ -25,7 +25,6 @@ const useBookingService = () => {
           },
         },
       );
-      console.log(response.data.message);
       if (response.data.status === 200) {
         navigation.navigate('Root', {reload: true});
         Toast.show({

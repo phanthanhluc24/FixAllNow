@@ -60,7 +60,6 @@ const DetailRepairmanConfirmBooking = () => {
   const detailBookings:any = useBookingDetail(booking_id);
   const {isLoading} = useBookingDetail(booking_id);
   const detailBooking: BookingDetail = detailBookings.detailBookings;
-  console.log(detailBooking);
   const totalPayment =
     detailBooking?.service_id.price +
     detailBooking?.fee_service +
@@ -95,7 +94,6 @@ const DetailRepairmanConfirmBooking = () => {
   }
   
   const handleViewAddressRepair=(detailBooking: BookingDetail)=>{
-    console.log(detailBooking);
     
     navigation.navigate("RepairmanViewAddressRepair",{detailBooking})
   }
@@ -366,7 +364,7 @@ const styles = StyleSheet.create({
   infoUserss: {
     fontSize: 16,
     color: 'blue',
-    width: '25%',
+    width: '85%',
     textDecorationLine: 'underline'
   },
   infoUserssss: {
