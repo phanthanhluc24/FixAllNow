@@ -13,12 +13,13 @@ interface ApiResponse {
   message: any;
   accessToken: string;
 }
+const UrlFull=`${url}/auth/login`;
 const useSignin = () => {
   const navigation:any=useNavigation()
   const [errorServer,setErrorServer]=useState(null)
   const handleSignin = async (data: Account) => {
     try {
-      const res = await axios.post<ApiResponse>(`${url}/auth/login`, data);
+      const res = await axios.post<ApiResponse>(UrlFull, data);
       if (res.data.status === 201) {
         const accessToken = res.data.accessToken;
         await AsyncStorage.setItem('accessToken', accessToken);
@@ -27,7 +28,11 @@ const useSignin = () => {
           title: 'Thành công',
           textBody: 'Đăng nhập thành công!',
         })
-        navigation.navigate('Root');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Root'}],
+        });
+        navigation.navigate('Root')
       } else{
         setErrorServer(res.data.message)
       }
@@ -35,7 +40,6 @@ const useSignin = () => {
       console.log('error:', error.message);
     }
   };
-  return {handleSignin, errorServer};
+  return {handleSignin,UrlFull, errorServer};
 };
-
 export default useSignin;

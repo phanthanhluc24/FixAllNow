@@ -11,7 +11,6 @@ const useRatingComment = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(response.data.message);
       
       return response;
     } catch (error: any) {

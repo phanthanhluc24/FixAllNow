@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Modal,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
@@ -20,26 +21,25 @@ import Geolocation from '@react-native-community/geolocation';
 import moment from 'moment';
 // import { GeolocationError, GeolocationResponse } from '@react-native-community/geolocation';
 
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 interface LocationData {
   latitude: number | null;
   longitude: number | null;
   address: string;
 }
 interface BookingInfo {
-  infoServiceBooking: any; 
+  infoServiceBooking: any;
   address: string | null;
   bugService: string;
   date: string;
   time: string;
-  locationData: LocationData; 
+  locationData: LocationData;
 }
 
 const apiKey = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
 const MapBookingScreen = ({route}: any) => {
   const {serviceInfo} = route.params;
-  // console.log(serviceInfo);
-  const navigation:any= useNavigation();
+  const navigation: any = useNavigation();
   const userInfo = serviceInfo;
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState('');
@@ -49,10 +49,18 @@ const MapBookingScreen = ({route}: any) => {
   });
   const [inputValue, setInputValue] = useState('');
   const {currentUser}: any = useGetCurrentUser();
+  const [isCurrentLocationSelected, setIsCurrentLocationSelected] =
+    useState(false);
   const [location, setLocation] = useState<LocationData | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<{ latitude: number, longitude: number, address: string | null, description: string | null } | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{
+    latitude: number;
+    longitude: number;
+    address: string | null;
+    description: string | null;
+  } | null>(null);
   const [destination, setDestination] = useState('');
-  const [destinationLocation, setDestinationLocation] = useState<LocationData | null>(null);
+  const [destinationLocation, setDestinationLocation] =
+    useState<LocationData | null>(null);
   const [polylineCoords, setPolylineCoords] = useState([]);
   const [shouldShowMapView, setShouldShowMapView] = useState(false);
   const [latitude, setLatitude] = useState<number | null>(null);
@@ -62,7 +70,6 @@ const MapBookingScreen = ({route}: any) => {
   const fetchLocation = async () => {
     try {
       const address = userInfo.user_id.address;
-      // console.log('address', address);
       const response = await axios.get(
         `https://us1.locationiq.com/v1/search.php?key=${apiKey}&q=${address}&format=json`,
       );
@@ -115,51 +122,59 @@ const MapBookingScreen = ({route}: any) => {
     }
   };
 
-  const getReverseGeocoding = async (latitude:any, longitude:any) => {
-    console.log('huu lấy tên địa chỉ', latitude, longitude);
-
+  const getReverseGeocoding = async (latitude: number, longitude: number) => {
     try {
       const response = await axios.get(
         `https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=${latitude}&lon=${longitude}&format=json`,
       );
-      const { display_name } = response.data;
-      console.log('display', display_name);
-
+      const {display_name} = response.data;
       return display_name;
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
-
       return null;
     }
   };
 
   const getCurrentLocation = async () => {
-    Geolocation.getCurrentPosition(
-      async (position:any) => {
-        const { latitude, longitude }:any = position.coords;
-        setLatitude(latitude)
-        setLongitude(longitude)
-        console.log('Latitude hiện tại:', latitude);
-        console.log('Longitude hiện tại:', longitude);
-        const address = await getReverseGeocoding(latitude, longitude);
-        setAddress(address)
-        console.log('Địa chỉ hiện tại:', address);
-        setCurrentLocation({ latitude, longitude, address });
-      },
-      (error:any) => console.error('Lỗi khi lấy vị trí hiện tại:', error),
-      { enableHighAccuracy: false, timeout: 10000},
-    );
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        async (position: any) => {
+          try {
+            const {latitude, longitude} = position.coords;
+            const address = await getReverseGeocoding(latitude, longitude);
+            const location:any = {latitude, longitude, address};
+            setCurrentLocation(location);
+            resolve(location); // Trả về location khi đã lấy được
+          } catch (error) {
+            reject(error); // Trả về lỗi nếu có lỗi xảy ra
+          }
+        },
+        (error: any) => {
+          console.error('Lỗi khi lấy vị trí hiện tại:', error);
+          reject(error); // Trả về lỗi nếu có lỗi xảy ra
+        },
+        {enableHighAccuracy: false, timeout: 10000},
+      );
+    });
   };
 
   useEffect(() => {
     requestLocationPermission();
-    Geolocation.getCurrentPosition(latitude, longitude, address);
+    Geolocation.getCurrentPosition(info => {
+      setCurrentLocation(info.coords);
+    });
   }, []);
 
-  const handleGetCurrentLocation = () => {
-    getCurrentLocation();
+  const handleGetCurrentLocation = async () => {
+    try {
+      const location:any = await getCurrentLocation();
+      setIsCurrentLocationSelected(true);
+      setDestination(location.address);
+    } catch (error) {
+      console.error('Lỗi khi lấy vị trí hiện tại:', error);
+      // Xử lý lỗi ở đây nếu cần thiết
+    }
   };
-
   //Lấy địa chỉ của người tìm thợ
   const fetchDestinationLocation = async () => {
     try {
@@ -173,13 +188,10 @@ const MapBookingScreen = ({route}: any) => {
         address: data.display_name,
       });
       setShouldShowMapView(true);
-    } catch (error) {
-      // console.error('Error:', error);
-    }
+    } catch (error) {}
   };
-
   //hàm xử lý search
-  const handleDestinationChange = (text:any) => {
+  const handleDestinationChange = (text: any) => {
     setDestination(text);
     // Gọi hàm cập nhật polyline khi có sự thay đổi
     updatePolyline();
@@ -214,7 +226,7 @@ const MapBookingScreen = ({route}: any) => {
       const routes = response.data.routes;
       if (routes.length > 0) {
         const points = routes[0].overview_polyline.points;
-        const decodedPoints:any = decodePolyline(points);
+        const decodedPoints: any = decodePolyline(points);
         setPolylineCoords(decodedPoints);
       }
     } catch (error) {
@@ -232,7 +244,7 @@ const MapBookingScreen = ({route}: any) => {
         const routes = response.data.routes;
         if (routes.length > 0) {
           const points = routes[0].overview_polyline.points;
-          const decodedPoints:any = decodePolyline(points);
+          const decodedPoints: any = decodePolyline(points);
           setPolylineCoords(decodedPoints);
         }
       } catch (error) {
@@ -241,7 +253,9 @@ const MapBookingScreen = ({route}: any) => {
     }
   };
   //dùng decodePolyline để phân tích tuyến đường
-  const decodePolyline = (encoded: string): { latitude: number; longitude: number }[] => {
+  const decodePolyline = (
+    encoded: string,
+  ): {latitude: number; longitude: number}[] => {
     let index = 0;
     let len = encoded.length;
     let lat = 0;
@@ -280,41 +294,42 @@ const MapBookingScreen = ({route}: any) => {
     setCurrentDateTime({date: currentDate, time: currentTime});
   };
   const handleConfirmBooking = () => {
-    if (!destination) {
+    if ((!destination || !isCurrentLocationSelected) && !location?.address) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
-        title: 'Cảnh báo',
-        textBody: 'Vui lòng nhập địa chỉ cần sửa!',
+        title: 'Cảnh báo',
+        textBody: 'Vui lòng nhập địa chỉ cần sửa!',
       });
     } else {
+      const selectedAddress = isCurrentLocationSelected
+      ? currentLocation?.address || ''
+      : destinationLocation?.address || '';
+      setSelectedDestination(selectedAddress); // Lưu địa chỉ đã chọn vào state selectedLocation
       getCurrentDateTime();
-      setSelectedDestination(destination);
       setModalVisible(true);
     }
   };
-  const [error, setError]= useState(false)
-  const handleInputChange = (text:any) => {
+  const [error, setError] = useState(false);
+  const handleInputChange = (text: any) => {
     setInputValue(text);
   };
   // hàm truyền dữ liệu đã xác nhận qua component Confirm 1 lần nữa
   const handleConfirmAndNavigate = () => {
     if (!inputValue.trim()) {
       // Nếu ô input không được điền, hiển thị thông báo lỗi
-     setError('Vui lòng nhập thông tin mô tả đầy đủ')
+      setError('Vui lòng nhập thông tin mô tả đầy đủ');
+    } else {
+      setModalVisible(false);
+      const {date, time} = currentDateTime;
+      const infoBooking = {
+        infoServiceBooking: serviceInfo,
+        address: selectedDestination,
+        bugService: inputValue,
+        date,
+        time,
+      };
+      navigation.navigate('ConfirmInforBooking', {infoBooking: infoBooking});
     }
-    else{
-    setModalVisible(false);
-    const {date, time} = currentDateTime;
-    const infoBooking = {
-      infoServiceBooking: serviceInfo,
-      address: destinationLocation?.address,
-      bugService:inputValue,
-      date,
-      time,
-    };
-    // console.log("infoBooking map",infoBooking);
-    navigation.navigate('ConfirmInforBooking', {infoBooking: infoBooking});
-  }
   };
   return (
     <View style={styles.container}>
@@ -329,7 +344,7 @@ const MapBookingScreen = ({route}: any) => {
             longitudeDelta: 0.05,
           }}>
           {/* vị trí hiện tại trên bản đồ */}
-          {currentLocation  && (
+          {currentLocation && (
             <Marker
               coordinate={{
                 latitude: currentLocation.latitude,
@@ -370,8 +385,7 @@ const MapBookingScreen = ({route}: any) => {
                 longitude: destinationLocation.longitude,
               }}
               title="Địa chỉ hiện tại của bạn"
-              description={destinationLocation.address}
-              >
+              description={destinationLocation.address}>
               <View style={styles.imageMarkerContainer}>
                 <View style={styles.imageMarkerBorder}>
                   <Image
@@ -404,11 +418,20 @@ const MapBookingScreen = ({route}: any) => {
         </TouchableOpacity>
       </View>
       <View style={styles.inputContainers}>
-        <TouchableOpacity
-          onPress={handleGetCurrentLocation}
-          style={styles.event}>
-          <Text>Chọn vị trí hiện tại</Text>
-        </TouchableOpacity>
+        {/* {!isCurrentLocationSelected ? ( */}
+          <TouchableOpacity
+            onPress={handleGetCurrentLocation}
+            style={styles.event}>
+            <Text>Chọn vị trí hiện tại</Text>
+          </TouchableOpacity>
+        {/* ) : (
+          <TextInput
+            style={styles.input}
+            placeholder="Vị trí hiện tại"
+            value={currentLocation ? currentLocation.address : ''}
+          />
+        )} */}
+
         <TouchableOpacity onPress={handleGetCurrentLocation}>
           <Image
             style={styles.iconMap}
@@ -443,7 +466,7 @@ const MapBookingScreen = ({route}: any) => {
 
             <Text style={styles.titleInfo}>
               Địa chỉ đã chọn:{'  '}
-              {destinationLocation && destinationLocation.address}
+              {selectedDestination}
             </Text>
             <TextInput
               multiline={true}
@@ -452,10 +475,10 @@ const MapBookingScreen = ({route}: any) => {
               value={inputValue}
               onChangeText={handleInputChange}
             />
-            <View style={{height:30}}>
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            <View style={{height: 30}}>
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
-            
+
             <TouchableOpacity style={styles.iconConfirm}>
               <AntDesign
                 name="closecircleo"
@@ -478,8 +501,8 @@ const MapBookingScreen = ({route}: any) => {
 };
 export default MapBookingScreen;
 const styles = StyleSheet.create({
-  errorText:{
-    color:"red"
+  errorText: {
+    color: 'red',
   },
   iconConfirm: {
     alignItems: 'center',

@@ -44,7 +44,7 @@ const ConfirmInforBooking = ({route}: any) => {
   const totalPrice = priceRepair + priceService + priceTransport;
   const [payment, setPayment] = useState('');
   const navigation: any = useNavigation();
-  const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<number | null>(2);
   const [errorPayment, setErrorPayment] = useState<string | null>(null);
   const {bookingService, isLoading} = useBookingService();
   const data = {
@@ -67,7 +67,7 @@ const ConfirmInforBooking = ({route}: any) => {
     setErrorPayment('OK');
   };
   const handleConfirm = () => {
-    if (errorPayment == null) {
+    if (selectedMethod === null) {
       setErrorPayment('Vui lòng chọn phương thức thanh toán');
       setLoading(false);
     } else {
@@ -88,7 +88,6 @@ const ConfirmInforBooking = ({route}: any) => {
     })
       .then(res => res.json())
       .then(async res => {
-        console.log(res);
         const {error} = await initPaymentSheet({
           merchantDisplayName: `notJust.dev`,
           paymentIntentClientSecret: res.paymentIntent,
@@ -164,7 +163,7 @@ const ConfirmInforBooking = ({route}: any) => {
           </View>
           <View style={styles.styleInfo}>
             <Text style={styles.infor}>Địa điểm:</Text>
-            <Text numberOfLines={2} style={styles.infors}>
+            <Text numberOfLines={3} style={styles.infors}>
               {addressRepair}
             </Text>
           </View>
@@ -404,10 +403,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   infoContainer: {
-    flex: 8,
+    flex: 8.8,
   },
   event: {
-    flex: 2,
+    flex: 1.2,
   },
   infoService: {
     marginHorizontal: 20,

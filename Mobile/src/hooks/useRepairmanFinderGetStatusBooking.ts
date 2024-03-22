@@ -4,7 +4,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const useRepairmanFinderGetStatusBooking = (transformedSelectedTab:any) => { 
 const option=transformedSelectedTab;
-console.log(option);
   const [statusBooking, setStatusBooking] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -14,7 +13,6 @@ console.log(option);
       const response = await axios.get(`${url}/booking/byStatus/${option}`,{
         headers: {Authorization: `Bearer ${accessToken}`},
       });
-      console.log(response.data);
       setStatusBooking(response.data.data);
     } catch (error: any) {
       setIsError(true);

@@ -52,7 +52,6 @@ var apiKey = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
 var MapBookingScreen = function (_a) {
     var route = _a.route;
     var serviceInfo = route.params.serviceInfo;
-    // console.log(serviceInfo);
     var navigation = native_1.useNavigation();
     var userInfo = serviceInfo;
     var _b = react_1.useState(false), modalVisible = _b[0], setModalVisible = _b[1];
@@ -63,12 +62,13 @@ var MapBookingScreen = function (_a) {
     }), currentDateTime = _d[0], setCurrentDateTime = _d[1];
     var _e = react_1.useState(''), inputValue = _e[0], setInputValue = _e[1];
     var currentUser = useGetCurrentUser_1["default"]().currentUser;
-    var _f = react_1.useState(null), location = _f[0], setLocation = _f[1];
-    var _g = react_1.useState(null), currentLocation = _g[0], setCurrentLocation = _g[1];
-    var _h = react_1.useState(''), destination = _h[0], setDestination = _h[1];
-    var _j = react_1.useState(null), destinationLocation = _j[0], setDestinationLocation = _j[1];
-    var _k = react_1.useState([]), polylineCoords = _k[0], setPolylineCoords = _k[1];
-    var _l = react_1.useState(false), shouldShowMapView = _l[0], setShouldShowMapView = _l[1];
+    var _f = react_1.useState(false), isCurrentLocationSelected = _f[0], setIsCurrentLocationSelected = _f[1];
+    var _g = react_1.useState(null), location = _g[0], setLocation = _g[1];
+    var _h = react_1.useState(null), currentLocation = _h[0], setCurrentLocation = _h[1];
+    var _j = react_1.useState(''), destination = _j[0], setDestination = _j[1];
+    var _k = react_1.useState(null), destinationLocation = _k[0], setDestinationLocation = _k[1];
+    var _l = react_1.useState([]), polylineCoords = _l[0], setPolylineCoords = _l[1];
+    var _m = react_1.useState(false), shouldShowMapView = _m[0], setShouldShowMapView = _m[1];
     // lấy địa chỉ của repairman
     var fetchLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
         var address, response, data, error_1;
@@ -109,15 +109,15 @@ var MapBookingScreen = function (_a) {
                             title: 'Ứng dụng cần truy cập vị trí',
                             message: 'Cho phép ứng dụng truy cập vị trí để sử dụng tính năng này.',
                             buttonPositive: 'Đồng ý',
-                            buttonNeutral: 'Hỏi lại tôi sau',
-                            buttonNegative: 'Hủy'
+                            buttonNeutral: 'Hỏi lại tôi sau',
+                            buttonNegative: 'Hủy'
                         })];
                 case 1:
                     granted = _a.sent();
                     if (granted === react_native_1.PermissionsAndroid.RESULTS.GRANTED) {
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.SUCCESS,
-                            title: 'Thành công',
+                            title: 'Thành công',
                             textBody: 'Quyền truy cập vị trí đã được cấp phép!'
                         });
                         getCurrentLocation();
@@ -125,63 +125,68 @@ var MapBookingScreen = function (_a) {
                     else {
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
-                            title: 'Cảnh báo',
+                            title: 'Cảnh báo',
                             textBody: 'Quyền truy cập vị trí bị từ chối!'
                         });
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
+                    console.warn(err_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });
     }); };
-    ////lấy vị trí hiện tại 101B lê hữu trác đà nẵng 100 ngô quyền đà nẵng
     var getReverseGeocoding = function (latitude, longitude) { return __awaiter(void 0, void 0, void 0, function () {
         var response, display_name, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("huu lấy tên địa chỉ", latitude, longitude);
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/reverse.php?key=pk.bbfa78a3eef8b8c32c413f59248bcf97&lat=" + latitude + "&lon=" + longitude + "&format=json")];
-                case 2:
+                case 1:
                     response = _a.sent();
-                    display_name = response.data.data.display_name;
+                    display_name = response.data.display_name;
                     console.log('display', display_name);
                     return [2 /*return*/, display_name];
-                case 3:
+                case 2:
                     error_2 = _a.sent();
-                    console.log("adress", error_2.message);
-                    // console.error('Lỗi khi lấy địa chỉ từ tọa độ:', error);
+                    console.log(error_2.message);
                     return [2 /*return*/, null];
-                case 4: return [2 /*return*/];
+                case 3: return [2 /*return*/];
             }
         });
     }); };
     var getCurrentLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            geolocation_1["default"].getCurrentPosition(function (position) { return __awaiter(void 0, void 0, void 0, function () {
-                var _a, latitude, longitude, address;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0:
-                            _a = position.coords, latitude = _a.latitude, longitude = _a.longitude;
-                            console.log('Latitude hiện tại:', latitude);
-                            console.log('Longitude hiện tại:', longitude);
-                            return [4 /*yield*/, getReverseGeocoding(latitude, longitude)];
-                        case 1:
-                            address = _b.sent();
-                            console.log('Địa chỉ hiện tại:', address);
-                            setCurrentLocation({ latitude: latitude, longitude: longitude, address: address });
-                            return [2 /*return*/];
-                    }
-                });
-            }); }, function (error) { return console.error('Lỗi khi lấy vị trí hiện tại:', error); }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
-            return [2 /*return*/];
+            return [2 /*return*/, new Promise(function (resolve, reject) {
+                    geolocation_1["default"].getCurrentPosition(function (position) { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a, latitude, longitude, address, location_1, error_3;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    _b.trys.push([0, 2, , 3]);
+                                    _a = position.coords, latitude = _a.latitude, longitude = _a.longitude;
+                                    return [4 /*yield*/, getReverseGeocoding(latitude, longitude)];
+                                case 1:
+                                    address = _b.sent();
+                                    location_1 = { latitude: latitude, longitude: longitude, address: address };
+                                    setCurrentLocation(location_1);
+                                    resolve(location_1); // Trả về location khi đã lấy được
+                                    return [3 /*break*/, 3];
+                                case 2:
+                                    error_3 = _b.sent();
+                                    reject(error_3); // Trả về lỗi nếu có lỗi xảy ra
+                                    return [3 /*break*/, 3];
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    }); }, function (error) {
+                        console.error('Lỗi khi lấy vị trí hiện tại:', error);
+                        reject(error); // Trả về lỗi nếu có lỗi xảy ra
+                    }, { enableHighAccuracy: false, timeout: 10000 });
+                })];
         });
     }); };
     react_1.useEffect(function () {
@@ -190,13 +195,29 @@ var MapBookingScreen = function (_a) {
             setCurrentLocation(info.coords);
         });
     }, []);
-    // console.log('currentLocation: ', currentLocation);
-    var handleGetCurrentLocation = function () {
-        getCurrentLocation();
-    };
+    var handleGetCurrentLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var location_2, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, getCurrentLocation()];
+                case 1:
+                    location_2 = _a.sent();
+                    setIsCurrentLocationSelected(true);
+                    setDestination(location_2.address);
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_4 = _a.sent();
+                    console.error('Lỗi khi lấy vị trí hiện tại:', error_4);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
     //Lấy địa chỉ của người tìm thợ
     var fetchDestinationLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, data, error_3;
+        var response, data, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -210,10 +231,11 @@ var MapBookingScreen = function (_a) {
                         longitude: parseFloat(data.lon),
                         address: data.display_name
                     });
+                    console.log('huu oi la huu', data);
                     setShouldShowMapView(true);
                     return [3 /*break*/, 3];
                 case 2:
-                    error_3 = _a.sent();
+                    error_5 = _a.sent();
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -247,7 +269,7 @@ var MapBookingScreen = function (_a) {
     }, [location, destinationLocation]);
     // xử lý gọi địa chỉ của cả repairman và repairman finder
     var fetchDirection = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, routes, points, decodedPoints, error_4;
+        var response, routes, points, decodedPoints, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -263,7 +285,7 @@ var MapBookingScreen = function (_a) {
                     }
                     return [3 /*break*/, 3];
                 case 2:
-                    error_4 = _a.sent();
+                    error_6 = _a.sent();
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -271,7 +293,7 @@ var MapBookingScreen = function (_a) {
     }); };
     //cập nhật lại đường polyline
     var updatePolyline = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, routes, points, decodedPoints, error_5;
+        var response, routes, points, decodedPoints, error_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -290,7 +312,7 @@ var MapBookingScreen = function (_a) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    error_5 = _a.sent();
+                    error_7 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -336,20 +358,24 @@ var MapBookingScreen = function (_a) {
         setCurrentDateTime({ date: currentDate, time: currentTime });
     };
     var handleConfirmBooking = function () {
-        if (!destination) {
+        if ((!destination || !isCurrentLocationSelected) && !(location === null || location === void 0 ? void 0 : location.address)) {
             react_native_alert_notification_1.Toast.show({
                 type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
-                title: 'Cảnh báo',
-                textBody: 'Vui lòng nhập địa chỉ cần sửa!'
+                title: 'Cảnh báo',
+                textBody: 'Vui lòng nhập địa chỉ cần sửa!'
             });
         }
         else {
+            var selectedAddress = isCurrentLocationSelected
+                ? (currentLocation === null || currentLocation === void 0 ? void 0 : currentLocation.address) || ''
+                : (destinationLocation === null || destinationLocation === void 0 ? void 0 : destinationLocation.address) || '';
+            console.log("hhhhhhhhhhhhhhhhh", selectedAddress);
+            setSelectedDestination(selectedAddress); // Lưu địa chỉ đã chọn vào state selectedLocation
             getCurrentDateTime();
-            setSelectedDestination(destination);
             setModalVisible(true);
         }
     };
-    var _m = react_1.useState(false), error = _m[0], setError = _m[1];
+    var _o = react_1.useState(false), error = _o[0], setError = _o[1];
     var handleInputChange = function (text) {
         setInputValue(text);
     };
@@ -364,7 +390,7 @@ var MapBookingScreen = function (_a) {
             var date = currentDateTime.date, time = currentDateTime.time;
             var infoBooking = {
                 infoServiceBooking: serviceInfo,
-                address: destinationLocation === null || destinationLocation === void 0 ? void 0 : destinationLocation.address,
+                address: selectedDestination,
                 bugService: inputValue,
                 date: date,
                 time: time
@@ -430,7 +456,7 @@ var MapBookingScreen = function (_a) {
                     react_1["default"].createElement(react_native_1.Text, { style: styles.titleInfo },
                         "\u0110\u1ECBa ch\u1EC9 \u0111\u00E3 ch\u1ECDn:",
                         '  ',
-                        destinationLocation && destinationLocation.address),
+                        selectedDestination),
                     react_1["default"].createElement(react_native_1.TextInput, { multiline: true, style: styles.inputs, placeholder: "M\u00F4 ta\u0309 thi\u00EA\u0301t bi\u0323 h\u01B0 ho\u0309ng?", value: inputValue, onChangeText: handleInputChange }),
                     react_1["default"].createElement(react_native_1.View, { style: { height: 30 } }, error ? react_1["default"].createElement(react_native_1.Text, { style: styles.errorText }, error) : null),
                     react_1["default"].createElement(react_native_1.TouchableOpacity, { style: styles.iconConfirm },
@@ -440,7 +466,7 @@ var MapBookingScreen = function (_a) {
 exports["default"] = MapBookingScreen;
 var styles = react_native_1.StyleSheet.create({
     errorText: {
-        color: "red"
+        color: 'red'
     },
     iconConfirm: {
         alignItems: 'center',

@@ -5,28 +5,34 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from "@react-navigation/native";
 import useGetUserChated from "../../../hooks/useGetUserChated";
 import { FlatList } from "react-native";
+import LoaderKit from 'react-native-loader-kit';
+
 interface User {
-  user:{
+  user: {
     _id: string,
     image: string,
     full_name: string
   },
-  content:{
-    chatId:string,
-    message:string
+  content: {
+    chatId: string,
+    message: string
   }
 }
 export default function Shop() {
   const navigation: any = useNavigation();
-  const { userChat } = useGetUserChated()
+  const { userChat,isLoading } = useGetUserChated()
 
   const renderItem = ({ item }: { item: User }) => {
     return (
       <>
         <View style={styles.container}>
-          <Pressable style={styles.mainContainer} onPress={() => navigation.navigate("Conversation",{image:item.user.image,name:item.user.full_name,idRoom:item.content.chatId,idReceived:item.user._id})}>
+          <Pressable style={styles.mainContainer} onPress={() => navigation.navigate("Conversation", { 
+            image: item.user.image, 
+            name: item.user.full_name, 
+            idRoom: item.content.chatId, 
+            idReceived: item.user._id })}>
             <View style={styles.avatarDiv}>
-              <Image style={styles.avatarUser} source={{uri:item.user.image}}></Image>
+              <Image style={styles.avatarUser} source={{ uri: item.user.image }}></Image>
               <View style={styles.divNameText}>
                 <Text style={styles.theName}>{item.user.full_name}</Text>
                 <Text style={styles.textMessage}>{item.content.message}</Text>
@@ -43,12 +49,21 @@ export default function Shop() {
   return (
     <>
       <View>
-            <FlatList
-                data={userChat}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-            />
-        </View>
+        {isLoading==true?(
+          <><Text style={styles.loadingText}>
+          <LoaderKit style={styles.loadingText}
+            name={'BallPulse'}
+            color={'#FCA234'}
+          /></Text></>
+        ):(
+
+          <FlatList
+            data={userChat}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.content.chatId}
+          />
+        )}
+      </View>
     </>
   );
 }
@@ -81,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignSelf: "center",
-    paddingLeft:5
+    paddingLeft: 5
   },
   chatIcon: {
     flexDirection: "row",
@@ -92,7 +107,16 @@ const styles = StyleSheet.create({
     color: "#FCA234",
     fontWeight: "bold"
   },
-  textMessage:{
-    fontWeight:"400"
-  }
+  textMessage: {
+    fontWeight: "400"
+  },
+  loadingText: {
+    fontSize: 20,
+    textAlign: 'center',
+    alignSelf: "center",
+    marginTop: 10,
+    marginHorizontal: 20,
+    width: 50,
+    height: 50,
+  },
 })

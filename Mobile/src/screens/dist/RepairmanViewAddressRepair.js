@@ -45,137 +45,115 @@ var apiKey = 'pk.bbfa78a3eef8b8c32c413f59248bcf97';
 var RepairmanViewAddressRepair = function (_a) {
     var route = _a.route;
     var detailBooking = route.params.detailBooking;
-    console.log("hellohelo", detailBooking);
     var repairmanFinderAddress = detailBooking;
+    console.log('repairmanFinderAddress', repairmanFinderAddress);
     var currentUser = useGetCurrentUser_1["default"]().currentUser;
-    console.log(currentUser);
-    var _b = react_1.useState(null), location = _b[0], setLocation = _b[1];
-    var _c = react_1.useState(null), currentLocation = _c[0], setCurrentLocation = _c[1];
-    var _d = react_1.useState(''), destination = _d[0], setDestination = _d[1];
-    var _e = react_1.useState(null), destinationLocation = _e[0], setDestinationLocation = _e[1];
-    var _f = react_1.useState([]), polylineCoords = _f[0], setPolylineCoords = _f[1];
-    var _g = react_1.useState(false), shouldShowMapView = _g[0], setShouldShowMapView = _g[1];
-    var fetchLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var address, response, data, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    address = repairmanFinderAddress.address;
-                    console.log(address);
-                    return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/search.php?key=" + apiKey + "&q=" + address + "&format=json")];
-                case 1:
-                    response = _a.sent();
-                    data = response.data[0];
-                    setLocation({
-                        latitude: parseFloat(data.lat),
-                        longitude: parseFloat(data.lon),
-                        address: data.display_name
-                    });
-                    setShouldShowMapView(true);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_1 = _a.sent();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
+    console.log('currentUser', currentUser);
+    var _b = react_1.useState({
+        latitude: null,
+        longitude: null,
+        address: ''
+    }), location = _b[0], setLocation = _b[1];
+    var _c = react_1.useState({
+        latitude: null,
+        longitude: null,
+        address: ''
+    }), destinationLocation = _c[0], setDestinationLocation = _c[1];
+    var _d = react_1.useState(false), shouldShowMapView = _d[0], setShouldShowMapView = _d[1];
+    var _e = react_1.useState([]), polylineCoordinates = _e[0], setPolylineCoordinates = _e[1];
     react_1.useEffect(function () {
+        var fetchLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var address, response, data, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        address = currentUser.address;
+                        return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/search.php?key=" + apiKey + "&q=" + address + "&format=json")];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data[0];
+                        setLocation({
+                            latitude: parseFloat(data.lat),
+                            longitude: parseFloat(data.lon),
+                            address: data.display_name
+                        });
+                        setShouldShowMapView(true);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error('Error fetching location:', error_1);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         fetchLocation();
-    }, []);
-    var fetchDestinationLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var addressRepairman, response, data, error_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    addressRepairman = currentUser.address;
-                    console.log(addressRepairman);
-                    return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/search.php?key=" + apiKey + "&q=" + addressRepairman + "&format=json")];
-                case 1:
-                    response = _a.sent();
-                    data = response.data[0];
-                    setDestinationLocation({
-                        latitude: parseFloat(data.lat),
-                        longitude: parseFloat(data.lon),
-                        address: data.display_name
-                    });
-                    setShouldShowMapView(true);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_2 = _a.sent();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
-    }); };
+    }, [currentUser]);
     react_1.useEffect(function () {
+        var fetchDestinationLocation = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var addressRepairman, response, data, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        addressRepairman = repairmanFinderAddress.address;
+                        return [4 /*yield*/, axios_1["default"].get("https://us1.locationiq.com/v1/search.php?key=" + apiKey + "&q=" + addressRepairman + "&format=json")];
+                    case 1:
+                        response = _a.sent();
+                        data = response.data[0];
+                        setDestinationLocation({
+                            latitude: parseFloat(data.lat),
+                            longitude: parseFloat(data.lon),
+                            address: data.display_name
+                        });
+                        setShouldShowMapView(true);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error('Error fetching destination location:', error_2);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         fetchDestinationLocation();
-    }, []);
+    }, [detailBooking]);
     react_1.useEffect(function () {
-        if (location && destinationLocation) {
-            fetchDirection(); // fetch địa điểm sau khi cả hai điểm đã được xác định
-            updatePolyline();
+        if (location.latitude && destinationLocation.latitude) {
+            fetchDirections(location, destinationLocation);
         }
     }, [location, destinationLocation]);
-    var fetchDirection = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, routes, points, decodedPoints, error_3;
+    var fetchDirections = function (origin, destination) { return __awaiter(void 0, void 0, void 0, function () {
+        var response, routes, points, polylineCoords, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, axios_1["default"].get("https://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + destinationLocation.latitude + "," + destinationLocation.longitude + "&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM")];
+                    return [4 /*yield*/, axios_1["default"].get("https://maps.googleapis.com/maps/api/directions/json?origin=" + origin.latitude + "," + origin.longitude + "&destination=" + destination.latitude + "," + destination.longitude + "&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM")];
                 case 1:
                     response = _a.sent();
                     routes = response.data.routes;
                     if (routes.length > 0) {
                         points = routes[0].overview_polyline.points;
-                        decodedPoints = decodePolyline(points);
-                        setPolylineCoords(decodedPoints);
+                        polylineCoords = decodePolyline(points);
+                        setPolylineCoordinates(polylineCoords);
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     error_3 = _a.sent();
+                    console.error('Error fetching directions:', error_3);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });
     }); };
-    //cập nhật lại đường polyline
-    var updatePolyline = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, routes, points, decodedPoints, error_4;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!(location && destinationLocation)) return [3 /*break*/, 4];
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("https://maps.googleapis.com/maps/api/directions/json?origin=" + location.latitude + "," + location.longitude + "&destination=" + destinationLocation.latitude + "," + destinationLocation.longitude + "&key=AIzaSyBRGhLTzmea8tZ2VoAYQ0Hck4mATOBzldM")];
-                case 2:
-                    response = _a.sent();
-                    routes = response.data.routes;
-                    if (routes.length > 0) {
-                        points = routes[0].overview_polyline.points;
-                        decodedPoints = decodePolyline(points);
-                        setPolylineCoords(decodedPoints);
-                    }
-                    return [3 /*break*/, 4];
-                case 3:
-                    error_4 = _a.sent();
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); };
     var decodePolyline = function (encoded) {
+        var points = [];
         var index = 0;
-        var len = encoded.length;
         var lat = 0;
         var lng = 0;
-        var polylineCoords = [];
-        while (index < len) {
+        while (index < encoded.length) {
             var b = void 0;
             var shift = 0;
             var result = 0;
@@ -184,7 +162,7 @@ var RepairmanViewAddressRepair = function (_a) {
                 result |= (b & 0x1f) << shift;
                 shift += 5;
             } while (b >= 0x20);
-            var dlat = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
+            var dlat = ((result & 1) !== 0 ? ~(result >> 1) : (result >> 1));
             lat += dlat;
             shift = 0;
             result = 0;
@@ -193,14 +171,22 @@ var RepairmanViewAddressRepair = function (_a) {
                 result |= (b & 0x1f) << shift;
                 shift += 5;
             } while (b >= 0x20);
-            var dlng = (result & 1) !== 0 ? ~(result >> 1) : result >> 1;
+            var dlng = ((result & 1) !== 0 ? ~(result >> 1) : (result >> 1));
             lng += dlng;
-            var latitude = lat / 1e5;
-            var longitude = lng / 1e5;
-            polylineCoords.push({ latitude: latitude, longitude: longitude });
+            points.push({ latitude: lat / 1E5, longitude: lng / 1E5 });
         }
-        return polylineCoords;
+        return points;
     };
+    // useEffect(() => {
+    //   if (location.latitude && destinationLocation.latitude) {
+    //     // Tính toán và vẽ Polyline ở đây
+    //     const coordinates = [
+    //       { latitude: location.latitude, longitude: location.longitude },
+    //       { latitude: destinationLocation.latitude, longitude: destinationLocation.longitude },
+    //     ];
+    //     setPolylineCoordinates(coordinates);
+    //   }
+    // }, [location, destinationLocation]);
     return (react_1["default"].createElement(react_native_1.View, { style: styles.container }, shouldShowMapView && (react_1["default"].createElement(react_native_maps_1["default"], { style: styles.map, initialRegion: {
             latitude: (location === null || location === void 0 ? void 0 : location.latitude) || (destinationLocation === null || destinationLocation === void 0 ? void 0 : destinationLocation.latitude) || 0,
             longitude: (location === null || location === void 0 ? void 0 : location.longitude) || (destinationLocation === null || destinationLocation === void 0 ? void 0 : destinationLocation.longitude) || 0,
@@ -208,25 +194,25 @@ var RepairmanViewAddressRepair = function (_a) {
             longitudeDelta: 0.05
         } },
         location && (react_1["default"].createElement(react_native_maps_1.Marker, { coordinate: {
-                latitude: location.latitude,
-                longitude: location.longitude
-            }, title: "\u0110i\u0323a chi\u0309 ba\u0323n se\u0303 \u0111\u00EA\u0301n s\u01B0\u0309a", description: location.address },
-            react_1["default"].createElement(react_native_1.View, { style: styles.imageMarkerContainer },
-                react_1["default"].createElement(react_native_1.View, { style: styles.imageMarkerBorder },
-                    react_1["default"].createElement(react_native_1.Image, { source: { uri: repairmanFinderAddress.user_id.image }, style: styles.imageMarker }))))),
-        destinationLocation && (react_1["default"].createElement(react_native_maps_1.Marker, { coordinate: {
-                latitude: destinationLocation.latitude,
-                longitude: destinationLocation.longitude
-            }, title: "\u0110i\u0323a chi\u0309 hi\u00EA\u0323n ta\u0323i cu\u0309a ba\u0323n", description: destinationLocation.address },
+                latitude: location === null || location === void 0 ? void 0 : location.latitude,
+                longitude: location === null || location === void 0 ? void 0 : location.longitude
+            }, title: "\u0110i\u0323a chi\u0309 cu\u0309a ba\u0323n", description: location.address },
             react_1["default"].createElement(react_native_1.View, { style: styles.imageMarkerContainer },
                 react_1["default"].createElement(react_native_1.View, { style: styles.imageMarkerBorder },
                     react_1["default"].createElement(react_native_1.Image, { source: { uri: currentUser === null || currentUser === void 0 ? void 0 : currentUser.image }, style: styles.imageMarker }))))),
-        polylineCoords.length > 0 && (react_1["default"].createElement(react_native_maps_1.Polyline, { coordinates: polylineCoords, strokeColor: "green", strokeWidth: 5 }))))));
+        destinationLocation && (react_1["default"].createElement(react_native_maps_1.Marker, { coordinate: {
+                latitude: destinationLocation === null || destinationLocation === void 0 ? void 0 : destinationLocation.latitude,
+                longitude: destinationLocation === null || destinationLocation === void 0 ? void 0 : destinationLocation.longitude
+            }, title: "\u0110i\u0323a chi\u0309 ba\u0323n se\u0303 \u0111\u00EA\u0301n s\u01B0\u0309a", description: destinationLocation.address },
+            react_1["default"].createElement(react_native_1.View, { style: styles.imageMarkerContainer },
+                react_1["default"].createElement(react_native_1.View, { style: styles.imageMarkerBorder },
+                    react_1["default"].createElement(react_native_1.Image, { source: { uri: repairmanFinderAddress.service_id.image }, style: styles.imageMarker }))))),
+        polylineCoordinates.length > 0 && (react_1["default"].createElement(react_native_maps_1.Polyline, { coordinates: polylineCoordinates, strokeColor: "green", strokeWidth: 5 }))))));
 };
 exports["default"] = RepairmanViewAddressRepair;
 var styles = react_native_1.StyleSheet.create({
     errorText: {
-        color: "red"
+        color: 'red'
     },
     iconConfirm: {
         alignItems: 'center',

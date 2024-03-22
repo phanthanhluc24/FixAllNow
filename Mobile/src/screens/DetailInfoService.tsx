@@ -58,7 +58,7 @@ const DetailInfoService = () => {
           </Text>
           <Text style={styles.description}>{service?.desc}</Text>
         </View>
-
+        <DetailServiceButton serviceInfo={service} />
         <View style={styles.oneLine}></View>
         <View style={styles.infoUser}>
           <TouchableOpacity
@@ -77,8 +77,10 @@ const DetailInfoService = () => {
             </View>
           </TouchableOpacity>
         </View>
+        
         <View style={styles.listServiceRevolve}>
           <Text style={styles.serviceRevolve}>Dịch vụ liên quan</Text>
+          
           <View style={{marginHorizontal: 10}}>
             {serviceRevolve.length > 0 ? (
               <FlatList
@@ -125,7 +127,6 @@ const DetailInfoService = () => {
           </View>
         </View>
       </View>
-      <DetailServiceButton serviceInfo={service} />
     </View>
   );
 };

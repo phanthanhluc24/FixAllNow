@@ -17,7 +17,9 @@ interface Message {
     message: string
 }
 const Conversation = ({ route }: any) => {
-    const { idRoom, idReceived }: any = route.params
+    const { idRoom, idReceived}: any = route.params
+    console.log("chat with ",{idRoom,idReceived});
+    
     const [message, setMessage] = useState('');
     const { sendNewMessage } = useAddNewMessage()
     const { messages, setMessages } = useGetMessageConversation(idRoom)

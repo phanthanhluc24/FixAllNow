@@ -94,9 +94,18 @@ const ProfileHeader = () => {
   const {destroyService} = useDeleteService();
   const handleDeleteService = (service_id: string) => () => {
     setLoading(true);
-    destroyService(service_id);
-    setLoading(false);
-    navigation.navigate('Profile', {reload: true});
+    destroyService(service_id)
+      .then(() => {
+        setLoading(false);
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Profile'}],
+        });
+      })
+      .catch(error => {
+        setLoading(false);
+        console.error('Error deleting service:', error);
+      });
   }; ///////////////////////////////////
   const renderItem = (data: any) => (
     <TouchableOpacity
@@ -232,27 +241,35 @@ const ProfileHeader = () => {
         <View style={styles.aboutStore}>
           <Text style={styles.nameListService}>Danh sách dịch vụ</Text>
           <TouchableOpacity onPress={toggleMenu} style={styles.iconContainer}>
-            <AntDesign name="menu-fold" size={25} color="black"/>
+            <AntDesign name="caretdown" size={25} color="#FCA234" />
           </TouchableOpacity>
         </View>
         <View>
           {isMenuVisible && (
-            <View style={{backgroundColor: 'white', paddingHorizontal: 20}}>
-              <TouchableOpacity
-                onPress={handleEventAddNewService}
-                style={styles.viewHistorys}>
-                <Text style={styles.nameViewHistory}>Thêm mới dịch vụ</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleEventHistoryStore}
-                style={styles.viewHistorys}>
-                <Text style={styles.nameViewHistory}>Lịch sử cửa hàng</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleEventHistoryBookSchedule}
-                style={styles.viewHistorys}>
-                <Text style={styles.nameViewHistory}>Lịch sử đặt lịch</Text>
-              </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: 'white',
+                paddingHorizontal: 20,
+                flexDirection: 'row',
+              }}>
+              <View style={{width: '50%'}}></View>
+              <View style={{width: '50%'}}>
+                <TouchableOpacity
+                  onPress={handleEventAddNewService}
+                  style={styles.viewHistorys}>
+                  <Text style={styles.nameViewHistory}>Thêm mới dịch vụ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleEventHistoryStore}
+                  style={styles.viewHistorys}>
+                  <Text style={styles.nameViewHistory}>Theo dõi cửa hàng</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleEventHistoryBookSchedule}
+                  style={styles.viewHistorys}>
+                  <Text style={styles.nameViewHistory}>Theo dõi đơn đặt</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
@@ -293,11 +310,11 @@ const styles = StyleSheet.create({
   },
   viewHistorys: {
     backgroundColor: '#394C6D',
+    flexDirection: 'row',
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
-    marginTop: 10,
     // marginBottom:10,
     // marginHorizontal:20
     marginBottom: 10,
@@ -308,6 +325,9 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginRight: 20,
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#FCA234',
   },
 
   centeredView: {
@@ -594,7 +614,7 @@ const styles = StyleSheet.create({
     borderColor: '#FCA234',
     marginTop: 3,
     borderRadius: 10,
-    marginBottom:10,
+    marginBottom: 10,
   },
   repairman: {
     backgroundColor: '#FCA234',

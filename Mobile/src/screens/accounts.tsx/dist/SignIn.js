@@ -51,7 +51,6 @@ var SignIn = function (_a) {
     var _c = react_1.useState(false), tokenChecked = _c[0], setTokenChecked = _c[1];
     var isFocused = native_1.useIsFocused();
     var _d = react_1.useState(""), deviceToken = _d[0], setDeviceToken = _d[1];
-    var _e = react_1.useState(false), loading = _e[0], setLoading = _e[1];
     react_1.useEffect(function () {
         notificationHelper_1.requestUserPermission();
         getFcmToken();
@@ -60,14 +59,12 @@ var SignIn = function (_a) {
         var token;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    setLoading(true);
-                    return [4 /*yield*/, async_storage_1["default"].getItem("fcmToken")];
+                case 0: return [4 /*yield*/, async_storage_1["default"].getItem("fcmToken")];
                 case 1:
                     token = _a.sent();
+                    console.log("book", token);
                     if (token) {
                         setDeviceToken(token);
-                        setLoading(false);
                     }
                     return [2 /*return*/];
             }
@@ -181,6 +178,11 @@ var styles = react_native_1.StyleSheet.create({
         marginTop: 15,
         height: 110
     },
+    fromInputs: {
+        marginHorizontal: 40,
+        marginTop: 5,
+        height: 110
+    },
     errorMessage: {
         marginHorizontal: 40,
         marginTop: 20
@@ -198,7 +200,8 @@ var styles = react_native_1.StyleSheet.create({
         paddingLeft: 15
     },
     space: {
-        marginTop: 1
+        marginTop: 1,
+        height: 70
     },
     titlePassword: {
         color: 'white',

@@ -79,6 +79,10 @@ var ButtonLogout = function () {
                                 title: 'Thành công',
                                 textBody: 'Đăng xuất thành công!'
                             });
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'SignIn' }]
+                            });
                             navigation.navigate('SignIn');
                         }
                         return [2 /*return*/];

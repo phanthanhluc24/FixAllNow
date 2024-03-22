@@ -12,7 +12,7 @@ var ListOfElectrician = function (_a) {
     var navigation = native_1.useNavigation();
     var _b = useGetListRepairmanOfCategorySpecific_1["default"](id), listRepairmanOfCategory = _b.listRepairmanOfCategory, isLoading = _b.isLoading, isError = _b.isError;
     if (isLoading) {
-        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1, justifyContent: 'center' } },
+        return (react_1["default"].createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1 } },
             react_1["default"].createElement(react_native_1.Text, null,
                 react_1["default"].createElement(react_native_loader_kit_1["default"], { style: styles.loadingText, name: 'BallPulse', color: '#FCA234' }))));
     }

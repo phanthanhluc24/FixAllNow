@@ -12,7 +12,6 @@ const useGetBookingNotYetRated = () => {
           const response= await axios.get(`${url}/comment/checkToComment`, {
             headers: {Authorization: `Bearer ${accessToken}`},
           });
-          console.log(response.data.data);
           
           setBookingNotYetrating(response.data.data);
         }

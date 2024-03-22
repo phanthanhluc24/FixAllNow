@@ -15,7 +15,6 @@ const useAskAiToGiveAnswer = () => {
             })
             setAnswer(response.data.data)
             setIsLoading(false)
-            console.log(response.status);
             
         }
         getAccessToken()

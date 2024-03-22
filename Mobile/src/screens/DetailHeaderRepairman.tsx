@@ -42,7 +42,7 @@ const DetailHeaderRepairman = ({repairman_id}: any) => {
   const route = useRoute();
   const {id}: any = route.params;
   const {repairman} = useGetDetailRepairman(id);
-  const {serviceOfRepairman, isLoading, isError} = useGetServiceOfRepairman(id);
+  const {serviceOfRepairman, isLoadings, isErrors} = useGetServiceOfRepairman(id);
   const [showMoreComments, setShowMoreComments] = useState(false);
   const [commentsToShow, setCommentsToShow] = useState(3);
   const toggleShowMoreComments = () => {
@@ -58,7 +58,7 @@ const DetailHeaderRepairman = ({repairman_id}: any) => {
     }
   };
   const navigation: any = useNavigation();
-  if (isLoading) {
+  if (isLoadings) {
     return (
       <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
         <Text>
@@ -71,8 +71,8 @@ const DetailHeaderRepairman = ({repairman_id}: any) => {
       </View>
     );
   }
-  if (isError) {
-    return <Text>Error loading repairman</Text>;
+  if (isErrors) {
+    return <Text>Lỗi khi lấy dữ liệu chúng tôi đang xử lý! Xin lỗi quý khách nhiều!</Text>;
   }
   const renderStars = (star: number) => {
     const stars = [];

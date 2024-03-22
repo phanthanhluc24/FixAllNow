@@ -63,7 +63,7 @@ var useBookingService = function () {
                         })];
                 case 3:
                     response = _a.sent();
-                    console.log(response.data.status);
+                    console.log(response.data.message);
                     if (response.data.status === 200) {
                         navigation.navigate('Root', { reload: true });
                         react_native_alert_notification_1.Toast.show({
@@ -76,8 +76,9 @@ var useBookingService = function () {
                         react_native_alert_notification_1.Toast.show({
                             type: react_native_alert_notification_1.ALERT_TYPE.WARNING,
                             title: 'Thất bại',
-                            textBody: 'Bạn đặt lịch sửa chữa không thành công! Có thể do bạn đặt lịch của chính bạn hoặc 1 số vấn đề khác'
+                            textBody: "" + response.data.message
                         });
+                        navigation.navigate('Root', { reload: true });
                         setIsLoading(false);
                     }
                     return [3 /*break*/, 5];

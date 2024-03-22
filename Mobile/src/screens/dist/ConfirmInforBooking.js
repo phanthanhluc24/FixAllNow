@@ -74,7 +74,7 @@ var ConfirmInforBooking = function (_a) {
     var totalPrice = priceRepair + priceService + priceTransport;
     var _d = react_1.useState(''), payment = _d[0], setPayment = _d[1];
     var navigation = native_1.useNavigation();
-    var _e = react_1.useState(null), selectedMethod = _e[0], setSelectedMethod = _e[1];
+    var _e = react_1.useState(2), selectedMethod = _e[0], setSelectedMethod = _e[1];
     var _f = react_1.useState(null), errorPayment = _f[0], setErrorPayment = _f[1];
     var _g = useBookingService_1["default"](), bookingService = _g.bookingService, isLoading = _g.isLoading;
     var data = {
@@ -97,7 +97,7 @@ var ConfirmInforBooking = function (_a) {
         setErrorPayment('OK');
     };
     var handleConfirm = function () {
-        if (errorPayment == null) {
+        if (selectedMethod === null) {
             setErrorPayment('Vui lòng chọn phương thức thanh toán');
             setLoading(false);
         }
@@ -185,7 +185,7 @@ var ConfirmInforBooking = function (_a) {
                     react_1["default"].createElement(react_native_1.Text, { style: styles.inforss }, "VN\u0110")),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "\u0110i\u0323a \u0111i\u00EA\u0309m:"),
-                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 2, style: styles.infors }, addressRepair)),
+                    react_1["default"].createElement(react_native_1.Text, { numberOfLines: 3, style: styles.infors }, addressRepair)),
                 react_1["default"].createElement(react_native_1.View, { style: styles.styleInfo },
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infor }, "T\u00F4\u0309ng:"),
                     react_1["default"].createElement(react_native_1.Text, { style: styles.infors }, totalPrice.toLocaleString('vi-VN')),
@@ -374,10 +374,10 @@ var styles = react_native_1.StyleSheet.create({
         marginVertical: 20
     },
     infoContainer: {
-        flex: 8
+        flex: 8.8
     },
     event: {
-        flex: 2
+        flex: 1.2
     },
     infoService: {
         marginHorizontal: 20

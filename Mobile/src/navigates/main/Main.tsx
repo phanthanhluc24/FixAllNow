@@ -187,7 +187,7 @@ const Main = () => {
           component={HistoryStore}
           options={() => ({
             headerShown: true,
-            headerTitle: 'Lịch sử cửa hàng',
+            headerTitle: 'Theo dõi cửa hàng',
           })}
         />
         <Stack.Screen
@@ -195,7 +195,7 @@ const Main = () => {
           component={HistoryRepairmanBookSchedule}
           options={() => ({
             headerShown: true,
-            headerTitle: 'Lịch sử đặt lịch',
+            headerTitle: 'Theo dõi đơn đặt',
           })}
         />
         <Stack.Screen

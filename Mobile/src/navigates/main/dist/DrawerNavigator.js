@@ -40,26 +40,26 @@ var DrawerNavigator = function () {
     };
     return (react_1["default"].createElement(react_native_gesture_handler_1.GestureHandlerRootView, { style: styles.DrawerContainer },
         react_1["default"].createElement(Drawer.Navigator, { initialRouteName: "Main" },
-            react_1["default"].createElement(Drawer.Screen, { name: "Main", component: BottomTab_1["default"], options: function () { return ({
+            react_1["default"].createElement(Drawer.Screen, { name: "Trang chi\u0301nh", component: BottomTab_1["default"], options: function () { return ({
                     headerShown: true,
                     headerTitle: function () { return react_1["default"].createElement(HeaderTitleComponent_1["default"], null); }
                 }); } }),
-            react_1["default"].createElement(Drawer.Screen, { name: "Home", component: Home_1["default"], options: optionsScreen({
+            react_1["default"].createElement(Drawer.Screen, { name: "Trang chu\u0309", component: Home_1["default"], options: optionsScreen({
                     drawerIcon: require(URL_IMAGE + "/iconhome.png"),
                     headerTitle: function () { return react_1["default"].createElement(HeaderTitleComponent_1["default"], null); },
                     backgroundColor: 'white'
                 }) }),
-            react_1["default"].createElement(Drawer.Screen, { name: "Shop", component: Shop_1["default"], options: optionsScreen({
-                    drawerIcon: require(URL_IMAGE + "/iconshop.png"),
+            react_1["default"].createElement(Drawer.Screen, { name: "Tin nh\u0103\u0301n", component: Shop_1["default"], options: optionsScreen({
+                    drawerIcon: require(URL_IMAGE + "/message.png"),
                     headerTitle: function () { return react_1["default"].createElement(HeaderTitleComponent_1["default"], null); },
                     backgroundColor: 'white'
                 }) }),
-            react_1["default"].createElement(Drawer.Screen, { name: "Notification", component: Notification_1["default"], options: optionsScreen({
+            react_1["default"].createElement(Drawer.Screen, { name: "Th\u00F4ng ba\u0301o", component: Notification_1["default"], options: optionsScreen({
                     drawerIcon: require(URL_IMAGE + "/iconnotification.png"),
                     headerTitle: function () { return react_1["default"].createElement(HeaderTitleComponent_1["default"], null); },
                     backgroundColor: 'white'
                 }) }),
-            react_1["default"].createElement(Drawer.Screen, { name: "Profile", component: Profile_1["default"], options: optionsScreen({
+            react_1["default"].createElement(Drawer.Screen, { name: "H\u00F4\u0300 s\u01A1", component: Profile_1["default"], options: optionsScreen({
                     drawerIcon: require(URL_IMAGE + "/iconprofile.png"),
                     headerTitle: function () { return react_1["default"].createElement(HeaderTitleComponent_1["default"], null); },
                     backgroundColor: 'white'

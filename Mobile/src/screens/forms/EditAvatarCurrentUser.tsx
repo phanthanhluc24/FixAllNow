@@ -58,7 +58,11 @@ const EditAvatarCurrentUser = ({route}: any) => {
       const responseData = await sendData(data);
       if (responseData) {
         setLoading(false);
-        navigation.navigate('Profile', { reload: true });
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Profile'}],
+        });
+        navigation.navigate('Profile')
       }
     } catch (error) {
       setLoading(false);

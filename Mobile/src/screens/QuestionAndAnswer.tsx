@@ -7,21 +7,6 @@ interface Answer {
 }
 const QuestionAndAnswer = ({ answer, isLoading }: any) => {
   const scrollViewRef: any = useRef<ScrollView>(null)
-  // const renderItem = ({ item }: { item: Answer }) => {
-  //     return (
-  //     <>
-  //         <View style={styles.container}>
-  //             <View style={styles.questionContainer}>
-  //                 <Text style={styles.question}>{item?.question}</Text>
-  //             </View>
-  //             <View style={styles.answerContainer}>
-  //                 <Text style={styles.answer}>{item?.answer}</Text>
-  //             </View>
-  //         </View>
-  //     </>
-  //     );
-  // };
-
   useEffect(() => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd({ animated: true })
@@ -29,11 +14,6 @@ const QuestionAndAnswer = ({ answer, isLoading }: any) => {
   }, [answer])
   return (
     <View style={{ flex: 8.5 }}>
-      {/* <FlatList
-                data={answer}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-            /> */}
       <ScrollView
         ref={scrollViewRef}
         onContentSizeChange={() => scrollViewRef.current?.scrollToEnd()}
@@ -44,14 +24,10 @@ const QuestionAndAnswer = ({ answer, isLoading }: any) => {
           return (
               <View>
                 {item.answer && (
-                  // <View style={styles.questionContainer}>
                     <Text style={styles.userMessage}>{item?.question}</Text>
-                  // </View>
                 )}
                 {item.question && (
-                  // <View style={styles.answerContainer}>
                     <Text style={styles.otherMessage}>{item?.answer}</Text>
-                  // </View>
                 )}
               </View>
     

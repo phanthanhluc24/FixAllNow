@@ -37,51 +37,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var axios_1 = require("axios");
-var async_storage_1 = require("@react-native-async-storage/async-storage");
 var url_1 = require("./apiRequest/url");
-var react_1 = require("react");
-var useBookingDetail = function (booking_id) {
-    var _a = react_1.useState(null), detailBookings = _a[0], setDetailBooking = _a[1];
-    var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
-    var _c = react_1.useState(false), isError = _c[0], setIsError = _c[1];
-    react_1.useEffect(function () {
-        var fetchDetailBooking = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var accessToken, response, _a, status, data, error_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, async_storage_1["default"].getItem('accessToken')];
-                    case 1:
-                        accessToken = _b.sent();
-                        return [4 /*yield*/, axios_1["default"].get(url_1.url + "/booking/detailBooking/" + booking_id, {
-                                headers: { Authorization: "Bearer " + accessToken }
-                            })];
-                    case 2:
-                        response = _b.sent();
-                        _a = response.data, status = _a.status, data = _a.data;
-                        if (status === 200) {
-                            setDetailBooking(response.data.data);
-                        }
-                        else {
-                            console.error('Error fetching repairman:', data.message);
-                            setIsError(true);
-                        }
-                        return [3 /*break*/, 5];
-                    case 3:
-                        error_1 = _b.sent();
-                        console.error('Error fetching repairman:', error_1);
-                        setIsError(true);
-                        return [3 /*break*/, 5];
-                    case 4:
-                        setIsLoading(false);
-                        return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        }); };
-        fetchDetailBooking();
-    }, [booking_id]);
-    return { detailBookings: detailBookings, isLoading: isLoading, isError: isError };
+var useRepairmanFinderCancelBooking = function (booking_id, token, onStatusChanged) {
+    console.log("booking huu", booking_id);
+    console.log("booking huu", token);
+    var fetchCancelBooking = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1["default"].put(url_1.url + "/booking//cancelService/" + booking_id, {}, {
+                        headers: { Authorization: "Bearer " + token }
+                    })];
+                case 1:
+                    response = _a.sent();
+                    console.log(response.data.message);
+                    onStatusChanged();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    fetchCancelBooking();
 };
-exports["default"] = useBookingDetail;
+exports["default"] = useRepairmanFinderCancelBooking;

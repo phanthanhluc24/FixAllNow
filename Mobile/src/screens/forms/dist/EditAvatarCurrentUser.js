@@ -97,7 +97,11 @@ var EditAvatarCurrentUser = function (_a) {
                     responseData = _a.sent();
                     if (responseData) {
                         setLoading(false);
-                        navigation.navigate('Profile', { reload: true });
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Profile' }]
+                        });
+                        navigation.navigate('Profile');
                     }
                     return [3 /*break*/, 3];
                 case 2:

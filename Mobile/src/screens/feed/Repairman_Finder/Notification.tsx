@@ -31,7 +31,6 @@ const Notification = () => {
     navigation.navigate('DetailNotification', {booking_id: item});
   };
   const {notifications, isLoading, isError} = useGetNotificationBooking();
-  console.log(notifications);
 
   if (isLoading) {
     return (

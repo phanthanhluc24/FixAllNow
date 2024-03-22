@@ -15,7 +15,6 @@ const useRepairmanChangeStatusBooking = (
         headers: {Authorization: `Bearer ${token}`},
       },
     );
-    console.log(response.data.message);
     onStatusChanged();
   };
   fetchChangeStatusBooking();

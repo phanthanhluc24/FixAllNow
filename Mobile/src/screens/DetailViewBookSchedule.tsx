@@ -16,6 +16,9 @@ import useRepairmanChangeStatusBooking from '../hooks/useRepairmanChangeStatusBo
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import LoaderKit from 'react-native-loader-kit';
+import useGetUserChated from '../hooks/useGetUserChated';
+
+import useRepairmanFinderCancelBooking from '../hooks/useRepairmanFinderCancelBooking';
 interface BookingDetail {
   _id: string;
   status: string;
@@ -36,8 +39,10 @@ interface BookingDetail {
   updatedAt: string;
 }
 const DetailViewBookSchedule = () => {
+  const { userChat } = useGetUserChated()
   const route = useRoute();
   const {booking_id}: any = route.params;
+  const [loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
   const [token, setToken] = useState<any>('');
   useEffect(() => {
@@ -63,7 +68,16 @@ const DetailViewBookSchedule = () => {
       );
     }
   const totalPayment = detailBookings?.service_id.price + detailBookings?.fee_service + detailBookings?.fee_transport;
-  
+  const handleCancelBooking =(booking_id:string)=>{
+    setLoading(true);
+    useRepairmanFinderCancelBooking(booking_id,token,()=>{
+      setLoading(false);
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Root'}],
+      });
+    })
+  }
   return (
     <View style={styles.container}>
       <ScrollView style={styles.cartService}>
@@ -97,9 +111,9 @@ const DetailViewBookSchedule = () => {
                 </Text>
               </View>
               <View style={styles.styleInfo}>
-                <Text style={styles.infoUsers}>Email:</Text>
+                <Text style={styles.infoUsers}>SĐT:</Text>
                 <Text numberOfLines={2} style={styles.infoUserss}>
-                  {detailBookings?.user_id.email}
+                  {detailBookings?.user_id.number_phone}
                 </Text>
               </View>
               <View style={styles.styleInfo}>
@@ -175,25 +189,60 @@ const DetailViewBookSchedule = () => {
       </ScrollView>
 
       <View style={styles.buttonEven}>
+        {detailBookings && detailBookings?.status === 'Chờ xác nhận' && (
+          <View style={styles.totalPayment}>
+            <TouchableOpacity style={{width: '90%'}} onPress={()=>handleCancelBooking(detailBookings?._id)}>
+              <View style={styles.background}>
+                <Text style={styles.nameConfirm}>Hủy đơn đặt</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+      <View style={styles.buttonEven}>
+        {detailBookings && detailBookings?.status === 'Đã nhận đơn sửa' && (
+          <View style={styles.totalPayment}>
+            <TouchableOpacity style={{width: '70%'}} onPress={()=>handleCancelBooking(detailBookings?._id)}>
+              <View style={styles.background}>
+                <Text style={styles.nameConfirm}>Đã nhận sửa chữa</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconChat} onPress={()=>navigation.navigate("Conversation",{image:detailBookings.user_id.image,name:detailBookings.user_id.full_name,idReceived:detailBookings.user_id._id})}>
+              <Ionicons name="chatbox" size={30} color="#394C6D" />
+              </TouchableOpacity>
+          </View>
+        )}
+      </View>
+      <View style={styles.buttonEven}>
         {detailBookings && detailBookings?.status === 'Đã hủy đơn' && (
           <View style={styles.totalPayment}>
-            <View style={{width: '100%'}}>
+            <TouchableOpacity style={{width: '100%'}} onPress={() =>
+                    navigation.navigate('DetailService', {
+                      id: detailBookings.service_id._id,
+                      title: detailBookings.service_id.service_name,
+                    })
+                  }>
               <View style={styles.background}>
                 <Text style={styles.nameConfirm}>Đặt lại</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         )}
       </View>
 
       <View style={styles.buttonEven}>
-        {detailBookings && detailBookings?.status === 'Đã sửa thành công' && (
+        {detailBookings && detailBookings?.status === 'Đã sửa hoàn thành' && (
           <View style={styles.totalPayment}>
-            <View style={{width: '40%'}}>
+            <TouchableOpacity style={{width: '40%'}} onPress={() =>
+                    navigation.navigate('DetailService', {
+                      id: detailBookings.service_id._id,
+                      title: detailBookings.service_id.service_name,
+                    })
+                  }>
               <View style={styles.background}>
                 <Text style={styles.nameConfirm}>Đặt lại</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         )}
       </View>
@@ -204,6 +253,10 @@ const DetailViewBookSchedule = () => {
 export default DetailViewBookSchedule;
 
 const styles = StyleSheet.create({
+  iconChat: {
+    alignItems: 'center',
+    marginHorizontal:10
+  },
   infoUserssss: {
     fontSize: 16,
     color: '#394C6D',
