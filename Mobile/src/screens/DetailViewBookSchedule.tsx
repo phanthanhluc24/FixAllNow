@@ -69,6 +69,8 @@ const DetailViewBookSchedule = () => {
     }
   const totalPayment = detailBookings?.service_id.price + detailBookings?.fee_service + detailBookings?.fee_transport;
   const handleCancelBooking =(booking_id:string)=>{
+    console.log("booking",booking_id);
+    
     setLoading(true);
     useRepairmanFinderCancelBooking(booking_id,token,()=>{
       setLoading(false);
@@ -77,6 +79,9 @@ const DetailViewBookSchedule = () => {
         routes: [{name: 'Root'}],
       });
     })
+  }
+  const handleBack=()=>{
+    navigation.navigate("Root",{reload:true})
   }
   return (
     <View style={styles.container}>
@@ -202,14 +207,16 @@ const DetailViewBookSchedule = () => {
       <View style={styles.buttonEven}>
         {detailBookings && detailBookings?.status === 'Đã nhận đơn sửa' && (
           <View style={styles.totalPayment}>
-            <TouchableOpacity style={{width: '70%'}} onPress={()=>handleCancelBooking(detailBookings?._id)}>
+            <TouchableOpacity style={{width: '40%'}} onPress={()=>handleBack()}>
               <View style={styles.background}>
                 <Text style={styles.nameConfirm}>Đã nhận sửa chữa</Text>
               </View>
             </TouchableOpacity>
+            <View style={{width: '40%'}}>
             <TouchableOpacity style={styles.iconChat} onPress={()=>navigation.navigate("Conversation",{image:detailBookings.user_id.image,name:detailBookings.user_id.full_name,idReceived:detailBookings.user_id._id})}>
-              <Ionicons name="chatbox" size={30} color="#394C6D" />
+            <Text style={styles.nameConfirm}>Nhắn tin</Text>
               </TouchableOpacity>
+              </View>
           </View>
         )}
       </View>
@@ -222,7 +229,7 @@ const DetailViewBookSchedule = () => {
                       title: detailBookings.service_id.service_name,
                     })
                   }>
-              <View style={styles.background}>
+              <View style={styles.backgroundss}>
                 <Text style={styles.nameConfirm}>Đặt lại</Text>
               </View>
             </TouchableOpacity>
@@ -233,13 +240,13 @@ const DetailViewBookSchedule = () => {
       <View style={styles.buttonEven}>
         {detailBookings && detailBookings?.status === 'Đã sửa hoàn thành' && (
           <View style={styles.totalPayment}>
-            <TouchableOpacity style={{width: '40%'}} onPress={() =>
+            <TouchableOpacity style={{width: '100%'}} onPress={() =>
                     navigation.navigate('DetailService', {
                       id: detailBookings.service_id._id,
                       title: detailBookings.service_id.service_name,
                     })
                   }>
-              <View style={styles.background}>
+              <View style={styles.backgroundss}>
                 <Text style={styles.nameConfirm}>Đặt lại</Text>
               </View>
             </TouchableOpacity>
@@ -253,9 +260,21 @@ const DetailViewBookSchedule = () => {
 export default DetailViewBookSchedule;
 
 const styles = StyleSheet.create({
+  nameConfirm: {
+    fontSize: 15,
+    color: 'white',
+    fontWeight: 'bold',
+  },
   iconChat: {
     alignItems: 'center',
-    marginHorizontal:10
+    marginHorizontal:10,
+    backgroundColor: '#394C6D',
+    borderRadius: 5,
+    width: '90%',
+    height: 40,
+    marginVertical: 10,
+   
+    justifyContent: 'center',
   },
   infoUserssss: {
     fontSize: 16,
@@ -343,11 +362,11 @@ const styles = StyleSheet.create({
   dateTime: {
     color: 'blue',
   },
-  nameConfirm: {
-    fontSize: 15,
-    color: 'white',
-    fontWeight: 'bold',
-  },
+  // nameConfirm: {
+  //   fontSize: 15,
+  //   color: 'white',
+  //   fontWeight: 'bold',
+  // },
   background: {
     backgroundColor: '#394C6D',
     borderRadius: 5,
@@ -356,6 +375,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backgroundss: {
+    backgroundColor: '#394C6D',
+    borderRadius: 5,
+    width: '90%',
+    height: 40,
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal:20
   },
   backgrounds: {
     backgroundColor: '#FCA234',

@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import LoaderKit from 'react-native-loader-kit';
 import RepairmanViewAddressRepair from './RepairmanViewAddressRepair';
+import { useGetRoomIdChat } from '../hooks/useGetRoomIdChat';
 interface BookingDetail {
   _id: string;
   status: string;
@@ -64,6 +65,7 @@ const DetailRepairmanConfirmBooking = () => {
     detailBooking?.service_id.price +
     detailBooking?.fee_service +
     detailBooking?.fee_transport;
+    const { idRoomChat } = useGetRoomIdChat(detailBooking?.user_id._id)
 
   const handleChangeStatusBooking = (booking_id: string, option: number) => {
     setLoading(true);
@@ -272,7 +274,7 @@ const DetailRepairmanConfirmBooking = () => {
           <View style={styles.totalPayment}>
              <View style={{width: '40%'}}>
               <TouchableOpacity
-                style={styles.background} onPress={()=>navigation.navigate("Conversation",{image:detailBooking.user_id.image,name:detailBooking.user_id.full_name,idReceived:detailBooking.user_id._id})}
+                style={styles.background} onPress={()=>navigation.navigate("Conversation",{image:detailBooking.user_id.image,name:detailBooking.user_id.full_name,idReceived:detailBooking.user_id._id,idRoom:idRoomChat})}
                >
                 <Text style={styles.nameConfirm}>Nhắn tin</Text>
               </TouchableOpacity>

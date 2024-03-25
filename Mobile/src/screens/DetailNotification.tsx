@@ -7,19 +7,20 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
-import {useRoute} from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import useBookingDetail from '../hooks/useBookingDetail';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import useRepairmanChangeStatusBooking from '../hooks/useRepairmanChangeStatusBooking';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import useGetUserChated from '../hooks/useGetUserChated';
 import LoaderKit from 'react-native-loader-kit';
 import useGetCurrentUser from '../hooks/useGetCurrentUser';
 import useRepairmanFinderCancelBooking from '../hooks/useRepairmanFinderCancelBooking';
+import { useGetRoomIdChat } from '../hooks/useGetRoomIdChat';
 
 interface BookingDetail {
   _id: string;
@@ -41,11 +42,10 @@ interface BookingDetail {
   updatedAt: string;
 }
 const DetailNotification = () => {
-  const { userChat } = useGetUserChated()
   const [loading, setLoading] = useState(false);
-  const {currentUser}: any = useGetCurrentUser();
+  const { currentUser }: any = useGetCurrentUser();
   const route = useRoute();
-  const {booking_id}: any = route.params;
+  const { booking_id }: any = route.params;
   const navigation: any = useNavigation();
   const [token, setToken] = useState<any>('');
   useEffect(() => {
@@ -55,12 +55,12 @@ const DetailNotification = () => {
     };
     getAccessToken();
   }, []);
-  const {detailBookings, isError, isLoading}: any =
+  const { detailBookings, isError, isLoading }: any =
     useBookingDetail(booking_id);
-    
+  const { idRoomChat } = useGetRoomIdChat(detailBookings?.user_id._id)
   if (isLoading) {
     return (
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Text>
           <LoaderKit
             style={styles.loadingText}
@@ -75,40 +75,40 @@ const DetailNotification = () => {
     detailBookings?.service_id.price +
     detailBookings?.fee_service +
     detailBookings?.fee_transport;
-  const handleChangeStatusBooking = (booking_id: string, option: number) =>{
+  const handleChangeStatusBooking = (booking_id: string, option: number) => {
     setLoading(true);
     useRepairmanChangeStatusBooking(booking_id, option, token, () => {
       setLoading(false);
       navigation.reset({
         index: 0,
-        routes: [{name: 'Root'}],
+        routes: [{ name: 'Root' }],
       });
     });
   };
-  const handleCancelBooking =(booking_id:string)=>{
+  const handleCancelBooking = (booking_id: string) => {
     setLoading(true);
-    useRepairmanFinderCancelBooking(booking_id,token,()=>{
+    useRepairmanFinderCancelBooking(booking_id, token, () => {
       setLoading(false);
       navigation.reset({
         index: 0,
-        routes: [{name: 'Root'}],
+        routes: [{ name: 'Root' }],
       });
     })
   }
-  const handleExit =()=>{
+  const handleExit = () => {
     navigation.reset({
       index: 0,
-      routes: [{name: 'Root'}],
+      routes: [{ name: 'Root' }],
     });
   }
   return (
     <View style={styles.container}>
       <ScrollView style={styles.cartService}>
-        <View style={{borderBottomWidth: 2, borderBottomColor: '#394C6D'}}>
+        <View style={{ borderBottomWidth: 2, borderBottomColor: '#394C6D' }}>
           <View>
             <View style={styles.content}>
               <Image
-                source={{uri: detailBookings?.service_id.image}}
+                source={{ uri: detailBookings?.service_id.image }}
                 style={styles.img}
               />
             </View>
@@ -194,7 +194,7 @@ const DetailNotification = () => {
           </View>
         </View>
         <View style={styles.totalPayment}>
-          <View style={{width: '50%'}}></View>
+          <View style={{ width: '50%' }}></View>
           <View style={styles.paymentContainer}>
             <View style={styles.payment}>
               <Text style={styles.price}>Tổng:</Text>
@@ -216,7 +216,7 @@ const DetailNotification = () => {
           detailBookings?.status === 'Chờ xác nhận' && (
             <View style={styles.totalPayment}>
               <TouchableOpacity
-                style={{width: '45%'}}
+                style={{ width: '45%' }}
                 onPress={() =>
                   handleChangeStatusBooking(detailBookings?._id, 1)
                 }>
@@ -225,7 +225,7 @@ const DetailNotification = () => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                style={{width: '45%'}}
+                style={{ width: '45%' }}
                 onPress={() =>
                   handleChangeStatusBooking(detailBookings?._id, 2)
                 }>
@@ -233,7 +233,7 @@ const DetailNotification = () => {
                   <Text style={styles.nameConfirm}>Hủy đơn đặt</Text>
                 </View>
               </TouchableOpacity>
-             
+
             </View>
           )}
         {currentUser &&
@@ -241,7 +241,7 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã hủy đơn' && (
             <View style={styles.totalPayment}>
-              <TouchableOpacity style={{width: '100%'}} onPress={()=>handleExit()}>
+              <TouchableOpacity style={{ width: '100%' }} onPress={() => handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã hủy đơn</Text>
                 </View>
@@ -253,7 +253,7 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã sửa hoàn thành' && (
             <View style={styles.totalPayment}>
-              <TouchableOpacity style={{width: '100%'}} onPress={()=>handleExit()}>
+              <TouchableOpacity style={{ width: '100%' }} onPress={() => handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã sửa hoàn thành</Text>
                 </View>
@@ -265,13 +265,13 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã nhận đơn sửa' && (
             <View style={styles.totalPayment}>
-              <TouchableOpacity style={{width: '80%'}} onPress={()=>handleExit()}>
+              <TouchableOpacity style={{ width: '80%' }} onPress={() => handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã nhận đơn sửa</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconChat} onPress={()=>navigation.navigate("Conversation",{image:detailBookings.user_id.image,name:detailBookings.user_id.full_name,idReceived:detailBookings.user_id._id})}>
-              <Ionicons name="chatbox" size={30} color="#394C6D" />
+              <TouchableOpacity style={styles.iconChat} onPress={() => navigation.navigate("Conversation", { image: detailBookings.user_id.image, name: detailBookings.user_id.full_name, idReceived: detailBookings.user_id._id, idRoom: idRoomChat })}>
+                <Ionicons name="chatbox" size={30} color="#394C6D" />
               </TouchableOpacity>
             </View>
           )}
@@ -281,7 +281,7 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã hủy đơn' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <TouchableOpacity
                   style={styles.background}
                   onPress={() =>
@@ -300,7 +300,7 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã sửa hoàn thành' && (
             <View style={styles.totalPayment}>
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <TouchableOpacity
                   style={styles.background}
                   onPress={() =>
@@ -319,13 +319,13 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Đã nhận đơn sửa' && (
             <View style={styles.totalPayment}>
-              <TouchableOpacity style={{width: '80%'}} onPress={()=>handleExit()}>
+              <TouchableOpacity style={{ width: '80%' }} onPress={() => handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Đã nhận đơn sửa</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconChat} onPress={()=>navigation.navigate("Conversation",{image:detailBookings.user_id.image,name:detailBookings.user_id.full_name,idReceived:detailBookings.user_id._id})}>
-              <Ionicons name="chatbox" size={30} color="#394C6D" />
+              <TouchableOpacity style={styles.iconChat} onPress={() => navigation.navigate("Conversation", { image: detailBookings.user_id.image, name: detailBookings.user_id.full_name, idReceived: detailBookings.user_id._id,idRoom:idRoomChat })}>
+                <Ionicons name="chatbox" size={30} color="#394C6D" />
               </TouchableOpacity>
             </View>
           )}
@@ -334,12 +334,12 @@ const DetailNotification = () => {
           detailBookings &&
           detailBookings?.status === 'Chờ xác nhận' && (
             <View style={styles.totalPayment}>
-              <TouchableOpacity style={{width: '45%'}} onPress={()=>handleExit()}>
+              <TouchableOpacity style={{ width: '45%' }} onPress={() => handleExit()}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Chờ xác nhận</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={{width: '45%'}} onPress={()=>handleCancelBooking(detailBookings?._id)}>
+              <TouchableOpacity style={{ width: '45%' }} onPress={() => handleCancelBooking(detailBookings?._id)}>
                 <View style={styles.background}>
                   <Text style={styles.nameConfirm}>Hủy đặt</Text>
                 </View>
