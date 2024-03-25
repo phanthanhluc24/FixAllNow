@@ -6,6 +6,8 @@ const useRepairmanFinderCancelBooking  = (
     token:string,
     onStatusChanged: () => void
   ) => {
+    console.log("booking",booking_id);
+    
     const fetchCancelBooking = async () => {
       const response = await axios.put(
         `${url}/booking//cancelService/${booking_id}`,{},
@@ -13,6 +15,8 @@ const useRepairmanFinderCancelBooking  = (
           headers: {Authorization: `Bearer ${token}`},
         },
       );
+      console.log(response.data.message);
+      
       onStatusChanged();
     };
     fetchCancelBooking();

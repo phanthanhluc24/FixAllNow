@@ -102,26 +102,14 @@ const MapBookingScreen = ({route}: any) => {
           buttonNegative: 'Hủy',
         },
       );
-
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        Toast.show({
-          type: ALERT_TYPE.SUCCESS,
-          title: 'Thành công',
-          textBody: 'Quyền truy cập vị trí đã được cấp phép!',
-        });
         getCurrentLocation();
       } else {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Cảnh báo',
-          textBody: 'Quyền truy cập vị trí bị từ chối!',
-        });
       }
     } catch (err) {
       console.warn(err);
     }
   };
-
   const getReverseGeocoding = async (latitude: number, longitude: number) => {
     try {
       const response = await axios.get(
@@ -333,6 +321,7 @@ const MapBookingScreen = ({route}: any) => {
   };
   return (
     <View style={styles.container}>
+      <View style={{flex:9.2}}>
       {shouldShowMapView && (
         <MapView
           style={styles.map}
@@ -438,6 +427,7 @@ const MapBookingScreen = ({route}: any) => {
             source={require('../assets/Homes/iconMap.png')}
           />
         </TouchableOpacity>
+      </View>
       </View>
       <View style={styles.inputContainerss}>
         <TouchableOpacity style={styles.events} onPress={handleConfirmBooking}>
@@ -626,7 +616,8 @@ const styles = StyleSheet.create({
   inputContainerss: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 10,
+    flex:0.8,
+    backgroundColor:"#394C6D"
   },
   input: {
     flex: 1,
